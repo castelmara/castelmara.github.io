@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Policía Local de Castelmara — archivo</title>
+  <style>html,body{margin:0;min-height:100%;background:#07100d;} body{overflow-x:hidden;}</style>
+</head>
+<body>
+<div id="police-easteregg">
+  <style>
+    #police-easteregg {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(92,115,94,.18), transparent 35%),
+        linear-gradient(135deg, #07100d 0%, #111b17 45%, #050807 100%);
+      font-family: Arial, sans-serif;
+      color: #d8ded9;
+      padding: 40px 18px;
+      box-sizing: border-box;
+    }
+
+    #police-easteregg * {
+      box-sizing: border-box;
+    }
+
+    .police-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      border: 1px solid rgba(180, 194, 177, .25);
+      background: rgba(10, 16, 13, .92);
+      box-shadow: 0 0 40px rgba(0,0,0,.55);
+      min-height: 720px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .police-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      opacity: .45;
+    }
+
+    .police-top {
+      position: relative;
+      z-index: 2;
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(180, 194, 177, .22);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(3, 7, 5, .72);
+    }
+
+    .police-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .police-brand b {
+      font-size: 18px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #eef3ed;
+    }
+
+    .police-brand span {
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #8f9d91;
+    }
+
+    .police-status {
+      font-size: 11px;
+      color: #b9c6b8;
+      border: 1px solid rgba(185,198,184,.28);
+      padding: 8px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      white-space: nowrap;
+    }
+
+    .police-main {
+      position: relative;
+      z-index: 2;
+      padding: 24px;
+    }
+
+    .login-screen {
+      max-width: 460px;
+      margin: 90px auto;
+      padding: 28px;
+      border: 1px solid rgba(180, 194, 177, .25);
+      background: rgba(13, 22, 18, .86);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .login-screen h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #eef3ed;
+    }
+
+    .login-screen p {
+      margin: 0 0 22px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #aeb9ae;
+    }
+
+    .login-screen label {
+      display: block;
+      margin: 14px 0 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #91a192;
+    }
+
+    .login-screen input {
+      width: 100%;
+      background: #050806;
+      border: 1px solid rgba(180, 194, 177, .28);
+      color: #e9eee8;
+      padding: 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .login-screen input:focus {
+      border-color: rgba(216, 222, 217, .7);
+    }
+
+    .police-btn {
+      width: 100%;
+      margin-top: 20px;
+      border: 1px solid rgba(216, 222, 217, .35);
+      background: #d8ded9;
+      color: #07100d;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .police-btn:hover {
+      background: #ffffff;
+    }
+
+    .login-error {
+      display: none;
+      margin-top: 14px;
+      color: #c77777;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .case-area {
+      display: none;
+      animation: policeFade .35s ease forwards;
+    }
+
+    @keyframes policeFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .case-head {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .case-title,
+    .case-side,
+    .case-panel {
+      border: 1px solid rgba(180, 194, 177, .22);
+      background: rgba(13, 22, 18, .78);
+      padding: 18px;
+    }
+
+    .case-title small,
+    .case-side small,
+    .case-panel small {
+      display: block;
+      color: #8fa091;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+
+    .case-title h1 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      color: #eef3ed;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .case-title p {
+      margin: 0;
+      color: #aeb9ae;
+      line-height: 1.7;
+      font-size: 14px;
+      max-width: 720px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 13px;
+      color: #cbd4cb;
+    }
+
+    .case-grid div {
+      border-bottom: 1px solid rgba(180, 194, 177, .12);
+      padding: 7px 0;
+    }
+
+    .case-grid b {
+      color: #7f927f;
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 3px;
+    }
+
+    .hint {
+      border-bottom: 1px dotted rgba(216,222,217,.5);
+      cursor: help;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 18px 0;
+    }
+
+    .tab-btn {
+      border: 1px solid rgba(180, 194, 177, .24);
+      background: rgba(5,8,6,.72);
+      color: #b9c6b8;
+      padding: 10px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: #d8ded9;
+      color: #07100d;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .case-panel h3 {
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: #eef3ed;
+      font-size: 18px;
+    }
+
+    .case-panel p,
+    .case-panel li {
+      color: #b8c1b8;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .case-panel ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .doc-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-item {
+      border: 1px solid rgba(180, 194, 177, .18);
+      background: rgba(5, 8, 6, .55);
+      padding: 14px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .doc-item:hover {
+      border-color: rgba(216, 222, 217, .45);
+      transform: translateY(-1px);
+    }
+
+    .doc-item b {
+      display: block;
+      color: #eef3ed;
+      margin-bottom: 5px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .doc-item span {
+      color: #93a093;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      border-bottom: 1px solid rgba(180, 194, 177, .12);
+      padding-bottom: 12px;
+    }
+
+    .time-row b {
+      color: #e5ebe4;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .time-row span {
+      color: #b8c1b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(760px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      background: #101813;
+      border: 1px solid rgba(216,222,217,.28);
+      box-shadow: 0 30px 90px rgba(0,0,0,.65);
+      padding: 24px;
+      position: relative;
+    }
+
+    .modal-box h2 {
+      margin: 0 0 12px;
+      color: #eef3ed;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 20px;
+    }
+
+    .modal-box p {
+      color: #b8c1b8;
+      line-height: 1.75;
+      font-size: 14px;
+      margin: 0 0 12px;
+      white-space: pre-line;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      background: transparent;
+      border: 0;
+      color: #d8ded9;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .stamp {
+      display: inline-block;
+      margin-top: 12px;
+      border: 1px solid rgba(199,119,119,.8);
+      color: #c77777;
+      padding: 8px 12px;
+      transform: rotate(-3deg);
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 760px) {
+      .police-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .case-head,
+      .columns {
+        grid-template-columns: 1fr;
+      }
+
+      .case-title h1 {
+        font-size: 24px;
+      }
+
+      .time-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+  </style>
+
+  <div class="police-wrap">
+    <div class="police-top">
+      <div class="police-brand">
+        <b>
+          <span class="hint" title="Местная полиция Кастельмары">Policía Local de Castelmara</span>
+        </b>
+        <span>
+          внутренний архив · 
+          <span class="hint" title="ограниченный доступ">acceso restringido</span>
+        </span>
+      </div>
+      <div class="police-status">архив частично восстановлен</div>
+    </div>
+
+    <div class="police-main">
+
+      <div class="login-screen" id="policeLogin">
+        <h2>доступ к архиву</h2>
+        <p>
+          этот модуль относится к внутреннему архиву полиции Кастельмары.
+          несанкционированный вход будет зарегистрирован системой.
+        </p>
+
+        <label>пользователь</label>
+        <input id="policeUser" type="text" value="archivo.castelmara">
+
+        <label>пароль</label>
+        <input id="policePass" type="password" placeholder="введите код доступа">
+
+        <button class="police-btn" onclick="policeEnter()">войти</button>
+
+        <div class="login-error" id="loginError">
+          доступ запрещён. подсказка: дата, которую никто не хочет вспоминать.
+        </div>
+      </div>
+
+      <div class="case-area" id="caseArea">
+        <div class="case-head">
+          <div class="case-title">
+            <small>
+              <span class="hint" title="личное дело / досье">expediente personal</span>
+            </small>
+            <h1>Мигель Гарсия младший</h1>
+            <p>
+              личное дело, связанное с расследованием событий 25 августа 2024 года.
+              основная часть дела закрыта: обстоятельства смерти Мигеля не вызывают сомнений у следствия.
+              отдельная проверка касается только сообщений, разосланных по кампусу уже после трагедии.
+            </p>
+          </div>
+
+          <div class="case-side">
+            <small>краткая сводка</small>
+            <div class="case-grid">
+              <div><b>номер дела</b> CM-24-0825-MGJ</div>
+              <div><b>статус</b> закрыто / цифровая проверка</div>
+              <div><b>локация</b> Кастельмара, Валенсия</div>
+              <div><b>дата</b> 25.08.2024</div>
+              <div><b>доступ</b> ограниченный</div>
+              <div><b>ответственный</b> Леон С. Рэдфилд, капитан полиции</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="openPoliceTab(event, 'personal')">личное дело</button>
+          <button class="tab-btn" onclick="openPoliceTab(event, 'timeline')">хронология</button>
+          <button class="tab-btn" onclick="openPoliceTab(event, 'docs')">документы</button>
+          <button class="tab-btn" onclick="openPoliceTab(event, 'evidence')">улики</button>
+          <button class="tab-btn" onclick="openPoliceTab(event, 'notes')">заметки</button>
+        </div>
+
+        <div class="tab-content active" id="personal">
+          <div class="columns">
+            <div class="case-panel">
+              <small>основные данные</small>
+              <h3>профиль</h3>
+              <ul>
+                <li><b>имя:</b> Мигель Гарсия младший.</li>
+                <li><b>связь с академией:</b> студент Castelmara Academia de Alto Rendimiento.</li>
+                <li><b>команда:</b> футбольная команда «Castelmara Foxes» / «Лисы».</li>
+                <li><b>место трагедии:</b> раздевалка футбольной команды Лисов на территории арены.</li>
+                <li><b>примечание:</b> обстоятельства смерти Мигеля не оспариваются следствием.</li>
+              </ul>
+            </div>
+
+            <div class="case-panel">
+              <small>внутреннее наблюдение</small>
+              <h3>состояние архива</h3>
+              <p>
+                дело закрыто по основной линии расследования. дополнительные материалы оставлены в архиве
+                из-за цифровой проверки: письма, отправленные от имени Мигеля, были созданы уже после его смерти.
+              </p>
+              <span class="stamp">цифровая проверка</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="timeline">
+          <div class="case-panel">
+            <small>
+              <span class="hint" title="восстановленная хронология">cronología recuperada</span>
+            </small>
+            <h3>восстановленная хронология</h3>
+
+            <div class="timeline">
+              <div class="time-row">
+                <b>22:40</b>
+                <span>карта Мигеля используется для выхода из жилого корпуса кампуса.</span>
+              </div>
+
+              <div class="time-row">
+                <b>22:41</b>
+                <span>камера фиксирует, как Мигель выходит из общежития один. посторонних рядом не видно.</span>
+              </div>
+
+              <div class="time-row">
+                <b>22:52</b>
+                <span>Мигель проходит по внешней дорожке в сторону футбольной арены. движение спокойное, без признаков конфликта или преследования.</span>
+              </div>
+
+              <div class="time-row">
+                <b>22:57</b>
+                <span>охранник ночной смены пропускает Мигеля через служебный вход арены после короткого разговора.</span>
+              </div>
+
+              <div class="time-row">
+                <b>23:00</b>
+                <span>Мигель проходит по внутреннему коридору в сторону раздевалки футбольной команды Лисов.</span>
+              </div>
+
+              <div class="time-row">
+                <b>23:03</b>
+                <span>Мигель заходит в раздевалку Лисов. других студентов или сотрудников в коридоре не зафиксировано.</span>
+              </div>
+
+              <div class="time-row">
+                <b>23:20</b>
+                <span>по материалам дела к этому времени Мигель уже был мёртв. версия присутствия другого человека была исключена на основании камер и журнала доступа.</span>
+              </div>
+
+              <div class="time-row">
+                <b>позже</b>
+                <span>по кампусу появляются письма, отправленные от имени Мигеля. именно эта часть выделена в отдельную цифровую проверку.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="docs">
+          <div class="case-panel">
+            <small>доступные файлы</small>
+            <h3>документы дела</h3>
+
+            <div class="doc-list">
+              <div class="doc-item" onclick="openDoc(
+                'Показание охранника арены',
+                'Фрагмент протокола допроса.\n\nПолицейский: Вы подтверждаете, что впустили Мигеля Гарсию младшего на территорию футбольной арены в ночь с 24 на 25 августа?\n\nОхранник: Да. Он подошёл к служебному входу примерно без двадцати одиннадцать. Карта доступа у него была при себе. Я знал его как игрока Лисов, поэтому не стал задерживать дольше обычной проверки.\n\nПолицейский: Он выглядел взволнованным? Испуганным? Был кто-то рядом с ним?\n\nОхранник: Нет. Он выглядел обычно. Тихий, уставший, но не так, чтобы я подумал о чём-то плохом. Сказал, что ему нужно забрать вещи из раздевалки.\n\nПолицейский: Раньше он приходил так поздно?\n\nОхранник: Нет. Я такого не помню. Обычно студенты в это время на арену не заходят. Но он был из команды, и дверь открылась по его карте. Формально причин не пустить его у меня не было.\n\nПолицейский: Вы видели кого-то ещё?\n\nОхранник: Нет. Ни до него, ни после. На моей смене в ту ночь никто из студентов больше не проходил через этот вход.'
+              )">
+                <b>показание охранника арены</b>
+                <span>служебный вход · ночная смена · Мигель был один</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Отчёт с камер наблюдения',
+                'Камеры наблюдения подтвердили маршрут Мигеля в ночь трагедии.\n\n22:41 — Мигель выходит из жилого корпуса кампуса. На записи он один. Посторонних рядом не зафиксировано.\n\n22:52 — Мигель проходит через внешнюю дорожку в сторону футбольной арены. Движение спокойное, без признаков конфликта или преследования.\n\n22:57 — Мигель подходит к служебному входу арены. Охранник открывает пост, после чего пропускает его внутрь после короткого разговора.\n\n23:00 — Мигель идёт по внутреннему коридору арены в сторону раздевалок футбольной команды.\n\n23:03 — Мигель заходит в раздевалку Лисов. После этого в коридоре не фиксируется движение других студентов или сотрудников.\n\nНа основании записей камер версия насильственной смерти была исключена на раннем этапе проверки.'
+              )">
+                <b>отчёт с камер наблюдения</b>
+                <span>общежитие → футбольная арена → раздевалка Лисов</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Журнал доступа',
+                'Система доступа зафиксировала два подтверждённых использования карты Мигеля в ночь трагедии.\n\n22:40 — выход из жилого корпуса кампуса.\n22:57 — вход на территорию футбольной арены через служебный проход.\n\nОба события подтверждаются камерами наблюдения. На записях видно, что картой пользовался сам Мигель.\n\nДругих выходов из жилых корпусов и входов на арену в этот временной промежуток не зафиксировано. Сотрудники, находившиеся на смене, проходили через отдельный служебный маршрут и не пересекались с Мигелем после его входа на арену.'
+              )">
+                <b>журнал доступа</b>
+                <span>карта Мигеля · два подтверждённых прохода</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Оливер Браун',
+                'Статус: студент, капитан футбольной команды Лисов.\n\nОливер Браун подтвердил, что знал о напряжении внутри команды, однако в ходе опроса не проявил заметного сочувствия к Мигелю. На прямой вопрос о травле ответил уклончиво: “в команде всегда есть давление, это спорт”.\n\nПо словам нескольких студентов, именно Оливер мог остановить ситуацию на раннем этапе, если бы вмешался как капитан. Вместо этого он предпочитал делать вид, что конфликтов внутри команды нет.\n\nСледователь отметил: Оливер не был инициатором травли, но его бездействие помогло ей закрепиться.\n\nПримечание: получил письмо.'
+              )">
+                <b>опрос: Оливер Браун</b>
+                <span>капитан Лисов · бездействие · получил письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Давид Капури',
+                'Статус: студент, сокомандник Мигеля.\n\nДавид Капури отрицал прямую травлю, называя свои слова “шутками внутри команды”. Однако другие студенты подтвердили, что часто слышали от него издёвки в сторону Мигеля.\n\nОтдельно зафиксировано, что именно Давид первым пустил слух о том, будто отец купил Мигелю место в основном составе Лисов. Этот слух быстро разошёлся по команде и стал одним из поводов для постоянных насмешек.\n\nПри повторном вопросе Давид заявил, что “не думал, что кто-то воспримет это всерьёз”.\n\nПримечание: получил письмо.'
+              )">
+                <b>опрос: Давид Капури</b>
+                <span>сокомандник · слух о купленном месте · получил письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Ева де Гяру',
+                'Статус: студентка, подруга детства Мигеля.\n\nЕва де Гяру и Мигель поступили в академию в одно время. По её словам, в первые месяцы они держались вместе, потому что оба знали друг друга ещё до Кастельмары. Позднее общение стало редким и почти полностью прекратилось уже на первом курсе.\n\nЕва утверждает, что не знала о состоянии Мигеля и не могла объяснить его мотивы. На вопрос, почему они перестали общаться, ответила, что “в академии все быстро расходятся по своим кругам”.\n\nСледователь отметил эмоциональную отстранённость, но не нашёл признаков прямого конфликта.\n\nПримечание: получила письмо.'
+              )">
+                <b>опрос: Ева де Гяру</b>
+                <span>подруга детства · отдаление · получила письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Алекса Соур',
+                'Статус: студентка, участница группы поддержки футбольной команды Лисов.\n\nАлекса Соур была вызвана на опрос как последний зафиксированный контакт Мигеля, не считая родителей и сестры. В лицее они общались, но в академии связь стала нерегулярной.\n\nПоследнее сообщение Алексы касалось слуха о том, что отец Мигеля якобы купил ему место в команде. Алекса утверждает, что написала “просто спросить”, потому что услышала это от других студентов.\n\nСледователь отметил, что вопрос был задан в момент, когда слух уже активно обсуждался внутри команды и среди группы поддержки. Для Мигеля это могло выглядеть не как нейтральный вопрос, а как подтверждение того, что слух вышел за пределы раздевалки.\n\nПримечание: получила письмо.'
+              )">
+                <b>опрос: Алекса Соур</b>
+                <span>последний контакт · группа поддержки Лисов · получила письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Рамона Мартина Суарес',
+                'Статус: студентка, капитан группы поддержки футбольной команды Лисов.\n\nРамона Мартина Суарес знала о напряжении вокруг Мигеля со стороны нескольких студенток и игроков. По её словам, она “не считала это своей зоной ответственности”, так как не была частью футбольной команды напрямую.\n\nПри этом опрошенные студенты подтвердили, что Рамона знала и о поведении Алексы, и о том, как Ева постепенно отдалилась от Мигеля. Она не вмешалась, не поговорила с ними и при личных встречах с Мигелем чаще всего делала вид, что не замечает его.\n\nОтдельно отмечен эпизод с днём рождения Рамоны. Несколько студентов из общего круга получили приглашение, но Мигеля среди приглашённых не было. Формально это не является нарушением, однако на фоне общего отчуждения могло стать ещё одним подтверждением того, что из привычного круга его окончательно вычеркнули.\n\nСледователь отметил: Рамона не участвовала в прямой травле, но её положение внутри группы поддержки делало её человеком, который мог остановить хотя бы часть публичного давления. Она этого не сделала.\n\nПримечание: получила письмо.'
+              )">
+                <b>опрос: Рамона Мартина Суарес</b>
+                <span>капитан группы поддержки · игнорирование · получила письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Родерик де Лонги',
+                'Статус: студент, хоккеист Castelmara Guards.\n\nРодерик де Лонги и Мигель хорошо знали друг друга ещё по лицею. Они играли в одной хоккейной команде, много общались и, по словам Родерика, когда-то мечтали вместе попасть в большой спорт и уехать в Канаду.\n\nПосле перехода Мигеля в футбол их отношения резко испортились. Родерик утверждает, что Мигель никак не объяснил свой уход. На фоне слухов о влиянии семьи Мигеля Родерик решил, что бывший друг просто выбрал более лёгкий путь: уйти в главный спорт Испании, где связи академии и директора могли быстрее открыть дорогу к профессиональной карьере.\n\nДля Родерика это выглядело как предательство. Хоккеисты годами рвут себя на части ради шанса пробиться дальше, а Мигель, по его мнению, получил билет в большой спорт здесь и сейчас.\n\nПрямой травли со стороны Родерика не подтверждено. Однако он принципиально избегал Мигеля: не садился рядом в столовой, не вступал в разговоры и демонстративно держал дистанцию.\n\nДополнительный контекст: в прошлом сезоне Guards были разгромлены Hawks. В материалах отмечено, что личные конфликты внутри хоккейной среды могли усиливать обиду Родерика на Мигеля.\n\nПримечание: получил письмо.'
+              )">
+                <b>опрос: Родерик де Лонги</b>
+                <span>бывший друг · хоккей · обида из-за перехода · получил письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Опрос: Блейз Лансер',
+                'Статус: студент, хоккеист Castelmara Wolves.\n\nБлейз Лансер был частью той же лицейской компании, что Мигель и Родерик. Они играли вместе, дружили и строили похожие планы на будущее, связанные с хоккеем и шансом выбраться в профессиональный спорт.\n\nПосле перехода Мигеля в футбол Блейз воспринял это острее остальных. По его словам, ему самому было тяжело попасть и в лицей, и в академию: семья не имела больших возможностей, а вступительные испытания он едва не провалил. На этом фоне уход Мигеля в другой спорт выглядел для него как доказательство несправедливости.\n\nБлейз считал, что Мигель просто воспользовался деньгами и связями семьи, чтобы перейти туда, где путь к карьере короче и заметнее. В отличие от Родерика, Блейз не ограничился молчаливым избеганием.\n\nНесколько студентов подтвердили, что Блейз был замечен за регулярными насмешками в сторону Мигеля. В отчёте это обозначено как “лёгкий буллинг”, однако именно такие эпизоды подпитывали общую травлю и делали её привычной частью среды.\n\nПримечание: получил письмо.'
+              )">
+                <b>опрос: Блейз Лансер</b>
+                <span>бывший друг · хоккей · подпитывал травлю · получил письмо</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Электронный след писем',
+                'Первичная проверка сообщений, разосланных по кампусу от имени Мигеля, не выявила нарушений. Однако повторный технический анализ показал расхождение во времени.\n\nЧерновики писем были созданы после официально зафиксированного времени смерти Мигеля. Отправка также произошла позднее, когда Мигель уже физически не мог пользоваться системой.\n\nСистема ATLAS зарегистрировала вход с устройства, ранее не связанного с обычной активностью Мигеля. Данные были частично замаскированы, но электронный след указывает на пользователя с доступом к семейным данным.\n\nВ отдельной заметке отправитель обозначен только как “L.”. Проверка продолжается.'
+              )">
+                <b>электронный след писем</b>
+                <span>ATLAS · сообщения после смерти Мигеля · отправитель обозначен как “L.”</span>
+              </div>
+
+              <div class="doc-item" onclick="openDoc(
+                'Административная заметка',
+                'По распоряжению руководства академии материалы дела должны храниться в закрытом архиве до окончания внутренней проверки.\n\nПричина смерти Мигеля не оспаривается. Дополнительная проверка касается только сообщений, появившихся после трагедии, и возможного доступа третьего лица к его цифровым аккаунтам.'
+              )">
+                <b>административная заметка</b>
+                <span>внутренний документ · цифровая проверка продолжается</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="evidence">
+          <div class="case-panel">
+            <small>
+              <span class="hint" title="вещественные доказательства">evidencia física</span>
+            </small>
+            <h3>изъятые предметы</h3>
+
+            <div style="
+              width: 100%;
+              min-height: 260px;
+              border: 1px solid rgba(180, 194, 177, .22);
+              background: rgba(5, 8, 6, .45);
+              margin-bottom: 18px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+            ">
+              <img 
+                src="https://static.tildacdn.com/tild3736-3431-4231-b331-383761363633/nABb9t15PXWgLAdZ52cG.jpg" 
+                alt="фотография изъятых предметов по делу Мигеля Гарсии младшего"
+                style="
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  opacity: .92;
+                "
+              >
+            </div>
+
+            <div class="columns">
+              <div>
+                <small>основные предметы</small>
+                <ul>
+                  <li><b>личный телефон</b> — заблокирован, передан на цифровую проверку.</li>
+                  <li><b>тетрадь</b> — несколько страниц вырваны, часть записей совпадает с файлами на рабочем столе.</li>
+                  <li><b>карта доступа</b> — использована дважды: при выходе из общежития и входе на арену.</li>
+                  <li><b>обрывок записки</b> — текст повреждён, отдельные слова не читаются.</li>
+                  <li><b>личные вещи из шкафчика</b> — изъяты из раздевалки футбольной команды Лисов.</li>
+                </ul>
+              </div>
+
+              <div>
+                <small>
+                  <span class="hint" title="цифровые доказательства">evidencia digital</span>
+                </small>
+                <div class="doc-list">
+                  <div class="doc-item" onclick="openDoc(
+                    'Телефон Мигеля',
+                    'Телефон был найден среди личных вещей Мигеля. Устройство заблокировано. Последняя активность до трагедии не содержит отправки массовых писем по кампусу. Проверка истории входов продолжается.'
+                  )">
+                    <b>телефон Мигеля</b>
+                    <span>устройство заблокировано · массовая рассылка не подтверждена</span>
+                  </div>
+
+                  <div class="doc-item" onclick="openDoc(
+                    'Тетрадь с записями',
+                    'В тетради есть личные заметки, отдельные фразы и имена, записанные сокращённо. Буква “Л.” встречается несколько раз, но без полного имени. Часть страниц была вырвана до передачи предмета полиции.'
+                  )">
+                    <b>тетрадь с записями</b>
+                    <span>личные заметки · упоминание “Л.” · страницы отсутствуют</span>
+                  </div>
+
+                  <div class="doc-item" onclick="openDoc(
+                    'Файлы ATLAS',
+                    'Восстановленные логи ATLAS показывают, что письма были составлены и отправлены уже после смерти Мигеля. Использованный цифровой след не совпадает с его обычной активностью.'
+                  )">
+                    <b>файлы ATLAS</b>
+                    <span>рассылка после смерти Мигеля · подозрение на доступ третьего лица</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="notes">
+          <div class="case-panel">
+            <small>заметки следователя</small>
+            <h3>внутренние комментарии</h3>
+
+            <p>
+              обстоятельства смерти Мигеля Гарсии младшего не вызывают сомнений у следствия. записи камер,
+              журнал доступа и показания охранника подтверждают, что в ночь трагедии он пришёл на арену один.
+              признаков присутствия другого человека в коридорах, у служебного входа или рядом с раздевалкой Лисов не выявлено.
+            </p>
+
+            <p>
+              отдельного внимания требует не сама трагедия, а сообщения, разосланные по кампусу от имени Мигеля.
+              техническая проверка показывает, что письма были созданы и отправлены после его смерти.
+              это исключает возможность того, что он лично подготовил финальную рассылку.
+            </p>
+
+            <p>
+              вероятно, кто-то получил доступ к его материалам, личным записям или аккаунту ATLAS.
+              в восстановленных логах несколько раз появляется обозначение “L.”. совпадение с записями
+              на рабочем столе Мигеля требует отдельной проверки.
+            </p>
+
+            <p>
+              предварительная версия: отправитель знал Мигеля лично, имел доступ к части его данных
+              и пытался направить внимание студентов в нужную сторону уже после закрытия основного дела.
+            </p>
+
+            <span class="stamp">цифровая проверка продолжается</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="docModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeDoc()">×</button>
+      <h2 id="docTitle"></h2>
+      <p id="docText"></p>
+    </div>
+  </div>
+
+  <script>
+    function policeEnter() {
+      const pass = document.getElementById('policePass').value.trim();
+      const login = document.getElementById('policeLogin');
+      const area = document.getElementById('caseArea');
+      const error = document.getElementById('loginError');
+
+      if (pass === '2508') {
+        login.style.display = 'none';
+        area.style.display = 'block';
+        error.style.display = 'none';
+      } else {
+        error.style.display = 'block';
+      }
+    }
+
+    function openPoliceTab(evt, tabName) {
+      const contents = document.querySelectorAll('#police-easteregg .tab-content');
+      const buttons = document.querySelectorAll('#police-easteregg .tab-btn');
+
+      contents.forEach(tab => tab.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabName).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    function openDoc(title, text) {
+      document.getElementById('docTitle').innerText = title;
+      document.getElementById('docText').innerText = text;
+      document.getElementById('docModal').classList.add('open');
+    }
+
+    function closeDoc() {
+      document.getElementById('docModal').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDoc();
+      }
+    });
+  </script>
+</div>
+</body>
+</html>
