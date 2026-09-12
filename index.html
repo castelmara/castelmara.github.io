@@ -6,8 +6,51 @@
   <meta name="color-scheme" content="light dark">
   <title>CASTELMARA — ATLAS</title>
   <style>html,body{margin:0;min-height:100%;}body{background:#f2f1ef;}</style>
-</head>
-<body>
+\n  <!-- ATLAS GITHUB FIX: early theme paint + preloader -->
+  <script>
+  (function(){
+    var t='light';
+    try { t = localStorage.getItem('atlasTheme') === 'dark' ? 'dark' : 'light'; } catch(e) {}
+    document.documentElement.setAttribute('data-atlas-theme', t);
+  })();
+  </script>
+  <style>
+    html[data-atlas-theme="dark"], html[data-atlas-theme="dark"] body { background:#090d11 !important; }
+    html[data-atlas-theme="light"], html[data-atlas-theme="light"] body { background:#f2f1ef !important; }
+    #atlas-dark-loader{position:fixed;inset:0;z-index:99999999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,rgba(34,72,27,.22),transparent 34%),linear-gradient(180deg,#070a0f 0%,#05070a 100%);color:#f5f2ef;font-family:Montserrat,Arial,sans-serif;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .42s ease,visibility .42s ease}
+    #atlas-dark-loader.atlas-loader-hide{opacity:0;visibility:hidden;pointer-events:none}
+    #atlas-dark-loader .atlas-loader-stage{text-align:center;width:min(420px,calc(100vw - 40px));min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    #atlas-dark-loader .atlas-loader-logo{font-size:clamp(58px,10vw,96px);font-weight:900;letter-spacing:.1em;line-height:.9;text-transform:uppercase;text-shadow:0 18px 46px rgba(0,0,0,.48);animation:atlasLoaderLogo .55s ease both}
+    #atlas-dark-loader .atlas-loader-spinner{width:30px;height:30px;margin-top:30px;border:2px solid rgba(245,242,239,.14);border-top-color:#6b9a63;border-radius:50%;animation:atlasLoaderSpin .75s linear infinite}
+    #atlas-dark-loader .atlas-loader-message{margin-top:18px;font-size:11px;font-weight:700;letter-spacing:.23em;text-transform:lowercase;color:rgba(245,242,239,.62)}
+    @keyframes atlasLoaderLogo{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+    @keyframes atlasLoaderSpin{to{transform:rotate(360deg)}}
+  </style>\n</head>
+<body>\n<div id="atlas-dark-loader" aria-hidden="true">
+  <div class="atlas-loader-stage">
+    <div class="atlas-loader-logo">ATLAS</div>
+    <div class="atlas-loader-spinner"></div>
+    <div class="atlas-loader-message" id="atlas-random-message">atlas online</div>
+  </div>
+</div>
+<script>
+(function(){
+  var el=document.getElementById('atlas-random-message');
+  var m=['welcome home','welcome back','access granted','atlas online','system ready','network connected'];
+  if(el) el.textContent=m[Math.floor(Math.random()*m.length)];
+  var started=Date.now();
+  function hide(){
+    var loader=document.getElementById('atlas-dark-loader'); if(!loader)return;
+    var wait=Math.max(0,700-(Date.now()-started));
+    setTimeout(function(){
+      loader.classList.add('atlas-loader-hide');
+      setTimeout(function(){if(loader.parentNode)loader.parentNode.removeChild(loader)},480);
+    },wait);
+  }
+  if(document.readyState==='complete') hide(); else window.addEventListener('load',hide,{once:true});
+  setTimeout(hide,2600);
+})();
+</script>\n
 
 <!-- SOURCE: \Вставлений text(20260912-142519).txt -->
 <!-- ATLAS CLEAN 01R: SYSTEM + ENGINE / OLD DASHBOARD STYLE.
@@ -1124,7 +1167,6 @@ body.atlas-modal-open {
     if (category === 'entrenadores') return 'personajes-entrenadores';
     if (category === 'estudiantes') return 'personajes-estudiantes';
     if (category === 'student' || category === 'students') return 'personajes-estudiantes';
-    if (category === 'liceistas' || category === 'liceístas' || category === 'lyceum') return 'personajes-liceistas';
     if (category === 'fuera-castelmara' || category === 'fuera de castelmara') return 'personajes-fuera-castelmara';
 
     return 'personajes';
@@ -1332,29 +1374,39 @@ if (!matches.length) {
 
     if (item.characterId) {
       openPage(item.page, { scroll: false });
-      setTimeout(function() {
-        openCharacter(item.characterId);
-      }, 80);
+      setTimeout(function() { openCharacter(item.characterId); }, 80);
       return;
     }
 
-    openPage(item.page);
+    openPage(item.page, { scroll: false });
 
-    if (item.elementId) {
+    if (!item.elementId) return;
+
+    setTimeout(function() {
+      var target = document.getElementById(item.elementId);
+      if (!target) return;
+
+      /* Search results that describe an action should actually perform it. */
+      var action =
+        target.matches('[data-modal-target],[data-open-page],[data-character-id]') ? target :
+        target.querySelector('[data-modal-target]') ||
+        target.querySelector('[data-character-id]') ||
+        target.querySelector('[data-open-page]') ||
+        target.querySelector('a[href]:not([href="javascript:void(0)"])');
+
+      if (action && typeof action.click === 'function') {
+        action.click();
+        return;
+      }
+
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.style.outline = '2px solid rgba(226, 71, 71, .34)';
+      target.style.outlineOffset = '4px';
       setTimeout(function() {
-        var target = document.getElementById(item.elementId);
-        if (!target) return;
-
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        target.style.outline = '2px solid rgba(226, 71, 71, .34)';
-        target.style.outlineOffset = '4px';
-
-        setTimeout(function() {
-          target.style.outline = '';
-          target.style.outlineOffset = '';
-        }, 1500);
-      }, 150);
-    }
+        target.style.outline = '';
+        target.style.outlineOffset = '';
+      }, 1500);
+    }, 180);
   }
 
   function toggleTopButton() {
@@ -1379,6 +1431,7 @@ if (!matches.length) {
     if (!app) return;
 
     app.setAttribute('data-theme', nextTheme);
+    document.documentElement.setAttribute('data-atlas-theme', nextTheme);
 
     if (modal) {
       modal.setAttribute('data-theme', nextTheme);
@@ -11226,7 +11279,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   --atlas-gate-castelmara-image: url("https://static.tildacdn.com/tild6332-6339-4130-a663-316236626335/jmdDorgjTEP2uSz-CoAW.jpg");
   --atlas-gate-entrenadores-image: url("https://static.tildacdn.com/tild6663-6439-4763-b932-656537626334/iAaujb4xPdg5yCUbTvk_.jpg");
   --atlas-gate-estudiantes-image: url("https://static.tildacdn.com/tild3332-3665-4266-b461-386661343733/noroot.png");
-  --atlas-gate-liceistas-image: url("https://static.tildacdn.com/tild3161-6430-4333-a333-316630363162/RiJFrCg4d72qrIgshSN4.jpg");
 }
 
 #atlas-app #atlas-page-personajes .atlas-page-hero {
@@ -11333,7 +11385,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 #atlas-app .atlas-gate-castelmara::before { background-image: var(--atlas-gate-castelmara-image); }
 #atlas-app .atlas-gate-entrenadores::before { background-image: var(--atlas-gate-entrenadores-image); }
 #atlas-app .atlas-gate-estudiantes::before { background-image: var(--atlas-gate-estudiantes-image); background-position: center 18%; }
-#atlas-app .atlas-gate-liceistas::before { background-image: var(--atlas-gate-liceistas-image); background-position: center 24%; }
 
 #atlas-app .atlas-character-gate-visual > * {
   position: relative;
@@ -14353,7 +14404,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
   function renderCharacters() {
     var characters = window.ATLAS_CHARACTERS || [];
-    var categories = ["castelmara", "estudiantes", "liceistas"];
+    var categories = ["castelmara", "estudiantes"];
 
     categories.forEach(function(category) {
       var grid = document.querySelector('[data-character-category="' + category + '"]');
@@ -23495,7 +23546,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     "subtitle": "тренер по спортивной гимнастике (женская), кафедра гимнастики и акробатики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3264-6539-4932-b233-623430653863/cbedd3cfbfe7699283ba.jpg",
+    "cardImage": "carina-escobar.webp",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -23505,7 +23556,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       "кафедра гимнастики и акробатики"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3264-6539-4932-b233-623430653863/cbedd3cfbfe7699283ba.jpg",
+      "image": "carina-escobar.webp",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -25272,7 +25323,7 @@ ATLAS — CARD ONLY CHARACTERS
 
 Что делает:
 — возвращает фото на hero personajes;
-— возвращает фото на карточки fuera / castelmara / entrenadores / estudiantes / liceístas;
+— возвращает фото на карточки fuera / castelmara / entrenadores / estudiantes;
 — работает поверх CHARACTERS ENGINE и dark theme.
 -->
 
@@ -28709,6 +28760,445 @@ body:has(#atlas-app[data-theme="dark"]) #expedienteModal .expediente-modal-card:
   }
 }
 </style>
+
+
+<!-- ATLAS PATCH: FACULTADES CARDS STYLE FIX v2.
+Вставить отдельным T123-блоком САМЫМ ПОСЛЕДНИМ после блока FACULTADES.
+Возвращает карточкам факультетов нормальный вид + поддерживает dark theme. -->
+
+<style>
+#atlas-app #atlas-page-facultades .atlas-content-grid.three-col{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important;margin-top:22px!important;align-items:stretch!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card,#atlas-app #atlas-page-facultades .atlas-info-card.atlas-faculty-card{min-height:245px!important;width:100%!important;box-sizing:border-box!important;padding:22px!important;border:1px solid var(--line-soft,#eee4df)!important;border-radius:22px!important;background:radial-gradient(circle at 92% 12%,rgba(201,61,61,.10),transparent 34%),linear-gradient(180deg,#fff,#fbf8f6)!important;box-shadow:0 16px 34px rgba(23,23,31,.05)!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;cursor:pointer!important;overflow:hidden!important;position:relative!important;font-family:"Montserrat",Arial,sans-serif!important;appearance:none!important;-webkit-appearance:none!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card:hover{transform:translateY(-3px)!important;border-color:rgba(201,61,61,.26)!important;box-shadow:0 18px 38px rgba(23,23,31,.08)!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card,#atlas-app #atlas-page-facultades .atlas-faculty-card *,#atlas-app #atlas-page-facultades .atlas-faculty-card:focus,#atlas-app #atlas-page-facultades .atlas-faculty-card:focus-visible,#atlas-app #atlas-page-facultades .atlas-faculty-card:active{outline:none!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card .atlas-card-kicker{display:inline-flex!important;width:fit-content!important;margin:0 0 13px!important;padding:6px 10px!important;border-radius:999px!important;background:#f7ecec!important;color:var(--accent,#c93d3d)!important;font-size:10px!important;line-height:1!important;font-weight:900!important;letter-spacing:.09em!important;text-transform:uppercase!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card h3{margin:0 0 12px!important;color:var(--ink,#07080d)!important;font-size:25px!important;line-height:1.05!important;font-weight:900!important;letter-spacing:-.04em!important;text-transform:lowercase!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card p{margin:0 0 20px!important;color:var(--muted,#6f6878)!important;font-size:14px!important;line-height:1.55!important;font-weight:500!important}
+#atlas-app #atlas-page-facultades .atlas-faculty-card small{display:inline-flex!important;align-items:center!important;margin-top:auto!important;color:var(--accent,#c93d3d)!important;font-size:13px!important;line-height:1.2!important;font-weight:900!important;text-transform:lowercase!important}
+#atlas-app #atlas-page-facultades .atlas-page-heading{margin-bottom:0!important}
+#atlas-app #atlas-page-facultades .atlas-page-heading h2{margin:0 0 8px!important;color:var(--ink,#07080d)!important;font-size:clamp(36px,3vw,44px)!important;line-height:.95!important;font-weight:900!important;letter-spacing:-.055em!important;text-transform:lowercase!important}
+#atlas-app #atlas-page-facultades .atlas-page-heading p{margin:0!important;color:var(--muted,#6f6878)!important;font-size:14px!important;line-height:1.55!important}
+
+/* dark theme */
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-page-heading h2{color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-page-heading p{color:#aaa3af!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card,#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-info-card.atlas-faculty-card{background:radial-gradient(circle at 92% 12%,rgba(226,71,71,.055),transparent 34%),#11151b!important;border-color:rgba(255,255,255,.11)!important;box-shadow:0 18px 38px rgba(0,0,0,.28)!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card:hover{border-color:rgba(226,71,71,.26)!important;box-shadow:0 18px 38px rgba(0,0,0,.34)!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card .atlas-card-kicker{background:rgba(226,71,71,.16)!important;color:#ff6b6b!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card h3{color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card p{color:#aaa3af!important}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card small{color:#ff6b6b!important}
+
+@media(max-width:1120px){#atlas-app #atlas-page-facultades .atlas-content-grid.three-col{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:720px){#atlas-app #atlas-page-facultades .atlas-content-grid.three-col{grid-template-columns:1fr!important;gap:14px!important}#atlas-app #atlas-page-facultades .atlas-faculty-card{min-height:220px!important;padding:19px!important;border-radius:18px!important}#atlas-app #atlas-page-facultades .atlas-faculty-card h3{font-size:23px!important}}
+</style>
+<!-- ATLAS PATCH: EQUIPOS TEAM MODAL ACCORDION EXACT FIX v3.
+Вставить отдельным T123-блоком САМЫМ ПОСЛЕДНИМ после полного EQUIPOS.
+Это маленький патч вместо огромного полного файла. -->
+
+<style>
+#atlasModal .atlas-team-modal .atlas-team-accordion{width:100%!important;margin:12px 0!important;padding:0!important;border:1px solid #e8e2dd!important;border-radius:18px!important;background:#fff!important;overflow:hidden!important;box-shadow:none!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head{width:100%!important;min-height:86px!important;box-sizing:border-box!important;padding:16px 18px!important;margin:0!important;border:0!important;border-radius:0!important;background:#fbf8f6!important;display:grid!important;grid-template-columns:58px minmax(0,1fr) 32px!important;align-items:center!important;gap:18px!important;text-align:left!important;cursor:pointer!important;outline:none!important;box-shadow:none!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head:focus,#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head:focus-visible,#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head:active{outline:none!important;box-shadow:none!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head .atlas-team-head-logo{width:54px!important;height:54px!important;min-width:54px!important;max-width:54px!important;object-fit:contain!important;display:block!important;margin:0!important;padding:5px!important;box-sizing:border-box!important;border:1px solid #ece7e2!important;border-radius:14px!important;background:#fff!important;box-shadow:none!important}
+#atlasModal .atlas-team-modal .atlas-team-head-title{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;text-align:center!important}
+#atlasModal .atlas-team-modal .atlas-team-head-title strong{display:block!important;margin:0!important;color:#07080d!important;font-size:16px!important;line-height:1.15!important;font-weight:900!important;letter-spacing:-.02em!important;text-transform:uppercase!important;text-align:center!important}
+#atlasModal .atlas-team-modal .atlas-team-head-title small{display:block!important;margin:0!important;color:#6f6878!important;font-size:12px!important;line-height:1.35!important;font-weight:800!important;text-transform:lowercase!important;text-align:center!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head>b{width:28px!important;height:28px!important;min-width:28px!important;margin:0!important;padding:0!important;border:0!important;border-radius:999px!important;background:#f7ecec!important;color:#c93d3d!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;justify-self:end!important;font-size:20px!important;line-height:1!important;font-weight:900!important;transform:none!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion.is-open>.atlas-accordion-head,#atlasModal .atlas-team-modal .atlas-team-accordion.active>.atlas-accordion-head,#atlasModal .atlas-team-modal .atlas-team-accordion.open>.atlas-accordion-head{border-bottom:1px solid #eee8e3!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion.is-open>.atlas-accordion-head>b,#atlasModal .atlas-team-modal .atlas-team-accordion.active>.atlas-accordion-head>b,#atlasModal .atlas-team-modal .atlas-team-accordion.open>.atlas-accordion-head>b{transform:rotate(45deg)!important}
+#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-body{width:100%!important;box-sizing:border-box!important;padding:0!important;margin:0!important;border:0!important;background:#fff!important}
+#atlasModal .atlas-team-modal .atlas-team-content{width:100%!important;box-sizing:border-box!important;padding:22px 24px 26px!important;margin:0!important;display:grid!important;grid-template-columns:150px minmax(0,1fr)!important;gap:20px!important;align-items:start!important}
+#atlasModal .atlas-team-modal .atlas-team-big-logo{position:static!important;width:142px!important;height:142px!important;min-width:142px!important;max-width:142px!important;object-fit:contain!important;display:block!important;margin:0!important;padding:12px!important;box-sizing:border-box!important;border:1px solid #eee4df!important;border-radius:18px!important;background:#fff!important;box-shadow:none!important}
+#atlasModal .atlas-team-modal .atlas-team-text{min-width:0!important;width:100%!important;box-sizing:border-box!important}
+#atlasModal .atlas-team-modal .atlas-team-text h4{margin:0 0 10px!important;color:#a13d3d!important;font-size:16px!important;line-height:1.25!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.01em!important}
+#atlasModal .atlas-team-modal .atlas-team-text h4:not(:first-child){margin-top:22px!important}
+#atlasModal .atlas-team-modal .atlas-team-text p{margin:0 0 12px!important;color:#312f37!important;font-size:14px!important;line-height:1.72!important}
+#atlasModal .atlas-team-modal .atlas-team-text strong{font-weight:900!important;color:#111!important}
+#atlasModal .atlas-team-modal button.atlas-accordion-head,#atlasModal .atlas-team-modal button.atlas-accordion-head *{font-family:"Montserrat",Arial,sans-serif!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion{background:#11151b!important;border-color:rgba(255,255,255,.11)!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head{background:#151a21!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head .atlas-team-head-logo,body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-big-logo{background:#11151b!important;border-color:rgba(255,255,255,.10)!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-head-title strong{color:#f5f2ef!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-head-title small{color:#aaa3af!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head>b{background:rgba(226,71,71,.16)!important;color:#ff6b6b!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion.is-open>.atlas-accordion-head,body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion.active>.atlas-accordion-head,body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion.open>.atlas-accordion-head{border-bottom-color:rgba(255,255,255,.10)!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-body{background:#11151b!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-text h4{color:#ff6b6b!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-text p{color:#aaa3af!important}
+body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-team-modal .atlas-team-text strong{color:#f5f2ef!important}
+@media(max-width:720px){#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head{grid-template-columns:50px minmax(0,1fr) 30px!important;gap:12px!important;padding:14px!important}#atlasModal .atlas-team-modal .atlas-team-accordion>.atlas-accordion-head .atlas-team-head-logo{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important}#atlasModal .atlas-team-modal .atlas-team-head-title strong{font-size:14px!important}#atlasModal .atlas-team-modal .atlas-team-head-title small{font-size:11px!important}#atlasModal .atlas-team-modal .atlas-team-content{grid-template-columns:1fr!important;padding:18px!important}#atlasModal .atlas-team-modal .atlas-team-big-logo{width:122px!important;height:122px!important;min-width:122px!important;max-width:122px!important}}
+</style>
+<!-- ATLAS CLEAN: RUSSIAN HOVER TRANSLATIONS v2.
+Вставить отдельным T123-блоком после SYSTEM / INICIO.
+Добавляет русские подсказки при наведении на меню, заголовки и hero-строки.
+Поддерживает светлую и тёмную тему ATLAS. -->
+
+<style>
+#atlas-ru-tooltip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999999;
+  max-width: 260px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
+  background: rgba(15, 16, 22, .94);
+  color: #ffffff;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.22);
+  transition:
+    opacity .14s ease,
+    transform .14s ease,
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+#atlas-ru-tooltip.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#atlas-app [data-atlas-tip] {
+  cursor: help;
+}
+
+#atlas-app[data-theme="dark"] ~ #atlas-ru-tooltip,
+body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
+  border-color: rgba(226,71,71,.22);
+  background: rgba(17,21,27,.96);
+  color: #f5f2ef;
+  box-shadow: 0 16px 34px rgba(0,0,0,.34);
+}
+</style>
+
+<script>
+(function() {
+  var dictionary = {
+    /* sidebar */
+    "home": "главная",
+    "ciudad": "город",
+    "trama": "сюжет",
+    "academia": "академия",
+    "facultades": "факультеты",
+    "equipos": "команды",
+    "personajes": "персонажи",
+    "expediente": "досье / архив дела",
+    "foro": "форум",
+    "faq": "частые вопросы",
+
+    /* hero */
+    "atlas siempre tiene algo nuevo para ti.": "у ATLAS всегда есть что-то новое для тебя.",
+    "bienvenido otra vez, extraño.": "добро пожаловать снова, незнакомец.",
+    "nuevos avisos, archivos y rutas internas ya están disponibles.": "новые объявления, архивы и внутренние маршруты уже доступны.",
+    "view announcements": "посмотреть объявления",
+
+    /* inicio */
+    "today's schedule": "расписание на сегодня",
+    "atlas digest": "сводка ATLAS",
+    "upcoming events": "предстоящие события",
+    "admin board": "административная доска",
+    "honour board": "доска почёта",
+    "campus news": "новости кампуса",
+    "view all": "посмотреть всё",
+    "view full schedule": "посмотреть полное расписание",
+
+    "guía del portal atlas": "гайд по порталу ATLAS",
+    "resúmenes de quests": "сводки квестов",
+    "episodios de trama": "сюжетные эпизоды",
+    "últimas actualizaciones": "последние обновления",
+
+    "orientation": "ориентация",
+    "registry": "реестр",
+    "campus state": "статус кампуса",
+    "student note": "заметка для студентов",
+
+    /* common / expediente */
+    "perfiles": "профили",
+    "archivo": "архив",
+    "cronología": "хронология",
+    "facultad": "факультет",
+    "capítulos": "главы",
+    "case status": "статус дела"
+  };
+
+  var manualTips = [
+    {
+      selector: "#atlas-app #inicio-hero .atlas-hero-kicker",
+      tip: "у ATLAS всегда есть что-то новое для тебя."
+    },
+    {
+      selector: "#atlas-app #inicio-hero h1",
+      tip: "добро пожаловать снова, незнакомец."
+    },
+    {
+      selector: "#atlas-app #inicio-hero .atlas-hero-text",
+      tip: "новые объявления, архивы и внутренние маршруты уже доступны."
+    },
+    {
+      selector: "#atlas-app #inicio-hero .atlas-hero-btn",
+      tip: "посмотреть объявления"
+    }
+  ];
+
+  function normalize(text) {
+    return String(text || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+  }
+
+  function ensureTooltip() {
+    var tooltip = document.getElementById("atlas-ru-tooltip");
+    if (tooltip) return tooltip;
+
+    tooltip = document.createElement("div");
+    tooltip.id = "atlas-ru-tooltip";
+    document.body.appendChild(tooltip);
+    return tooltip;
+  }
+
+  function applyManualTips() {
+    manualTips.forEach(function(item) {
+      document.querySelectorAll(item.selector).forEach(function(el) {
+        el.setAttribute("data-atlas-tip", item.tip);
+      });
+    });
+  }
+
+  function applyDictionaryTips() {
+    var targets = document.querySelectorAll(
+      "#atlas-app .atlas-nav-item span:last-child," +
+      "#atlas-app h1," +
+      "#atlas-app h2," +
+      "#atlas-app h3," +
+      "#atlas-app h4," +
+      "#atlas-app summary," +
+      "#atlas-app button," +
+      "#atlas-app .atlas-card-kicker," +
+      "#atlas-app .atlas-badge," +
+      "#atlas-app .atlas-row-main strong," +
+      "#atlas-app .atlas-digest-row strong," +
+      "#atlas-app .atlas-mini-panel .atlas-card-kicker," +
+      "#atlasModal h2," +
+      "#atlasModal h3," +
+      "#atlasModal summary"
+    );
+
+    targets.forEach(function(el) {
+      if (el.hasAttribute("data-atlas-tip")) return;
+
+      var key = normalize(el.textContent);
+      if (dictionary[key]) {
+        el.setAttribute("data-atlas-tip", dictionary[key]);
+      }
+    });
+  }
+
+  function applyNavTips() {
+    var navTips = {
+      inicio: "главная",
+      ciudad: "город",
+      trama: "сюжет",
+      academia: "академия",
+      facultades: "факультеты",
+      equipos: "команды",
+      personajes: "персонажи",
+      expediente: "досье / архив дела",
+      foro: "форум",
+      faq: "частые вопросы"
+    };
+
+    document.querySelectorAll("#atlas-app .atlas-nav-item").forEach(function(btn) {
+      var page = btn.getAttribute("data-page");
+      if (navTips[page]) {
+        btn.setAttribute("data-atlas-tip", navTips[page]);
+      }
+    });
+  }
+
+  function applyTips() {
+    applyManualTips();
+    applyDictionaryTips();
+    applyNavTips();
+  }
+
+  function positionTooltip(tooltip, event) {
+    var offsetX = 12;
+    var offsetY = 14;
+    var x = event.clientX + offsetX;
+    var y = event.clientY + offsetY;
+
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+
+    requestAnimationFrame(function() {
+      var rect = tooltip.getBoundingClientRect();
+
+      if (rect.right > window.innerWidth - 10) {
+        tooltip.style.left = Math.max(10, event.clientX - rect.width - offsetX) + "px";
+      }
+
+      if (rect.bottom > window.innerHeight - 10) {
+        tooltip.style.top = Math.max(10, event.clientY - rect.height - offsetY) + "px";
+      }
+    });
+  }
+
+  function showTip(el, event) {
+    var text = el.getAttribute("data-atlas-tip");
+    if (!text) return;
+
+    var tooltip = ensureTooltip();
+    tooltip.textContent = text;
+    positionTooltip(tooltip, event);
+    tooltip.classList.add("active");
+  }
+
+  function moveTip(event) {
+    var tooltip = document.getElementById("atlas-ru-tooltip");
+    if (!tooltip || !tooltip.classList.contains("active")) return;
+
+    positionTooltip(tooltip, event);
+  }
+
+  function hideTip() {
+    var tooltip = document.getElementById("atlas-ru-tooltip");
+    if (tooltip) tooltip.classList.remove("active");
+  }
+
+  document.addEventListener("mouseover", function(event) {
+    var el = event.target.closest("[data-atlas-tip]");
+    if (!el) return;
+
+    showTip(el, event);
+  });
+
+  document.addEventListener("mousemove", moveTip);
+
+  document.addEventListener("mouseout", function(event) {
+    if (event.target.closest("[data-atlas-tip]")) {
+      hideTip();
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", applyTips);
+  window.addEventListener("load", applyTips);
+
+  document.addEventListener("click", function() {
+    setTimeout(applyTips, 120);
+    setTimeout(applyTips, 500);
+  });
+
+  setTimeout(applyTips, 300);
+  setTimeout(applyTips, 1000);
+
+  window.atlasApplyRussianTips = applyTips;
+})();
+</script>
+
+
+<!-- ATLAS GITHUB FINAL FIXES 2026-09-12 -->
+<style>
+/* Softer final faculty cards (after v2 structural fix). */
+#atlas-app #atlas-page-facultades .atlas-faculty-card,
+#atlas-app #atlas-page-facultades .atlas-info-card.atlas-faculty-card{
+  border-radius:24px!important;
+  background:radial-gradient(circle at 92% 10%,rgba(201,61,61,.075),transparent 36%),linear-gradient(180deg,#fffefd 0%,#fbf7f5 100%)!important;
+  box-shadow:0 14px 32px rgba(36,26,31,.055)!important;
+}
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-faculty-card,
+#atlas-app[data-theme="dark"] #atlas-page-facultades .atlas-info-card.atlas-faculty-card{
+  background:radial-gradient(circle at 92% 10%,rgba(226,71,71,.055),transparent 36%),linear-gradient(180deg,#131820,#10151c)!important;
+}
+
+/* Character profiles: complete dark theme instead of white inner cards. */
+#atlas-app[data-theme="dark"] .atlas-character-profile-page{color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] .atlas-profile-tabs{background:#11151b!important;border-color:rgba(255,255,255,.10)!important;box-shadow:0 18px 36px rgba(0,0,0,.26)!important}
+#atlas-app[data-theme="dark"] .atlas-profile-tab-btn{color:#8f8994!important}
+#atlas-app[data-theme="dark"] .atlas-profile-tab-btn.is-active{color:#f5f2ef!important;border-bottom-color:#e24747!important}
+#atlas-app[data-theme="dark"] .atlas-profile-card,
+#atlas-app[data-theme="dark"] .atlas-profile-list-item,
+#atlas-app[data-theme="dark"] .atlas-profile-empty{background:#11151b!important;border-color:rgba(255,255,255,.10)!important;box-shadow:0 16px 34px rgba(0,0,0,.25)!important;color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] .atlas-profile-card h3,
+#atlas-app[data-theme="dark"] .atlas-profile-info-row strong,
+#atlas-app[data-theme="dark"] .atlas-indicator-row strong,
+#atlas-app[data-theme="dark"] .atlas-player-meta-row strong,
+#atlas-app[data-theme="dark"] .atlas-player-meta-row a,
+#atlas-app[data-theme="dark"] .atlas-profile-list-item strong,
+#atlas-app[data-theme="dark"] .atlas-profile-empty strong{color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] .atlas-profile-card p,
+#atlas-app[data-theme="dark"] .atlas-profile-info-row span,
+#atlas-app[data-theme="dark"] .atlas-indicator-row span,
+#atlas-app[data-theme="dark"] .atlas-profile-list-item p,
+#atlas-app[data-theme="dark"] .atlas-profile-empty p,
+#atlas-app[data-theme="dark"] .atlas-player-meta-empty{color:#aaa3af!important}
+#atlas-app[data-theme="dark"] .atlas-profile-info-row,
+#atlas-app[data-theme="dark"] .atlas-indicator-row,
+#atlas-app[data-theme="dark"] .atlas-player-meta-row{border-bottom-color:rgba(255,255,255,.09)!important}
+#atlas-app[data-theme="dark"] .atlas-indicator-list.is-bars .atlas-indicator-row strong,
+#atlas-app[data-theme="dark"] .atlas-player-meta-row span{color:#8f8994!important}
+#atlas-app[data-theme="dark"] .atlas-indicator-bar{background:#2a2024!important}
+#atlas-app[data-theme="dark"] .atlas-indicator-value{color:#f5f2ef!important}
+#atlas-app[data-theme="dark"] .atlas-player-character-link{background:#151a21!important;border-color:rgba(226,71,71,.28)!important;color:#ff6b6b!important}
+#atlas-app[data-theme="dark"] .atlas-player-character-link:hover{background:rgba(226,71,71,.13)!important;border-color:rgba(226,71,71,.45)!important}
+#atlas-app[data-theme="dark"] button.atlas-profile-list-item:hover{border-color:rgba(226,71,71,.32)!important;box-shadow:0 16px 34px rgba(0,0,0,.34)!important}
+
+/* Inicio CLASS / TRAINING pills: optical + true vertical centering. */
+#atlas-app #atlas-page-inicio .atlas-badge{
+  box-sizing:border-box!important;
+  height:30px!important;
+  min-height:30px!important;
+  padding:1px 11px 0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+
+/* Ultra-thin themed cursor. Desktop only. */
+@media (hover:hover) and (pointer:fine){
+  #atlas-app, #atlas-app *, #atlasModal, #atlasModal *{cursor:none!important}
+  #atlas-theme-cursor{position:fixed;left:0;top:0;width:13px;height:13px;border:1px solid rgba(20,22,28,.82);border-radius:50%;pointer-events:none;z-index:2147483647;transform:translate(-50%,-50%);transition:width .12s ease,height .12s ease,border-color .18s ease,background .18s ease,opacity .12s ease;opacity:0;mix-blend-mode:normal}
+  #atlas-theme-cursor.is-visible{opacity:1}
+  #atlas-theme-cursor.is-hover{width:21px;height:21px;background:rgba(179,59,59,.035);border-color:rgba(179,59,59,.82)}
+  html[data-atlas-theme="dark"] #atlas-theme-cursor{border-color:rgba(245,242,239,.82)}
+  html[data-atlas-theme="dark"] #atlas-theme-cursor.is-hover{border-color:#ff6b6b;background:rgba(226,71,71,.06)}
+}
+</style>
+<script>
+(function(){
+  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  var c=document.createElement('div'); c.id='atlas-theme-cursor'; document.body.appendChild(c);
+  document.addEventListener('mousemove',function(e){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';c.classList.add('is-visible')},{passive:true});
+  document.addEventListener('mouseover',function(e){var t=e.target.closest&&e.target.closest('a,button,input,summary,[role="button"],[data-open-page],[data-modal-target],[data-character-id]');c.classList.toggle('is-hover',!!t)});
+  document.addEventListener('mouseout',function(e){if(!e.relatedTarget)c.classList.remove('is-visible')});
+})();
+</script>
+
+
+<script>
+(function(){
+  function tune(root){
+    (root||document).querySelectorAll && (root||document).querySelectorAll('img').forEach(function(img){
+      if(!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
+      if(!img.hasAttribute('loading') && !img.closest('.atlas-profile-hero')) img.setAttribute('loading','lazy');
+    });
+  }
+  document.addEventListener('DOMContentLoaded',function(){tune(document)});
+  var obs=new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)tune(n)})})});
+  document.addEventListener('DOMContentLoaded',function(){var app=document.getElementById('atlas-app');if(app)obs.observe(app,{childList:true,subtree:true})});
+})();
+</script>
 
 </body>
 </html>
