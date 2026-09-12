@@ -4,873 +4,914 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <title>Policía Local de Castelmara — archivo</title>
-  <style>html,body{margin:0;min-height:100%;background:#07100d;} body{overflow-x:hidden;}</style>
+  <title>Miguel García Jr. — archive</title>
+  <style>html,body{margin:0;min-height:100%;background:#000;} body{overflow-x:hidden;}</style>
 </head>
 <body>
-<div id="police-easteregg">
+<div id="mj-cat-desktop-v4">
   <style>
-    #police-easteregg {
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
+
+    #mj-cat-desktop-v4 {
+      width: 100%;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at top, rgba(92,115,94,.18), transparent 35%),
-        linear-gradient(135deg, #07100d 0%, #111b17 45%, #050807 100%);
-      font-family: Arial, sans-serif;
-      color: #d8ded9;
-      padding: 40px 18px;
+      background: #000;
+      overflow: hidden;
+      font-family: Inter, Arial, sans-serif;
+      color: #fff;
+    }
+
+    #mj-cat-desktop-v4 * {
       box-sizing: border-box;
     }
 
-    #police-easteregg * {
-      box-sizing: border-box;
-    }
-
-    .police-wrap {
-      max-width: 1080px;
-      margin: 0 auto;
-      border: 1px solid rgba(180, 194, 177, .25);
-      background: rgba(10, 16, 13, .92);
-      box-shadow: 0 0 40px rgba(0,0,0,.55);
-      min-height: 720px;
+    #mj-cat-desktop-v4 .mj-scene {
       position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background-image: url('https://static.tildacdn.com/tild6334-3366-4439-a538-333830323135/1111.png');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
       overflow: hidden;
     }
 
-    .police-wrap::before {
+    #mj-cat-desktop-v4 .mj-scene::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 28px 28px;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.14), transparent 18%, transparent 82%, rgba(0,0,0,.14)),
+        linear-gradient(180deg, rgba(0,0,0,.08), transparent 25%, transparent 78%, rgba(0,0,0,.22));
       pointer-events: none;
-      opacity: .45;
+      z-index: 60;
     }
 
-    .police-top {
-      position: relative;
-      z-index: 2;
-      padding: 18px 24px;
-      border-bottom: 1px solid rgba(180, 194, 177, .22);
+    #mj-cat-desktop-v4 .mj-screen {
+      position: absolute !important;
+      left: 12.40% !important;
+      top: 11.5% !important;
+      width: 75% !important;
+      height: 82.25% !important;
+      background: transparent !important;
+      overflow: hidden !important;
+      z-index: 10 !important;
+      box-shadow: inset 0 0 28px rgba(0,0,0,.18) !important;
+    }
+
+    #mj-cat-desktop-v4 .mj-screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 80;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.025) 0px,
+          rgba(255,255,255,.025) 1px,
+          transparent 2px,
+          transparent 5px
+        ),
+        radial-gradient(circle at 50% 50%, transparent 55%, rgba(0,0,0,.16) 100%);
+      opacity: .12;
+    }
+
+    #mj-cat-desktop-v4 .mj-login {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      background: rgba(3, 7, 5, .72);
+      justify-content: center;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(1px);
     }
 
-    .police-brand {
+    #mj-cat-desktop-v4 .mj-login.hidden {
+      display: none;
+    }
+
+    #mj-cat-desktop-v4 .mj-login-card {
+      width: min(370px, 88%);
+      padding: 30px;
+      background: rgba(10, 14, 22, .58);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 28px;
+      box-shadow: 0 28px 90px rgba(0,0,0,.48);
+      text-align: center;
+      backdrop-filter: blur(18px);
+    }
+
+    #mj-cat-desktop-v4 .mj-avatar {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.22), transparent 30%),
+        linear-gradient(145deg, #344053, #0c1118);
+      border: 1px solid rgba(255,255,255,.24);
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      font-weight: 800;
+      box-shadow: 0 12px 35px rgba(0,0,0,.35);
     }
 
-    .police-brand b {
-      font-size: 18px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: #eef3ed;
-    }
-
-    .police-brand span {
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #8f9d91;
-    }
-
-    .police-status {
-      font-size: 11px;
-      color: #b9c6b8;
-      border: 1px solid rgba(185,198,184,.28);
-      padding: 8px 10px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      white-space: nowrap;
-    }
-
-    .police-main {
-      position: relative;
-      z-index: 2;
-      padding: 24px;
-    }
-
-    .login-screen {
-      max-width: 460px;
-      margin: 90px auto;
-      padding: 28px;
-      border: 1px solid rgba(180, 194, 177, .25);
-      background: rgba(13, 22, 18, .86);
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
-    }
-
-    .login-screen h2 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #eef3ed;
-    }
-
-    .login-screen p {
-      margin: 0 0 22px;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #aeb9ae;
-    }
-
-    .login-screen label {
-      display: block;
-      margin: 14px 0 6px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: #91a192;
-    }
-
-    .login-screen input {
-      width: 100%;
-      background: #050806;
-      border: 1px solid rgba(180, 194, 177, .28);
-      color: #e9eee8;
-      padding: 12px;
-      outline: none;
-      font-size: 14px;
-    }
-
-    .login-screen input:focus {
-      border-color: rgba(216, 222, 217, .7);
-    }
-
-    .police-btn {
-      width: 100%;
-      margin-top: 20px;
-      border: 1px solid rgba(216, 222, 217, .35);
-      background: #d8ded9;
-      color: #07100d;
-      text-transform: uppercase;
-      letter-spacing: .14em;
+    #mj-cat-desktop-v4 .mj-login-title {
+      font-size: 21px;
       font-weight: 700;
-      font-size: 11px;
-      padding: 13px 16px;
-      cursor: pointer;
-      transition: .2s ease;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.45);
     }
 
-    .police-btn:hover {
-      background: #ffffff;
-    }
-
-    .login-error {
-      display: none;
-      margin-top: 14px;
-      color: #c77777;
+    #mj-cat-desktop-v4 .mj-login-sub {
       font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .case-area {
-      display: none;
-      animation: policeFade .35s ease forwards;
-    }
-
-    @keyframes policeFade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .case-head {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
+      color: rgba(255,255,255,.68);
       margin-bottom: 18px;
     }
 
-    .case-title,
-    .case-side,
-    .case-panel {
-      border: 1px solid rgba(180, 194, 177, .22);
-      background: rgba(13, 22, 18, .78);
-      padding: 18px;
-    }
-
-    .case-title small,
-    .case-side small,
-    .case-panel small {
-      display: block;
-      color: #8fa091;
-      text-transform: uppercase;
-      letter-spacing: .13em;
-      font-size: 10px;
-      margin-bottom: 8px;
-    }
-
-    .case-title h1 {
-      margin: 0 0 12px;
-      font-size: 30px;
-      color: #eef3ed;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-
-    .case-title p {
-      margin: 0;
-      color: #aeb9ae;
-      line-height: 1.7;
+    #mj-cat-desktop-v4 .mj-login-name {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.9);
       font-size: 14px;
-      max-width: 720px;
+      text-align: left;
+      border-radius: 14px;
     }
 
-    .case-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      font-size: 13px;
-      color: #cbd4cb;
+    #mj-cat-desktop-v4 .mj-input {
+      width: 100%;
+      height: 42px;
+      margin-bottom: 11px;
+      padding: 0 14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      color: #fff;
+      outline: none;
+      font-family: Inter, Arial, sans-serif;
+      font-size: 14px;
+      border-radius: 14px;
     }
 
-    .case-grid div {
-      border-bottom: 1px solid rgba(180, 194, 177, .12);
-      padding: 7px 0;
+    #mj-cat-desktop-v4 .mj-input::placeholder {
+      color: rgba(255,255,255,.55);
     }
 
-    .case-grid b {
-      color: #7f927f;
+    #mj-cat-desktop-v4 .mj-btn {
+      width: 100%;
+      height: 42px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #5daaff, #2877e8);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: Inter, Arial, sans-serif;
+      font-size: 14px;
+      box-shadow: 0 10px 26px rgba(30, 102, 220, .32);
+    }
+
+    #mj-cat-desktop-v4 .mj-btn:hover {
+      background: linear-gradient(180deg, #78bbff, #3487ff);
+    }
+
+    #mj-cat-desktop-v4 .mj-error {
+      min-height: 18px;
+      margin-top: 10px;
+      color: #ffb1b1;
+      font-size: 12px;
+    }
+
+    #mj-cat-desktop-v4 .mj-desktop {
+      position: absolute;
+      inset: 0;
+      display: none;
+      background: transparent;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    #mj-cat-desktop-v4 .mj-desktop.active {
       display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      margin-bottom: 3px;
     }
 
-    .hint {
-      border-bottom: 1px dotted rgba(216,222,217,.5);
-      cursor: help;
+    #mj-cat-desktop-v4 .mj-icons {
+      position: absolute;
+      inset: 0 0 58px 0;
+      z-index: 5;
     }
 
-    .tabs {
+    #mj-cat-desktop-v4 .mj-icon {
+      position: absolute;
+      width: 92px;
+      min-height: 82px;
+      text-align: center;
+      cursor: pointer;
+      color: #fff;
+      user-select: none;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    #mj-cat-desktop-v4 .mj-icon:hover .mj-label {
+      background: rgba(40, 112, 218, .78);
+    }
+
+    #mj-cat-desktop-v4 .mj-file {
+      width: 36px;
+      height: 44px;
+      margin: 0 auto 7px;
+      background: linear-gradient(180deg, #f6f6f6, #c7ccd3);
+      border-radius: 2px;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,.65);
+    }
+
+    #mj-cat-desktop-v4 .mj-file::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 13px;
+      height: 13px;
+      background: #d9dee4;
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+      border-left: 1px solid rgba(0,0,0,.12);
+      border-bottom: 1px solid rgba(0,0,0,.12);
+    }
+
+    #mj-cat-desktop-v4 .mj-file::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      top: 18px;
+      height: 1px;
+      background: #9ca4ad;
+      box-shadow: 0 6px 0 #9ca4ad, 0 12px 0 #9ca4ad;
+      opacity: .75;
+    }
+
+    #mj-cat-desktop-v4 .mj-photo {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 7px;
+      border: 1px solid rgba(255,255,255,.55);
+      background: #111;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,.65);
+    }
+
+    #mj-cat-desktop-v4 .mj-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.84) contrast(1.08);
+    }
+
+    #mj-cat-desktop-v4 .mj-audio {
+      width: 42px;
+      height: 42px;
+      margin: 2px auto 7px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #fff, #c2c8cf);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,.65);
+    }
+
+    #mj-cat-desktop-v4 .mj-trash {
+      width: 40px;
+      height: 44px;
+      margin: 0 auto 7px;
+      background: linear-gradient(180deg, #e7f3ff, #80a5c8);
+      clip-path: polygon(18% 18%, 82% 18%, 76% 100%, 24% 100%);
+      box-shadow: 0 2px 6px rgba(0,0,0,.65);
+    }
+
+    #mj-cat-desktop-v4 .mj-label {
+      display: inline-block;
+      max-width: 92px;
+      padding: 2px 4px;
+      border-radius: 2px;
+      color: #fff;
+      background: rgba(0,0,0,.18);
+      text-shadow: 0 1px 3px #000, 0 0 3px #000;
+      font-size: 11px;
+      line-height: 1.12;
+      word-break: break-word;
+    }
+
+    #mj-cat-desktop-v4 .mj-d1 { left: 6%; top: 11%; }
+    #mj-cat-desktop-v4 .mj-d2 { left: 17%; top: 11%; }
+    #mj-cat-desktop-v4 .mj-d3 { left: 28%; top: 11%; }
+    #mj-cat-desktop-v4 .mj-d4 { left: 39%; top: 11%; }
+
+    #mj-cat-desktop-v4 .mj-d5 { left: 6%; top: 30%; }
+    #mj-cat-desktop-v4 .mj-d6 { left: 17%; top: 30%; }
+    #mj-cat-desktop-v4 .mj-d7 { left: 28%; top: 30%; }
+    #mj-cat-desktop-v4 .mj-d8 { left: 39%; top: 30%; }
+
+    #mj-cat-desktop-v4 .mj-d9 { left: 6%; top: 49%; }
+    #mj-cat-desktop-v4 .mj-d10 { left: 17%; top: 49%; }
+    #mj-cat-desktop-v4 .mj-d11 { left: 28%; top: 49%; }
+    #mj-cat-desktop-v4 .mj-d12 { left: 39%; top: 49%; }
+
+    #mj-cat-desktop-v4 .mj-d13 { left: 6%; top: 68%; }
+    #mj-cat-desktop-v4 .mj-d14 { left: 17%; top: 68%; }
+
+    #mj-cat-desktop-v4 .mj-p1 { right: 17%; top: 8%; }
+    #mj-cat-desktop-v4 .mj-p2 { right: 6%; top: 8%; }
+    #mj-cat-desktop-v4 .mj-p3 { right: 17%; top: 31%; }
+    #mj-cat-desktop-v4 .mj-p4 { right: 6%; top: 31%; }
+
+    #mj-cat-desktop-v4 .mj-a1 { right: 17%; top: 55%; }
+    #mj-cat-desktop-v4 .mj-u1 { right: 6%; top: 55%; }
+    #mj-cat-desktop-v4 .mj-tr { right: 6%; bottom: 9%; }
+
+    #mj-cat-desktop-v4 .mj-taskbar {
+      position: absolute;
+      left: 1.2%;
+      right: 1.2%;
+      bottom: 1.2%;
+      height: 48px;
+      background: rgba(28, 30, 34, .88);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      z-index: 12;
+      color: rgba(255,255,255,.86);
+      font-size: 12px;
+    }
+
+    #mj-cat-desktop-v4 .mj-start {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1ca2ff, #075dca);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex: 0 0 auto;
+    }
+
+    #mj-cat-desktop-v4 .mj-search {
+      width: 180px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      display: flex;
+      align-items: center;
+      padding: 0 13px;
+      color: rgba(255,255,255,.72);
+      flex: 0 0 auto;
+    }
+
+    #mj-cat-desktop-v4 .mj-task-icons {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
-      margin: 18px 0;
+      align-items: center;
+      margin-left: 4px;
+      flex: 0 0 auto;
     }
 
-    .tab-btn {
-      border: 1px solid rgba(180, 194, 177, .24);
-      background: rgba(5,8,6,.72);
-      color: #b9c6b8;
-      padding: 10px 12px;
+    #mj-cat-desktop-v4 .mj-task-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    #mj-cat-desktop-v4 .mj-spacer {
+      flex: 1;
+    }
+
+    #mj-cat-desktop-v4 .mj-time {
+      text-align: right;
+      line-height: 1.15;
+      color: rgba(255,255,255,.82);
       font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      cursor: pointer;
-      transition: .2s ease;
+      flex: 0 0 auto;
     }
 
-    .tab-btn:hover,
-    .tab-btn.active {
-      background: #d8ded9;
-      color: #07100d;
-    }
-
-    .tab-content {
+    #mj-cat-desktop-v4 .mj-window {
+      position: absolute;
       display: none;
+      z-index: 40;
+      background: #f4f4f4;
+      color: #111;
+      border: 1px solid #a9aeb6;
+      box-shadow: 0 18px 60px rgba(0,0,0,.75);
+      font-family: Inter, Arial, sans-serif;
     }
 
-    .tab-content.active {
+    #mj-cat-desktop-v4 .mj-window.active {
       display: block;
     }
 
-    .columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+    #mj-cat-desktop-v4 .mj-window.doc {
+      left: 13%;
+      top: 10%;
+      width: 58%;
+      height: 72%;
     }
 
-    .case-panel h3 {
-      margin: 0 0 12px;
-      text-transform: uppercase;
-      letter-spacing: .09em;
-      color: #eef3ed;
+    #mj-cat-desktop-v4 .mj-window.photo-win {
+      left: 14%;
+      top: 10%;
+      width: 58%;
+      height: 72%;
+      background: #111;
+      color: #fff;
+      border-color: #333;
+    }
+
+    #mj-cat-desktop-v4 .mj-window.error-win {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 46%;
+      min-height: 30%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #mj-cat-desktop-v4 .mj-window.message-win {
+      right: 10%;
+      top: 16%;
+      width: 42%;
+      min-height: 34%;
+    }
+
+    #mj-cat-desktop-v4 .mj-head {
+      height: 32px;
+      background: #e4e8ed;
+      color: #111;
+      border-bottom: 1px solid #c8cdd4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px 0 11px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #mj-cat-desktop-v4 .mj-window.photo-win .mj-head {
+      background: #1b1b1b;
+      color: #fff;
+      border-bottom-color: #333;
+    }
+
+    #mj-cat-desktop-v4 .mj-close {
+      width: 22px;
+      height: 22px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      line-height: 1;
       font-size: 18px;
     }
 
-    .case-panel p,
-    .case-panel li {
-      color: #b8c1b8;
-      line-height: 1.7;
-      font-size: 14px;
+    #mj-cat-desktop-v4 .mj-close:hover {
+      background: #e54848;
+      color: #fff;
     }
 
-    .case-panel ul {
-      padding-left: 18px;
-      margin: 0;
+    #mj-cat-desktop-v4 .mj-body {
+      height: calc(100% - 32px);
+      overflow: auto;
+      padding: 18px 20px;
+      font-size: 15px;
+      line-height: 1.62;
     }
 
-    .doc-list {
-      display: grid;
-      gap: 10px;
+    #mj-cat-desktop-v4 .mj-doc {
+      font-family: 'Courier Prime', monospace;
     }
 
-    .doc-item {
-      border: 1px solid rgba(180, 194, 177, .18);
-      background: rgba(5, 8, 6, .55);
-      padding: 14px;
-      cursor: pointer;
-      transition: .2s ease;
+    #mj-cat-desktop-v4 .mj-doc-date {
+      font-weight: 700;
+      margin: 0 0 10px;
+      border-bottom: 1px solid #d0d0d0;
+      padding-bottom: 5px;
     }
 
-    .doc-item:hover {
-      border-color: rgba(216, 222, 217, .45);
-      transform: translateY(-1px);
+    #mj-cat-desktop-v4 .mj-doc p {
+      margin: 0 0 12px;
     }
 
-    .doc-item b {
+    #mj-cat-desktop-v4 .mj-body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    #mj-cat-desktop-v4 .mj-body::-webkit-scrollbar-track {
+      background: #e5e5e5;
+    }
+
+    #mj-cat-desktop-v4 .mj-body::-webkit-scrollbar-thumb {
+      background: #adb3bb;
+    }
+
+    #mj-cat-desktop-v4 .mj-photo-preview {
+      width: 100%;
+      height: calc(100% - 50px);
+      max-height: 390px;
+      object-fit: contain;
+      background: #000;
       display: block;
-      color: #eef3ed;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    #mj-cat-desktop-v4 .mj-photo-caption {
       font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
+      color: rgba(255,255,255,.82);
     }
 
-    .doc-item span {
-      color: #93a093;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-    }
-
-    .time-row {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 14px;
-      border-bottom: 1px solid rgba(180, 194, 177, .12);
-      padding-bottom: 12px;
-    }
-
-    .time-row b {
-      color: #e5ebe4;
-      font-size: 12px;
-      letter-spacing: .08em;
-    }
-
-    .time-row span {
-      color: #b8c1b8;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 99999;
-      inset: 0;
-      background: rgba(0,0,0,.72);
+    #mj-cat-desktop-v4 .mj-error-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #2b7cff;
+      color: #fff;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 18px;
+      font-weight: 800;
+      font-size: 24px;
+      margin-right: 12px;
+      vertical-align: middle;
     }
 
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-box {
-      width: min(760px, 100%);
-      max-height: 82vh;
-      overflow: auto;
-      background: #101813;
-      border: 1px solid rgba(216,222,217,.28);
-      box-shadow: 0 30px 90px rgba(0,0,0,.65);
-      padding: 24px;
-      position: relative;
-    }
-
-    .modal-box h2 {
-      margin: 0 0 12px;
-      color: #eef3ed;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      font-size: 20px;
-    }
-
-    .modal-box p {
-      color: #b8c1b8;
-      line-height: 1.75;
-      font-size: 14px;
-      margin: 0 0 12px;
-      white-space: pre-line;
-    }
-
-    .modal-close {
-      position: absolute;
-      right: 14px;
-      top: 12px;
-      background: transparent;
-      border: 0;
-      color: #d8ded9;
-      font-size: 28px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .stamp {
+    #mj-cat-desktop-v4 .mj-error-title {
       display: inline-block;
-      margin-top: 12px;
-      border: 1px solid rgba(199,119,119,.8);
-      color: #c77777;
-      padding: 8px 12px;
-      transform: rotate(-3deg);
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 11px;
       font-weight: 700;
+      vertical-align: middle;
     }
 
-    @media (max-width: 760px) {
-      .police-top {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    #mj-cat-desktop-v4 .mj-error-text {
+      margin-top: 16px;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.55;
+    }
 
-      .case-head,
-      .columns {
-        grid-template-columns: 1fr;
-      }
-
-      .case-title h1 {
-        font-size: 24px;
-      }
-
-      .time-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
+    #mj-cat-desktop-v4 .mj-error-code {
+      margin-top: 10px;
+      color: #777;
+      font-size: 12px;
+      font-family: 'Courier Prime', monospace;
     }
   </style>
 
-  <div class="police-wrap">
-    <div class="police-top">
-      <div class="police-brand">
-        <b>
-          <span class="hint" title="Местная полиция Кастельмары">Policía Local de Castelmara</span>
-        </b>
-        <span>
-          внутренний архив · 
-          <span class="hint" title="ограниченный доступ">acceso restringido</span>
-        </span>
-      </div>
-      <div class="police-status">архив частично восстановлен</div>
-    </div>
-
-    <div class="police-main">
-
-      <div class="login-screen" id="policeLogin">
-        <h2>доступ к архиву</h2>
-        <p>
-          этот модуль относится к внутреннему архиву полиции Кастельмары.
-          несанкционированный вход будет зарегистрирован системой.
-        </p>
-
-        <label>пользователь</label>
-        <input id="policeUser" type="text" value="archivo.castelmara">
-
-        <label>пароль</label>
-        <input id="policePass" type="password" placeholder="введите код доступа">
-
-        <button class="police-btn" onclick="policeEnter()">войти</button>
-
-        <div class="login-error" id="loginError">
-          доступ запрещён. подсказка: дата, которую никто не хочет вспоминать.
-        </div>
+  <div class="mj-scene">
+    <div class="mj-screen">
+      <div class="mj-login" id="mjLoginV4">
+        <form class="mj-login-card" id="mjLoginFormV4">
+          <div class="mj-avatar">M</div>
+          <div class="mj-login-title">Miguel García Jr.</div>
+          <div class="mj-login-sub">local account / locked</div>
+          <div class="mj-login-name">mjr</div>
+          <input class="mj-input" id="mjPasswordV4" type="password" placeholder="password / 4 digits" maxlength="4" inputmode="numeric">
+          <button class="mj-btn" type="submit">sign in</button>
+          <div class="mj-error" id="mjErrorV4"></div>
+        </form>
       </div>
 
-      <div class="case-area" id="caseArea">
-        <div class="case-head">
-          <div class="case-title">
-            <small>
-              <span class="hint" title="личное дело / досье">expediente personal</span>
-            </small>
-            <h1>Мигель Гарсия младший</h1>
-            <p>
-              личное дело, связанное с расследованием событий 25 августа 2024 года.
-              основная часть дела закрыта: обстоятельства смерти Мигеля не вызывают сомнений у следствия.
-              отдельная проверка касается только сообщений, разосланных по кампусу уже после трагедии.
-            </p>
+      <div class="mj-desktop" id="mjDesktopV4">
+        <div class="mj-icons">
+          <div class="mj-icon mj-d1" data-open="doc-0303-v4"><div class="mj-file"></div><div class="mj-label">03.03.txt</div></div>
+          <div class="mj-icon mj-d2" data-open="doc-1503-v4"><div class="mj-file"></div><div class="mj-label">15.03.txt</div></div>
+          <div class="mj-icon mj-d3" data-open="doc-2703-v4"><div class="mj-file"></div><div class="mj-label">27.03.txt</div></div>
+          <div class="mj-icon mj-d4" data-open="doc-2904-v4"><div class="mj-file"></div><div class="mj-label">29.04.txt</div></div>
+
+          <div class="mj-icon mj-d5" data-open="doc-0405-v4"><div class="mj-file"></div><div class="mj-label">04.05.txt</div></div>
+          <div class="mj-icon mj-d6" data-open="doc-1006-v4"><div class="mj-file"></div><div class="mj-label">10.06.txt</div></div>
+          <div class="mj-icon mj-d7" data-open="doc-2408-v4"><div class="mj-file"></div><div class="mj-label">24.08.txt</div></div>
+          <div class="mj-icon mj-d8" data-open="doc-0909-v4"><div class="mj-file"></div><div class="mj-label">09.09.txt</div></div>
+
+          <div class="mj-icon mj-d9" data-open="doc-1211-v4"><div class="mj-file"></div><div class="mj-label">12.11.txt</div></div>
+          <div class="mj-icon mj-d10" data-open="doc-1812-v4"><div class="mj-file"></div><div class="mj-label">18.12.txt</div></div>
+          <div class="mj-icon mj-d11" data-open="doc-1604-v4"><div class="mj-file"></div><div class="mj-label">16.04.txt</div></div>
+          <div class="mj-icon mj-d12" data-open="doc-2530-v4"><div class="mj-file"></div><div class="mj-label">may_2024.txt</div></div>
+
+          <div class="mj-icon mj-d13" data-open="doc-july-v4"><div class="mj-file"></div><div class="mj-label">july_2024.txt</div></div>
+          <div class="mj-icon mj-d14" data-open="doc-final-v4"><div class="mj-file"></div><div class="mj-label">final.txt</div></div>
+
+          <div class="mj-icon mj-p1" data-open="photo-l-v4">
+            <div class="mj-photo"><img src="https://static.tildacdn.com/tild6366-3766-4030-a565-376463373266/330186b2415ed7fd4986.jpg" alt=""></div>
+            <div class="mj-label">330186b...</div>
           </div>
 
-          <div class="case-side">
-            <small>краткая сводка</small>
-            <div class="case-grid">
-              <div><b>номер дела</b> CM-24-0825-MGJ</div>
-              <div><b>статус</b> закрыто / цифровая проверка</div>
-              <div><b>локация</b> Кастельмара, Валенсия</div>
-              <div><b>дата</b> 25.08.2024</div>
-              <div><b>доступ</b> ограниченный</div>
-              <div><b>ответственный</b> Леон С. Рэдфилд, капитан полиции</div>
-            </div>
+          <div class="mj-icon mj-p2" data-open="photo-o-v4">
+            <div class="mj-photo"><img src="https://static.tildacdn.com/tild6366-3330-4137-b938-333730636266/2949b1f59588495f18ad.jpg" alt=""></div>
+            <div class="mj-label">2949b1...</div>
           </div>
-        </div>
 
-        <div class="tabs">
-          <button class="tab-btn active" onclick="openPoliceTab(event, 'personal')">личное дело</button>
-          <button class="tab-btn" onclick="openPoliceTab(event, 'timeline')">хронология</button>
-          <button class="tab-btn" onclick="openPoliceTab(event, 'docs')">документы</button>
-          <button class="tab-btn" onclick="openPoliceTab(event, 'evidence')">улики</button>
-          <button class="tab-btn" onclick="openPoliceTab(event, 'notes')">заметки</button>
-        </div>
-
-        <div class="tab-content active" id="personal">
-          <div class="columns">
-            <div class="case-panel">
-              <small>основные данные</small>
-              <h3>профиль</h3>
-              <ul>
-                <li><b>имя:</b> Мигель Гарсия младший.</li>
-                <li><b>связь с академией:</b> студент Castelmara Academia de Alto Rendimiento.</li>
-                <li><b>команда:</b> футбольная команда «Castelmara Foxes» / «Лисы».</li>
-                <li><b>место трагедии:</b> раздевалка футбольной команды Лисов на территории арены.</li>
-                <li><b>примечание:</b> обстоятельства смерти Мигеля не оспариваются следствием.</li>
-              </ul>
-            </div>
-
-            <div class="case-panel">
-              <small>внутреннее наблюдение</small>
-              <h3>состояние архива</h3>
-              <p>
-                дело закрыто по основной линии расследования. дополнительные материалы оставлены в архиве
-                из-за цифровой проверки: письма, отправленные от имени Мигеля, были созданы уже после его смерти.
-              </p>
-              <span class="stamp">цифровая проверка</span>
-            </div>
+          <div class="mj-icon mj-p3" data-open="photo-e-v4">
+            <div class="mj-photo"><img src="https://static.tildacdn.com/tild6336-3038-4462-b331-393766366536/f1f2172638c1f276ec82.jpg" alt=""></div>
+            <div class="mj-label">f1f217...</div>
           </div>
+
+          <div class="mj-icon mj-p4" data-open="photo-r-v4">
+            <div class="mj-photo"><img src="https://static.tildacdn.com/tild3433-6431-4262-a134-393938366131/46038bdff08984d6eb4a.jpg" alt=""></div>
+            <div class="mj-label">46038b...</div>
+          </div>
+
+          <div class="mj-icon mj-a1" data-open="audio-error-v4"><div class="mj-audio">▶</div><div class="mj-label">voice.mp3</div></div>
+          <div class="mj-icon mj-u1" data-open="unknown-message-v4"><div class="mj-file"></div><div class="mj-label">unknown.txt</div></div>
+          <div class="mj-icon mj-tr" data-open="trash-v4"><div class="mj-trash"></div><div class="mj-label">Корзина</div></div>
         </div>
 
-        <div class="tab-content" id="timeline">
-          <div class="case-panel">
-            <small>
-              <span class="hint" title="восстановленная хронология">cronología recuperada</span>
-            </small>
-            <h3>восстановленная хронология</h3>
+        <div class="mj-taskbar">
+          <div class="mj-start">⊞</div>
+          <div class="mj-search">Поиск</div>
+          <div class="mj-task-icons">
+            <div class="mj-task-icon">📁</div>
+            <div class="mj-task-icon">📝</div>
+            <div class="mj-task-icon">🖼</div>
+          </div>
+          <div class="mj-spacer"></div>
+          <div class="mj-time">19:45<br>03.06.2026</div>
+        </div>
 
-            <div class="timeline">
-              <div class="time-row">
-                <b>22:40</b>
-                <span>карта Мигеля используется для выхода из жилого корпуса кампуса.</span>
-              </div>
-
-              <div class="time-row">
-                <b>22:41</b>
-                <span>камера фиксирует, как Мигель выходит из общежития один. посторонних рядом не видно.</span>
-              </div>
-
-              <div class="time-row">
-                <b>22:52</b>
-                <span>Мигель проходит по внешней дорожке в сторону футбольной арены. движение спокойное, без признаков конфликта или преследования.</span>
-              </div>
-
-              <div class="time-row">
-                <b>22:57</b>
-                <span>охранник ночной смены пропускает Мигеля через служебный вход арены после короткого разговора.</span>
-              </div>
-
-              <div class="time-row">
-                <b>23:00</b>
-                <span>Мигель проходит по внутреннему коридору в сторону раздевалки футбольной команды Лисов.</span>
-              </div>
-
-              <div class="time-row">
-                <b>23:03</b>
-                <span>Мигель заходит в раздевалку Лисов. других студентов или сотрудников в коридоре не зафиксировано.</span>
-              </div>
-
-              <div class="time-row">
-                <b>23:20</b>
-                <span>по материалам дела к этому времени Мигель уже был мёртв. версия присутствия другого человека была исключена на основании камер и журнала доступа.</span>
-              </div>
-
-              <div class="time-row">
-                <b>позже</b>
-                <span>по кампусу появляются письма, отправленные от имени Мигеля. именно эта часть выделена в отдельную цифровую проверку.</span>
-              </div>
-            </div>
+        <div class="mj-window doc" id="doc-0303-v4">
+          <div class="mj-head"><div>03.03.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">03 марта 2023</div>
+            <p>снова эти разговоры про футбол. когда же он наконец-то поймёт, что я не марсель? что я не смогу стать его очередной победой, которую он повесит на доску почёта своей долбаной академии. интересно, он хотя бы маму любит? или только себя и свой банковский счёт?</p>
+            <div class="mj-doc-date">03 марта 2023 – позже вечером</div>
+            <p>тренер э. снова сказал, что я похож на марселя.</p>
+            <p>я ненавижу своё лицо.</p>
           </div>
         </div>
 
-        <div class="tab-content" id="docs">
-          <div class="case-panel">
-            <small>доступные файлы</small>
-            <h3>документы дела</h3>
-
-            <div class="doc-list">
-              <div class="doc-item" onclick="openDoc(
-                'Показание охранника арены',
-                'Фрагмент протокола допроса.\n\nПолицейский: Вы подтверждаете, что впустили Мигеля Гарсию младшего на территорию футбольной арены в ночь с 24 на 25 августа?\n\nОхранник: Да. Он подошёл к служебному входу примерно без двадцати одиннадцать. Карта доступа у него была при себе. Я знал его как игрока Лисов, поэтому не стал задерживать дольше обычной проверки.\n\nПолицейский: Он выглядел взволнованным? Испуганным? Был кто-то рядом с ним?\n\nОхранник: Нет. Он выглядел обычно. Тихий, уставший, но не так, чтобы я подумал о чём-то плохом. Сказал, что ему нужно забрать вещи из раздевалки.\n\nПолицейский: Раньше он приходил так поздно?\n\nОхранник: Нет. Я такого не помню. Обычно студенты в это время на арену не заходят. Но он был из команды, и дверь открылась по его карте. Формально причин не пустить его у меня не было.\n\nПолицейский: Вы видели кого-то ещё?\n\nОхранник: Нет. Ни до него, ни после. На моей смене в ту ночь никто из студентов больше не проходил через этот вход.'
-              )">
-                <b>показание охранника арены</b>
-                <span>служебный вход · ночная смена · Мигель был один</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Отчёт с камер наблюдения',
-                'Камеры наблюдения подтвердили маршрут Мигеля в ночь трагедии.\n\n22:41 — Мигель выходит из жилого корпуса кампуса. На записи он один. Посторонних рядом не зафиксировано.\n\n22:52 — Мигель проходит через внешнюю дорожку в сторону футбольной арены. Движение спокойное, без признаков конфликта или преследования.\n\n22:57 — Мигель подходит к служебному входу арены. Охранник открывает пост, после чего пропускает его внутрь после короткого разговора.\n\n23:00 — Мигель идёт по внутреннему коридору арены в сторону раздевалок футбольной команды.\n\n23:03 — Мигель заходит в раздевалку Лисов. После этого в коридоре не фиксируется движение других студентов или сотрудников.\n\nНа основании записей камер версия насильственной смерти была исключена на раннем этапе проверки.'
-              )">
-                <b>отчёт с камер наблюдения</b>
-                <span>общежитие → футбольная арена → раздевалка Лисов</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Журнал доступа',
-                'Система доступа зафиксировала два подтверждённых использования карты Мигеля в ночь трагедии.\n\n22:40 — выход из жилого корпуса кампуса.\n22:57 — вход на территорию футбольной арены через служебный проход.\n\nОба события подтверждаются камерами наблюдения. На записях видно, что картой пользовался сам Мигель.\n\nДругих выходов из жилых корпусов и входов на арену в этот временной промежуток не зафиксировано. Сотрудники, находившиеся на смене, проходили через отдельный служебный маршрут и не пересекались с Мигелем после его входа на арену.'
-              )">
-                <b>журнал доступа</b>
-                <span>карта Мигеля · два подтверждённых прохода</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Оливер Браун',
-                'Статус: студент, капитан футбольной команды Лисов.\n\nОливер Браун подтвердил, что знал о напряжении внутри команды, однако в ходе опроса не проявил заметного сочувствия к Мигелю. На прямой вопрос о травле ответил уклончиво: “в команде всегда есть давление, это спорт”.\n\nПо словам нескольких студентов, именно Оливер мог остановить ситуацию на раннем этапе, если бы вмешался как капитан. Вместо этого он предпочитал делать вид, что конфликтов внутри команды нет.\n\nСледователь отметил: Оливер не был инициатором травли, но его бездействие помогло ей закрепиться.\n\nПримечание: получил письмо.'
-              )">
-                <b>опрос: Оливер Браун</b>
-                <span>капитан Лисов · бездействие · получил письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Давид Капури',
-                'Статус: студент, сокомандник Мигеля.\n\nДавид Капури отрицал прямую травлю, называя свои слова “шутками внутри команды”. Однако другие студенты подтвердили, что часто слышали от него издёвки в сторону Мигеля.\n\nОтдельно зафиксировано, что именно Давид первым пустил слух о том, будто отец купил Мигелю место в основном составе Лисов. Этот слух быстро разошёлся по команде и стал одним из поводов для постоянных насмешек.\n\nПри повторном вопросе Давид заявил, что “не думал, что кто-то воспримет это всерьёз”.\n\nПримечание: получил письмо.'
-              )">
-                <b>опрос: Давид Капури</b>
-                <span>сокомандник · слух о купленном месте · получил письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Ева де Гяру',
-                'Статус: студентка, подруга детства Мигеля.\n\nЕва де Гяру и Мигель поступили в академию в одно время. По её словам, в первые месяцы они держались вместе, потому что оба знали друг друга ещё до Кастельмары. Позднее общение стало редким и почти полностью прекратилось уже на первом курсе.\n\nЕва утверждает, что не знала о состоянии Мигеля и не могла объяснить его мотивы. На вопрос, почему они перестали общаться, ответила, что “в академии все быстро расходятся по своим кругам”.\n\nСледователь отметил эмоциональную отстранённость, но не нашёл признаков прямого конфликта.\n\nПримечание: получила письмо.'
-              )">
-                <b>опрос: Ева де Гяру</b>
-                <span>подруга детства · отдаление · получила письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Алекса Соур',
-                'Статус: студентка, участница группы поддержки футбольной команды Лисов.\n\nАлекса Соур была вызвана на опрос как последний зафиксированный контакт Мигеля, не считая родителей и сестры. В лицее они общались, но в академии связь стала нерегулярной.\n\nПоследнее сообщение Алексы касалось слуха о том, что отец Мигеля якобы купил ему место в команде. Алекса утверждает, что написала “просто спросить”, потому что услышала это от других студентов.\n\nСледователь отметил, что вопрос был задан в момент, когда слух уже активно обсуждался внутри команды и среди группы поддержки. Для Мигеля это могло выглядеть не как нейтральный вопрос, а как подтверждение того, что слух вышел за пределы раздевалки.\n\nПримечание: получила письмо.'
-              )">
-                <b>опрос: Алекса Соур</b>
-                <span>последний контакт · группа поддержки Лисов · получила письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Рамона Мартина Суарес',
-                'Статус: студентка, капитан группы поддержки футбольной команды Лисов.\n\nРамона Мартина Суарес знала о напряжении вокруг Мигеля со стороны нескольких студенток и игроков. По её словам, она “не считала это своей зоной ответственности”, так как не была частью футбольной команды напрямую.\n\nПри этом опрошенные студенты подтвердили, что Рамона знала и о поведении Алексы, и о том, как Ева постепенно отдалилась от Мигеля. Она не вмешалась, не поговорила с ними и при личных встречах с Мигелем чаще всего делала вид, что не замечает его.\n\nОтдельно отмечен эпизод с днём рождения Рамоны. Несколько студентов из общего круга получили приглашение, но Мигеля среди приглашённых не было. Формально это не является нарушением, однако на фоне общего отчуждения могло стать ещё одним подтверждением того, что из привычного круга его окончательно вычеркнули.\n\nСледователь отметил: Рамона не участвовала в прямой травле, но её положение внутри группы поддержки делало её человеком, который мог остановить хотя бы часть публичного давления. Она этого не сделала.\n\nПримечание: получила письмо.'
-              )">
-                <b>опрос: Рамона Мартина Суарес</b>
-                <span>капитан группы поддержки · игнорирование · получила письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Родерик де Лонги',
-                'Статус: студент, хоккеист Castelmara Guards.\n\nРодерик де Лонги и Мигель хорошо знали друг друга ещё по лицею. Они играли в одной хоккейной команде, много общались и, по словам Родерика, когда-то мечтали вместе попасть в большой спорт и уехать в Канаду.\n\nПосле перехода Мигеля в футбол их отношения резко испортились. Родерик утверждает, что Мигель никак не объяснил свой уход. На фоне слухов о влиянии семьи Мигеля Родерик решил, что бывший друг просто выбрал более лёгкий путь: уйти в главный спорт Испании, где связи академии и директора могли быстрее открыть дорогу к профессиональной карьере.\n\nДля Родерика это выглядело как предательство. Хоккеисты годами рвут себя на части ради шанса пробиться дальше, а Мигель, по его мнению, получил билет в большой спорт здесь и сейчас.\n\nПрямой травли со стороны Родерика не подтверждено. Однако он принципиально избегал Мигеля: не садился рядом в столовой, не вступал в разговоры и демонстративно держал дистанцию.\n\nДополнительный контекст: в прошлом сезоне Guards были разгромлены Hawks. В материалах отмечено, что личные конфликты внутри хоккейной среды могли усиливать обиду Родерика на Мигеля.\n\nПримечание: получил письмо.'
-              )">
-                <b>опрос: Родерик де Лонги</b>
-                <span>бывший друг · хоккей · обида из-за перехода · получил письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Опрос: Блейз Лансер',
-                'Статус: студент, хоккеист Castelmara Wolves.\n\nБлейз Лансер был частью той же лицейской компании, что Мигель и Родерик. Они играли вместе, дружили и строили похожие планы на будущее, связанные с хоккеем и шансом выбраться в профессиональный спорт.\n\nПосле перехода Мигеля в футбол Блейз воспринял это острее остальных. По его словам, ему самому было тяжело попасть и в лицей, и в академию: семья не имела больших возможностей, а вступительные испытания он едва не провалил. На этом фоне уход Мигеля в другой спорт выглядел для него как доказательство несправедливости.\n\nБлейз считал, что Мигель просто воспользовался деньгами и связями семьи, чтобы перейти туда, где путь к карьере короче и заметнее. В отличие от Родерика, Блейз не ограничился молчаливым избеганием.\n\nНесколько студентов подтвердили, что Блейз был замечен за регулярными насмешками в сторону Мигеля. В отчёте это обозначено как “лёгкий буллинг”, однако именно такие эпизоды подпитывали общую травлю и делали её привычной частью среды.\n\nПримечание: получил письмо.'
-              )">
-                <b>опрос: Блейз Лансер</b>
-                <span>бывший друг · хоккей · подпитывал травлю · получил письмо</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Электронный след писем',
-                'Первичная проверка сообщений, разосланных по кампусу от имени Мигеля, не выявила нарушений. Однако повторный технический анализ показал расхождение во времени.\n\nЧерновики писем были созданы после официально зафиксированного времени смерти Мигеля. Отправка также произошла позднее, когда Мигель уже физически не мог пользоваться системой.\n\nСистема ATLAS зарегистрировала вход с устройства, ранее не связанного с обычной активностью Мигеля. Данные были частично замаскированы, но электронный след указывает на пользователя с доступом к семейным данным.\n\nВ отдельной заметке отправитель обозначен только как “L.”. Проверка продолжается.'
-              )">
-                <b>электронный след писем</b>
-                <span>ATLAS · сообщения после смерти Мигеля · отправитель обозначен как “L.”</span>
-              </div>
-
-              <div class="doc-item" onclick="openDoc(
-                'Административная заметка',
-                'По распоряжению руководства академии материалы дела должны храниться в закрытом архиве до окончания внутренней проверки.\n\nПричина смерти Мигеля не оспаривается. Дополнительная проверка касается только сообщений, появившихся после трагедии, и возможного доступа третьего лица к его цифровым аккаунтам.'
-              )">
-                <b>административная заметка</b>
-                <span>внутренний документ · цифровая проверка продолжается</span>
-              </div>
-            </div>
+        <div class="mj-window doc" id="doc-1503-v4">
+          <div class="mj-head"><div>15.03.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">15 марта 2023</div>
+            <p>она официально это сделала, чёрт возьми! теперь не гарсия… интересно, смогу ли я когда-нибудь так же? перестать быть чёртовой заменой и стать собой?</p>
           </div>
         </div>
 
-        <div class="tab-content" id="evidence">
-          <div class="case-panel">
-            <small>
-              <span class="hint" title="вещественные доказательства">evidencia física</span>
-            </small>
-            <h3>изъятые предметы</h3>
-
-            <div style="
-              width: 100%;
-              min-height: 260px;
-              border: 1px solid rgba(180, 194, 177, .22);
-              background: rgba(5, 8, 6, .45);
-              margin-bottom: 18px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              overflow: hidden;
-            ">
-              <img 
-                src="https://static.tildacdn.com/tild3736-3431-4231-b331-383761363633/nABb9t15PXWgLAdZ52cG.jpg" 
-                alt="фотография изъятых предметов по делу Мигеля Гарсии младшего"
-                style="
-                  width: 100%;
-                  height: auto;
-                  display: block;
-                  opacity: .92;
-                "
-              >
-            </div>
-
-            <div class="columns">
-              <div>
-                <small>основные предметы</small>
-                <ul>
-                  <li><b>личный телефон</b> — заблокирован, передан на цифровую проверку.</li>
-                  <li><b>тетрадь</b> — несколько страниц вырваны, часть записей совпадает с файлами на рабочем столе.</li>
-                  <li><b>карта доступа</b> — использована дважды: при выходе из общежития и входе на арену.</li>
-                  <li><b>обрывок записки</b> — текст повреждён, отдельные слова не читаются.</li>
-                  <li><b>личные вещи из шкафчика</b> — изъяты из раздевалки футбольной команды Лисов.</li>
-                </ul>
-              </div>
-
-              <div>
-                <small>
-                  <span class="hint" title="цифровые доказательства">evidencia digital</span>
-                </small>
-                <div class="doc-list">
-                  <div class="doc-item" onclick="openDoc(
-                    'Телефон Мигеля',
-                    'Телефон был найден среди личных вещей Мигеля. Устройство заблокировано. Последняя активность до трагедии не содержит отправки массовых писем по кампусу. Проверка истории входов продолжается.'
-                  )">
-                    <b>телефон Мигеля</b>
-                    <span>устройство заблокировано · массовая рассылка не подтверждена</span>
-                  </div>
-
-                  <div class="doc-item" onclick="openDoc(
-                    'Тетрадь с записями',
-                    'В тетради есть личные заметки, отдельные фразы и имена, записанные сокращённо. Буква “Л.” встречается несколько раз, но без полного имени. Часть страниц была вырвана до передачи предмета полиции.'
-                  )">
-                    <b>тетрадь с записями</b>
-                    <span>личные заметки · упоминание “Л.” · страницы отсутствуют</span>
-                  </div>
-
-                  <div class="doc-item" onclick="openDoc(
-                    'Файлы ATLAS',
-                    'Восстановленные логи ATLAS показывают, что письма были составлены и отправлены уже после смерти Мигеля. Использованный цифровой след не совпадает с его обычной активностью.'
-                  )">
-                    <b>файлы ATLAS</b>
-                    <span>рассылка после смерти Мигеля · подозрение на доступ третьего лица</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="mj-window doc" id="doc-2703-v4">
+          <div class="mj-head"><div>27.03.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">27 марта 2023</div>
+            <p>тренер м. сказал, что я могу не тренироваться сегодня… перед отбором в команду? неужели отец и правда это сделает…</p>
           </div>
         </div>
 
-        <div class="tab-content" id="notes">
-          <div class="case-panel">
-            <small>заметки следователя</small>
-            <h3>внутренние комментарии</h3>
-
-            <p>
-              обстоятельства смерти Мигеля Гарсии младшего не вызывают сомнений у следствия. записи камер,
-              журнал доступа и показания охранника подтверждают, что в ночь трагедии он пришёл на арену один.
-              признаков присутствия другого человека в коридорах, у служебного входа или рядом с раздевалкой Лисов не выявлено.
-            </p>
-
-            <p>
-              отдельного внимания требует не сама трагедия, а сообщения, разосланные по кампусу от имени Мигеля.
-              техническая проверка показывает, что письма были созданы и отправлены после его смерти.
-              это исключает возможность того, что он лично подготовил финальную рассылку.
-            </p>
-
-            <p>
-              вероятно, кто-то получил доступ к его материалам, личным записям или аккаунту ATLAS.
-              в восстановленных логах несколько раз появляется обозначение “L.”. совпадение с записями
-              на рабочем столе Мигеля требует отдельной проверки.
-            </p>
-
-            <p>
-              предварительная версия: отправитель знал Мигеля лично, имел доступ к части его данных
-              и пытался направить внимание студентов в нужную сторону уже после закрытия основного дела.
-            </p>
-
-            <span class="stamp">цифровая проверка продолжается</span>
+        <div class="mj-window doc" id="doc-2904-v4">
+          <div class="mj-head"><div>29.04.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">29 апреля 2023</div>
+            <p>я ненавижу его. за что он так со мной? почему… неужели, я для него действительно только актив? неужели, во мне нет ничего, чтобы он во мне любил?</p>
           </div>
         </div>
 
+        <div class="mj-window doc" id="doc-0405-v4">
+          <div class="mj-head"><div>04.05.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">04 мая 2023</div>
+            <p>сегодня впервые плакал перед л. я не собирался, она просто зашла в мою комнату даже не постучавшись. да, мы с ней родственники ближе некуда, но должна же быть какая-то приватность, верно?</p>
+            <p>ну, в любом случае ей было плевать на моё желание побыть в одиночестве. я рассказал ей о своё плане и после мы плакали уже вдвоём. надеюсь, я решусь.</p>
+            <p>я хочу быть свободным.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-1006-v4">
+          <div class="mj-head"><div>10.06.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">10 июня 2023</div>
+            <p>тренер э. сказал мне по секрету, что я никогда не попаду в основную команду. во мне и таланта слишком мало, и отец однозначно не разрешит им. что ж… у меня выход только один – надеяться на чудо.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-2408-v4">
+          <div class="mj-head"><div>24.08.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">24 августа 2023</div>
+            <p>это официально, меня не приняли на факультет хоккея. не то чтобы на футболе меня сильно ждали, но отец всё не перестаёт надеяться, что я стану как он – его первый, драгоценный актив. он никогда не поймёт…</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-0909-v4">
+          <div class="mj-head"><div>09.09.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">09 сентября 2023</div>
+            <p>это странно – любить кого-то, кто умер задолго до твоего рождения? сочувствовать ему… кажется, марсель был в такой же золотой клетке, как и я. весь в дорогой форме, в лучших фирменных буцах… был ли он таким же одиноким?</p>
+            <p>нет, марсель таким не был, я уверен. его фотографии с друзьями и командой до сих пор висят в главной холле академии, как напоминание, с чего всё началось.</p>
+            <p>я люблю его – он мой старший брат, пусть мы никогда и не виделись.</p>
+            <p>я завидую ему – теперь он свободен.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-1211-v4">
+          <div class="mj-head"><div>12.11.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">12 ноября 2023</div>
+            <p>меня все ненавидят. сегодня виделся с е. так она прошла мимо… даже не взглянула. а когда-то мы были друзьями… неужели желание быть популярной выше нашей многолетней дружбы?</p>
+            <p>ладно, я не сержусь на неё. может, она такая же птичка в клетке? кто знает</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-1812-v4">
+          <div class="mj-head"><div>18.12.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">18 декабря 2023</div>
+            <p>перед каникулами меня подозвал о. и сказал, что я не в форме. класс. я и сам знаю, понятно? придурок.</p>
+            <p>я ненавижу себя.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-1604-v4">
+          <div class="mj-head"><div>16.04.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">16 апреля 2024</div>
+            <p>я больше так не могу. не могу. немогунемогунемогунемогу.</p>
+            <p>л. удалось отговорить меня в прошлом году, но в этом… я не могу.</p>
+            <p>я хочу…</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-2530-v4">
+          <div class="mj-head"><div>may_2024.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">25 мая 2024</div>
+            <p>все говорят, что отец купил мне место. об этом написали в закрытом чате атласа и разослали между собой. я чувствую их взгляды на себе, их смех за моей спиной.</p>
+            <p>к. и е. теперь встречаются, из-за чего е. тоже теперь смеётся надо мной. неужели я настолько мерзкий?</p>
+            <div class="mj-doc-date">30 мая 2024</div>
+            <p>а. написала мне сегодня. я думал, она хочет позвать гулять. спросила: «правда, что твой отец купит тебе место?» я ответил: «нет». она сказала: «жаль. думала, будет интересно». и заблокировала меня. я перечитывал это сообщение сорок раз, наверное. не знаю, что я должен был ответить, чтобы она не кинула меня в бан.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-july-v4">
+          <div class="mj-head"><div>july_2024.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">15 июля 2024</div>
+            <p>мама сказала, что любит меня. я снова плакал. как я могу заставить её вновь потерять сына? я ужасный человек. ненавижу себя.</p>
+            <div class="mj-doc-date">30 июля 2024</div>
+            <p>л. всё знает. она нашла его, прочитала мои мысли по поводу смерти и долго плакала у меня в комнате. “я думала ты передумал… эмджей, пожалуйста” – такие были её слова. я не передумал.</p>
+          </div>
+        </div>
+
+        <div class="mj-window doc" id="doc-final-v4">
+          <div class="mj-head"><div>final.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <div class="mj-doc-date">24 августа 2024, 23:20</div>
+            <p>наверное, это моя последняя запись. наверное, это случиться сегодня. я устал.</p>
+            <p>так сильно устал не оправдывать его ожиданий, жить чужую жизнь потому что они потеряли первого ребёнка. сегодня отец сказал мне, что если бы мигель не умер, я бы не родился. и что это – его заветное желание, ведь я только позорю их семью.</p>
+            <p>наверное, так и есть. я не нравлюсь своей команде, не нравлюсь старым друзьям. только мама и л. до сих пор любят меня. только они. даже я сам себя не люблю, а это уже о многом говорит, верно?</p>
+            <p>в общем, да, это конец.</p>
+            <p>конец.</p>
+          </div>
+        </div>
+
+        <div class="mj-window photo-win" id="photo-l-v4">
+          <div class="mj-head"><div>330186b2415ed7fd4986.jpg</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <img class="mj-photo-preview" src="https://static.tildacdn.com/tild6366-3766-4030-a565-376463373266/330186b2415ed7fd4986.jpg" alt="">
+            <div class="mj-photo-caption">л. / сестра.</div>
+          </div>
+        </div>
+
+        <div class="mj-window photo-win" id="photo-o-v4">
+          <div class="mj-head"><div>2949b1f59588495f18ad.jpg</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <img class="mj-photo-preview" src="https://static.tildacdn.com/tild6366-3330-4137-b938-333730636266/2949b1f59588495f18ad.jpg" alt="">
+            <div class="mj-photo-caption">о. / капитан команды.</div>
+          </div>
+        </div>
+
+        <div class="mj-window photo-win" id="photo-e-v4">
+          <div class="mj-head"><div>f1f2172638c1f276ec82.jpg</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <img class="mj-photo-preview" src="https://static.tildacdn.com/tild6336-3038-4462-b331-393766366536/f1f2172638c1f276ec82.jpg" alt="">
+            <div class="mj-photo-caption">е.</div>
+          </div>
+        </div>
+
+        <div class="mj-window photo-win" id="photo-r-v4">
+          <div class="mj-head"><div>46038bdff08984d6eb4a.jpg</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <img class="mj-photo-preview" src="https://static.tildacdn.com/tild3433-6431-4262-a134-393938366131/46038bdff08984d6eb4a.jpg" alt="">
+            <div class="mj-photo-caption">р. / капитан группы поддержки.</div>
+          </div>
+        </div>
+
+        <div class="mj-window error-win" id="audio-error-v4">
+          <div class="mj-head"><div>voice_1506.mp3</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <div>
+              <span class="mj-error-mark">!</span>
+              <span class="mj-error-title">Не удаётся воспроизвести файл</span>
+            </div>
+            <div class="mj-error-text">Файл повреждён или был перемещён. Воспроизведение остановлено.</div>
+            <div class="mj-error-code">error code: 0x1506 / audio fragment corrupted / duration unreadable</div>
+          </div>
+        </div>
+
+        <div class="mj-window message-win" id="unknown-message-v4">
+          <div class="mj-head"><div>unknown.txt — Блокнот</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body mj-doc">
+            <p>sender: unknown</p>
+            <p>time: 00:06</p>
+            <p>ты ведь тоже слышишь, когда в коридоре становится тихо?</p>
+          </div>
+        </div>
+
+        <div class="mj-window message-win" id="trash-v4">
+          <div class="mj-head"><div>Корзина</div><button class="mj-close" type="button">×</button></div>
+          <div class="mj-body">
+            <p>Эта папка пуста.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="modal" id="docModal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeDoc()">×</button>
-      <h2 id="docTitle"></h2>
-      <p id="docText"></p>
     </div>
   </div>
 
   <script>
-    function policeEnter() {
-      const pass = document.getElementById('policePass').value.trim();
-      const login = document.getElementById('policeLogin');
-      const area = document.getElementById('caseArea');
-      const error = document.getElementById('loginError');
+    (function () {
+      var root = document.getElementById('mj-cat-desktop-v4');
+      if (!root) return;
 
-      if (pass === '2508') {
-        login.style.display = 'none';
-        area.style.display = 'block';
-        error.style.display = 'none';
-      } else {
-        error.style.display = 'block';
+      var login = root.querySelector('#mjLoginV4');
+      var desktop = root.querySelector('#mjDesktopV4');
+      var form = root.querySelector('#mjLoginFormV4');
+      var password = root.querySelector('#mjPasswordV4');
+      var error = root.querySelector('#mjErrorV4');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var passValue = (password.value || '').trim();
+
+        if (/^\d{4}$/.test(passValue)) {
+          login.classList.add('hidden');
+          desktop.classList.add('active');
+          error.textContent = '';
+        } else {
+          error.textContent = 'password must contain 4 digits';
+        }
+      });
+
+      var openers = root.querySelectorAll('[data-open]');
+      var windows = root.querySelectorAll('.mj-window');
+      var closeButtons = root.querySelectorAll('.mj-close');
+      var topZ = 50;
+
+      function openWindow(id) {
+        var target = root.querySelector('#' + id);
+        if (!target) return;
+
+        target.classList.add('active');
+        topZ += 1;
+        target.style.zIndex = topZ;
       }
-    }
 
-    function openPoliceTab(evt, tabName) {
-      const contents = document.querySelectorAll('#police-easteregg .tab-content');
-      const buttons = document.querySelectorAll('#police-easteregg .tab-btn');
+      openers.forEach(function (item) {
+        item.addEventListener('click', function () {
+          openWindow(item.getAttribute('data-open'));
+        });
+      });
 
-      contents.forEach(tab => tab.classList.remove('active'));
-      buttons.forEach(btn => btn.classList.remove('active'));
+      closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          var win = button.closest('.mj-window');
+          if (win) win.classList.remove('active');
+        });
+      });
 
-      document.getElementById(tabName).classList.add('active');
-      evt.currentTarget.classList.add('active');
-    }
-
-    function openDoc(title, text) {
-      document.getElementById('docTitle').innerText = title;
-      document.getElementById('docText').innerText = text;
-      document.getElementById('docModal').classList.add('open');
-    }
-
-    function closeDoc() {
-      document.getElementById('docModal').classList.remove('open');
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeDoc();
-      }
-    });
+      windows.forEach(function (win) {
+        win.addEventListener('mousedown', function () {
+          topZ += 1;
+          win.style.zIndex = topZ;
+        });
+      });
+    })();
   </script>
 </div>
 </body>
