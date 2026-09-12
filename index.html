@@ -14414,7 +14414,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
   function renderCharacters() {
     var characters = window.ATLAS_CHARACTERS || [];
-    var categories = ["castelmara", "estudiantes"];
+    var categories = ["castelmara", "estudiantes", "fuera-castelmara"];
 
     categories.forEach(function(category) {
       var grid = document.querySelector('[data-character-category="' + category + '"]');
@@ -14836,6 +14836,27 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     return '<section class="atlas-profile-tab-panel' + (active ? ' is-active' : '') + '" data-character-tab-panel="' + esc(id) + '">' + content + '</section>';
   }
 
+  function renderExternalLinks(character) {
+    var profile = character && character.profile ? character.profile : {};
+    var links = profile.externalLinks || character.externalLinks || [];
+
+    if (!Array.isArray(links) || !links.length) return "";
+
+    return '<div class="atlas-profile-card atlas-profile-external-card">' +
+      '<h3>связанные архивы</h3>' +
+      '<div class="atlas-profile-external-links">' +
+        links.filter(function(link) { return link && link.url; }).map(function(link) {
+          return '<a class="atlas-profile-external-link" href="' + esc(link.url) + '"' +
+            (link.newTab === false ? '' : ' target="_blank" rel="noopener"') + '>' +
+              '<span>' + esc(link.kicker || "архив") + '</span>' +
+              '<strong>' + esc(link.label || link.title || link.url) + '</strong>' +
+              (link.description ? '<p>' + esc(link.description) + '</p>' : '') +
+            '</a>';
+        }).join("") +
+      '</div>' +
+    '</div>';
+  }
+
   function renderOverview(character) {
     var profile = character.profile || {};
     var overview = profile.overview || {};
@@ -14858,6 +14879,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
           renderIndicators(indicators) +
         '</div>' +
         renderPlayerMetaCard(character) +
+        renderExternalLinks(character) +
       '</div>' +
     '</div>';
   }
@@ -15043,7 +15065,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 <script src="data/students.js?v=20260912-1"></script>
 <script src="data/staff.js?v=20260912-1"></script>
 <script src="data/coaches.js?v=20260912-1"></script>
-<script src="data/leon.js?v=20260912-1"></script>
+<script src="data/leon.js?v=20260912-2"></script>
 <!-- SOURCE: \Вставлений text(20260912-144950).txt -->
 <!--
 =========================================================
@@ -15396,464 +15418,108 @@ ATLAS — CARD ONLY CHARACTERS
 </script>
 
 <!-- SOURCE: \Вставлений text(20260912-144227).txt -->
-<!-- ATLAS PATCH: FUERA DE CASTELMARA — LEON REDFIELD / BANNER VERSION
-Добавляет карточку "fuera de castelmara" в personajes и страницу с Леоном.
-Первая картинка — внешняя карточка.
-Вторая картинка — внутренний баннер модалки.
+<!-- ATLAS: FUERA DE CASTELMARA — STANDARD CHARACTER PAGE
+Leon remains in data/leon.js, but now uses the same card/profile engine as every other character.
 -->
-
 <style>
-#atlas-app .atlas-fuera-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 230px);
-  gap: 22px;
-  align-items: start;
-  justify-content: start;
-  width: 100%;
-  margin-top: 22px;
-}
-
-#atlas-app .atlas-fuera-person-card {
-  width: 230px;
-}
-
-#atlas-app .atlas-fuera-person-btn {
-  width: 230px;
-  height: 315px;
-  border: 0;
+#atlas-app #atlas-page-personajes-fuera-castelmara .atlas-page-heading {
+  min-height: 300px;
+  margin-bottom: 24px;
+  padding: 40px;
   border-radius: 28px;
-  background: #111;
-  padding: 0;
-  cursor: pointer;
-  text-align: left;
-  display: block;
-  position: relative;
   overflow: hidden;
-  box-shadow: 0 18px 42px rgba(23,23,31,.12);
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-#atlas-app .atlas-fuera-person-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 26px 56px rgba(23,23,31,.18);
-}
-
-#atlas-app .atlas-fuera-person-photo {
-  width: 230px;
-  height: 315px;
-  display: block;
-  background-image: url("https://static.tildacdn.com/tild3234-3430-4562-b537-626136373064/klox4O9_eWD07yQbfa_X.jpg");
-  background-size: cover;
-  background-position: center;
-  filter: grayscale(100%);
-}
-
-#atlas-app .atlas-fuera-person-btn::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 48%;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.92));
-  pointer-events: none;
-}
-
-#atlas-app .atlas-fuera-person-text {
-  position: absolute;
-  left: 16px;
-  right: 14px;
-  bottom: 18px;
-  color: #fff;
-  z-index: 2;
-}
-
-#atlas-app .atlas-fuera-person-text h3 {
-  margin: 0 0 5px;
-  color: #fff;
-  font-size: 18px;
-  line-height: .95;
-  font-weight: 900;
-  letter-spacing: -.04em;
-  text-transform: uppercase;
-}
-
-#atlas-app .atlas-fuera-person-text p {
-  margin: 0;
-  color: rgba(255,255,255,.92);
-  font-size: 12px;
-  line-height: 1.15;
-  font-weight: 900;
-}
-
-/* MODAL */
-#atlas-app .atlas-fuera-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
-  background: rgba(0,0,0,.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-#atlas-app .atlas-fuera-modal.is-open {
-  display: flex;
-}
-
-#atlas-app .atlas-fuera-modal-card {
-  width: min(1060px, calc(100vw - 56px));
-  max-height: calc(100vh - 56px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  border-radius: 28px;
-  background: #fff;
-  box-shadow: 0 30px 80px rgba(0,0,0,.35);
   position: relative;
-}
-
-#atlas-app .atlas-fuera-modal-card::-webkit-scrollbar {
-  width: 8px;
-}
-
-#atlas-app .atlas-fuera-modal-card::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-#atlas-app .atlas-fuera-modal-card::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.22);
-  border-radius: 999px;
-}
-
-#atlas-app .atlas-fuera-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 22px;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 999px;
-  background: rgba(255,255,255,.08);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-#atlas-app .atlas-fuera-hero {
-  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   background:
-    linear-gradient(90deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.70) 42%, rgba(0,0,0,.30) 72%, rgba(0,0,0,.78) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.78)),
-    url("https://static.tildacdn.com/tild3565-3062-4863-b633-623430373432/noroot.png");
-  background-size: cover;
-  background-position: center;
+    linear-gradient(90deg, rgba(5,8,12,.88), rgba(5,8,12,.34)),
+    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.60)),
+    url("https://static.tildacdn.com/tild6363-3938-4334-b362-313331383231/97c3ea82eee7e2905ccc.jpg") center 34% / cover no-repeat;
   color: #fff;
-  padding: 82px 44px 42px;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
 }
-
-#atlas-app .atlas-fuera-title {
-  position: relative;
-  z-index: 2;
-  max-width: 680px;
-}
-
-#atlas-app .atlas-fuera-title span {
-  display: block;
-  color: rgba(255,255,255,.86);
-  font-size: 28px;
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: -.04em;
-}
-
-#atlas-app .atlas-fuera-title h3 {
-  margin: 4px 0 0;
-  color: #fff;
-  font-size: clamp(54px, 7vw, 92px);
-  line-height: .88;
-  font-weight: 900;
-  letter-spacing: -.06em;
-  text-transform: uppercase;
-}
-
-#atlas-app .atlas-fuera-subtitle {
-  margin-top: 16px;
-  color: rgba(255,255,255,.9);
-  font-size: 16px;
-  line-height: 1.35;
-  font-weight: 800;
-}
-
-#atlas-app .atlas-fuera-body {
-  padding: 26px;
-  display: grid;
-  gap: 18px;
-}
-
-#atlas-app .atlas-fuera-section {
-  border: 1px solid var(--line-soft, #eee4df);
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 16px 34px rgba(23,23,31,.045);
-  padding: 22px;
-}
-
-#atlas-app .atlas-fuera-section h4 {
-  margin: 0 0 14px;
-  color: #111;
-  font-size: 14px;
-  line-height: 1.2;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-#atlas-app .atlas-fuera-section p {
-  margin: 0 0 14px;
-  color: #403b45;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-#atlas-app .atlas-fuera-section p:last-child {
-  margin-bottom: 0;
-}
-
-#atlas-app .atlas-fuera-info-list {
-  display: grid;
-}
-
-#atlas-app .atlas-fuera-info-row {
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 16px;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee8e3;
-}
-
-#atlas-app .atlas-fuera-info-row:last-child {
-  border-bottom: 0;
-}
-
-#atlas-app .atlas-fuera-info-row strong {
-  color: #111;
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 900;
-  text-transform: lowercase;
-}
-
-#atlas-app .atlas-fuera-info-row span {
-  color: #403b45;
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-#atlas-app .atlas-fuera-easter {
-  color: #b87487 !important;
-  text-decoration: none !important;
-  border-bottom: 1px solid rgba(184,116,135,.35);
-  transition: color .2s ease, border-color .2s ease;
-}
-
-#atlas-app .atlas-fuera-easter:hover {
-  color: #a84f68 !important;
-  border-bottom-color: rgba(168,79,104,.75);
-}
-
-#atlas-app .atlas-fuera-relation-list {
-  display: grid;
-  gap: 14px;
-}
-
-#atlas-app .atlas-fuera-relation-card {
-  width: 100%;
-  border: 1px solid var(--line-soft, #eee4df);
-  border-radius: 18px;
-  background: #fff;
-  padding: 18px;
-  text-align: left;
-  display: block;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-}
-
-#atlas-app .atlas-fuera-relation-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(179,59,59,.35);
-  box-shadow: 0 14px 28px rgba(23,23,31,.08);
-}
-
-#atlas-app .atlas-fuera-relation-card span {
-  display: block;
-  margin-bottom: 8px;
-  color: #b33b3b;
-  font-size: 11px;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-#atlas-app .atlas-fuera-relation-card strong {
-  display: block;
-  margin-bottom: 7px;
-  color: #111;
-  font-size: 15px;
-  font-weight: 900;
-}
-
-#atlas-app .atlas-fuera-relation-card p {
+#atlas-app #atlas-page-personajes-fuera-castelmara .atlas-page-heading h2 {
   margin: 0;
-  color: #403b45;
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-
-#atlas-app .atlas-fuera-player-box {
-  display: grid;
-  gap: 12px;
-}
-
-#atlas-app .atlas-fuera-player-main {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-#atlas-app .atlas-fuera-player-name {
-  color: #111;
-  font-size: 15px;
-  line-height: 1.2;
+  color: #fff !important;
+  font-size: clamp(48px, 6vw, 82px);
+  line-height: .92;
   font-weight: 900;
+  letter-spacing: -.055em;
   text-transform: lowercase;
 }
-
-#atlas-app .atlas-fuera-player-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 7px 11px;
-  border-radius: 999px;
-  border: 1px solid rgba(179,59,59,.28);
-  background: rgba(179,59,59,.07);
-  color: #b33b3b !important;
-  font-size: 11px;
+#atlas-app #atlas-page-personajes-fuera-castelmara .atlas-page-heading p {
+  margin: 16px 0 0;
+  max-width: 680px;
+  color: rgba(255,255,255,.88) !important;
+  font-size: 14px;
+  line-height: 1.6;
+}
+#atlas-app #atlas-page-personajes-fuera-castelmara .atlas-character-card-grid {
+  margin-top: 0;
+}
+#atlas-app .atlas-profile-external-links {
+  display: grid;
+  gap: 10px;
+}
+#atlas-app .atlas-profile-external-link {
+  display: block;
+  padding: 14px 15px;
+  border: 1px solid #eee4df;
+  border-radius: 16px;
+  background: #fbf8f6;
+  color: #111;
+  text-decoration: none;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+#atlas-app .atlas-profile-external-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201,61,61,.28);
+  background: #fff;
+}
+#atlas-app .atlas-profile-external-link > span {
+  display: block;
+  margin-bottom: 5px;
+  color: #c93d3d;
+  font-size: 10px;
   line-height: 1;
   font-weight: 900;
-  text-decoration: none !important;
-  text-transform: lowercase;
-}
-
-#atlas-app .atlas-fuera-player-link:hover {
-  background: rgba(179,59,59,.12);
-  border-color: rgba(179,59,59,.48);
-}
-
-#atlas-app .atlas-fuera-player-other {
-  display: grid;
-  gap: 8px;
-}
-
-#atlas-app .atlas-fuera-player-other-title {
-  color: #8a848d;
-  font-size: 11px;
-  line-height: 1.2;
-  font-weight: 900;
+  letter-spacing: .08em;
   text-transform: uppercase;
 }
-
-#atlas-app .atlas-fuera-player-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-#atlas-app .atlas-fuera-player-character {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 8px 12px;
-  border: 1px solid #eee4df;
-  border-radius: 999px;
-  background: #fff;
-  color: #111;
-  font-size: 12px;
-  line-height: 1;
+#atlas-app .atlas-profile-external-link > strong {
+  display: block;
+  color: inherit;
+  font-size: 13px;
+  line-height: 1.3;
   font-weight: 900;
   text-transform: lowercase;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
 }
-
-#atlas-app .atlas-fuera-player-character:hover {
-  border-color: rgba(179,59,59,.35);
-  color: #b33b3b;
+#atlas-app .atlas-profile-external-link > p {
+  margin: 6px 0 0 !important;
+  color: #6f6878 !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
 }
-
+#atlas-app[data-theme="dark"] .atlas-profile-external-link {
+  background: #151a21;
+  border-color: rgba(255,255,255,.11);
+  color: #f5f2ef;
+}
+#atlas-app[data-theme="dark"] .atlas-profile-external-link:hover {
+  border-color: rgba(226,71,71,.30);
+  background: #171d25;
+}
+#atlas-app[data-theme="dark"] .atlas-profile-external-link > span {
+  color: #ff6b6b;
+}
+#atlas-app[data-theme="dark"] .atlas-profile-external-link > p {
+  color: #aaa3af !important;
+}
 @media (max-width: 720px) {
-  #atlas-app .atlas-fuera-card-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-
-  #atlas-app .atlas-fuera-person-card,
-  #atlas-app .atlas-fuera-person-btn {
-    width: 100%;
-  }
-
-  #atlas-app .atlas-fuera-person-btn {
-    height: auto;
-  }
-
-  #atlas-app .atlas-fuera-person-photo {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
-  }
-
-  #atlas-app .atlas-fuera-modal {
-    padding: 12px;
-    align-items: flex-start;
-  }
-
-  #atlas-app .atlas-fuera-modal-card {
-    width: calc(100vw - 24px);
-    max-height: calc(100vh - 24px);
+  #atlas-app #atlas-page-personajes-fuera-castelmara .atlas-page-heading {
+    min-height: 260px;
+    padding: 28px 22px;
     border-radius: 22px;
-  }
-
-  #atlas-app .atlas-fuera-hero {
-    min-height: 390px;
-    padding: 76px 22px 26px;
-    align-items: flex-end;
-    background-position: center;
-  }
-
-  #atlas-app .atlas-fuera-title h3 {
-    font-size: 48px;
-  }
-
-  #atlas-app .atlas-fuera-title span {
-    font-size: 26px;
-  }
-
-  #atlas-app .atlas-fuera-body {
-    padding: 18px;
-  }
-
-  #atlas-app .atlas-fuera-info-row {
-    grid-template-columns: 1fr;
-    gap: 5px;
   }
 }
 </style>
@@ -15866,291 +15532,15 @@ ATLAS — CARD ONLY CHARACTERS
         <p>персонажи, связанные с сюжетом, но находящиеся за пределами академии.</p>
       </div>
 
-      <div class="atlas-fuera-card-grid">
-        <article class="atlas-fuera-person-card atlas-search-target"
-                 data-search-title="leon scott redfield outside character fuera de castelmara"
-                 data-search-keywords="леон скотт рэдфилд leon scott redfield полиция кастельмара">
-          <button class="atlas-fuera-person-btn" type="button" data-open-fuera-modal="leon-scott-redfield" data-player-id="passion-ambitions">
-            <span class="atlas-fuera-person-photo" aria-hidden="true"></span>
-            <span class="atlas-fuera-person-text">
-              <h3>LEON REDFIELD</h3>
-              <p>/ phoenix</p>
-            </span>
-          </button>
-        </article>
-      </div>
-
-      <div class="atlas-fuera-modal" id="atlasFueraLeonModal" aria-hidden="true">
-        <div class="atlas-fuera-modal-card" role="dialog" aria-modal="true">
-          <button class="atlas-fuera-modal-close" type="button" data-close-fuera-modal>×</button>
-
-          <div class="atlas-fuera-hero">
-            <div class="atlas-fuera-title">
-              <span>Leon Scott</span>
-              <h3>Redfield</h3>
-              <div class="atlas-fuera-subtitle">
-                капитан полиции Кастельмары / phoenix
-              </div>
-            </div>
-          </div>
-
-          <div class="atlas-fuera-body">
-            <section class="atlas-fuera-section">
-              <h4>основная информация</h4>
-              <div class="atlas-fuera-info-list">
-                <div class="atlas-fuera-info-row"><strong>полное имя</strong><span>Леон Скотт Рэдфилд</span></div>
-                <div class="atlas-fuera-info-row"><strong>оригинальное имя</strong><span>Leon Scott Redfield</span></div>
-                <div class="atlas-fuera-info-row"><strong>позывной</strong><span>Феникс // Phoenix</span></div>
-                <div class="atlas-fuera-info-row"><strong>дата рождения</strong><span>хх.хх.1992</span></div>
-                <div class="atlas-fuera-info-row"><strong>возраст</strong><span>32 года</span></div>
-                <div class="atlas-fuera-info-row"><strong>род деятельности</strong><span>капитан полиции Кастельмары</span></div>
-                <div class="atlas-fuera-info-row"><strong>статус</strong><span>не активен</span></div>
-                <div class="atlas-fuera-info-row"><strong>уровень</strong><span>профессионал</span></div>
-                <div class="atlas-fuera-info-row"><strong>место рождения</strong><span>Чикаго, штат Иллинойс, США</span></div>
-                <div class="atlas-fuera-info-row"><strong>внешность</strong><span>Nicholas Galitzine</span></div>
-              </div>
-            </section>
-
-            <section class="atlas-fuera-section">
-              <h4>игрок</h4>
-              <div class="atlas-fuera-player-box">
-                <div class="atlas-fuera-player-main">
-                  <span class="atlas-fuera-player-name">passion ambitions</span>
-                  <a class="atlas-fuera-player-link" href="https://vk.com/passion" target="_blank" rel="noopener">открыть игрока</a>
-                </div>
-
-                <div class="atlas-fuera-player-other">
-                  <span class="atlas-fuera-player-other-title">другие персонажи игрока</span>
-                  <div class="atlas-fuera-player-links">
-                    <button class="atlas-fuera-player-character" type="button" data-atlas-profile-id="hudson-hummond">Хадсон Хаммонд</button>
-                    <button class="atlas-fuera-player-character" type="button" data-atlas-profile-id="holger-leon-abel">Холгер Леон Абель</button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section class="atlas-fuera-section">
-              <h4>о персонаже</h4>
-              <p>сдержанный, наблюдательный и крайне дисциплинированный человек. предпочитает говорить только тогда, когда уверен в своих словах, и больше доверяет фактам, чем чужим эмоциям. привык сохранять спокойствие даже в самых неприятных обстоятельствах, из-за чего многим кажется холоднее, чем он есть на самом деле.</p>
-              <p>леон редко делает поспешные выводы и не любит громких обвинений без доказательств. в работе его отличает настойчивость и способность замечать детали, которые остальные предпочитают игнорировать. если берётся за дело, то идёт до конца, независимо от того, кому могут не понравиться результаты расследования.</p>
-            </section>
-
-            <section class="atlas-fuera-section">
-              <h4>биография</h4>
-              <p>леон с детства отличался ответственностью и рано привык заботиться не только о себе, но и о близких. хорошо учился, занимался спортом и планировал связать жизнь с технической специальностью, однако после окончания школы принял решение поступить на службу в военно-воздушные силы сша.</p>
-              <p>следующие годы его жизни прошли в армии. леон окончил лётную программу и стал пилотом истребителя, а затем почти десять лет участвовал в операциях на территории афганистана. за годы службы он заслужил репутацию надёжного офицера и талантливого пилота, однако постоянное напряжение и пережитые события постепенно заставили его пересмотреть своё отношение к военной карьере. после серьёзного инцидента во время одного из боевых вылетов рэдфилд принял решение завершить службу.</p>
-              <p>вместе с сестрой он покинул соединённые штаты и переехал в европу, где начал новую жизнь. некоторое время семья жила в разных городах, прежде чем окончательно обосновалась в испании. именно там леон решил продолжить служение закону уже в гражданской сфере, а именно в полиции. опыт армии помог быстро адаптироваться к расследованиям, а аналитический склад ума сделал его одним из самых перспективных сотрудников управления. за несколько лет он прошёл путь от рядового следователя до одного из ведущих специалистов по сложным делам, связанным с насильственными преступлениями и гибелью людей.</p>
-              <p>осенью 2024 года именно леону было <a class="atlas-fuera-easter" href="/policia-castelmara/" target="_blank" rel="noopener">поручено расследование</a> смерти мигеля гарсия-младшего. спустя время дело приобрело новый масштаб, когда нескольким студентам начали поступать анонимные письма, связанными с гибелью мигеля. рэдфилд стал одним из немногих людей, кто уверен, что обе истории связаны между собой значительно сильнее, чем кажется на первый взгляд.</p>
-            </section>
-
-            <section class="atlas-fuera-section">
-              <h4>связи</h4>
-
-              <div class="atlas-fuera-relation-list">
-                <button class="atlas-fuera-relation-card" type="button" data-atlas-profile-id="ramona-martina-suarez">
-                  <span>студентка / интерес следствия</span>
-                  <strong>Рамона Мартина Суарес</strong>
-                  <p>одна из первых студенток, с которой леон начал регулярно общаться во время расследования. рамона хорошо знает внутреннюю жизнь «лисов» и невольно помогает следствию понять отношения между игроками, группой поддержки и мигелем. леон относится к ней с заметной осторожностью, понимая, что за её словами часто скрывается больше, чем она готова рассказать напрямую. но вместе с тем испытывает к девушке совсем не профессиональный интерес.</p>
-                </button>
-
-                <button class="atlas-fuera-relation-card" type="button" data-atlas-profile-id="oliver-brown">
-                  <span>ключевая фигура расследования</span>
-                  <strong>Оливер Браун</strong>
-                  <p>для леона оливер остаётся одной из ключевых фигур расследования. именно он является капитаном команды, в которой состоял мигель, и одним из людей, обладавших реальным влиянием на атмосферу внутри коллектива. рэдфилд не считает его виновным, но убеждён, что оливер знает значительно больше, чем говорит следствию.</p>
-                </button>
-
-                <button class="atlas-fuera-relation-card" type="button" data-atlas-profile-id="tiago-silveira">
-                  <span>профессиональная связь</span>
-                  <strong>Тьягу Силвейра</strong>
-                  <p>профессиональные отношения. леон уважает тренера за прямолинейность и готовность сотрудничать, однако прекрасно понимает, что любой наставник прежде всего защищает своих игроков. тьягу, в свою очередь, не всегда доволен присутствием полиции внутри команды, но признаёт необходимость расследования.</p>
-                </button>
-              </div>
-            </section>
-          </div>
-        </div>
+      <div class="atlas-character-card-grid" data-character-category="fuera-castelmara"></div>
+      <div class="atlas-character-empty" data-empty-category="fuera-castelmara" style="display:none;">
+        <strong>персонажи пока не добавлены</strong>
+        <p>сюда будут попадать внешние сюжетные персонажи.</p>
       </div>
     </div>
   </section>
 </template>
 
-<script>
-(function () {
-  function ensureAtlasPage(pageName) {
-    var holder = document.getElementById("atlas-pages-holder");
-    if (!holder || !pageName) return null;
-
-    var existing = document.getElementById("atlas-page-" + pageName);
-    if (existing) return existing;
-
-    var tpl = document.querySelector('template[data-atlas-page-template="' + pageName + '"]');
-    if (!tpl) return null;
-
-    holder.appendChild(tpl.content.cloneNode(true));
-    return document.getElementById("atlas-page-" + pageName);
-  }
-
-  function openAtlasPage(pageName) {
-    var app = document.getElementById("atlas-app");
-    if (!app || !pageName) return;
-
-    ensureAtlasPage(pageName);
-
-    app.querySelectorAll(".atlas-page").forEach(function (page) {
-      page.classList.toggle("active", page.id === "atlas-page-" + pageName);
-    });
-
-    app.querySelectorAll(".atlas-nav-item").forEach(function (btn) {
-      btn.classList.toggle(
-        "active",
-        btn.dataset.page === pageName || (pageName.indexOf("personajes-") === 0 && btn.dataset.page === "personajes")
-      );
-    });
-
-    app.classList.remove("sidebar-open");
-
-    if (app.scrollIntoView) {
-      app.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function addFueraGate() {
-    var grid = document.querySelector("#atlas-page-personajes .atlas-character-gate-grid");
-    if (!grid) return;
-
-    if (grid.querySelector('[data-open-page="personajes-fuera-castelmara"]')) return;
-
-    var btn = document.createElement("button");
-    btn.className = "atlas-character-gate atlas-search-target";
-    btn.type = "button";
-    btn.setAttribute("data-open-page", "personajes-fuera-castelmara");
-    btn.setAttribute("data-search-title", "fuera de castelmara personajes outside leon redfield");
-    btn.setAttribute("data-search-keywords", "вне кастельмары внешние персонажи leon redfield полиция");
-
-    btn.innerHTML =
-      "<span>outside</span>" +
-      "<h3>fuera de castelmara</h3>" +
-      "<small>персонажи вне академии</small>";
-
-    grid.appendChild(btn);
-  }
-
-  function openFueraModal() {
-    var modal = document.getElementById("atlasFueraLeonModal");
-    if (!modal) return;
-
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-    document.documentElement.style.overflow = "hidden";
-  }
-
-  function closeFueraModal() {
-    var modal = document.getElementById("atlasFueraLeonModal");
-    if (!modal) return;
-
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
-    document.documentElement.style.overflow = "";
-  }
-
-
-  function upsertLeonRedfieldForPlayerBlock() {
-    window.ATLAS_CHARACTERS = window.ATLAS_CHARACTERS || [];
-
-    var leonCharacter = window.ATLAS_LEON_REDFIELD;
-    if (!leonCharacter) return;;
-
-    var index = window.ATLAS_CHARACTERS.findIndex(function(character) {
-      return character && character.id === leonCharacter.id;
-    });
-
-    if (index >= 0) {
-      window.ATLAS_CHARACTERS[index] = Object.assign({}, window.ATLAS_CHARACTERS[index], leonCharacter);
-    } else {
-      window.ATLAS_CHARACTERS.push(leonCharacter);
-    }
-
-    window.dispatchEvent(new CustomEvent("atlasCharactersReady", {
-      detail: { characters: window.ATLAS_CHARACTERS }
-    }));
-  }
-
-  document.addEventListener("click", function (event) {
-    var fueraGate = event.target.closest('[data-open-page="personajes-fuera-castelmara"]');
-    if (fueraGate) {
-      event.preventDefault();
-      event.stopPropagation();
-      openAtlasPage("personajes-fuera-castelmara");
-      return;
-    }
-
-    var modalOpen = event.target.closest("[data-open-fuera-modal]");
-    if (modalOpen) {
-      event.preventDefault();
-      event.stopPropagation();
-      openFueraModal();
-      return;
-    }
-
-    var modalClose = event.target.closest("[data-close-fuera-modal]");
-    if (modalClose) {
-      event.preventDefault();
-      closeFueraModal();
-      return;
-    }
-
-    var relation = event.target.closest("#atlasFueraLeonModal [data-atlas-profile-id]");
-    if (relation) {
-      var targetId = relation.getAttribute("data-atlas-profile-id");
-
-      if (targetId && typeof window.atlasOpenCharacter === "function") {
-        event.preventDefault();
-        event.stopPropagation();
-        closeFueraModal();
-        window.atlasOpenCharacter(targetId);
-      }
-
-      return;
-    }
-
-    if (event.target && event.target.id === "atlasFueraLeonModal") {
-      closeFueraModal();
-    }
-  }, true);
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      closeFueraModal();
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    addFueraGate();
-    upsertLeonRedfieldForPlayerBlock();
-  });
-
-  window.addEventListener("load", function () {
-    addFueraGate();
-    upsertLeonRedfieldForPlayerBlock();
-  });
-
-  var observer = new MutationObserver(function () {
-    addFueraGate();
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var app = document.getElementById("atlas-app");
-    if (app) {
-      observer.observe(app, { childList: true, subtree: true });
-    }
-  });
-
-  setTimeout(function () { addFueraGate(); upsertLeonRedfieldForPlayerBlock(); }, 200);
-  setTimeout(function () { addFueraGate(); upsertLeonRedfieldForPlayerBlock(); }, 600);
-  setTimeout(function () { addFueraGate(); upsertLeonRedfieldForPlayerBlock(); }, 1200);
-})();
-</script>
-
-<!-- SOURCE: \Вставлений text(20260912-145047).txt -->
 <!-- ATLAS PATCH: PERSONAJES VISUAL PHOTOS FINAL v6.
 Вставить отдельным T123-блоком САМЫМ ПОСЛЕДНИМ.
 Нужен потому, что CHARACTERS ENGINE идёт после PERSONAJES MAIN и перебивает ::before у карточек.
