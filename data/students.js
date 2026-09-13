@@ -3637,3 +3637,85 @@ level: "профессионал",
     }
   }));
 })();
+
+/* ATLAS: единая схема направления / команды / статуса спортсмена. */
+(function () {
+  var GAME_TEAM_LABELS = {
+    "hudson-hummond": "Castelmara Hawks, правый крайний нападающий",
+    "manuel-moretti": "Castelmara Foxes, нападающий",
+    "oliver-brown": "«castelmara foxes», капитан / атакующий полузащитник",
+    "blaise-lancer": "«castelmara guards», центральный нападающий",
+    "pablo-de-longa": "«castelmara guards», вратарь",
+    "david-capurro": "«castelmara foxes», центральный защитник"
+  };
+
+  var CHEER_TEAM_LABELS = {
+    "ramona-martina-suarez": "КАПИТАН группы поддержки «castelmara foxes»",
+    "evelina-de-la-rosa": "группа поддержки «castelmara foxes»",
+    "alexa-soriano": "группа поддержки «castelmara foxes»"
+  };
+
+  var CHEER_IDS = {
+    "ramona-martina-suarez": true,
+    "evelina-de-la-rosa": true,
+    "alexa-soriano": true
+  };
+
+  (window.ATLAS_CHARACTERS || []).forEach(function (character) {
+    if (!character || character.category !== "estudiantes") return;
+
+    var info = character.profile && character.profile.overview && character.profile.overview.mainInfo;
+    if (!info) return;
+
+    /* В интерфейсе это одно поле «направление». Ключ faculty оставляем
+       ради совместимости со старым движком и поиском. */
+    var faculty = String(info.faculty || "").trim();
+    var department = String(info.department || "").trim();
+
+    if (faculty.toLowerCase() === "факультет тактики и игровых видов спорта") {
+      faculty = "факультет игровых видов спорта";
+    }
+
+    if (faculty && department && faculty.toLowerCase().indexOf(department.toLowerCase()) === -1) {
+      info.faculty = faculty + ", " + department;
+    } else if (faculty) {
+      info.faculty = faculty;
+    } else if (department) {
+      info.faculty = department;
+    }
+
+    delete info.department;
+    delete info.specialization;
+
+    if (GAME_TEAM_LABELS[character.id]) {
+      info.team = GAME_TEAM_LABELS[character.id];
+    } else if (CHEER_TEAM_LABELS[character.id]) {
+      info.team = CHEER_TEAM_LABELS[character.id];
+    } else {
+      delete info.team;
+    }
+
+    var isAthlete = character.type === "student_sport" || !!CHEER_IDS[character.id];
+    var tags = ["estudiantes"];
+
+    if (Array.isArray(character.tags) && character.tags.some(function (tag) {
+      return String(tag).toLowerCase() === "canon";
+    })) {
+      tags.push("canon");
+    }
+
+    tags.push(isAthlete ? "спортсмен" : "не спортсмен");
+    character.tags = tags;
+  });
+
+  if (typeof window.atlasRenderCharacters === "function") {
+    window.atlasRenderCharacters();
+  }
+
+  window.dispatchEvent(new CustomEvent("atlasCharactersReady", {
+    detail: {
+      characters: window.ATLAS_CHARACTERS,
+      source: "student-direction-team-athlete-tags"
+    }
+  }));
+})();
