@@ -1824,6 +1824,23 @@ level: "профессионал",
 })();
 
 (function () {
+  if (!document.getElementById("atlas-profile-letter-link-style")) {
+    var letterStyle = document.createElement("style");
+    letterStyle.id = "atlas-profile-letter-link-style";
+    letterStyle.textContent =
+      '#atlas-app .atlas-profile-letter-link{' +
+      'display:inline-flex;align-items:center;justify-content:center;' +
+      'margin-top:10px;padding:8px 14px;border-radius:999px;' +
+      'border:1px solid rgba(226,71,71,.55);background:rgba(226,71,71,.10);' +
+      'color:#ff6868;font:inherit;font-size:12px;font-weight:800;letter-spacing:.02em;' +
+      'text-transform:lowercase;cursor:pointer;transition:.18s ease;}' +
+      '#atlas-app .atlas-profile-letter-link:hover{' +
+      'background:rgba(226,71,71,.20);border-color:rgba(226,71,71,.85);color:#ff8b8b;}' +
+      '#atlas-app[data-theme="dark"] .atlas-profile-letter-link{' +
+      'background:rgba(226,71,71,.12);color:#ff7777;}';
+    document.head.appendChild(letterStyle);
+  }
+
   var LETTER_CASES = {
     "oliver-brown": "oliver",
     "ramona-martina-suarez": "ramona",
@@ -1897,19 +1914,35 @@ level: "профессионал",
 
     if (nav) {
       nav.click();
+    } else if (window.location) {
+      window.location.hash = "expediente";
     }
 
-    function clickCase() {
+    var attempts = 0;
+    var timer = window.setInterval(function () {
+      attempts += 1;
+
+      if (typeof window.atlasRenderExpedienteCards === "function") {
+        window.atlasRenderExpedienteCards();
+      }
+
+      var page = document.getElementById("atlas-page-expediente");
+      if (page && !page.classList.contains("active") && nav) {
+        nav.click();
+      }
+
       var caseButton = document.querySelector('#atlas-page-expediente [data-expediente-case="' + caseId + '"]');
 
       if (caseButton) {
+        window.clearInterval(timer);
         caseButton.click();
+        return;
       }
-    }
 
-    setTimeout(clickCase, 180);
-    setTimeout(clickCase, 420);
-    setTimeout(clickCase, 800);
+      if (attempts >= 40) {
+        window.clearInterval(timer);
+      }
+    }, 100);
   }
 
   document.addEventListener("click", function (event) {
@@ -3546,3 +3579,61 @@ level: "профессионал",
   items.forEach(function(x){ if (x && !existing.has(x.id)) window.ATLAS_CARD_ONLY.push(x); });
 })();
 
+
+
+/* ATLAS students: hero tag normalization v2.
+   Game sports: department + team.
+   Non-game students: department only.
+   Cheer: department + specialization + team. */
+(function () {
+  var characters = Array.isArray(window.ATLAS_CHARACTERS) ? window.ATLAS_CHARACTERS : [];
+
+  function clean(value) {
+    return String(value == null ? "" : value).trim();
+  }
+
+  function isCanon(character) {
+    return Array.isArray(character.tags) && character.tags.some(function (tag) {
+      return clean(tag).toLowerCase() === "canon";
+    });
+  }
+
+  characters.forEach(function (character) {
+    if (!character || character.category !== "estudiantes") return;
+
+    var info = character.profile && character.profile.overview && character.profile.overview.mainInfo;
+    if (!info) return;
+
+    var faculty = clean(info.faculty);
+    var department = clean(info.department);
+    var specialization = clean(info.specialization);
+    var team = clean(info.team);
+    var subtitle = clean(character.subtitle).toLowerCase();
+
+    var cheerText = (specialization + " " + team + " " + subtitle).toLowerCase();
+    var cheer = cheerText.indexOf("группа поддержки") !== -1;
+    var gameSport = faculty === "факультет тактики и игровых видов спорта";
+
+    var tags = ["estudiantes"];
+    if (isCanon(character)) tags.push("canon");
+    if (department) tags.push(department);
+
+    if (cheer) {
+      if (specialization) tags.push(specialization);
+      if (team) tags.push(team);
+    } else if (gameSport && team) {
+      tags.push(team);
+    }
+
+    character.tags = tags.filter(function (tag, index, arr) {
+      return tag && arr.indexOf(tag) === index;
+    });
+  });
+
+  window.dispatchEvent(new CustomEvent("atlasCharactersReady", {
+    detail: {
+      characters: characters,
+      source: "students-tags-v2"
+    }
+  }));
+})();
