@@ -14454,7 +14454,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       placeOfBirth: "место рождения",
       course: "курс",
       year: "год обучения",
-      faculty: "факультет",
+      faculty: "направление",
       department: "кафедра / отделение",
       specialization: "специализация",
       scoutInterest: "интерес скаутов",
@@ -14910,8 +14910,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       statusRows = compactRows([
         { label: "статус", value: statusLabel, className: "is-status" + statusClass },
         { label: "возраст", value: profileInfo.age || "" },
-        { label: "факультет", value: profileInfo.faculty || "" },
-        { label: "направление", value: profileInfo.specialization || profileInfo.department || "" },
+        { label: "направление", value: profileInfo.faculty || "" },
+        { label: "команда", value: profileInfo.team || "" },
         { label: "уровень", value: profileInfo.level || "" }
       ]);
     } else if (character.type === "lyceum") {
@@ -14934,7 +14934,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       statusRows = compactRows([
         { label: "статус", value: statusLabel, className: "is-status" + statusClass },
         { label: "возраст", value: profileInfo.age || "" },
-        { label: "факультет", value: profileInfo.faculty || "" },
+        { label: "направление", value: profileInfo.faculty || "" },
         { label: "команда", value: profileInfo.team || "" },
         { label: "уровень", value: profileInfo.level || "" }
       ]);
