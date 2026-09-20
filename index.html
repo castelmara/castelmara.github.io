@@ -9638,10 +9638,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         { place: 2, team: "Castelmara Griffins", pts: 16, record: "5W / 1D / 2L", status: "aspirante" },
         { place: 3, team: "Castelmara Foxes", pts: 10, record: "3W / 1D / 4L", status: "finalista 2023/24" }
       ],
+      archiveDate: "mayo 2024",
       archive: [
-        { place: 1, team: "Castelmara Hellhounds", pts: 28, record: "9W / 1D / 2L" },
-        { place: 2, team: "Castelmara Foxes", pts: 24, record: "7W / 3D / 2L" },
-        { place: 3, team: "Castelmara Griffins", pts: 17, record: "5W / 2D / 5L" }
+        { place: 1, team: "Castelmara Hellhounds", pts: 26, record: "8W / 2D / 5L", status: "campeón 2023/24" },
+        { place: 2, team: "Castelmara Foxes", pts: 24, record: "7W / 3D / 6L", status: "finalista 2023/24" },
+        { place: 3, team: "Castelmara Griffins", pts: 15, record: "4W / 3D / 8L", status: "eliminado en play-in" }
       ],
       playoffs: "play-in: Foxes 2:1 Griffins. final: Hellhounds 3:2 Foxes."
     },
@@ -9654,10 +9655,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         { place: 2, team: "Castelmara Wolves", pts: 15, record: "4W / 2OTW / 2L", status: "aspirante" },
         { place: 3, team: "Castelmara Guards", pts: 12, record: "4W / 0OTW / 4L", status: "finalista 2023/24" }
       ],
+      archiveDate: "mayo 2024",
       archive: [
-        { place: 1, team: "Castelmara Hawks", pts: 26, record: "8W / 2OTW / 2L" },
-        { place: 2, team: "Castelmara Guards", pts: 22, record: "7W / 1OTW / 4L" },
-        { place: 3, team: "Castelmara Wolves", pts: 18, record: "5W / 3OTW / 4L" }
+        { place: 1, team: "Castelmara Hawks", pts: 28, record: "8W / 2OTW / 4L", status: "campeón 2023/24" },
+        { place: 2, team: "Castelmara Guards", pts: 23, record: "7W / 1OTW / 5L", status: "finalista 2023/24" },
+        { place: 3, team: "Castelmara Wolves", pts: 20, record: "6W / 1OTW / 6L", status: "eliminado en play-in" }
       ],
       playoffs: "play-in: Guards 3:2 Wolves. final: Hawks 2:0 Guards."
     },
@@ -9670,10 +9672,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         { place: 2, team: "Castelmara Sunbirds", pts: 18, record: "6W / 2L", status: "campeón defensor" },
         { place: 3, team: "Castelmara Wildcats", pts: 11, record: "3W / 5L", status: "aspirante" }
       ],
+      archiveDate: "mayo 2024",
       archive: [
-        { place: 1, team: "Castelmara Sunbirds", pts: 30, record: "10W / 2L" },
-        { place: 2, team: "Castelmara Bulls", pts: 25, record: "8W / 4L" },
-        { place: 3, team: "Castelmara Wildcats", pts: 20, record: "6W / 6L" }
+        { place: 1, team: "Castelmara Sunbirds", pts: 30, record: "10W / 2L", status: "campeón 2023/24" },
+        { place: 2, team: "Castelmara Bulls", pts: 24, record: "8W / 4L", status: "finalista 2023/24" },
+        { place: 3, team: "Castelmara Wildcats", pts: 18, record: "6W / 6L", status: "eliminado en play-in" }
       ],
       playoffs: "play-in: Bulls 3:2 Wildcats. final: Sunbirds 3:0 Bulls; sets: 25:19, 25:21, 25:17."
     },
@@ -9686,10 +9689,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         { place: 2, team: "Castelmara Wall", pts: 16, record: "5W / 3L", status: "campeón defensor" },
         { place: 3, team: "Castelmara Cross", pts: 13, record: "4W / 4L", status: "aspirante" }
       ],
+      archiveDate: "mayo 2024",
       archive: [
-        { place: 1, team: "Castelmara Wall", pts: 29, record: "10W / 2L" },
-        { place: 2, team: "Castelmara Flames", pts: 24, record: "8W / 4L" },
-        { place: 3, team: "Castelmara Cross", pts: 19, record: "6W / 6L" }
+        { place: 1, team: "Castelmara Wall", pts: 30, record: "10W / 2L", status: "campeón 2023/24" },
+        { place: 2, team: "Castelmara Flames", pts: 24, record: "8W / 4L", status: "finalista 2023/24" },
+        { place: 3, team: "Castelmara Cross", pts: 18, record: "6W / 6L", status: "eliminado en play-in" }
       ],
       playoffs: "play-in: Flames 91:86 Cross. final: Wall 83:77 Flames; quarters: 23:26, 24:21, 22:10, 14:20."
     }
@@ -10122,7 +10126,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
   function renderCopaSportBlock(group, mode) {
     const rows = mode === "current" ? group.current : group.archive;
-    const note = mode === "current" ? "febrero 2025" : group.playoffs;
+    const note = mode === "current"
+      ? "febrero 2025"
+      : [group.archiveDate, group.playoffs].filter(Boolean).join(" · ");
 
     return `
       <div class="atlas-copa-sport-block">
@@ -10130,7 +10136,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
           <strong>${escapeHtml(group.sport)}</strong>
           <span>${escapeHtml(note)}</span>
         </div>
-        ${renderCopaTable(rows, mode === "current")}
+        ${renderCopaTable(rows, true)}
       </div>
     `;
   }
