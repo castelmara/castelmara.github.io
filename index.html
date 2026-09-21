@@ -839,6 +839,7 @@ body.atlas-modal-open {
       <button class="atlas-nav-item" type="button" data-page="facultades"><span class="atlas-nav-icon">▤</span><span>facultades</span></button>
       <button class="atlas-nav-item" type="button" data-page="equipos"><span class="atlas-nav-icon">⊙</span><span>equipos</span></button>
       <button class="atlas-nav-item" type="button" data-page="personajes"><span class="atlas-nav-icon">✥</span><span>personajes</span></button>
+      <button class="atlas-nav-item" type="button" data-page="jugadores"><span class="atlas-nav-icon">♙</span><span>игроки</span></button>
 
       <button class="atlas-nav-item" type="button" data-page="expediente">
         <span class="atlas-nav-icon atlas-expediente-nav-icon">
@@ -916,6 +917,7 @@ body.atlas-modal-open {
     'personajes-entrenadores': 'personajes',
     'personajes-estudiantes': 'personajes',
     'personajes-fuera-castelmara' : 'personajes',
+    'player-profile': 'jugadores',
     'expediente-perfiles': 'expediente',
     'expediente-archivo': 'expediente',
     'expediente-cronologia': 'expediente'
@@ -944,6 +946,7 @@ body.atlas-modal-open {
     template.remove();
 
     if (window.atlasRenderCharacters) window.atlasRenderCharacters();
+    if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -1039,6 +1042,7 @@ body.atlas-modal-open {
     addBackButton(pageName);
 
     if (window.atlasRenderCharacters) window.atlasRenderCharacters();
+    if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -19858,8 +19862,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         </form>
         <div class="atlas-auth-admin-result" id="atlasAdminResetResult" hidden></div>
       </div>
+      <button class="atlas-auth-secondary" type="button" id="atlasOpenMyProfileButton" style="margin-bottom:10px">открыть мой профиль</button>
       <button class="atlas-auth-secondary" type="button" id="atlasLogoutButton">выйти из аккаунта</button>
-      <p class="atlas-auth-note">полный профиль игрока, персонажи и ачивки добавим следующим этапом.</p>
+      <p class="atlas-auth-note">профиль игрока доступен в каталоге «игроки».</p>
     </div>
   </section>
 </div>
@@ -20019,6 +20024,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       profileCache = result.data || null;
     }
     renderAccount();
+    window.ATLAS_CURRENT_PROFILE = profileCache || null;
+    window.ATLAS_CURRENT_SESSION = sessionCache || null;
+    window.dispatchEvent(new CustomEvent('atlasPlayerAuthReady', { detail: { profile: profileCache || null, session: sessionCache || null } }));
   }
 
   async function syncSession(session){
@@ -20030,6 +20038,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     renderAccount();
     openModal();
   });
+
+  var openMyProfileButton = document.getElementById('atlasOpenMyProfileButton');
+  if(openMyProfileButton){
+    openMyProfileButton.addEventListener('click', function(){
+      if(!sessionCache || !sessionCache.user) return;
+      closeModal();
+      if(typeof window.atlasOpenPlayerProfile === 'function'){
+        window.atlasOpenPlayerProfile(sessionCache.user.id);
+      } else if(typeof window.atlasOpenPage === 'function'){
+        try{ sessionStorage.setItem('atlasPlayerProfileId', sessionCache.user.id); }catch(_err){}
+        window.atlasOpenPage('player-profile');
+      }
+    });
+  }
 
   modal.addEventListener('click', function(e){
     if(e.target.closest('[data-auth-close="true"]')) closeModal();
@@ -20197,6 +20219,285 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   client.auth.getSession().then(function(res){
     syncSession(res.data && res.data.session ? res.data.session : null);
+  });
+})();
+</script>
+
+
+
+<!-- ATLAS PLAYERS — public catalogue + player profiles -->
+<style>
+#atlas-app #atlas-page-jugadores,
+#atlas-app #atlas-page-player-profile,
+#atlas-app #atlas-page-jugadores *,
+#atlas-app #atlas-page-player-profile *{font-family:"Montserrat",Arial,sans-serif!important;box-sizing:border-box}
+#atlas-app .atlas-player-catalog-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
+#atlas-app .atlas-player-catalog-head h2{margin:0;font-size:clamp(36px,5vw,64px);line-height:.92;font-weight:950;letter-spacing:-.055em;text-transform:lowercase}
+#atlas-app .atlas-player-catalog-head p{margin:10px 0 0;color:#737986;font-size:14px;line-height:1.55;max-width:680px}
+#atlas-app .atlas-player-count{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:34px;padding:0 12px;border:1px solid rgba(201,61,61,.28);border-radius:999px;background:rgba(201,61,61,.07);color:#c73d3d;font-size:12px;font-weight:950;white-space:nowrap}
+#atlas-app .atlas-player-grid{display:grid;grid-template-columns:repeat(auto-fill,230px);gap:22px;align-items:start;justify-content:start;margin-top:24px}
+#atlas-app .atlas-player-card{width:230px;height:315px;border:0;border-radius:28px;padding:0;overflow:hidden;position:relative;display:block;background:#111;color:#fff;cursor:pointer;text-align:left;box-shadow:0 18px 42px rgba(23,23,31,.12);transition:transform .24s ease,box-shadow .24s ease}
+#atlas-app .atlas-player-card:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(23,23,31,.18)}
+#atlas-app .atlas-player-card-media{position:absolute;inset:0;background:linear-gradient(145deg,#191919,#050505);display:grid;place-items:center}
+#atlas-app .atlas-player-card-media img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(100%)}
+#atlas-app .atlas-player-card-letter{font-size:86px;font-weight:950;line-height:1;color:rgba(255,255,255,.88);text-transform:uppercase}
+#atlas-app .atlas-player-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02) 34%,rgba(0,0,0,.92) 100%);pointer-events:none}
+#atlas-app .atlas-player-card-copy{position:absolute;z-index:2;left:17px;right:15px;bottom:17px}
+#atlas-app .atlas-player-card-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+#atlas-app .atlas-player-card-badges span{display:inline-flex;align-items:center;min-height:23px;padding:5px 8px;border-radius:999px;background:rgba(201,61,61,.9);color:#fff;font-size:9px;line-height:1;font-weight:950;text-transform:uppercase;letter-spacing:.05em}
+#atlas-app .atlas-player-card-copy h3{margin:0;color:#fff;font-size:20px;line-height:.98;font-weight:950;letter-spacing:-.04em}
+#atlas-app .atlas-player-card-copy p{margin:6px 0 0;color:rgba(255,255,255,.82);font-size:11px;line-height:1.25;font-weight:800}
+#atlas-app .atlas-player-empty{margin-top:24px;padding:28px;border:1px solid var(--line-soft,#eee4df);border-radius:22px;background:#fff;color:#6f7580}
+#atlas-app .atlas-player-empty strong{display:block;margin-bottom:7px;color:#15181d;font-size:18px}
+#atlas-app .atlas-player-loading{display:flex;align-items:center;gap:10px;color:#858b95;font-size:13px;font-weight:800;padding:24px 0}
+#atlas-app .atlas-player-loading::before{content:"";width:15px;height:15px;border:2px solid rgba(201,61,61,.18);border-top-color:#c93d3d;border-radius:50%;animation:atlasPlayerSpin .7s linear infinite}
+@keyframes atlasPlayerSpin{to{transform:rotate(360deg)}}
+
+#atlas-app .atlas-player-profile-page{color:#111}
+#atlas-app .atlas-player-profile-page .atlas-profile-hero::before{background-image:var(--character-banner);background-position:center;background-size:cover}
+#atlas-app .atlas-player-profile-page .atlas-profile-hero.is-placeholder::before{background-image:radial-gradient(circle at 72% 24%,rgba(199,61,61,.34),transparent 24%),radial-gradient(circle at 28% 78%,rgba(255,255,255,.10),transparent 30%),linear-gradient(135deg,#121317,#030304)}
+#atlas-app .atlas-player-profile-page .atlas-profile-title h2{text-transform:none;overflow-wrap:anywhere}
+#atlas-app .atlas-player-profile-page .atlas-profile-first{text-transform:none;color:rgba(255,255,255,.82);font-size:18px;margin-bottom:10px;font-weight:800;letter-spacing:-.02em}
+#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:108px;height:108px;border:4px solid rgba(255,255,255,.95);border-radius:50%;overflow:hidden;background:#15171c;color:#fff;display:grid;place-items:center;font-size:40px;font-weight:950;margin-bottom:20px;box-shadow:0 14px 38px rgba(0,0,0,.25)}
+#atlas-app .atlas-player-profile-page .atlas-player-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+#atlas-app .atlas-player-profile-page .atlas-player-heart{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:#ff7373;font-size:13px;font-weight:900}
+#atlas-app .atlas-player-profile-page .atlas-player-heart button{border:0;background:none;color:inherit;font:inherit;font-weight:950;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#atlas-app .atlas-player-info-rows{display:grid;gap:0}
+#atlas-app .atlas-player-info-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:14px 0;border-bottom:1px solid rgba(20,24,30,.08)}
+#atlas-app .atlas-player-info-row:last-child{border-bottom:0}
+#atlas-app .atlas-player-info-row span{color:#858b95;font-size:11px;font-weight:900;text-transform:lowercase}
+#atlas-app .atlas-player-info-row strong,#atlas-app .atlas-player-info-row a{color:#171a20;font-size:13px;line-height:1.45;font-weight:850;text-decoration:none;overflow-wrap:anywhere}
+#atlas-app .atlas-player-info-row a:hover{color:#c83b3b}
+#atlas-app .atlas-player-metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#atlas-app .atlas-player-metric{border:1px solid rgba(20,24,30,.08);border-radius:16px;background:#fafafa;padding:17px}
+#atlas-app .atlas-player-metric strong{display:block;font-size:28px;line-height:1;font-weight:950;margin-bottom:7px;color:#15181d}
+#atlas-app .atlas-player-metric span{color:#858b95;font-size:11px;font-weight:850}
+#atlas-app .atlas-player-achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+#atlas-app .atlas-player-achievement{border:1px solid rgba(20,24,30,.08);border-radius:18px;background:#fff;padding:18px;min-height:140px}
+#atlas-app .atlas-player-achievement-icon{font-size:28px;line-height:1;margin-bottom:16px}
+#atlas-app .atlas-player-achievement strong{display:block;margin-bottom:6px;font-size:15px;color:#171a20}
+#atlas-app .atlas-player-achievement p{margin:0;color:#7d838d;font-size:12px;line-height:1.5}
+#atlas-app .atlas-player-achievement small{display:block;margin-top:10px;color:#b0b4bb;font-size:10px;font-weight:800}
+#atlas-app .atlas-player-character-empty,#atlas-app .atlas-player-achievement-empty{padding:24px;border:1px dashed rgba(20,24,30,.16);border-radius:18px;color:#858b95;font-size:13px;line-height:1.55}
+
+#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head h2,
+#atlas-app[data-theme="dark"] .atlas-player-profile-page{color:#f5f2ef}
+#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head p{color:#9ba1aa}
+#atlas-app[data-theme="dark"] .atlas-player-empty{background:#11161d;border-color:#29313b;color:#9ba1aa}
+#atlas-app[data-theme="dark"] .atlas-player-empty strong{color:#f5f2ef}
+#atlas-app[data-theme="dark"] .atlas-player-info-row{border-color:rgba(255,255,255,.08)}
+#atlas-app[data-theme="dark"] .atlas-player-info-row strong,#atlas-app[data-theme="dark"] .atlas-player-info-row a{color:#f5f2ef}
+#atlas-app[data-theme="dark"] .atlas-player-metric{background:#171d25;border-color:#2a323d}
+#atlas-app[data-theme="dark"] .atlas-player-metric strong{color:#fff}
+#atlas-app[data-theme="dark"] .atlas-player-achievement{background:#151b22;border-color:#2a323d}
+#atlas-app[data-theme="dark"] .atlas-player-achievement strong{color:#fff}
+#atlas-app[data-theme="dark"] .atlas-player-character-empty,#atlas-app[data-theme="dark"] .atlas-player-achievement-empty{border-color:#313944;color:#9ba1aa}
+
+@media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
+@media(max-width:560px){#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}}
+</style>
+
+<template data-atlas-page-template="jugadores">
+  <section class="atlas-page" id="atlas-page-jugadores">
+    <div class="atlas-page-shell">
+      <div class="atlas-player-catalog-head">
+        <div>
+          <h2>игроки</h2>
+          <p>профили зарегистрированных участников Кастельмары. никнеймы, персонажи, streak и достижения живут здесь.</p>
+        </div>
+        <span class="atlas-player-count" id="atlasPlayerCount">0 игроков</span>
+      </div>
+      <div class="atlas-player-loading" id="atlasPlayerLoading">загружаем профили ATLAS…</div>
+      <div class="atlas-player-grid" id="atlasPlayerGrid"></div>
+      <div class="atlas-player-empty" id="atlasPlayerEmpty" hidden><strong>пока никого нет</strong><span>первый зарегистрированный игрок появится здесь автоматически.</span></div>
+    </div>
+  </section>
+</template>
+
+<template data-atlas-page-template="player-profile">
+  <section class="atlas-page" id="atlas-page-player-profile">
+    <div class="atlas-page-shell">
+      <div class="atlas-player-profile-page" id="atlasPlayerProfileRoot">
+        <div class="atlas-player-loading">загружаем профиль игрока…</div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+(function(){
+  var profilesCache = [];
+  var profilesLoadedAt = 0;
+  var currentPlayerId = '';
+
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>'"]/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch];
+    });
+  }
+
+  function client(){ return window.ATLAS_SUPABASE || null; }
+  function initial(profile){
+    var source = profile && (profile.display_name || profile.nickname) || 'A';
+    return String(source).trim().charAt(0).toUpperCase() || 'A';
+  }
+  function displayName(profile){ return profile && (profile.display_name || profile.nickname) || 'игрок'; }
+  function fmtDate(value){
+    if(!value) return '—';
+    try{return new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'long',year:'numeric'}).format(new Date(value));}catch(_){return String(value)}
+  }
+  function pluralPlayers(n){
+    n=Math.abs(Number(n)||0)%100; var n1=n%10;
+    if(n>10&&n<20)return 'игроков'; if(n1>1&&n1<5)return 'игрока'; if(n1===1)return 'игрок'; return 'игроков';
+  }
+  function relationDuration(start){
+    if(!start) return '';
+    var a=new Date(start+'T00:00:00'); var b=new Date();
+    if(isNaN(a.getTime())||a>b)return '';
+    var years=b.getFullYear()-a.getFullYear();
+    var months=b.getMonth()-a.getMonth();
+    var days=b.getDate()-a.getDate();
+    if(days<0){months--;var prev=new Date(b.getFullYear(),b.getMonth(),0);days+=prev.getDate()}
+    if(months<0){years--;months+=12}
+    var parts=[]; if(years)parts.push(years+' г.'); if(months)parts.push(months+' мес.'); if(days||!parts.length)parts.push(days+' дн.');
+    return parts.join(' ');
+  }
+
+  async function getProfiles(force){
+    var c=client(); if(!c) throw new Error('Supabase ещё загружается');
+    if(!force && profilesCache.length && Date.now()-profilesLoadedAt<30000) return profilesCache;
+    var res=await c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role').not('nickname','is',null).order('created_at',{ascending:true});
+    if(res.error) throw res.error;
+    profilesCache=res.data||[]; profilesLoadedAt=Date.now(); return profilesCache;
+  }
+
+  function playerCard(p){
+    var media=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':'<span class="atlas-player-card-letter">'+esc(initial(p))+'</span>';
+    var badges=['игрок'];
+    if(p.current_streak>1) badges.push('🔥 '+p.current_streak);
+    if(p.role==='superadmin') badges.push('admin');
+    return '<button class="atlas-player-card" type="button" data-player-id="'+esc(p.id)+'">'+
+      '<span class="atlas-player-card-media">'+media+'</span>'+
+      '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'player')+'</p></span>'+
+    '</button>';
+  }
+
+  async function renderPlayers(){
+    var grid=document.getElementById('atlasPlayerGrid');
+    if(!grid) return;
+    var loading=document.getElementById('atlasPlayerLoading');
+    var empty=document.getElementById('atlasPlayerEmpty');
+    try{
+      if(loading) loading.hidden=false;
+      var list=await getProfiles(false);
+      grid.innerHTML=list.map(playerCard).join('');
+      var count=document.getElementById('atlasPlayerCount');
+      if(count) count.textContent=list.length+' '+pluralPlayers(list.length);
+      if(empty) empty.hidden=!!list.length;
+    }catch(err){
+      grid.innerHTML=''; if(empty){empty.hidden=false;empty.innerHTML='<strong>не удалось загрузить игроков</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span>'}
+    }finally{ if(loading) loading.hidden=true; }
+  }
+
+  function infoRows(rows){
+    return '<div class="atlas-player-info-rows">'+rows.filter(function(r){return r[1]}).map(function(r){
+      return '<div class="atlas-player-info-row"><span>'+esc(r[0])+'</span><strong>'+r[2]+'</strong></div>';
+    }).join('')+'</div>';
+  }
+
+  function renderOwnedCharacterCard(ch){
+    var img=(ch.card&&ch.card.image)||ch.cardImage||ch.avatar||ch.banner||'';
+    return '<article class="atlas-character-card"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
+      (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+
+      '<span class="atlas-character-card-text"><h3>'+esc(ch.cardName||ch.name||ch.id)+'</h3><p>'+esc((ch.card&&ch.card.short)||ch.subtitle||'')+'</p></span></button></article>';
+  }
+
+  async function fetchPlayerBundle(id){
+    var c=client(); if(!c) throw new Error('Supabase ещё загружается');
+    var results=await Promise.all([
+      c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role').eq('id',id).maybeSingle(),
+      c.from('character_owners').select('character_id,display_order').eq('user_id',id).order('display_order',{ascending:true}),
+      c.from('user_achievements').select('earned_at,earned_year,achievements(code,title,description,icon,category)').eq('user_id',id).order('earned_at',{ascending:false}),
+      c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1)
+    ]);
+    for(var i=0;i<results.length;i++){ if(results[i].error) throw results[i].error; }
+    var rel=results[3].data&&results[3].data[0]||null, partner=null;
+    if(rel){
+      var partnerId=rel.requester_id===id?rel.partner_id:rel.requester_id;
+      var pr=await c.from('profiles').select('id,nickname,display_name,avatar_url').eq('id',partnerId).maybeSingle();
+      if(!pr.error) partner=pr.data||null;
+    }
+    return {profile:results[0].data,owners:results[1].data||[],achievements:results[2].data||[],relationship:rel,partner:partner};
+  }
+
+  function relLabel(type){return type==='married'?'в браке':type==='complicated'?'всё сложно':'в отношениях'}
+  function tabButton(id,label,active){return '<button class="atlas-profile-tab-btn'+(active?' is-active':'')+'" type="button" data-player-tab="'+esc(id)+'">'+esc(label)+'</button>'}
+  function tabPanel(id,content,active){return '<section class="atlas-profile-tab-panel'+(active?' is-active':'')+'" data-player-tab-panel="'+esc(id)+'">'+content+'</section>'}
+
+  async function renderPlayerProfile(id){
+    var root=document.getElementById('atlasPlayerProfileRoot'); if(!root)return;
+    root.innerHTML='<div class="atlas-player-loading">загружаем профиль игрока…</div>';
+    try{
+      var bundle=await fetchPlayerBundle(id), p=bundle.profile;
+      if(!p){root.innerHTML='<div class="atlas-player-empty"><strong>профиль не найден</strong></div>';return}
+      currentPlayerId=p.id; try{sessionStorage.setItem('atlasPlayerProfileId',p.id)}catch(_e){}
+      var banner=p.banner_url||p.avatar_url||'';
+      var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));
+      var chars=(bundle.owners||[]).map(function(o){return (window.ATLAS_CHARACTERS||[]).find(function(ch){return ch.id===o.character_id})}).filter(Boolean);
+      var ach=bundle.achievements||[];
+      var heart='';
+      if(bundle.relationship&&bundle.partner){
+        var dur=relationDuration(bundle.relationship.started_on);
+        heart='<div class="atlas-player-heart">♥ '+esc(relLabel(bundle.relationship.relationship_type))+' с <button type="button" data-player-id="'+esc(bundle.partner.id)+'">@'+esc(bundle.partner.nickname||displayName(bundle.partner))+'</button>'+(dur?' · '+esc(dur):'')+'</div>';
+      }
+      var vk=p.vk_url?'<a href="'+esc(p.vk_url)+'" target="_blank" rel="noopener">'+esc(p.vk_url)+'</a>':'—';
+      var overview='<div class="atlas-profile-overview-grid"><div class="atlas-profile-card"><h3>профиль игрока</h3>'+infoRows([
+        ['имя',p.display_name||p.nickname,'<span>'+esc(p.display_name||p.nickname)+'</span>'],
+        ['никнейм',p.nickname,'<span>@'+esc(p.nickname)+'</span>'],
+        ['статус',p.status_text,'<span>'+esc(p.status_text)+'</span>'],
+        ['VK',p.vk_url,vk],
+        ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
+      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучший streak</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div></div></div>';
+      var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
+      var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){var x=a.achievements||{};return '<article class="atlas-player-achievement"><div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div><strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>'}).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за streak, день рождения, персонажей и другие события ATLAS.</div>';
+      var statusRows='<div class="atlas-profile-status-row"><span>streak</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><span class="atlas-profile-first">@'+esc(p.nickname||'player')+'</span><h2>'+esc(displayName(p))+'</h2><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока Кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>superadmin</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+        '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('achievements',achPanel,false);
+    }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
+  }
+
+  function openPlayerProfile(id){
+    if(!id)return; currentPlayerId=id; try{sessionStorage.setItem('atlasPlayerProfileId',id)}catch(_e){}
+    if(typeof window.atlasOpenPage==='function') window.atlasOpenPage('player-profile');
+    setTimeout(function(){renderPlayerProfile(id)},20);
+  }
+  function switchTab(name){
+    document.querySelectorAll('#atlas-app [data-player-tab]').forEach(function(b){b.classList.toggle('is-active',b.getAttribute('data-player-tab')===name)});
+    document.querySelectorAll('#atlas-app [data-player-tab-panel]').forEach(function(p){p.classList.toggle('is-active',p.getAttribute('data-player-tab-panel')===name)});
+  }
+
+  document.addEventListener('click',function(e){
+    var card=e.target.closest('[data-player-id]');
+    if(card){e.preventDefault();e.stopPropagation();openPlayerProfile(card.getAttribute('data-player-id'));return}
+    var tab=e.target.closest('[data-player-tab]');
+    if(tab){e.preventDefault();switchTab(tab.getAttribute('data-player-tab'));return}
+  },true);
+
+  function renderHook(pageName){
+    if(pageName==='jugadores'||document.getElementById('atlas-page-jugadores')&&document.getElementById('atlas-page-jugadores').classList.contains('active')) setTimeout(renderPlayers,0);
+    if(pageName==='player-profile'||document.getElementById('atlas-page-player-profile')&&document.getElementById('atlas-page-player-profile').classList.contains('active')){
+      var id=currentPlayerId; if(!id){try{id=sessionStorage.getItem('atlasPlayerProfileId')||''}catch(_e){}}
+      if(id)setTimeout(function(){renderPlayerProfile(id)},0);
+    }
+  }
+
+  window.atlasRenderPlayers=renderHook;
+  window.atlasOpenPlayerProfile=openPlayerProfile;
+  window.addEventListener('atlasPlayerAuthReady',function(){profilesLoadedAt=0;if(document.getElementById('atlasPlayerGrid'))renderPlayers()});
+  document.addEventListener('DOMContentLoaded',function(){
+    var hash=(location.hash||'').replace(/^#/,'');
+    if(hash==='jugadores')setTimeout(renderPlayers,100);
+    if(hash==='player-profile'){var id='';try{id=sessionStorage.getItem('atlasPlayerProfileId')||''}catch(_e){}if(id)setTimeout(function(){renderPlayerProfile(id)},120)}
   });
 })();
 </script>
