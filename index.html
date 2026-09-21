@@ -27,6 +27,45 @@
     @keyframes atlasLoaderLogo{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
     @keyframes atlasLoaderSpin{to{transform:rotate(360deg)}}
   </style>
+
+<style id="atlas-mobile-photo-off">
+/* временно: загрузка/смена изображений отключена на мобильных устройствах */
+#atlasPlayerEditModal .atlas-player-file-mobile,
+#atlas-app .atlas-player-post-mobile-pick,
+#atlas-app .atlas-player-post-mobile-file{
+  display:none!important;
+}
+
+@media (max-width:760px), (pointer:coarse){
+  #atlasPlayerEditModal .atlas-player-edit-media-note,
+  #atlasPlayerEditModal .atlas-player-edit-photo-field{
+    display:none!important;
+  }
+
+  #atlasPlayerEditModal .atlas-player-edit-file{
+    display:none!important;
+    pointer-events:none!important;
+  }
+
+  #atlas-app .atlas-player-post-drop,
+  #atlas-app .atlas-player-post-mobile-pick,
+  #atlas-app .atlas-player-post-mobile-file{
+    display:none!important;
+    pointer-events:none!important;
+  }
+
+  #atlas-app .atlas-player-post-composer-head span{
+    display:none!important;
+  }
+
+  #atlas-app .atlas-player-post-composer-head::after{
+    content:"с телефона пока только текст";
+    color:#9aa0a9;
+    font-size:10px;
+    font-weight:800;
+  }
+}
+</style>
 </head>
 <body>
 <div id="atlas-dark-loader" aria-hidden="true">
@@ -19680,23 +19719,142 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   vertical-align:middle!important;
 }
 
-/* Ultra-thin themed cursor. Desktop only. */
+/* Персональный курсор ATLAS. Только desktop / точный указатель. */
 @media (hover:hover) and (pointer:fine){
-  #atlas-app, #atlas-app *, #atlasModal, #atlasModal *{cursor:none!important}
-  #atlas-theme-cursor{position:fixed;left:0;top:0;width:13px;height:13px;border:1px solid rgba(20,22,28,.82);border-radius:50%;pointer-events:none;z-index:2147483647;transform:translate(-50%,-50%);transition:width .12s ease,height .12s ease,border-color .18s ease,background .18s ease,opacity .12s ease;opacity:0;mix-blend-mode:normal}
+  html.atlas-cursor-enabled,
+  html.atlas-cursor-enabled body,
+  html.atlas-cursor-enabled body *{cursor:none!important}
+
+  #atlas-theme-cursor{
+    position:fixed;
+    left:0;
+    top:0;
+    width:13px;
+    height:13px;
+    border:1px solid rgba(20,22,28,.82);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:2147483647;
+    transform:translate(-50%,-50%);
+    transition:width .12s ease,height .12s ease,border-color .18s ease,background .18s ease,opacity .12s ease,transform .12s ease;
+    opacity:0;
+    mix-blend-mode:normal;
+    display:grid;
+    place-items:center;
+    line-height:1;
+    user-select:none;
+  }
   #atlas-theme-cursor.is-visible{opacity:1}
   #atlas-theme-cursor.is-hover{width:21px;height:21px;background:rgba(179,59,59,.035);border-color:rgba(179,59,59,.82)}
   html[data-atlas-theme="dark"] #atlas-theme-cursor{border-color:rgba(245,242,239,.82)}
   html[data-atlas-theme="dark"] #atlas-theme-cursor.is-hover{border-color:#ff6b6b;background:rgba(226,71,71,.06)}
+
+  #atlas-theme-cursor:not([data-style="classic"]){
+    width:30px;
+    height:30px;
+    border:0;
+    background:transparent;
+    border-radius:0;
+    font-size:23px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.18));
+  }
+  #atlas-theme-cursor:not([data-style="classic"]).is-hover{
+    width:30px;
+    height:30px;
+    border:0;
+    background:transparent;
+    transform:translate(-50%,-50%) scale(1.18);
+  }
+  #atlas-theme-cursor[data-style="heart"]{color:#dc3f4d;font-size:27px}
+  #atlas-theme-cursor[data-style="star"]{color:#e0a52f;font-size:26px}
+  #atlas-theme-cursor[data-style="puck"]{filter:drop-shadow(0 2px 2px rgba(0,0,0,.28))}
+  #atlas-theme-cursor .atlas-cursor-puck{
+    display:block;
+    width:23px;
+    height:10px;
+    border-radius:50%;
+    background:linear-gradient(180deg,#4a4f58 0%,#11151b 55%,#050607 100%);
+    border:1px solid rgba(255,255,255,.30);
+    box-shadow:0 3px 0 #090b0e;
+  }
 }
 </style>
 <script>
 (function(){
-  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  var c=document.createElement('div'); c.id='atlas-theme-cursor'; document.body.appendChild(c);
-  document.addEventListener('mousemove',function(e){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';c.classList.add('is-visible')},{passive:true});
-  document.addEventListener('mouseover',function(e){var t=e.target.closest&&e.target.closest('a,button,input,summary,[role="button"],[data-open-page],[data-modal-target],[data-character-id]');c.classList.toggle('is-hover',!!t)});
-  document.addEventListener('mouseout',function(e){if(!e.relatedTarget)c.classList.remove('is-visible')});
+  var fine=!!(window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches);
+  var allowed=['classic','flower','football','puck','heart','star','butterfly','tennis','basketball'];
+  var glyphs={
+    flower:'🌸',
+    football:'⚽',
+    heart:'♥',
+    star:'★',
+    butterfly:'🦋',
+    tennis:'🎾',
+    basketball:'🏀'
+  };
+  var current='classic';
+  var c=null;
+
+  function normalise(style){
+    style=String(style||'classic').toLowerCase();
+    return allowed.indexOf(style)>=0?style:'classic';
+  }
+
+  function ensure(){
+    if(!fine)return null;
+    if(c&&document.documentElement.contains(c))return c;
+    c=document.getElementById('atlas-theme-cursor');
+    if(!c){
+      c=document.createElement('div');
+      c.id='atlas-theme-cursor';
+      document.body.appendChild(c);
+    }
+    document.documentElement.classList.add('atlas-cursor-enabled');
+    return c;
+  }
+
+  function render(style){
+    current=normalise(style);
+    if(!fine)return current;
+    var node=ensure();
+    if(!node)return current;
+    node.setAttribute('data-style',current);
+    node.textContent='';
+    if(current==='puck'){
+      var puck=document.createElement('span');
+      puck.className='atlas-cursor-puck';
+      node.appendChild(puck);
+    }else if(current!=='classic'){
+      node.textContent=glyphs[current]||'';
+    }
+    return current;
+  }
+
+  window.atlasApplyCursorStyle=render;
+  window.atlasGetCursorStyle=function(){return current};
+
+  if(!fine)return;
+  render('classic');
+
+  document.addEventListener('mousemove',function(e){
+    var node=ensure();
+    if(!node)return;
+    node.style.left=e.clientX+'px';
+    node.style.top=e.clientY+'px';
+    node.classList.add('is-visible');
+  },{passive:true});
+
+  document.addEventListener('mouseover',function(e){
+    var node=ensure();
+    if(!node)return;
+    var t=e.target.closest&&e.target.closest('a,button,input,textarea,select,summary,label,[role="button"],[data-open-page],[data-modal-target],[data-character-id]');
+    node.classList.toggle('is-hover',!!t);
+  });
+
+  document.addEventListener('mouseout',function(e){
+    var node=ensure();
+    if(node&&!e.relatedTarget)node.classList.remove('is-visible');
+  });
 })();
 </script>
 
@@ -20125,20 +20283,33 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   async function loadProfile(){
     if(!sessionCache || !sessionCache.user){
       profileCache = null;
+      if(typeof window.atlasApplyCursorStyle==='function')window.atlasApplyCursorStyle('classic');
       renderAccount();
       return;
     }
     await recordDailyLogin(sessionCache.user.id);
-    var result = await client.from('profiles')
-      .select('id,nickname,display_name,avatar_url,current_streak,best_streak,status_text,role')
-      .eq('id', sessionCache.user.id)
-      .maybeSingle();
+    var results = await Promise.all([
+      client.from('profiles')
+        .select('id,nickname,display_name,avatar_url,current_streak,best_streak,status_text,role')
+        .eq('id', sessionCache.user.id)
+        .maybeSingle(),
+      client.from('profile_private')
+        .select('cursor_style')
+        .eq('id', sessionCache.user.id)
+        .maybeSingle()
+    ]);
+    var result=results[0], cursorResult=results[1];
     if(result.error){
       console.warn('ATLAS profile:', result.error.message);
       profileCache = null;
     } else {
       profileCache = result.data || null;
     }
+    if(cursorResult&&cursorResult.error){
+      console.warn('ATLAS cursor:',cursorResult.error.message);
+    }
+    var cursorStyle=cursorResult&&cursorResult.data&&cursorResult.data.cursor_style||'classic';
+    if(typeof window.atlasApplyCursorStyle==='function')window.atlasApplyCursorStyle(cursorStyle);
     renderAccount();
     window.ATLAS_CURRENT_PROFILE = profileCache || null;
     window.ATLAS_CURRENT_SESSION = sessionCache || null;
@@ -20611,6 +20782,42 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-current strong{color:#f4f2ef}
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid label{color:#b4bac2}
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid input,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid select{background:#171d25;border-color:#303844;color:#fff}
+
+#atlasPlayerEditModal .atlas-player-cursor-panel{
+  grid-column:1/-1;
+  margin:2px 0 13px;
+  padding:16px 17px;
+  border:1px solid #e1e4e8;
+  border-radius:17px;
+  background:#fafafa;
+}
+#atlasPlayerEditModal .atlas-player-cursor-panel[hidden]{display:none!important}
+#atlasPlayerEditModal .atlas-player-cursor-head h3{margin:0;font-size:15px;line-height:1.2;font-weight:950;text-transform:lowercase}
+#atlasPlayerEditModal .atlas-player-cursor-head p{margin:5px 0 13px;color:#898f98;font-size:10px;line-height:1.5}
+#atlasPlayerEditModal .atlas-player-cursor-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#atlasPlayerEditModal .atlas-player-cursor-choice{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:9px;min-height:50px;padding:8px 10px;border:1px solid #e0e3e7;border-radius:13px;background:#fff;cursor:pointer;transition:.16s ease}
+#atlasPlayerEditModal .atlas-player-cursor-choice:hover{border-color:#d55a5a;background:#fff8f8}
+#atlasPlayerEditModal .atlas-player-cursor-choice:has(input:checked){border-color:#cc3f3f;background:#fff4f4;box-shadow:0 0 0 2px rgba(204,63,63,.08)}
+#atlasPlayerEditModal .atlas-player-cursor-choice input{position:absolute;opacity:0;pointer-events:none}
+#atlasPlayerEditModal .atlas-player-cursor-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#f2f3f5;font-size:21px;line-height:1}
+#atlasPlayerEditModal .atlas-player-cursor-icon.is-heart{color:#dc3f4d;font-size:25px}
+#atlasPlayerEditModal .atlas-player-cursor-icon.is-star{color:#e0a52f;font-size:24px}
+#atlasPlayerEditModal .atlas-player-cursor-icon.is-classic::before{content:"";width:12px;height:12px;border:1px solid #252932;border-radius:50%}
+#atlasPlayerEditModal .atlas-player-cursor-icon.is-puck::before{content:"";width:23px;height:9px;border-radius:50%;background:linear-gradient(180deg,#4a4f58 0%,#11151b 55%,#050607 100%);box-shadow:0 3px 0 #090b0e}
+#atlasPlayerEditModal .atlas-player-cursor-choice strong{display:block;color:#252930;font-size:10px;font-weight:900;line-height:1.25}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-panel{background:#151b22;border-color:#2b333e}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-choice{background:#11161d;border-color:#303844}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-choice:hover,
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-choice:has(input:checked){background:#21191b;border-color:#d85a5a}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-icon{background:#20262e}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-cursor-choice strong{color:#f4f2ef}
+@media(max-width:760px),(pointer:coarse){
+  #atlasPlayerEditModal .atlas-player-cursor-panel{display:none!important}
+}
+@media(max-width:560px){
+  #atlasPlayerEditModal .atlas-player-cursor-options{grid-template-columns:1fr 1fr}
+}
+
 #atlasPlayerEditModal .atlas-player-edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
 #atlasPlayerEditModal .atlas-player-edit-actions button{border-radius:13px;padding:12px 16px;font:inherit;font-weight:950;cursor:pointer}
 #atlasPlayerEditModal .atlas-player-edit-cancel{border:1px solid #dfe2e7;background:#fff;color:#181b20}
@@ -20807,6 +21014,24 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <input id="atlasPlayerEditBirthday" name="birthday" type="date">
         </div>
         <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
+
+        <section class="atlas-player-cursor-panel" id="atlasPlayerCursorSection" hidden>
+          <div class="atlas-player-cursor-head">
+            <h3>курсор</h3>
+            <p>личная настройка ATLAS. её видишь только ты; на телефоне курсор не используется.</p>
+          </div>
+          <div class="atlas-player-cursor-options">
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="classic"><span class="atlas-player-cursor-icon is-classic"></span><strong>обычный</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="flower"><span class="atlas-player-cursor-icon">🌸</span><strong>цветочек</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="football"><span class="atlas-player-cursor-icon">⚽</span><strong>футбол</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="puck"><span class="atlas-player-cursor-icon is-puck"></span><strong>шайба</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="heart"><span class="atlas-player-cursor-icon is-heart">♥</span><strong>сердечко</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="star"><span class="atlas-player-cursor-icon is-star">★</span><strong>звезда</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="butterfly"><span class="atlas-player-cursor-icon">🦋</span><strong>бабочка</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="tennis"><span class="atlas-player-cursor-icon">🎾</span><strong>теннис</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="basketball"><span class="atlas-player-cursor-icon">🏀</span><strong>баскетбол</strong></label>
+          </div>
+        </section>
         <section class="atlas-player-role-panel" id="atlasPlayerRoleSection" hidden>
           <div class="atlas-player-role-head">
             <div><h3>роль игрока</h3><p>этот блок видит только суперадмин. админ может редактировать обычные профили, но не роли и не других админов.</p></div>
@@ -20830,19 +21055,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <div class="atlas-relation-message" id="atlasPlayerRelationshipMessage"></div>
         </section>
         <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
-        <div class="atlas-player-edit-field">
+        <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>аватар</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
             <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span><span class="atlas-player-file-mobile"><strong>выбрать фото</strong><span>нажми сюда</span></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span></label>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
-        <div class="atlas-player-edit-field">
+        <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>баннер</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
             <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span><span class="atlas-player-file-mobile"><strong>выбрать фото</strong><span>нажми сюда</span></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span></label>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
@@ -21124,16 +21349,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var copy=modal.querySelector('.atlas-player-edit-copy');
     var relSection=document.getElementById('atlasPlayerRelationshipSection');
     var roleSection=document.getElementById('atlasPlayerRoleSection');
+    var cursorSection=document.getElementById('atlasPlayerCursorSection');
     var canManageRole=!!(permission.viewer&&permission.viewer.role==='superadmin'&&!own&&permission.target&&permission.target.role!=='superadmin');
     if(title)title.textContent=own?'редактировать профиль':'редактировать профиль игрока';
     if(copy)copy.textContent=own?'эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.':'режим администрации: изменения сохранятся в публичном профиле этого игрока.';
     if(relSection)relSection.hidden=!own;
+    if(cursorSection)cursorSection.hidden=!own;
     if(roleSection)roleSection.hidden=!canManageRole;
     setRoleStatus('');
     try{
       var res=await Promise.all([
         c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url,role').eq('id',id).maybeSingle(),
-        c.from('profile_private').select('birthday,birthday_visible').eq('id',id).maybeSingle()
+        c.from('profile_private').select('birthday,birthday_visible,cursor_style').eq('id',id).maybeSingle()
       ]);
       if(res[0].error)throw res[0].error;
       if(res[1].error)throw res[1].error;
@@ -21144,6 +21371,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       form.elements.vk_url.value=p.vk_url||'';
       form.elements.birthday.value=priv.birthday||'';
       form.elements.birthday_visible.checked=priv.birthday_visible!==false;
+      if(own){
+        var cursorStyle=priv.cursor_style||'classic';
+        var cursorInput=form.querySelector('input[name="cursor_style"][value="'+cursorStyle+'"]')||form.querySelector('input[name="cursor_style"][value="classic"]');
+        if(cursorInput)cursorInput.checked=true;
+      }
       form.elements.avatar.value='';
       form.elements.banner.value='';
       renderFilePreview(form.elements.avatar,'atlasPlayerAvatarPreview');
@@ -21423,6 +21655,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var vk=String(editForm.elements.vk_url.value||'').trim();
     var birthday=String(editForm.elements.birthday.value||'').trim();
     var birthdayVisible=!!editForm.elements.birthday_visible.checked;
+    var cursorInput=editForm.querySelector('input[name="cursor_style"]:checked');
+    var cursorStyle=cursorInput?String(cursorInput.value||'classic'):'classic';
 
     if(!name){setEditStatus('укажи имя.','error');return}
     if(!/^[A-Za-z0-9._-]{3,24}$/.test(nickname)){setEditStatus('никнейм: 3–24 символа, только латиница, цифры, точка, _ или -.','error');return}
@@ -21476,18 +21710,24 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
       if(publicResult.error)throw new Error(publicResult.error.message||'не удалось сохранить основные данные профиля.');
 
+      var privateUpdate={
+        birthday:birthday||null,
+        birthday_visible:birthdayVisible
+      };
+      if(isOwnProfile(id))privateUpdate.cursor_style=cursorStyle;
+
       var privateResult=await c
         .from('profile_private')
-        .update({
-          birthday:birthday||null,
-          birthday_visible:birthdayVisible
-        })
+        .update(privateUpdate)
         .eq('id',id)
-        .select('id,birthday,birthday_visible')
+        .select('id,birthday,birthday_visible,cursor_style')
         .maybeSingle();
 
-      if(privateResult.error)throw new Error(privateResult.error.message||'не удалось сохранить дату рождения.');
+      if(privateResult.error)throw new Error(privateResult.error.message||'не удалось сохранить личные настройки.');
       if(!privateResult.data)throw new Error('не найдена приватная запись профиля.');
+      if(isOwnProfile(id)&&typeof window.atlasApplyCursorStyle==='function'){
+        window.atlasApplyCursorStyle(privateResult.data.cursor_style||cursorStyle||'classic');
+      }
 
       profilesLoadedAt=0;
       profilesCache=[];
@@ -21874,7 +22114,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function drawPreview(){var box=document.getElementById('atlasPlayerPostPreview');if(!box)return;box.innerHTML='';pendingFiles.forEach(function(file,i){var fig=document.createElement('figure');var img=document.createElement('img');img.alt='';img.src=URL.createObjectURL(file);var b=document.createElement('button');b.type='button';b.textContent='×';b.setAttribute('data-post-remove-preview',String(i));fig.append(img,b);box.appendChild(fig)})}
   function addFiles(files){Array.from(files||[]).forEach(function(file){if(pendingFiles.length>=4)return;validateImage(file);pendingFiles.push(file)});drawPreview()}
   async function upload(file,userId){validateImage(file);var client=c();if(!client)throw new Error('supabase ещё загружается.');var ext=(String(file.name||'image').split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';var path=userId+'/posts/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;var up=await client.storage.from('atlas-media').upload(path,file,{upsert:false,contentType:file.type||undefined,cacheControl:'3600'});if(up.error)throw up.error;var pub=client.storage.from('atlas-media').getPublicUrl(up.data.path);return {path:up.data.path,url:pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:''}}
-  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop">перетащи изображения сюда</div><label class="atlas-player-post-mobile-pick">＋ выбрать фото<input class="atlas-player-post-mobile-file" id="atlasPlayerPostMobileFile" type="file" accept="image/*" multiple></label><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
+  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop">перетащи изображения сюда</div><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
   function canDeleteComment(comment){return own(comment.user_id)||own(activeProfileId)}
   function commentForm(postId,parentId,ph,isReply){if(uid())return '<form class="atlas-player-comment-form'+(isReply?' is-reply':'')+'" data-player-comment-form="'+esc(postId)+'"'+(parentId?' data-parent-comment="'+esc(parentId)+'"':'')+'><textarea class="atlas-player-comment-input" name="body" maxlength="2000" rows="1" placeholder="'+esc(ph||'написать комментарий…')+'" required></textarea><button class="atlas-player-comment-submit" type="submit">отправить</button>'+(isReply?'<button class="atlas-player-comment-reply-cancel" type="button" data-player-comment-reply-cancel="'+esc(parentId)+'" data-comment-post="'+esc(postId)+'">отмена</button>':'')+'</form>';return '<button class="atlas-player-comment-login" type="button" data-player-comment-login>войти, чтобы ответить</button>'}
   function commentActions(comment){var out=['<button class="atlas-player-comment-reply-btn" type="button" data-player-comment-reply="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">ответить</button>'];if(canDeleteComment(comment))out.push('<button class="atlas-player-comment-delete" type="button" data-player-comment-delete="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">удалить</button>');return '<div class="atlas-player-comment-tools">'+out.join('')+'</div>'}
