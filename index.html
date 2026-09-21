@@ -20262,6 +20262,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-profile-page .atlas-profile-hero.is-placeholder::before{background-image:radial-gradient(circle at 72% 24%,rgba(199,61,61,.34),transparent 24%),radial-gradient(circle at 28% 78%,rgba(255,255,255,.10),transparent 30%),linear-gradient(135deg,#121317,#030304)}
 #atlas-app .atlas-player-profile-page .atlas-profile-title h2{text-transform:none;overflow-wrap:anywhere}
 #atlas-app .atlas-player-profile-page .atlas-profile-first{text-transform:none;color:rgba(255,255,255,.82);font-size:18px;margin-bottom:10px;font-weight:800;letter-spacing:-.02em}
+#atlas-app .atlas-player-profile-page .atlas-player-profile-nick{display:block;width:max-content;max-width:100%;margin:9px 0 0;color:rgba(255,255,255,.82);font-size:16px;line-height:1.2;font-weight:850;letter-spacing:-.015em;overflow-wrap:anywhere}
 #atlas-app .atlas-player-profile-page .atlas-player-avatar{width:108px;height:108px;border:4px solid rgba(255,255,255,.95);border-radius:50%;overflow:hidden;background:#15171c;color:#fff;display:grid;place-items:center;font-size:40px;font-weight:950;margin-bottom:20px;box-shadow:0 14px 38px rgba(0,0,0,.25)}
 #atlas-app .atlas-player-profile-page .atlas-player-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 #atlas-app .atlas-player-profile-page .atlas-player-heart{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:#ff7373;font-size:13px;font-weight:900}
@@ -20638,7 +20639,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){var x=a.achievements||{};return '<article class="atlas-player-achievement"><div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div><strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>'}).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><span class="atlas-profile-first">@'+esc(p.nickname||'player')+'</span><h2>'+esc(displayName(p))+'</h2><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('achievements',achPanel,false);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
@@ -20688,16 +20689,23 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           uploadProfileMedia(id,avatarFile,'avatars'),
           uploadProfileMedia(id,bannerFile,'banners')
         ]);
-        var patch={display_name:name,nickname:nickname,status_text:status||null,vk_url:vk||null};
-        if(media[0])patch.avatar_url=media[0];
-        if(media[1])patch.banner_url=media[1];
-        var pr=await c.from('profiles').update(patch).eq('id',id).select('id').maybeSingle();
-        if(pr.error){
-          if(pr.error.code==='23505')throw new Error('этот никнейм уже занят.');
-          throw pr.error;
+        var rpcPayload={
+          p_display_name:name,
+          p_nickname:nickname,
+          p_status_text:status||null,
+          p_vk_url:vk||null,
+          p_birthday:birthday||null,
+          p_birthday_visible:birthdayVisible,
+          p_avatar_url:media[0]||null,
+          p_banner_url:media[1]||null
+        };
+        var saved=await c.rpc('update_my_player_profile',rpcPayload);
+        if(saved.error){
+          var saveMessage=saved.error.message||'';
+          if(saved.error.code==='23505'||/уже занят|already exists|duplicate/i.test(saveMessage))throw new Error('этот никнейм уже занят.');
+          if(saved.error.code==='PGRST202'||/update_my_player_profile/i.test(saveMessage))throw new Error('не найдена функция сохранения профиля. сначала запусти sql 06_player_profile_save.');
+          throw saved.error;
         }
-        var priv=await c.from('profile_private').update({birthday:birthday||null,birthday_visible:birthdayVisible}).eq('id',id);
-        if(priv.error)throw priv.error;
         profilesLoadedAt=0;
         if(typeof window.atlasReloadCurrentProfile==='function')await window.atlasReloadCurrentProfile();
         await renderPlayerProfile(id);
