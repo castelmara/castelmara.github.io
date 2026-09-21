@@ -20326,6 +20326,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-edit-field textarea{min-height:88px}
 #atlasPlayerEditModal .atlas-player-edit-field input:focus,#atlasPlayerEditModal .atlas-player-edit-field textarea:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
 #atlasPlayerEditModal .atlas-player-edit-file{padding:11px!important;background:#fff!important}
+#atlasPlayerEditModal .atlas-player-edit-file{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important;clip:rect(0 0 0 0)!important}
+#atlasPlayerEditModal .atlas-player-file-zone{display:flex;align-items:center;justify-content:center;min-height:92px;padding:16px;border:1.5px dashed #cfd4dc;border-radius:14px;background:#fafbfc;cursor:pointer;transition:.18s ease;text-align:center}
+#atlasPlayerEditModal .atlas-player-file-zone:hover,#atlasPlayerEditModal .atlas-player-file-zone.is-dragover{border-color:#e64b4b;background:#fff6f6}
+#atlasPlayerEditModal .atlas-player-file-zone strong{display:block;font-size:12px;font-weight:950;color:#20242b}
+#atlasPlayerEditModal .atlas-player-file-zone span{display:block;margin-top:5px;font-size:10px;color:#747c87}
+#atlasPlayerEditModal .atlas-player-file-pick{display:inline-flex;align-items:center;justify-content:center;margin-top:9px;padding:8px 12px;border:1px solid #d7dbe1;border-radius:999px;background:#fff;color:#242932;font-size:10px;font-weight:900;cursor:pointer}
+#atlasPlayerEditModal .atlas-player-file-pick:hover{border-color:#e64b4b;color:#d73e3e}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone{background:#171d25;border-color:#343b45}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone:hover,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone.is-dragover{background:#21191b;border-color:#e64b4b}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone strong{color:#f4f5f7}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-pick{background:#222a34;border-color:#39424e;color:#f4f5f7}
 #atlasPlayerEditModal .atlas-player-edit-hint{margin:-4px 0 0;color:#9a9fa7;font-size:10px;line-height:1.45}
 #atlasPlayerEditModal .atlas-player-edit-check{display:flex;align-items:center;gap:9px;margin:2px 0 14px;font-size:11px;font-weight:850;color:#535963}
 #atlasPlayerEditModal .atlas-player-edit-check input{width:16px;height:16px;accent-color:#c63838}
@@ -20429,13 +20440,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
         <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
         <div class="atlas-player-edit-field">
-          <label for="atlasPlayerEditAvatar">аватар</label>
-          <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*">
+          <label>аватар</label>
+          <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
+            <div><strong>перетащи изображение сюда</strong><span>или выбери его с компьютера</span><label class="atlas-player-file-pick" for="atlasPlayerEditAvatar">выбрать файл</label></div>
+          </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
         <div class="atlas-player-edit-field">
-          <label for="atlasPlayerEditBanner">баннер</label>
-          <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*">
+          <label>баннер</label>
+          <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
+            <div><strong>перетащи изображение сюда</strong><span>или выбери его с компьютера</span><label class="atlas-player-file-pick" for="atlasPlayerEditBanner">выбрать файл</label></div>
+          </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
       </div>
@@ -20568,6 +20585,47 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   document.addEventListener('change',function(e){
     if(e.target&&e.target.id==='atlasPlayerEditAvatar')renderFilePreview(e.target,'atlasPlayerAvatarPreview');
     if(e.target&&e.target.id==='atlasPlayerEditBanner')renderFilePreview(e.target,'atlasPlayerBannerPreview');
+  },true);
+
+  document.addEventListener('dragover',function(e){
+    var zone=e.target&&e.target.closest?e.target.closest('[data-file-zone]'):null;
+    if(!zone)return;
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.add('is-dragover');
+  },true);
+
+  document.addEventListener('dragleave',function(e){
+    var zone=e.target&&e.target.closest?e.target.closest('[data-file-zone]'):null;
+    if(!zone)return;
+    zone.classList.remove('is-dragover');
+  },true);
+
+  document.addEventListener('drop',function(e){
+    var zone=e.target&&e.target.closest?e.target.closest('[data-file-zone]'):null;
+    if(!zone)return;
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.remove('is-dragover');
+    var input=document.getElementById(zone.getAttribute('data-file-zone'));
+    var files=e.dataTransfer&&e.dataTransfer.files;
+    if(!input||!files||!files.length)return;
+    try{
+      var dt=new DataTransfer();
+      dt.items.add(files[0]);
+      input.files=dt.files;
+    }catch(_e){
+      try{input.files=files}catch(_e2){}
+    }
+    input.dispatchEvent(new Event('change',{bubbles:true}));
+  },true);
+
+  document.addEventListener('click',function(e){
+    var zone=e.target&&e.target.closest?e.target.closest('[data-file-zone]'):null;
+    if(!zone)return;
+    if(e.target.closest&&e.target.closest('.atlas-player-file-pick'))return;
+    var input=document.getElementById(zone.getAttribute('data-file-zone'));
+    if(input){e.preventDefault();input.click()}
   },true);
 
   function validateMedia(file){
