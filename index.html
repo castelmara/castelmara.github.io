@@ -882,7 +882,7 @@ body.atlas-modal-open {
       <div class="atlas-top-actions">
         <button class="atlas-top-icon" type="button" aria-label="messages">✉</button>
         <button class="atlas-top-icon atlas-theme-toggle" type="button" id="atlasThemeToggle" aria-label="theme" title="тёмная тема">☾</button>
-        <button class="atlas-avatar-btn" type="button" data-open-page="inicio" aria-label="home">A</button>
+        <button class="atlas-avatar-btn" type="button" id="atlasAccountButton" aria-label="аккаунт" title="аккаунт">A</button>
       </div>
     </div>
 
@@ -2683,13 +2683,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
 
             <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>sep</small><b>25</b></span>
-              <span class="atlas-row-main"><strong>администрация</strong><span>20:00 · сбор капитанов команд для обсуждения предстоящих праздников</span></span>
+              <span class="atlas-event-date"><small>aug</small><b>25</b></span>
+              <span class="atlas-row-main"><strong>посвещение</strong><span>20:00 · Welcome to Castelmara</span></span>
             </div>
 
             <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>sep</small><b>28</b></span>
-              <span class="atlas-row-main"><strong>перекличка</strong><span>28 сентября — 03 октября</span></span>
+              <span class="atlas-event-date"><small>aug</small><b>28</b></span>
+              <span class="atlas-row-main"><strong>перекличка</strong><span>28 августа — 03 сентября</span></span>
             </div>
 
             <div class="atlas-event-row">
@@ -2741,7 +2741,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 
             <div class="atlas-honour-row">
               <span class="atlas-place">3</span>
-              <span><strong>'giselle 'salgàri</strong><span></span></span>
+              <span><strong>れん 村山</strong><span></span></span>
               <a class="atlas-text-link" href="javascript:void(0)">update me</a>
             </div>
           </section>
@@ -16893,7 +16893,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           <div class="foro-card-body">
             <span class="foro-help-tag">сайт / доступ</span>
             <h3>если сайт не работает</h3>
-            <p>оформление анкет на сайте, фотографии профиля, etc.</p>
+            <p>ошибка на странице, не открывается вкладка, сломалась анкета, пропал блок или нужен доступ.</p>
             <strong>написать referee</strong>
           </div>
         </a>
@@ -16910,7 +16910,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           <div class="foro-card-body">
             <span class="foro-help-tag">сюжет / анкеты</span>
             <h3>если вопрос по сюжету и анкетам</h3>
-            <p>квесты, анкеты, каноны и логика событий.</p>
+            <p>квесты, сюжетные линии, анкеты, каноны, связи персонажей и логика событий.</p>
             <strong>написать playmaker</strong>
           </div>
         </a>
@@ -16926,8 +16926,8 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           </div>
           <div class="foro-card-body">
             <span class="foro-help-tag">эпизоды / оформление</span>
-            <h3>если вопрос по эпизодам или паблику</h3>
-            <p>открытие эпизодов, оформление анкет, etc</p>
+            <h3>если вопрос по эпизодам</h3>
+            <p>открытие эпизодов, перенос, продление, оформление игровых веток и организационные вопросы по игре.</p>
             <strong>написать goalkeeper</strong>
           </div>
         </a>
@@ -16953,7 +16953,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
       <section class="foro-section-head">
         <span>hecho con amor</span>
         <h3>золотые ручки кастельмары</h3>
-        <p>эти прекрасные дамы работают над пабликом, помогают ему жить, делают визуал, оформление и просто создают красоту для кастельмары.</p>
+        <p>эти прекрасные люди работают над пабликом, помогают ему жить, делают визуал, оформление и просто создают красоту для кастельмары.</p>
       </section>
 
       <div class="foro-hands-grid">
@@ -19705,5 +19705,380 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 }
 </style>
+
+
+<!-- ATLAS PLAYER AUTH — Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+#atlasAuthModal[hidden]{display:none!important}
+#atlasAuthModal{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:24px;font-family:inherit}
+#atlasAuthModal .atlas-auth-overlay{position:absolute;inset:0;background:rgba(7,10,14,.72);backdrop-filter:blur(8px)}
+#atlasAuthModal .atlas-auth-window{position:relative;width:min(520px,100%);max-height:min(760px,calc(100vh - 40px));overflow:auto;border:1px solid rgba(20,25,32,.15);border-radius:26px;background:#fff;color:#14171d;box-shadow:0 28px 90px rgba(0,0,0,.34);padding:28px}
+#atlasAuthModal .atlas-auth-close{position:absolute;right:16px;top:14px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f2f4;color:#16191f;font-size:24px;line-height:1;display:grid;place-items:center}
+#atlasAuthModal .atlas-auth-kicker{display:inline-flex;align-items:center;min-height:26px;padding:5px 10px;border:1px solid rgba(192,45,45,.30);border-radius:999px;background:rgba(192,45,45,.08);color:#c12f2f;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+#atlasAuthModal .atlas-auth-title{margin:14px 0 6px;font-size:34px;line-height:1;font-weight:950;letter-spacing:-.04em}
+#atlasAuthModal .atlas-auth-subtitle{margin:0 0 22px;color:#747b86;font-size:14px;line-height:1.5}
+#atlasAuthModal .atlas-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;padding:5px;background:#f2f3f5;border-radius:14px}
+#atlasAuthModal .atlas-auth-tab{border:0;border-radius:10px;padding:11px 14px;background:transparent;color:#777e89;font-weight:900}
+#atlasAuthModal .atlas-auth-tab.is-active{background:#14171d;color:#fff;box-shadow:0 5px 16px rgba(0,0,0,.14)}
+#atlasAuthModal .atlas-auth-pane{display:none}
+#atlasAuthModal .atlas-auth-pane.is-active{display:block}
+#atlasAuthModal .atlas-auth-field{display:grid;gap:7px;margin:0 0 13px}
+#atlasAuthModal .atlas-auth-field label{font-size:12px;font-weight:900;color:#414650}
+#atlasAuthModal .atlas-auth-field input{width:100%;box-sizing:border-box;border:1px solid #dfe2e7;border-radius:13px;background:#f8f9fa;color:#14171d;padding:13px 14px;font:inherit;outline:none}
+#atlasAuthModal .atlas-auth-field input:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
+#atlasAuthModal .atlas-auth-primary{width:100%;border:0;border-radius:13px;background:#15181e;color:#fff;padding:13px 16px;font:inherit;font-weight:950;margin-top:5px}
+#atlasAuthModal .atlas-auth-primary:hover{background:#c73737}
+#atlasAuthModal .atlas-auth-status{display:none;margin-top:13px;padding:11px 13px;border-radius:12px;font-size:13px;line-height:1.4}
+#atlasAuthModal .atlas-auth-status.is-visible{display:block}
+#atlasAuthModal .atlas-auth-status.is-error{background:#fff0f0;color:#9e2424;border:1px solid #f1caca}
+#atlasAuthModal .atlas-auth-status.is-ok{background:#edf8f0;color:#27683a;border:1px solid #cce8d3}
+#atlasAuthModal .atlas-auth-profile-head{display:flex;gap:16px;align-items:center;margin:18px 0 22px}
+#atlasAuthModal .atlas-auth-profile-avatar{width:76px;height:76px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#15181e;color:#fff;font-size:28px;font-weight:950;flex:0 0 auto;border:4px solid #fff;box-shadow:0 0 0 1px #dfe2e7}
+#atlasAuthModal .atlas-auth-profile-avatar img{width:100%;height:100%;object-fit:cover}
+#atlasAuthModal .atlas-auth-profile-name{font-size:24px;font-weight:950;line-height:1.05}
+#atlasAuthModal .atlas-auth-profile-nick{margin-top:5px;color:#7b818b;font-size:14px}
+#atlasAuthModal .atlas-auth-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+#atlasAuthModal .atlas-auth-stat{border:1px solid #e3e5e9;background:#fafafa;border-radius:15px;padding:14px}
+#atlasAuthModal .atlas-auth-stat strong{display:block;font-size:24px;line-height:1;margin-bottom:6px}
+#atlasAuthModal .atlas-auth-stat span{font-size:12px;color:#7c828c;font-weight:800}
+#atlasAuthModal .atlas-auth-secondary{width:100%;border:1px solid #dfe2e7;border-radius:13px;background:#fff;color:#181b20;padding:12px 16px;font:inherit;font-weight:900}
+#atlasAuthModal .atlas-auth-secondary:hover{border-color:#c73737;color:#c73737}
+#atlasAuthModal .atlas-auth-note{margin:13px 0 0;color:#90959d;font-size:11px;line-height:1.45;text-align:center}
+#atlas-app .atlas-avatar-btn.is-user{overflow:hidden;padding:0;background:#f4f4f4!important;color:#111!important}
+#atlas-app .atlas-avatar-btn.is-user img{width:100%;height:100%;object-fit:cover;display:block}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-window{background:#11161d;color:#f5f3f0;border-color:rgba(255,255,255,.12)}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-close{background:#20262e;color:#fff}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-subtitle,
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-profile-nick,
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-stat span{color:#9ba1aa}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-tabs{background:#1b2129}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-tab.is-active{background:#f3f1ed;color:#14171d}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-field label{color:#c7cbd1}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-field input{background:#171d25;border-color:#2a323d;color:#fff}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-stat{background:#171d25;border-color:#2a323d}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-secondary{background:#151b22;border-color:#303844;color:#f5f3f0}
+@media(max-width:560px){#atlasAuthModal{padding:12px}#atlasAuthModal .atlas-auth-window{padding:23px 18px;border-radius:21px}#atlasAuthModal .atlas-auth-title{font-size:29px}}
+</style>
+
+<div id="atlasAuthModal" hidden aria-hidden="true">
+  <div class="atlas-auth-overlay" data-auth-close="true"></div>
+  <section class="atlas-auth-window" role="dialog" aria-modal="true" aria-labelledby="atlasAuthTitle">
+    <button class="atlas-auth-close" type="button" data-auth-close="true" aria-label="закрыть">×</button>
+
+    <div id="atlasAuthGuestView">
+      <span class="atlas-auth-kicker">ATLAS ACCOUNT</span>
+      <h2 class="atlas-auth-title" id="atlasAuthTitle">добро пожаловать</h2>
+      <p class="atlas-auth-subtitle">вход в личный профиль игрока Кастельмары.</p>
+
+      <div class="atlas-auth-tabs" role="tablist">
+        <button class="atlas-auth-tab is-active" type="button" data-auth-tab="login">войти</button>
+        <button class="atlas-auth-tab" type="button" data-auth-tab="register">регистрация</button>
+      </div>
+
+      <div class="atlas-auth-pane is-active" data-auth-pane="login">
+        <form id="atlasLoginForm">
+          <div class="atlas-auth-field">
+            <label for="atlasLoginEmail">email</label>
+            <input id="atlasLoginEmail" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasLoginPassword">пароль</label>
+            <input id="atlasLoginPassword" name="password" type="password" autocomplete="current-password" minlength="6" required>
+          </div>
+          <button class="atlas-auth-primary" type="submit">войти в ATLAS</button>
+        </form>
+      </div>
+
+      <div class="atlas-auth-pane" data-auth-pane="register">
+        <form id="atlasRegisterForm">
+          <div class="atlas-auth-field">
+            <label for="atlasRegisterName">имя в ATLAS</label>
+            <input id="atlasRegisterName" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="как к тебе обращаться" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasRegisterNickname">никнейм</label>
+            <input id="atlasRegisterNickname" name="nickname" type="text" minlength="2" maxlength="40" placeholder="например: fel" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasRegisterEmail">email</label>
+            <input id="atlasRegisterEmail" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasRegisterPassword">пароль</label>
+            <input id="atlasRegisterPassword" name="password" type="password" autocomplete="new-password" minlength="6" required>
+          </div>
+          <button class="atlas-auth-primary" type="submit">создать аккаунт</button>
+        </form>
+      </div>
+      <div class="atlas-auth-status" id="atlasAuthStatus"></div>
+      <p class="atlas-auth-note">email не отображается в публичном профиле.</p>
+    </div>
+
+    <div id="atlasAuthUserView" hidden>
+      <span class="atlas-auth-kicker">PLAYER PROFILE</span>
+      <div class="atlas-auth-profile-head">
+        <div class="atlas-auth-profile-avatar" id="atlasAuthProfileAvatar">A</div>
+        <div>
+          <div class="atlas-auth-profile-name" id="atlasAuthProfileName">игрок</div>
+          <div class="atlas-auth-profile-nick" id="atlasAuthProfileNick">@player</div>
+        </div>
+      </div>
+      <div class="atlas-auth-stats">
+        <div class="atlas-auth-stat"><strong id="atlasAuthCurrentStreak">0</strong><span>дней подряд</span></div>
+        <div class="atlas-auth-stat"><strong id="atlasAuthBestStreak">0</strong><span>лучший streak</span></div>
+      </div>
+      <button class="atlas-auth-secondary" type="button" id="atlasLogoutButton">выйти из аккаунта</button>
+      <p class="atlas-auth-note">полный профиль игрока, персонажи и ачивки добавим следующим этапом.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var SUPABASE_URL = 'https://jbwdvybumzgwssvshmko.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_jUQoLIKdsvgf7nG388A_2Q_cxiKt4uC';
+
+  if (!window.supabase || !window.supabase.createClient) {
+    console.error('ATLAS Auth: Supabase library did not load');
+    return;
+  }
+
+  var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+  window.ATLAS_SUPABASE = client;
+
+  var modal = document.getElementById('atlasAuthModal');
+  var accountButton = document.getElementById('atlasAccountButton');
+  var guestView = document.getElementById('atlasAuthGuestView');
+  var userView = document.getElementById('atlasAuthUserView');
+  var statusBox = document.getElementById('atlasAuthStatus');
+  var loginForm = document.getElementById('atlasLoginForm');
+  var registerForm = document.getElementById('atlasRegisterForm');
+  var logoutButton = document.getElementById('atlasLogoutButton');
+  var profileCache = null;
+  var sessionCache = null;
+
+  function setStatus(message, kind){
+    if(!statusBox) return;
+    statusBox.textContent = message || '';
+    statusBox.className = 'atlas-auth-status' + (message ? ' is-visible ' + (kind === 'ok' ? 'is-ok' : 'is-error') : '');
+  }
+
+  function openModal(){
+    modal.hidden = false;
+    modal.setAttribute('aria-hidden','false');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden','true');
+    document.documentElement.style.overflow = '';
+    setStatus('');
+  }
+
+  function switchTab(name){
+    document.querySelectorAll('[data-auth-tab]').forEach(function(btn){
+      btn.classList.toggle('is-active', btn.dataset.authTab === name);
+    });
+    document.querySelectorAll('[data-auth-pane]').forEach(function(pane){
+      pane.classList.toggle('is-active', pane.dataset.authPane === name);
+    });
+    setStatus('');
+  }
+
+  function escapeHtml(value){
+    return String(value == null ? '' : value).replace(/[&<>'"]/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch];
+    });
+  }
+
+  function initialOf(profile, session){
+    var source = (profile && (profile.display_name || profile.nickname)) || (session && session.user && session.user.email) || 'A';
+    return String(source).trim().charAt(0).toUpperCase() || 'A';
+  }
+
+  function renderAccount(){
+    var signedIn = !!(sessionCache && sessionCache.user);
+    guestView.hidden = signedIn;
+    userView.hidden = !signedIn;
+
+    if(!signedIn){
+      profileCache = null;
+      if(accountButton){
+        accountButton.classList.remove('is-user');
+        accountButton.innerHTML = 'A';
+        accountButton.title = 'войти / зарегистрироваться';
+      }
+      return;
+    }
+
+    var p = profileCache || {};
+    var displayName = p.display_name || p.nickname || 'игрок';
+    var nickname = p.nickname || 'player';
+    var avatar = p.avatar_url || '';
+
+    document.getElementById('atlasAuthProfileName').textContent = displayName;
+    document.getElementById('atlasAuthProfileNick').textContent = '@' + nickname;
+    document.getElementById('atlasAuthCurrentStreak').textContent = String(p.current_streak || 0);
+    document.getElementById('atlasAuthBestStreak').textContent = String(p.best_streak || 0);
+
+    var modalAvatar = document.getElementById('atlasAuthProfileAvatar');
+    if(avatar){
+      modalAvatar.innerHTML = '<img src="' + escapeHtml(avatar) + '" alt="">';
+      accountButton.innerHTML = '<img src="' + escapeHtml(avatar) + '" alt="">';
+    } else {
+      var letter = initialOf(p, sessionCache);
+      modalAvatar.textContent = letter;
+      accountButton.textContent = letter;
+    }
+    accountButton.classList.add('is-user');
+    accountButton.title = displayName + ' — аккаунт';
+  }
+
+  function madridToday(){
+    var parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone:'Europe/Madrid', year:'numeric', month:'2-digit', day:'2-digit'
+    }).formatToParts(new Date());
+    var map = {};
+    parts.forEach(function(part){ map[part.type] = part.value; });
+    return map.year + '-' + map.month + '-' + map.day;
+  }
+
+  async function recordDailyLogin(userId){
+    if(!userId) return;
+    var result = await client.from('daily_logins').insert({
+      user_id: userId,
+      login_date: madridToday()
+    });
+    if(result.error && result.error.code !== '23505'){
+      console.warn('ATLAS daily login:', result.error.message);
+    }
+  }
+
+  async function loadProfile(){
+    if(!sessionCache || !sessionCache.user){
+      profileCache = null;
+      renderAccount();
+      return;
+    }
+    await recordDailyLogin(sessionCache.user.id);
+    var result = await client.from('profiles')
+      .select('id,nickname,display_name,avatar_url,current_streak,best_streak,status_text')
+      .eq('id', sessionCache.user.id)
+      .maybeSingle();
+    if(result.error){
+      console.warn('ATLAS profile:', result.error.message);
+      profileCache = null;
+    } else {
+      profileCache = result.data || null;
+    }
+    renderAccount();
+  }
+
+  async function syncSession(session){
+    sessionCache = session || null;
+    await loadProfile();
+  }
+
+  accountButton.addEventListener('click', function(){
+    renderAccount();
+    openModal();
+  });
+
+  modal.addEventListener('click', function(e){
+    if(e.target.closest('[data-auth-close="true"]')) closeModal();
+    var tab = e.target.closest('[data-auth-tab]');
+    if(tab) switchTab(tab.dataset.authTab);
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+
+  loginForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    setStatus('входим в ATLAS…','ok');
+    var form = new FormData(loginForm);
+    var result = await client.auth.signInWithPassword({
+      email: String(form.get('email') || '').trim(),
+      password: String(form.get('password') || '')
+    });
+    if(result.error){
+      setStatus(result.error.message,'error');
+      return;
+    }
+    setStatus('готово. добро пожаловать обратно.','ok');
+    await syncSession(result.data.session);
+    setTimeout(closeModal, 550);
+  });
+
+  registerForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var form = new FormData(registerForm);
+    var displayName = String(form.get('display_name') || '').trim();
+    var nickname = String(form.get('nickname') || '').trim();
+    var email = String(form.get('email') || '').trim();
+    var password = String(form.get('password') || '');
+
+    if(displayName.length < 1 || nickname.length < 2){
+      setStatus('укажи имя и никнейм минимум из двух символов.','error');
+      return;
+    }
+
+    setStatus('создаём профиль…','ok');
+    var result = await client.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          nickname: nickname,
+          display_name: displayName
+        }
+      }
+    });
+
+    if(result.error){
+      var msg = result.error.message || 'не удалось создать аккаунт';
+      if(/duplicate|unique/i.test(msg)) msg = 'этот никнейм уже занят.';
+      setStatus(msg,'error');
+      return;
+    }
+
+    if(result.data && result.data.session){
+      setStatus('аккаунт создан. добро пожаловать в ATLAS.','ok');
+      await syncSession(result.data.session);
+      registerForm.reset();
+      setTimeout(closeModal, 750);
+    } else {
+      setStatus('аккаунт создан. теперь можно войти.','ok');
+      switchTab('login');
+    }
+  });
+
+  logoutButton.addEventListener('click', async function(){
+    await client.auth.signOut();
+    sessionCache = null;
+    profileCache = null;
+    renderAccount();
+    switchTab('login');
+    setStatus('вы вышли из аккаунта.','ok');
+  });
+
+  client.auth.onAuthStateChange(function(event, session){
+    if(event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED'){
+      setTimeout(function(){ syncSession(session); },0);
+    }
+  });
+
+  client.auth.getSession().then(function(res){
+    syncSession(res.data && res.data.session ? res.data.session : null);
+  });
+})();
+</script>
+
 </body>
 </html>
