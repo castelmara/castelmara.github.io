@@ -2818,6 +2818,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
           </section>
 
+          <section class="atlas-card atlas-mood-check atlas-search-target" id="inicio-mood-check" data-search-title="atlas mood check кто я сегодня" data-search-keywords="кто я сегодня ежедневный рандом статус настроение">
+            <div class="atlas-mood-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="atlas-card-head">
+              <h3>atlas mood check</h3>
+              <span class="atlas-mood-date" id="atlasMoodDate">today</span>
+            </div>
+            <div class="atlas-mood-result" id="atlasMoodResult">
+              <span>сегодня вы —</span>
+              <strong>проверяем настроение…</strong>
+            </div>
+            <button class="atlas-mood-explain-toggle" id="atlasMoodExplainToggle" type="button" aria-expanded="false">что это вообще значит?</button>
+            <p class="atlas-mood-explain" id="atlasMoodExplain" hidden>ATLAS выбирает тебе один абсурдный статус на день. изменить его нельзя — завтра выпадет новый.</p>
+          </section>
+
           <section class="atlas-card atlas-search-target" id="inicio-honour-board" data-search-title="honour board active players" data-search-keywords="доска почёта активные игроки">
             <div class="atlas-card-head">
               <h3>honour board</h3>
@@ -20655,6 +20669,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-empty{margin-top:24px;padding:28px;border:1px solid var(--line-soft,#eee4df);border-radius:22px;background:#fff;color:#6f7580}
 #atlas-app .atlas-player-empty strong{display:block;margin-bottom:7px;color:#15181d;font-size:18px}
 #atlas-app .atlas-player-loading{display:flex;align-items:center;gap:10px;color:#858b95;font-size:13px;font-weight:800;padding:24px 0}
+#atlas-app .atlas-player-loading[hidden],#atlas-app .atlas-player-empty[hidden]{display:none!important}
+#atlas-app .atlas-player-retry{display:block;margin-top:14px;padding:10px 15px;border:1px solid #c93d3d;border-radius:999px;background:transparent;color:#c93d3d;font:800 12px/1.3 "Montserrat",Arial,sans-serif;cursor:pointer}
 #atlas-app .atlas-player-loading::before{content:"";width:15px;height:15px;border:2px solid rgba(201,61,61,.18);border-top-color:#c93d3d;border-radius:50%;animation:atlasPlayerSpin .7s linear infinite}
 @keyframes atlasPlayerSpin{to{transform:rotate(360deg)}}
 
@@ -20701,6 +20717,55 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-edit-profile{position:absolute;top:22px;right:22px;z-index:6;margin:0;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(10,12,16,.52);color:#fff;padding:10px 15px;font:inherit;font-size:11px;font-weight:950;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 10px 26px rgba(0,0,0,.18);transition:.2s ease}
 #atlas-app .atlas-player-edit-profile:hover{background:#fff;color:#171a20;border-color:#fff;transform:translateY(-1px)}
 
+
+#atlasPlayerEditModal .atlas-character-owner-panel{grid-column:1/-1;border:1px solid #e0e3e7;border-radius:18px;background:#fafafa;padding:16px 17px;margin:2px 0 13px}
+#atlasPlayerEditModal .atlas-character-owner-panel[hidden]{display:none!important}
+#atlasPlayerEditModal .atlas-character-owner-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+#atlasPlayerEditModal .atlas-character-owner-head h3{margin:0 0 4px;font-size:15px;line-height:1.2;font-weight:950;color:#191c22}
+#atlasPlayerEditModal .atlas-character-owner-head p{margin:0;color:#858b95;font-size:11px;line-height:1.5}
+#atlasPlayerEditModal .atlas-character-owner-count{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:30px;padding:0 10px;border-radius:999px;background:#171a20;color:#fff;font-size:10px;font-weight:950}
+#atlasPlayerEditModal .atlas-character-owner-search{width:100%;height:44px;border:1px solid #dfe2e7;border-radius:13px;background:#fff;color:#14171d;padding:0 13px;font:inherit;font-size:12px;outline:none}
+#atlasPlayerEditModal .atlas-character-owner-search:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
+#atlasPlayerEditModal .atlas-character-owner-list{display:grid;gap:7px;max-height:310px;overflow:auto;margin-top:10px;padding-right:4px}
+#atlasPlayerEditModal .atlas-character-owner-item{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:58px;padding:7px 9px;border:1px solid #e2e5e8;border-radius:13px;background:#fff;cursor:pointer;transition:.16s ease}
+#atlasPlayerEditModal .atlas-character-owner-item:hover{border-color:#d65a5a;background:#fff9f9}
+#atlasPlayerEditModal .atlas-character-owner-item.is-selected{border-color:#c63c3c;background:#fff4f4;box-shadow:0 0 0 2px rgba(198,60,60,.07)}
+#atlasPlayerEditModal .atlas-character-owner-item.is-taken{opacity:.58;cursor:not-allowed;background:#f4f5f6}
+#atlasPlayerEditModal .atlas-character-owner-item input{position:absolute;opacity:0;pointer-events:none}
+#atlasPlayerEditModal .atlas-character-owner-thumb{width:42px;height:42px;border-radius:11px;overflow:hidden;background:linear-gradient(145deg,#282d35,#11151b);display:grid;place-items:center;color:#fff;font-size:15px;font-weight:950}
+#atlasPlayerEditModal .atlas-character-owner-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+#atlasPlayerEditModal .atlas-character-owner-copy{min-width:0}
+#atlasPlayerEditModal .atlas-character-owner-copy strong{display:block;color:#22262d;font-size:11px;line-height:1.3;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#atlasPlayerEditModal .atlas-character-owner-copy span{display:block;margin-top:3px;color:#91969e;font-size:9px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#atlasPlayerEditModal .atlas-character-owner-badge{max-width:130px;padding:6px 8px;border-radius:999px;background:#f0f2f4;color:#6f7680;font-size:9px;line-height:1.2;font-weight:900;text-align:center}
+#atlasPlayerEditModal .atlas-character-owner-item.is-selected .atlas-character-owner-badge{background:#c83c3c;color:#fff}
+#atlasPlayerEditModal .atlas-character-owner-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+#atlasPlayerEditModal .atlas-character-owner-status{min-height:16px;color:#8a9099;font-size:10px;font-weight:750;line-height:1.4}
+#atlasPlayerEditModal .atlas-character-owner-status.is-error{color:#bd3030}
+#atlasPlayerEditModal .atlas-character-owner-status.is-ok{color:#35724a}
+#atlasPlayerEditModal .atlas-character-owner-save{flex:0 0 auto;min-height:40px;border:0;border-radius:12px;background:#171a20;color:#fff;padding:0 14px;font:inherit;font-size:10px;font-weight:950;cursor:pointer}
+#atlasPlayerEditModal .atlas-character-owner-save:hover{background:#c53030}
+#atlasPlayerEditModal .atlas-character-owner-save:disabled{opacity:.55;cursor:default}
+#atlas-app .atlas-player-character-manage{display:flex;justify-content:flex-end;margin:0 0 13px}
+#atlas-app .atlas-player-character-manage button{border:1px solid #dfe2e6;border-radius:999px;background:#fff;color:#343941;padding:9px 13px;font:850 10px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-player-character-manage button:hover{border-color:#c63c3c;color:#c63c3c}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-panel{background:#151b22;border-color:#2b333e}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-head h3{color:#f4f2ef}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-search,
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-item{background:#11161d;border-color:#303844;color:#fff}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-item:hover,
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-item.is-selected{background:#21191b;border-color:#d85a5a}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-item.is-taken{background:#171d25}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-character-owner-copy strong{color:#f4f2ef}
+#atlas-app[data-theme="dark"] #atlas-app .atlas-player-character-manage button{background:#151b22;border-color:#303844;color:#f4f2ef}
+@media(max-width:560px){
+  #atlasPlayerEditModal .atlas-character-owner-item{grid-template-columns:38px minmax(0,1fr)}
+  #atlasPlayerEditModal .atlas-character-owner-thumb{width:38px;height:38px}
+  #atlasPlayerEditModal .atlas-character-owner-badge{grid-column:2;justify-self:start;max-width:100%}
+  #atlasPlayerEditModal .atlas-character-owner-actions{align-items:stretch;flex-direction:column}
+  #atlasPlayerEditModal .atlas-character-owner-save{width:100%}
+}
+
 #atlasPlayerEditModal .atlas-player-role-panel{grid-column:1/-1;border:1px solid rgba(196,49,49,.22);border-radius:18px;background:linear-gradient(145deg,#fff7f7,#f8f9fa);padding:16px 17px;margin:2px 0 13px}
 #atlasPlayerEditModal .atlas-player-role-panel[hidden]{display:none!important}
 #atlasPlayerEditModal .atlas-player-role-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
@@ -20734,9 +20799,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-edit-field input:not([type="file"]){height:54px;min-height:54px}
 #atlasPlayerEditModal .atlas-player-edit-field textarea{min-height:88px}
 #atlasPlayerEditModal .atlas-player-edit-field input:focus,#atlasPlayerEditModal .atlas-player-edit-field textarea:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
-#atlasPlayerEditModal .atlas-player-edit-file{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;z-index:5!important;cursor:pointer!important;padding:0!important;border:0!important;margin:0!important;clip:auto!important;clip-path:none!important;-webkit-appearance:none!important;appearance:none!important}
+#atlasPlayerEditModal .atlas-player-edit-field .atlas-player-edit-file{position:static;width:calc(100% - 24px);height:auto;min-height:40px;opacity:1;cursor:pointer;padding:0;border:0;border-radius:0;background:transparent;margin:0 12px 12px;font-size:11px;resize:none}
+#atlasPlayerEditModal .atlas-player-edit-file::file-selector-button{margin-right:8px;padding:10px 12px;border:1px solid #d7dbe1;border-radius:10px;background:#fff;color:#242932;font:800 11px/1.3 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlasPlayerEditModal .atlas-player-edit-file:focus-visible{outline:2px solid #c63838;outline-offset:3px}
 #atlasPlayerEditModal .atlas-player-file-zone{position:relative;min-height:92px;border:1.5px dashed #cfd4dc;border-radius:14px;background:#fafbfc;transition:.18s ease;text-align:center;overflow:hidden}
-#atlasPlayerEditModal .atlas-player-file-ui{display:flex;align-items:center;justify-content:center;min-height:92px;padding:16px;cursor:pointer;text-align:center;width:100%;height:100%;box-sizing:border-box;pointer-events:none}
+#atlasPlayerEditModal .atlas-player-file-ui{display:flex;align-items:center;justify-content:center;min-height:64px;padding:14px;cursor:pointer;text-align:center;width:100%;box-sizing:border-box}
 #atlasPlayerEditModal .atlas-player-file-ui>span{display:block}
 #atlasPlayerEditModal .atlas-player-file-mobile{display:block!important;margin-top:9px}
 #atlasPlayerEditModal .atlas-player-file-mobile strong{display:inline-flex!important;align-items:center;justify-content:center;padding:9px 13px;border:1px solid #d7dbe1;border-radius:999px;background:#fff;color:#242932;font-size:10px;font-weight:900}
@@ -20751,6 +20818,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone:hover,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone.is-dragover{background:#21191b;border-color:#e64b4b}
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-zone strong{color:#f4f5f7}
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-file-pick{background:#222a34;border-color:#39424e;color:#f4f5f7}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-file::file-selector-button{background:#222a34;border-color:#39424e;color:#f4f5f7}
 #atlasPlayerEditModal .atlas-player-edit-hint{margin:-4px 0 0;color:#9a9fa7;font-size:10px;line-height:1.45}
 #atlasPlayerEditModal .atlas-player-edit-check{display:flex;align-items:center;gap:9px;margin:2px 0 14px;font-size:11px;font-weight:850;color:#535963}
 #atlasPlayerEditModal .atlas-player-edit-check input{width:16px;height:16px;accent-color:#c63838}
@@ -21047,6 +21115,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           </div>
           <div class="atlas-player-role-status" id="atlasPlayerRoleStatus"></div>
         </section>
+        <section class="atlas-character-owner-panel" id="atlasCharacterOwnerSection" hidden>
+          <div class="atlas-character-owner-head">
+            <div><h3>персонажи игрока</h3><p>привяжи к аккаунту до четырёх персонажей. занятые другим игроком персонажи отмечены и недоступны.</p></div>
+            <span class="atlas-character-owner-count" id="atlasCharacterOwnerCount">0 / 4</span>
+          </div>
+          <input class="atlas-character-owner-search" id="atlasCharacterOwnerSearch" type="search" placeholder="найти персонажа…" autocomplete="off">
+          <div class="atlas-character-owner-list" id="atlasCharacterOwnerList"><div class="atlas-character-owner-status">загружаем персонажей…</div></div>
+          <div class="atlas-character-owner-actions">
+            <div class="atlas-character-owner-status" id="atlasCharacterOwnerStatus"></div>
+            <button class="atlas-character-owner-save" id="atlasCharacterOwnerSave" type="button">сохранить персонажей</button>
+          </div>
+        </section>
         <section class="atlas-player-relation" id="atlasPlayerRelationshipSection">
           <div class="atlas-player-relation-head">
             <div><h3>семейный статус</h3><p>связь появится в обоих профилях только после подтверждения второго игрока.</p></div>
@@ -21058,16 +21138,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>аватар</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
-            <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span></label>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*" aria-label="выбрать аватар с компьютера">
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
         <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>баннер</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
-            <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span></label>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*" aria-label="выбрать баннер с компьютера">
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
@@ -21085,6 +21165,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 (function(){
   var profilesCache = [];
   var profilesLoadedAt = 0;
+  var playersRenderToken = 0;
   var currentPlayerId = '';
 
   function esc(value){
@@ -21151,6 +21232,194 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   function roleLabel(role){return role==='superadmin'?'суперадмин':role==='admin'?'админ':'игрок'}
+
+  function canManageCharacterOwners(viewer,target){
+    if(!viewer||!target)return false;
+    if(viewer.role==='superadmin')return true;
+    return viewer.role==='admin'&&target.role==='player';
+  }
+
+  function allAssignableCharacters(){
+    var out=[],seen={};
+    (window.ATLAS_CHARACTERS||[]).forEach(function(ch){
+      if(!ch||!ch.id||seen[ch.id])return;
+      var type=String(ch.type||'').toLowerCase();
+      var category=String(ch.category||'').toLowerCase();
+      if(type==='lyceum'||category==='lyceum'||category==='liceo'||category==='liceistas')return;
+      seen[ch.id]=true;
+      out.push(ch);
+    });
+    (window.ATLAS_CARD_ONLY||[]).forEach(function(ch){
+      if(!ch||!ch.id||seen[ch.id])return;
+      var category=String(ch.category||'').toLowerCase();
+      if(category==='lyceum'||category==='liceo'||category==='liceistas')return;
+      seen[ch.id]=true;
+      out.push({
+        id:ch.id,
+        name:ch.name,
+        cardName:ch.name,
+        cardImage:ch.image||'',
+        category:ch.category||'',
+        subtitle:ch.player?'/ '+ch.player:'',
+        _atlasCardOnly:true
+      });
+    });
+    return out.sort(function(a,b){
+      var an=String(a.cardName||a.name||a.fullName||a.id).toLowerCase();
+      var bn=String(b.cardName||b.name||b.fullName||b.id).toLowerCase();
+      return an.localeCompare(bn,'ru');
+    });
+  }
+
+  function findAssignableCharacter(id){
+    return allAssignableCharacters().find(function(ch){return ch.id===id})||null;
+  }
+
+  function characterOwnerName(ch){
+    return ch&&String(ch.cardName||ch.name||ch.fullName||ch.id)||'персонаж';
+  }
+
+  function characterOwnerImage(ch){
+    return ch&&((ch.card&&ch.card.image)||ch.cardImage||ch.image||ch.avatar||ch.banner)||'';
+  }
+
+  var characterOwnerEditorState=null;
+
+  function setCharacterOwnerStatus(message,type){
+    var box=document.getElementById('atlasCharacterOwnerStatus');
+    if(!box)return;
+    box.textContent=message||'';
+    box.className='atlas-character-owner-status'+(type==='error'?' is-error':type==='ok'?' is-ok':'');
+  }
+
+  function renderCharacterOwnerChoices(){
+    var list=document.getElementById('atlasCharacterOwnerList');
+    var count=document.getElementById('atlasCharacterOwnerCount');
+    var search=document.getElementById('atlasCharacterOwnerSearch');
+    if(!list||!characterOwnerEditorState)return;
+    var state=characterOwnerEditorState;
+    var q=String(search&&search.value||'').trim().toLowerCase();
+    var items=state.characters.filter(function(ch){
+      if(!q)return true;
+      var hay=[
+        characterOwnerName(ch),
+        ch.subtitle||'',
+        ch.category||'',
+        ch.role||'',
+        ch.id||''
+      ].join(' ').toLowerCase();
+      return hay.indexOf(q)>=0;
+    });
+    if(count)count.textContent=state.selected.size+' / 4';
+    if(!items.length){
+      list.innerHTML='<div class="atlas-character-owner-status">ничего не найдено.</div>';
+      return;
+    }
+    list.innerHTML=items.map(function(ch){
+      var owner=state.ownerByCharacter[ch.id]||'';
+      var mine=owner===state.targetId;
+      var taken=!!owner&&!mine;
+      var checked=state.selected.has(ch.id);
+      var ownerProfile=taken?state.profileById[owner]:null;
+      var badge=checked?'привязан':taken?'у @'+esc(ownerProfile&&ownerProfile.nickname||'другого игрока'):(ch._atlasCardOnly?'без анкеты':'свободен');
+      var img=characterOwnerImage(ch);
+      return '<label class="atlas-character-owner-item'+(checked?' is-selected':'')+(taken?' is-taken':'')+'" data-character-owner-row="'+esc(ch.id)+'">'+
+        '<input type="checkbox" data-character-owner-choice="'+esc(ch.id)+'"'+(checked?' checked':'')+(taken?' disabled':'')+'>'+
+        '<span class="atlas-character-owner-thumb">'+(img?'<img src="'+esc(img)+'" alt="">':esc(characterOwnerName(ch).charAt(0).toUpperCase()))+'</span>'+
+        '<span class="atlas-character-owner-copy"><strong>'+esc(characterOwnerName(ch))+'</strong><span>'+esc(ch.subtitle||ch.category||ch.id)+'</span></span>'+
+        '<span class="atlas-character-owner-badge">'+badge+'</span>'+
+      '</label>';
+    }).join('');
+  }
+
+  async function loadCharacterOwnerEditor(targetId){
+    var c=client();
+    if(!c)throw new Error('supabase ещё загружается.');
+    setCharacterOwnerStatus('загружаем привязки…','ok');
+    var results=await Promise.all([
+      c.from('character_owners').select('character_id,user_id,display_order').order('display_order',{ascending:true}),
+      getProfiles(false)
+    ]);
+    if(results[0].error)throw results[0].error;
+    var rows=results[0].data||[];
+    var profiles=results[1]||[];
+    var ownerByCharacter={},profileById={};
+    rows.forEach(function(row){ownerByCharacter[row.character_id]=row.user_id});
+    profiles.forEach(function(p){profileById[p.id]=p});
+    characterOwnerEditorState={
+      targetId:targetId,
+      characters:allAssignableCharacters(),
+      ownerByCharacter:ownerByCharacter,
+      profileById:profileById,
+      selected:new Set(rows.filter(function(row){return row.user_id===targetId}).sort(function(a,b){return (a.display_order||0)-(b.display_order||0)}).map(function(row){return row.character_id}))
+    };
+    var search=document.getElementById('atlasCharacterOwnerSearch');
+    if(search)search.value='';
+    renderCharacterOwnerChoices();
+    setCharacterOwnerStatus('');
+  }
+
+  async function saveCharacterOwners(){
+    var form=document.getElementById('atlasPlayerEditForm');
+    var button=document.getElementById('atlasCharacterOwnerSave');
+    if(!form||!characterOwnerEditorState)return;
+    var targetId=form.dataset.playerId||'';
+    var state=characterOwnerEditorState;
+    if(!targetId||state.targetId!==targetId)return;
+    var permission;
+    try{permission=await getEditPermission(targetId)}catch(err){setCharacterOwnerStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
+    if(!canManageCharacterOwners(permission.viewer,permission.target)){
+      setCharacterOwnerStatus('у тебя нет прав менять персонажей этого аккаунта.','error');
+      return;
+    }
+    var selected=Array.from(state.selected);
+    if(selected.length>4){setCharacterOwnerStatus('можно привязать максимум четырёх персонажей.','error');return}
+    var c=client();if(!c)return;
+    if(button){button.disabled=true;button.textContent='сохраняем…'}
+    setCharacterOwnerStatus('сохраняем привязки…','ok');
+    try{
+      var fresh=await c.from('character_owners').select('character_id,user_id,display_order');
+      if(fresh.error)throw fresh.error;
+      var rows=fresh.data||[];
+      var occupied={};
+      rows.forEach(function(row){occupied[row.character_id]=row.user_id});
+      selected.forEach(function(characterId){
+        if(occupied[characterId]&&occupied[characterId]!==targetId){
+          var owner=state.profileById[occupied[characterId]];
+          throw new Error(characterOwnerName(findAssignableCharacter(characterId))+' уже привязан к @'+(owner&&owner.nickname||'другому игроку')+'.');
+        }
+      });
+
+      var current=rows.filter(function(row){return row.user_id===targetId}).map(function(row){return row.character_id});
+      var remove=current.filter(function(id){return selected.indexOf(id)<0});
+      var add=selected.filter(function(id){return current.indexOf(id)<0});
+
+      if(remove.length){
+        var del=await c.from('character_owners').delete().eq('user_id',targetId).in('character_id',remove);
+        if(del.error)throw del.error;
+      }
+      if(add.length){
+        var newRows=add.map(function(characterId){
+          return {character_id:characterId,user_id:targetId,display_order:selected.indexOf(characterId)+1};
+        });
+        var ins=await c.from('character_owners').insert(newRows);
+        if(ins.error)throw ins.error;
+      }
+      for(var i=0;i<selected.length;i++){
+        if(add.indexOf(selected[i])>=0)continue;
+        var upd=await c.from('character_owners').update({display_order:i+1}).eq('character_id',selected[i]).eq('user_id',targetId);
+        if(upd.error)throw upd.error;
+      }
+
+      await loadCharacterOwnerEditor(targetId);
+      setCharacterOwnerStatus('готово. персонажи привязаны к аккаунту.','ok');
+      if(currentPlayerId===targetId)await renderPlayerProfile(targetId);
+    }catch(err){
+      setCharacterOwnerStatus(err&&err.message?err.message:'не удалось сохранить персонажей.','error');
+    }finally{
+      if(button){button.disabled=false;button.textContent='сохранить персонажей'}
+    }
+  }
 
   function setRoleStatus(message,type){
     var box=document.getElementById('atlasPlayerRoleStatus');
@@ -21367,13 +21636,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var relSection=document.getElementById('atlasPlayerRelationshipSection');
     var roleSection=document.getElementById('atlasPlayerRoleSection');
     var cursorSection=document.getElementById('atlasPlayerCursorSection');
+    var ownerSection=document.getElementById('atlasCharacterOwnerSection');
     var canManageRole=!!(permission.viewer&&permission.viewer.role==='superadmin'&&!own&&permission.target&&permission.target.role!=='superadmin');
+    var canManageChars=canManageCharacterOwners(permission.viewer,permission.target);
     if(title)title.textContent=own?'редактировать профиль':'редактировать профиль игрока';
     if(copy)copy.textContent=own?'эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.':'режим администрации: изменения сохранятся в публичном профиле этого игрока.';
     if(relSection)relSection.hidden=!own;
     if(cursorSection)cursorSection.hidden=!own;
     if(roleSection)roleSection.hidden=!canManageRole;
+    if(ownerSection)ownerSection.hidden=!canManageChars;
     setRoleStatus('');
+    setCharacterOwnerStatus('');
     try{
       var res=await Promise.all([
         c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url,role').eq('id',id).maybeSingle(),
@@ -21405,6 +21678,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var roleSelect=document.getElementById('atlasPlayerRoleSelect');
       if(roleSelect)roleSelect.value=p.role==='admin'?'admin':'player';
       if(own)await renderRelationshipEditor(id);
+      if(canManageChars)await loadCharacterOwnerEditor(id);
       setEditStatus('');
     }catch(err){setEditStatus(err&&err.message?err.message:'не удалось загрузить профиль.','error')}
   }
@@ -21533,17 +21807,36 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(!grid) return;
     var loading=document.getElementById('atlasPlayerLoading');
     var empty=document.getElementById('atlasPlayerEmpty');
+    var token=++playersRenderToken,timeoutId;
     try{
       if(loading) loading.hidden=false;
-      var list=await getProfiles(false);
+      if(empty) empty.hidden=true;
+      grid.setAttribute('aria-busy','true');
+      var list=await Promise.race([
+        getProfiles(false),
+        new Promise(function(_resolve,reject){timeoutId=setTimeout(function(){reject(new Error('сервер долго не отвечает. попробуй ещё раз.'))},15000)})
+      ]);
+      if(token!==playersRenderToken||!grid.isConnected)return;
       grid.innerHTML=list.map(playerCard).join('');
       var count=document.getElementById('atlasPlayerCount');
       if(count) count.textContent=list.length+' '+pluralPlayers(list.length);
-      if(empty) empty.hidden=!!list.length;
+      if(empty){
+        empty.innerHTML='<strong>пока никого нет</strong><span>первый зарегистрированный игрок появится здесь автоматически.</span>';
+        empty.hidden=!!list.length;
+      }
     }catch(err){
-      grid.innerHTML=''; if(empty){empty.hidden=false;empty.innerHTML='<strong>не удалось загрузить игроков</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span>'}
-    }finally{ if(loading) loading.hidden=true; }
+      if(token!==playersRenderToken||!grid.isConnected)return;
+      grid.innerHTML='';
+      if(empty){empty.hidden=false;empty.innerHTML='<strong>не удалось загрузить игроков</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span><button class="atlas-player-retry" type="button" data-player-retry>попробовать ещё раз</button>'}
+    }finally{
+      clearTimeout(timeoutId);
+      if(token===playersRenderToken){if(loading) loading.hidden=true;grid.setAttribute('aria-busy','false')}
+    }
   }
+
+  document.addEventListener('click',function(e){
+    if(e.target.closest&&e.target.closest('[data-player-retry]')){profilesLoadedAt=0;renderPlayers()}
+  });
 
   function infoRows(rows){
     return '<div class="atlas-player-info-rows">'+rows.filter(function(r){return r[1]}).map(function(r){
@@ -21552,10 +21845,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   function renderOwnedCharacterCard(ch){
-    var img=(ch.card&&ch.card.image)||ch.cardImage||ch.avatar||ch.banner||'';
+    var img=characterOwnerImage(ch);
+    var copy='<span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3><p>'+esc(ch._atlasCardOnly?'анкета появится позже':((ch.card&&ch.card.short)||ch.subtitle||''))+'</p></span>';
+    if(ch._atlasCardOnly){
+      return '<article class="atlas-character-card"><div class="atlas-character-card-btn atlas-card-only">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</div></article>';
+    }
     return '<article class="atlas-character-card"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
-      (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+
-      '<span class="atlas-character-card-text"><h3>'+esc(ch.cardName||ch.name||ch.id)+'</h3><p>'+esc((ch.card&&ch.card.short)||ch.subtitle||'')+'</p></span></button></article>';
+      (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
   }
 
   async function fetchPlayerBundle(id){
@@ -21590,7 +21886,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       if(typeof window.atlasPersonalTrackView==='function') window.atlasPersonalTrackView({target_type:'player',target_id:p.id,title:displayName(p),subtitle:'@'+(p.nickname||'player'),image_url:p.avatar_url||p.banner_url||''});
       var banner=p.banner_url||p.avatar_url||'';
       var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));
-      var chars=(bundle.owners||[]).map(function(o){return (window.ATLAS_CHARACTERS||[]).find(function(ch){return ch.id===o.character_id})}).filter(Boolean);
+      var chars=(bundle.owners||[]).map(function(o){return findAssignableCharacter(o.character_id)}).filter(Boolean);
       var ach=bundle.achievements||[];
       var heart='';
       if(bundle.relationship&&bundle.partner){
@@ -21619,7 +21915,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
       ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div></div></div>';
-      var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
+      var mayManageChars=canManageCharacterOwners(viewer,p);
+      var charManage=mayManageChars?'<div class="atlas-player-character-manage"><button type="button" data-character-owner-open="'+esc(p.id)+'">управлять персонажами</button></div>':'';
+      var charPanel=charManage+(chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи.</div>');
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){
         var x=a.achievements||{};
         var code=String(x.code||'');
@@ -21646,7 +21944,42 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     document.querySelectorAll('#atlas-app [data-player-tab-panel]').forEach(function(p){p.classList.toggle('is-active',p.getAttribute('data-player-tab-panel')===name)});
   }
 
+  document.addEventListener('input',function(e){
+    if(e.target&&e.target.id==='atlasCharacterOwnerSearch')renderCharacterOwnerChoices();
+  },true);
+
+  document.addEventListener('change',function(e){
+    var input=e.target&&e.target.matches&&e.target.matches('[data-character-owner-choice]')?e.target:null;
+    if(!input||!characterOwnerEditorState)return;
+    var id=input.getAttribute('data-character-owner-choice');
+    if(input.checked){
+      if(characterOwnerEditorState.selected.size>=4){
+        input.checked=false;
+        setCharacterOwnerStatus('можно привязать максимум четырёх персонажей.','error');
+        renderCharacterOwnerChoices();
+        return;
+      }
+      characterOwnerEditorState.selected.add(id);
+    }else{
+      characterOwnerEditorState.selected.delete(id);
+    }
+    setCharacterOwnerStatus('');
+    renderCharacterOwnerChoices();
+  },true);
+
   document.addEventListener('click',function(e){
+    var ownerOpen=e.target.closest('[data-character-owner-open]');
+    if(ownerOpen){
+      e.preventDefault();e.stopPropagation();
+      var ownerId=ownerOpen.getAttribute('data-character-owner-open');
+      openPlayerEdit(ownerId).then(function(){
+        var section=document.getElementById('atlasCharacterOwnerSection');
+        if(section&&!section.hidden)section.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      return;
+    }
+    var ownerSave=e.target.closest('#atlasCharacterOwnerSave');
+    if(ownerSave){e.preventDefault();e.stopPropagation();saveCharacterOwners();return}
     var roleSave=e.target.closest('#atlasPlayerRoleSave');
     if(roleSave){e.preventDefault();e.stopPropagation();savePlayerRole();return}
     var relationAction=e.target.closest('[data-relation-action]');
@@ -22054,6 +22387,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-post-text{width:100%;min-height:88px;resize:vertical;border:0;outline:0;background:#f5f6f8;border-radius:16px;padding:15px 16px;color:#181b21;font:700 13px/1.65 "Montserrat",Arial,sans-serif}
 #atlas-app .atlas-player-post-drop{margin-top:10px;min-height:72px;border:1px dashed #cfd4dc;border-radius:16px;background:#fafafa;display:grid;place-items:center;text-align:center;padding:16px;color:#9096a0;font-size:11px;font-weight:850;transition:.2s ease}
 #atlas-app .atlas-player-post-drop.is-over{border-color:#c53030;background:#fff5f5;color:#b72f34}
+#atlas-app .atlas-player-post-file{display:block;width:100%;min-width:0;max-width:100%;margin-top:12px;color:inherit;font:650 11px/1.5 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-player-post-file::file-selector-button{margin-right:8px;padding:10px 12px;border:1px solid #d7dbe1;border-radius:10px;background:#fff;color:#242932;font:800 11px/1.3 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-player-post-file:focus-visible{outline:2px solid #c63838;outline-offset:3px}
+#atlas-app[data-theme="dark"] .atlas-player-post-file::file-selector-button{background:#222a34;border-color:#39424e;color:#f4f5f7}
 #atlas-app .atlas-player-post-mobile-pick{position:relative;display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid rgba(197,48,48,.28);border-radius:14px;background:rgba(197,48,48,.07);color:#c53030;font:950 11px "Montserrat",Arial,sans-serif;cursor:pointer;margin-top:10px;overflow:hidden}
 #atlas-app .atlas-player-post-mobile-file{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;z-index:5!important;cursor:pointer!important;clip:auto!important;clip-path:none!important;-webkit-appearance:none!important;appearance:none!important}
 @media(max-width:760px),(pointer:coarse){#atlas-app .atlas-player-post-drop{display:none}#atlas-app .atlas-player-post-mobile-pick{min-height:52px}}
@@ -22152,9 +22489,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function setStatus(text,type){var el=document.getElementById('atlasPlayerPostStatus');if(!el)return;el.textContent=text||'';el.style.color=type==='error'?'#bd3030':type==='ok'?'#35724a':''}
   function validateImage(file){if(!file)return;var t=String(file.type||'').toLowerCase();if(t&&t.indexOf('image/')!==0)throw new Error('можно прикреплять только изображения.');if(file.size>10*1024*1024)throw new Error('одно изображение должно быть меньше 10 мб.')}
   function drawPreview(){var box=document.getElementById('atlasPlayerPostPreview');if(!box)return;box.innerHTML='';pendingFiles.forEach(function(file,i){var fig=document.createElement('figure');var img=document.createElement('img');img.alt='';img.src=URL.createObjectURL(file);var b=document.createElement('button');b.type='button';b.textContent='×';b.setAttribute('data-post-remove-preview',String(i));fig.append(img,b);box.appendChild(fig)})}
-  function addFiles(files){Array.from(files||[]).forEach(function(file){if(pendingFiles.length>=4)return;validateImage(file);pendingFiles.push(file)});drawPreview()}
+  function addFiles(files){
+    var selected=Array.from(files||[]);
+    if(!selected.length)return;
+    if(pendingFiles.length+selected.length>4)throw new Error('к одному посту можно прикрепить до 4 изображений.');
+    selected.forEach(validateImage);
+    pendingFiles=pendingFiles.concat(selected);
+    drawPreview();
+    setStatus('прикреплено фото: '+pendingFiles.length+' / 4','ok');
+  }
   async function upload(file,userId){validateImage(file);var client=c();if(!client)throw new Error('supabase ещё загружается.');var ext=(String(file.name||'image').split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';var path=userId+'/posts/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;var up=await client.storage.from('atlas-media').upload(path,file,{upsert:false,contentType:file.type||undefined,cacheControl:'3600'});if(up.error)throw up.error;var pub=client.storage.from('atlas-media').getPublicUrl(up.data.path);return {path:up.data.path,url:pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:''}}
-  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop">перетащи изображения сюда</div><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
+  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop"><label for="atlasPlayerPostFile">перетащи изображения сюда или выбери с компьютера</label><input class="atlas-player-post-file" id="atlasPlayerPostFile" type="file" accept="image/*" multiple aria-label="выбрать фотографии к посту"><small>до 4 изображений, каждое до 10 мб</small></div><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus" role="status"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
   function canDeleteComment(comment){return own(comment.user_id)||own(activeProfileId)}
   function commentForm(postId,parentId,ph,isReply){if(uid())return '<form class="atlas-player-comment-form'+(isReply?' is-reply':'')+'" data-player-comment-form="'+esc(postId)+'"'+(parentId?' data-parent-comment="'+esc(parentId)+'"':'')+'><textarea class="atlas-player-comment-input" name="body" maxlength="2000" rows="1" placeholder="'+esc(ph||'написать комментарий…')+'" required></textarea><button class="atlas-player-comment-submit" type="submit">отправить</button>'+(isReply?'<button class="atlas-player-comment-reply-cancel" type="button" data-player-comment-reply-cancel="'+esc(parentId)+'" data-comment-post="'+esc(postId)+'">отмена</button>':'')+'</form>';return '<button class="atlas-player-comment-login" type="button" data-player-comment-login>войти, чтобы ответить</button>'}
   function commentActions(comment){var out=['<button class="atlas-player-comment-reply-btn" type="button" data-player-comment-reply="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">ответить</button>'];if(canDeleteComment(comment))out.push('<button class="atlas-player-comment-delete" type="button" data-player-comment-delete="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">удалить</button>');return '<div class="atlas-player-comment-tools">'+out.join('')+'</div>'}
@@ -22165,7 +22510,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function postCard(post,profile,likes,userLike,images,comments,commentProfiles){var avatar=profile.avatar_url?'<img src="'+esc(profile.avatar_url)+'" alt="">':esc(initial(profile));var body=post.body?'<div class="atlas-player-post-body">'+esc(post.body)+'</div>':'';var imgs=(images||[]).map(function(x){return '<img src="'+esc(x.public_url||x.url||'')+'" alt="">'}).join('');var grid=imgs?'<div class="atlas-player-post-images'+((images||[]).length===1?' is-one':'')+'">'+imgs+'</div>':'';var del=own(post.author_id)?'<div class="atlas-player-post-menu"><button type="button" data-player-post-delete="'+esc(post.id)+'">удалить</button></div>':'';var cc=(comments||[]).length;return '<article class="atlas-player-post" data-post-id="'+esc(post.id)+'"><div class="atlas-player-post-head"><div class="atlas-player-post-avatar">'+avatar+'</div><div class="atlas-player-post-author"><strong>'+esc(profile.display_name||profile.nickname)+'</strong><span>@'+esc(profile.nickname||'player')+' · '+esc(fmt(post.created_at))+'</span></div>'+del+'</div>'+body+grid+'<div class="atlas-player-post-foot"><button type="button" class="atlas-player-post-like'+(userLike?' is-active':'')+'" data-player-post-like="'+esc(post.id)+'">♥ '+esc(likes||0)+'</button><button type="button" class="atlas-player-post-comments-btn" data-player-post-comments="'+esc(post.id)+'">💬 '+esc(cc)+'</button></div>'+commentsBlock(post.id,comments,commentProfiles)+'</article>'}
   async function load(id){var client=c();if(!client)return;activeProfileId=id;var postsRoot=document.getElementById('atlasPlayerPostsRoot'),photosRoot=document.getElementById('atlasPlayerPhotosRoot');if(!postsRoot&&!photosRoot)return;try{var pr=await client.from('profiles').select('id,nickname,display_name,avatar_url').eq('id',id).maybeSingle();if(pr.error)throw pr.error;var profile=pr.data||{id:id,nickname:'player',display_name:'игрок'};var po=await client.from('posts').select('id,author_id,body,created_at,updated_at').eq('author_id',id).order('created_at',{ascending:false});if(po.error)throw po.error;var posts=po.data||[],ids=posts.map(function(x){return x.id});var images=[],likes=[],comments=[];if(ids.length){var ir=await client.from('post_images').select('id,post_id,storage_path,sort_order').in('post_id',ids).order('sort_order',{ascending:true});if(ir.error)throw ir.error;images=ir.data||[];var lr=await client.from('post_likes').select('post_id,user_id').in('post_id',ids);if(lr.error)throw lr.error;likes=lr.data||[];var cr=await client.from('post_comments').select('id,post_id,user_id,body,created_at,parent_comment_id').in('post_id',ids).order('created_at',{ascending:true});if(cr.error)throw cr.error;comments=cr.data||[]}var imageMap={};images.forEach(function(x){var pub=client.storage.from('atlas-media').getPublicUrl(x.storage_path);x.public_url=pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:'';(imageMap[x.post_id]||(imageMap[x.post_id]=[])).push(x)});var likeCount={},myLikes={};likes.forEach(function(x){likeCount[x.post_id]=(likeCount[x.post_id]||0)+1;if(x.user_id===uid())myLikes[x.post_id]=true});var commentMap={};comments.forEach(function(x){(commentMap[x.post_id]||(commentMap[x.post_id]=[])).push(x)});var commentProfiles={};var commentUserIds=Array.from(new Set(comments.map(function(x){return x.user_id}).filter(Boolean)));if(commentUserIds.length){var cpr=await client.from('profiles').select('id,nickname,display_name,avatar_url').in('id',commentUserIds);if(cpr.error)throw cpr.error;(cpr.data||[]).forEach(function(x){commentProfiles[x.id]=x})}if(postsRoot){var feedHtml=composer(id)+(posts.length?'<div class="atlas-player-post-list">'+posts.map(function(p){return postCard(p,profile,likeCount[p.id]||0,!!myLikes[p.id],imageMap[p.id]||[],commentMap[p.id]||[],commentProfiles)}).join('')+'</div>':'<div class="atlas-player-social-empty">публикаций пока нет.</div>');postsRoot.innerHTML='<div class="atlas-player-posts-layout"><div class="atlas-player-posts-feed">'+feedHtml+'</div>'+statsBlock(posts,images,likes,comments)+'</div>'}if(photosRoot){var all=images.slice().sort(function(a,b){var pa=posts.find(function(p){return p.id===a.post_id}),pb=posts.find(function(p){return p.id===b.post_id});return new Date(pb&&pb.created_at||0)-new Date(pa&&pa.created_at||0)});photosRoot.innerHTML=all.length?'<div class="atlas-player-photo-grid">'+all.map(function(x){return '<button class="atlas-player-photo-tile" type="button" data-player-photo-post="'+esc(x.post_id)+'"><img src="'+esc(x.public_url||'')+'" alt=""></button>'}).join('')+'</div>':'<div class="atlas-player-social-empty">фотографий пока нет.</div>'}bindDrop()}catch(err){var msg=esc(err&&err.message?err.message:'ошибка atlas');if(postsRoot)postsRoot.innerHTML='<div class="atlas-player-social-empty">не удалось загрузить публикации: '+msg+'</div>';if(photosRoot)photosRoot.innerHTML='<div class="atlas-player-social-empty">не удалось загрузить фотографии.</div>'}}
   function bindDrop(){var d=document.getElementById('atlasPlayerPostDrop');if(!d||d.dataset.bound==='1')return;d.dataset.bound='1';['dragenter','dragover'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.add('is-over')})});['dragleave','drop'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.remove('is-over')})});d.addEventListener('drop',function(e){try{addFiles(e.dataTransfer.files)}catch(err){setStatus(err.message,'error')}})}
-  document.addEventListener('change',function(e){if(e.target&&e.target.id==='atlasPlayerPostMobileFile'){try{addFiles(e.target.files);e.target.value=''}catch(err){setStatus(err.message,'error')}}},true);
+  document.addEventListener('change',function(e){
+    if(e.target&&(e.target.id==='atlasPlayerPostFile'||e.target.id==='atlasPlayerPostMobileFile')){
+      try{addFiles(e.target.files)}catch(err){setStatus(err.message,'error')}
+      finally{e.target.value=''}
+    }
+  },true);
   async function publish(form){if(!own(activeProfileId))return;var client=c(),body=String(form.elements.body.value||'').trim();if(!body&&!pendingFiles.length){setStatus('добавь текст или изображение.','error');return}var b=form.querySelector('.atlas-player-post-submit');b.disabled=true;setStatus('публикуем…','ok');var uploaded=[];var postId='';try{var ins=await client.from('posts').insert({author_id:uid(),body:body||null}).select('id').single();if(ins.error)throw ins.error;postId=ins.data.id;for(var i=0;i<pendingFiles.length;i++){setStatus('загружаем фото '+(i+1)+' из '+pendingFiles.length+'…','ok');uploaded.push(await upload(pendingFiles[i],uid()))}if(uploaded.length){var rows=uploaded.map(function(x,i){return {post_id:postId,storage_path:x.path,sort_order:i}});var ir=await client.from('post_images').insert(rows);if(ir.error)throw ir.error}form.reset();pendingFiles=[];drawPreview();setStatus('готово.','ok');await load(activeProfileId)}catch(err){console.error('ATLAS post publish error',err);if(postId){try{await client.from('posts').delete().eq('id',postId)}catch(_e){}}setStatus(err&&err.message?err.message:'не удалось опубликовать.','error')}finally{b.disabled=false}}
   document.addEventListener('submit',async function(e){if(e.target&&e.target.id==='atlasPlayerPostComposer'){e.preventDefault();e.stopPropagation();publish(e.target);return}var cf=e.target&&e.target.closest?e.target.closest('[data-player-comment-form]'):null;if(cf){e.preventDefault();e.stopPropagation();if(!uid()){var a=document.getElementById('atlasAccountButton');if(a)a.click();return}var body=String(cf.elements.body.value||'').trim();if(!body)return;var postId=cf.getAttribute('data-player-comment-form'),parentId=cf.getAttribute('data-parent-comment')||'',btn=cf.querySelector('.atlas-player-comment-submit');btn.disabled=true;try{var payload={post_id:postId,user_id:uid(),body:body};if(parentId)payload.parent_comment_id=parentId;var rr=await c().from('post_comments').insert(payload);if(rr.error)throw rr.error;openCommentPosts[postId]=true;if(parentId)delete openReplyForms[parentId];await load(activeProfileId)}catch(err){alert((err&&err.message)||'не удалось отправить комментарий')}finally{btn.disabled=false}return}},true);
   document.addEventListener('click',async function(e){var compose=e.target.closest('[data-player-post-compose]');if(compose){var wrap=document.getElementById('atlasPlayerPostCreate');if(wrap){var open=!wrap.classList.contains('is-open');wrap.classList.toggle('is-open',open);compose.textContent=open?'× закрыть':'＋ создать пост';if(open){var ta=wrap.querySelector('.atlas-player-post-text');if(ta)setTimeout(function(){ta.focus()},40)}}return}var rem=e.target.closest('[data-post-remove-preview]');if(rem){pendingFiles.splice(Number(rem.getAttribute('data-post-remove-preview'))||0,1);drawPreview();return}var commentsBtn=e.target.closest('[data-player-post-comments]');if(commentsBtn){var pid=commentsBtn.getAttribute('data-player-post-comments'),panel=document.querySelector('[data-comments-panel="'+CSS.escape(pid)+'"]');openCommentPosts[pid]=!openCommentPosts[pid];if(panel)panel.classList.toggle('is-open',!!openCommentPosts[pid]);return}var commentLogin=e.target.closest('[data-player-comment-login]');if(commentLogin){var a=document.getElementById('atlasAccountButton');if(a)a.click();return}var replyBtn=e.target.closest('[data-player-comment-reply]');if(replyBtn){if(!uid()){var a=document.getElementById('atlasAccountButton');if(a)a.click();return}var rcid=replyBtn.getAttribute('data-player-comment-reply'),rpid=replyBtn.getAttribute('data-comment-post');openCommentPosts[rpid]=true;openReplyForms[rcid]=!openReplyForms[rcid];await load(activeProfileId);setTimeout(function(){var f=document.querySelector('[data-parent-comment="'+CSS.escape(rcid)+'"] textarea');if(f)f.focus()},40);return}var replyCancel=e.target.closest('[data-player-comment-reply-cancel]');if(replyCancel){var xcid=replyCancel.getAttribute('data-player-comment-reply-cancel'),xpid=replyCancel.getAttribute('data-comment-post');delete openReplyForms[xcid];openCommentPosts[xpid]=true;await load(activeProfileId);return}var commentDel=e.target.closest('[data-player-comment-delete]');if(commentDel){if(!confirm('удалить комментарий?'))return;var cid=commentDel.getAttribute('data-player-comment-delete'),pid=commentDel.getAttribute('data-comment-post');var rr=await c().from('post_comments').delete().eq('id',cid);if(rr.error){alert(rr.error.message||'не удалось удалить комментарий');return}delete openReplyForms[cid];openCommentPosts[pid]=true;await load(activeProfileId);return}var like=e.target.closest('[data-player-post-like]');if(like){if(!uid()){var a=document.getElementById('atlasAccountButton');if(a)a.click();return}var client=c(),id=like.getAttribute('data-player-post-like');var cur=await client.from('post_likes').select('post_id').eq('post_id',id).eq('user_id',uid()).maybeSingle();if(cur.data)await client.from('post_likes').delete().eq('post_id',id).eq('user_id',uid());else await client.from('post_likes').insert({post_id:id,user_id:uid()});load(activeProfileId);return}var del=e.target.closest('[data-player-post-delete]');if(del){var id=del.getAttribute('data-player-post-delete');if(!confirm('удалить публикацию?'))return;var client=c();var ims=await client.from('post_images').select('storage_path').eq('post_id',id);if(ims.data&&ims.data.length){try{await client.storage.from('atlas-media').remove(ims.data.map(function(x){return x.storage_path}))}catch(_e){}}await client.from('posts').delete().eq('id',id).eq('author_id',uid());delete openCommentPosts[id];load(activeProfileId);return}var photo=e.target.closest('[data-player-photo-post]');if(photo){var post=document.querySelector('[data-post-id="'+CSS.escape(photo.getAttribute('data-player-photo-post'))+'"]');if(post){var tab=document.querySelector('[data-player-tab="posts"]');if(tab)tab.click();setTimeout(function(){post.scrollIntoView({behavior:'smooth',block:'center'})},50)}return}},true);
@@ -22402,6 +22752,99 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   document.addEventListener('click',function(e){var login=e.target.closest&&e.target.closest('[data-direct-login]');if(login){openLogin();return}var toggle=e.target.closest&&e.target.closest('[data-direct-create-toggle]');if(toggle){var f=document.getElementById('atlasDirectCreateForm');if(f){f.classList.toggle('is-open');if(f.classList.contains('is-open')){var i=f.querySelector('input');if(i)i.focus()}}return}var chat=e.target.closest&&e.target.closest('[data-direct-chat]');if(chat){activeChatId=chat.getAttribute('data-direct-chat')||'';shell();return}var del=e.target.closest&&e.target.closest('[data-direct-delete-message]');if(del){deleteMessage(del.getAttribute('data-direct-delete-message'));return}var prof=e.target.closest&&e.target.closest('[data-direct-profile]');if(prof){var id=prof.getAttribute('data-direct-profile');if(id&&typeof window.atlasOpenPlayerProfile==='function')window.atlasOpenPlayerProfile(id);return}},true);
   window.addEventListener('atlasPlayerAuthReady',function(){if(pageActive())loadChats(activeChatId)});
   window.atlasRenderDirect=render;
+})();
+</script>
+
+<style id="atlas-mood-check-style">
+#atlas-app #inicio-mood-check{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(145deg,#171a20 0%,#292e38 58%,#17191f 100%);border-color:rgba(255,255,255,.08);color:#fff}
+#atlas-app #inicio-mood-check::before{content:"";position:absolute;right:-52px;bottom:-70px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(217,62,62,.48) 0%,rgba(217,62,62,.12) 42%,transparent 70%);z-index:-1}
+#atlas-app #inicio-mood-check .atlas-card-head{position:relative;z-index:1}
+#atlas-app #inicio-mood-check .atlas-card-head h3{color:#fff}
+#atlas-app .atlas-mood-date{display:inline-flex;align-items:center;min-height:24px;padding:5px 9px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.62);font:850 9px/1 "Montserrat",Arial,sans-serif;letter-spacing:.06em;text-transform:lowercase}
+#atlas-app .atlas-mood-result{position:relative;z-index:1;margin:22px 0 20px;display:grid;gap:7px}
+#atlas-app .atlas-mood-result span{color:rgba(255,255,255,.58);font:800 10px/1.2 "Montserrat",Arial,sans-serif;text-transform:lowercase}
+#atlas-app .atlas-mood-result strong{max-width:310px;color:#fff;font:950 clamp(24px,2vw,32px)/1.02 "Montserrat",Arial,sans-serif;letter-spacing:-.045em;text-transform:lowercase}
+#atlas-app .atlas-mood-explain-toggle{position:relative;z-index:1;border:0;background:none;color:#ff7272;padding:0;font:900 10px/1.3 "Montserrat",Arial,sans-serif;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(255,114,114,.35);text-underline-offset:4px}
+#atlas-app .atlas-mood-explain-toggle:hover{color:#ff9292}
+#atlas-app .atlas-mood-explain{position:relative;z-index:1;margin:13px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.62);font:650 10px/1.55 "Montserrat",Arial,sans-serif}
+#atlas-app .atlas-mood-explain[hidden]{display:none!important}
+#atlas-app .atlas-mood-orbit{position:absolute;right:18px;bottom:19px;width:70px;height:70px;border:1px solid rgba(255,255,255,.09);border-radius:50%;z-index:0}
+#atlas-app .atlas-mood-orbit::before{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.07);border-radius:50%}
+#atlas-app .atlas-mood-orbit span{position:absolute;width:5px;height:5px;border-radius:50%;background:#ff6666;box-shadow:0 0 14px rgba(255,83,83,.9)}
+#atlas-app .atlas-mood-orbit span:nth-child(1){left:6px;top:16px}
+#atlas-app .atlas-mood-orbit span:nth-child(2){right:10px;top:5px}
+#atlas-app .atlas-mood-orbit span:nth-child(3){right:2px;bottom:17px}
+@media(max-width:860px){#atlas-app .atlas-mood-result strong{font-size:27px}}
+</style>
+
+<script id="atlas-mood-check-script">
+(function(){
+  var moods=[
+    'сладкая булочка','сонный капитан','главная сплетница кампуса','человек-пятница','потерянный носок из прачечной',
+    'талисман победы','королева драматичных выходов','случайный гений','неофициальный психолог команды','гроза дедлайнов',
+    'любимый человек деканата','красный флаг с хорошей причёской','ходячая катастрофа','чемпион по откладыванию дел','главный герой чужого эдита',
+    'тот самый странный тип из библиотеки','профессиональный похититель худи','звезда группового чата','локальная знаменитость','причина внепланового собрания',
+    'самый красивый человек в радиусе километра','моральная поддержка с кофе','человек с идеальным алиби','секретное оружие команды','победитель внутреннего монолога',
+    'тот, кому сегодня всё можно','непредсказуемый сюжетный поворот','человек, которого обсуждают в раздевалке','очень убедительная плохая идея','любимчик судьбы',
+    'виновник чужой бессонницы','легенда ещё до выпуска','мастер исчезать перед уборкой','человек с вайбом пятницы','опасно обаятельная проблема',
+    'эмоциональная поддержка кампуса','главный поставщик мемов','романтическая угроза','случайный свидетель драмы','единственная рабочая клетка команды',
+    'причина опоздания всей группы','будущая запись в протоколе','тот, кто всё понял, но промолчал','маленькая академическая легенда','любимый кошмар тренера',
+    'очень занятый ничем человек','персонаж с секретной сценой после титров','ходячее оправдание','самый подозрительный невиновный','неотменённая тренировка',
+    'человек, которому нужен плед','официальный талисман хаоса','чья-то лучшая идея','загадка без правильного ответа','победа без дополнительного времени',
+    'тот самый взгляд через весь зал','причина проверить уведомления','неожиданно хороший совет','человек с запасным планом','сегодняшняя гордость ATLAS'
+  ];
+  var lastKey='';
+  function madridDate(){
+    var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),map={};
+    parts.forEach(function(x){map[x.type]=x.value});
+    return map.year+'-'+map.month+'-'+map.day;
+  }
+  function readableDate(){
+    try{return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Madrid',day:'numeric',month:'long'}).format(new Date())}
+    catch(_e){return 'сегодня'}
+  }
+  function hash(value){
+    var h=2166136261;
+    for(var i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}
+    return h>>>0;
+  }
+  function currentUserId(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
+  function render(){
+    var result=document.getElementById('atlasMoodResult'),date=document.getElementById('atlasMoodDate');
+    if(!result||!date)return;
+    var day=madridDate(),userId=currentUserId();
+    date.textContent=readableDate();
+    if(!userId){
+      result.innerHTML='<span>кто вы сегодня?</span><strong>войдите в ATLAS, чтобы узнать</strong>';
+      lastKey='guest-'+day;
+      return;
+    }
+    var key=userId+'|'+day;
+    result.innerHTML='<span>сегодня вы —</span><strong>'+moods[hash(key)%moods.length]+'</strong>';
+    lastKey=key;
+  }
+  document.addEventListener('click',function(e){
+    var toggle=e.target.closest&&e.target.closest('#atlasMoodExplainToggle');
+    if(toggle){
+      var text=document.getElementById('atlasMoodExplain'),open=toggle.getAttribute('aria-expanded')==='true';
+      toggle.setAttribute('aria-expanded',String(!open));
+      toggle.textContent=open?'что это вообще значит?':'ладно, понятно';
+      if(text)text.hidden=open;
+      return;
+    }
+    var guest=e.target.closest&&e.target.closest('#atlasMoodResult');
+    if(guest&&!currentUserId()){
+      var account=document.getElementById('atlasAccountButton');
+      if(account)account.click();
+      return;
+    }
+    var nav=e.target.closest&&e.target.closest('.atlas-nav-item, [data-open-page]');
+    if(nav)setTimeout(render,80);
+  },true);
+  window.addEventListener('atlasPlayerAuthReady',render);
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(render,120)});
+  setInterval(function(){var key=(currentUserId()||'guest')+'|'+madridDate();if(key!==lastKey)render()},60000);
+  window.atlasRenderMoodCheck=render;
 })();
 </script>
 
