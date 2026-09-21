@@ -17417,6 +17417,32 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center center;
+}
+
+/* FORO PHOTO FOCUS — keep faces centered in the wide contact cards */
+#atlas-app #atlas-page-foro .foro-photo-help-grid .foro-photo-card:nth-child(1) .foro-card-photo img {
+  object-position: center 34%;
+}
+#atlas-app #atlas-page-foro .foro-photo-help-grid .foro-photo-card:nth-child(2) .foro-card-photo img {
+  object-position: center 18%;
+}
+#atlas-app #atlas-page-foro .foro-photo-help-grid .foro-photo-card:nth-child(3) .foro-card-photo img {
+  object-position: center 24%;
+}
+#atlas-app #atlas-page-foro .foro-photo-help-grid .foro-photo-card:nth-child(4) .foro-card-photo img {
+  object-position: center 18%;
+}
+
+/* Golden hands cards: keep portrait focus slightly above center as well. */
+#atlas-app #atlas-page-foro .foro-hands-grid .foro-hand-card:nth-child(1) .foro-hand-photo img {
+  object-position: center 28%;
+}
+#atlas-app #atlas-page-foro .foro-hands-grid .foro-hand-card:nth-child(2) .foro-hand-photo img {
+  object-position: center 24%;
+}
+#atlas-app #atlas-page-foro .foro-hands-grid .foro-hand-card:nth-child(3) .foro-hand-photo img {
+  object-position: center 26%;
 }
 
 #atlas-app #atlas-page-foro .foro-card-body {
