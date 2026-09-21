@@ -786,12 +786,30 @@ body.atlas-modal-open {
   }
 
   #atlas-app .atlas-topbar {
-    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 10px;
     padding: 14px;
   }
 
   #atlas-app .atlas-top-actions {
-    display: none;
+    display: flex;
+    width: 42px;
+    min-width: 42px;
+    gap: 0;
+  }
+
+  /* на телефоне оставляем справа именно кнопку аккаунта:
+     через неё доступны вход и регистрация */
+  #atlas-app .atlas-top-actions > .atlas-top-icon,
+  #atlas-app .atlas-top-actions > .atlas-notifications-wrap {
+    display: none !important;
+  }
+
+  #atlas-app .atlas-top-actions .atlas-avatar-btn {
+    display: inline-flex !important;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
   }
 
   #atlas-app .atlas-pages-holder {
@@ -800,6 +818,27 @@ body.atlas-modal-open {
 }
 
 @media (max-width: 560px) {
+  #atlas-app .atlas-topbar {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  #atlas-app .atlas-menu-btn,
+  #atlas-app .atlas-top-actions,
+  #atlas-app .atlas-top-actions .atlas-avatar-btn {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  #atlas-app .atlas-search {
+    height: 48px;
+    padding-left: 16px;
+    padding-right: 42px;
+    font-size: 16px;
+  }
+
   #atlas-app .atlas-nav {
     grid-template-columns: 1fr;
   }
