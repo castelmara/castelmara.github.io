@@ -28,44 +28,6 @@
     @keyframes atlasLoaderSpin{to{transform:rotate(360deg)}}
   </style>
 
-<style id="atlas-mobile-photo-off">
-/* временно: загрузка/смена изображений отключена на мобильных устройствах */
-#atlasPlayerEditModal .atlas-player-file-mobile,
-#atlas-app .atlas-player-post-mobile-pick,
-#atlas-app .atlas-player-post-mobile-file{
-  display:none!important;
-}
-
-@media (max-width:760px), (pointer:coarse){
-  #atlasPlayerEditModal .atlas-player-edit-media-note,
-  #atlasPlayerEditModal .atlas-player-edit-photo-field{
-    display:none!important;
-  }
-
-  #atlasPlayerEditModal .atlas-player-edit-file{
-    display:none!important;
-    pointer-events:none!important;
-  }
-
-  #atlas-app .atlas-player-post-drop,
-  #atlas-app .atlas-player-post-mobile-pick,
-  #atlas-app .atlas-player-post-mobile-file{
-    display:none!important;
-    pointer-events:none!important;
-  }
-
-  #atlas-app .atlas-player-post-composer-head span{
-    display:none!important;
-  }
-
-  #atlas-app .atlas-player-post-composer-head::after{
-    content:"с телефона пока только текст";
-    color:#9aa0a9;
-    font-size:10px;
-    font-weight:800;
-  }
-}
-</style>
 </head>
 <body>
 <div id="atlas-dark-loader" aria-hidden="true">
@@ -20805,10 +20767,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-file-zone{position:relative;min-height:92px;border:1.5px dashed #cfd4dc;border-radius:14px;background:#fafbfc;transition:.18s ease;text-align:center;overflow:hidden}
 #atlasPlayerEditModal .atlas-player-file-ui{display:flex;align-items:center;justify-content:center;min-height:64px;padding:14px;cursor:pointer;text-align:center;width:100%;box-sizing:border-box}
 #atlasPlayerEditModal .atlas-player-file-ui>span{display:block}
-#atlasPlayerEditModal .atlas-player-file-mobile{display:block!important;margin-top:9px}
-#atlasPlayerEditModal .atlas-player-file-mobile strong{display:inline-flex!important;align-items:center;justify-content:center;padding:9px 13px;border:1px solid #d7dbe1;border-radius:999px;background:#fff;color:#242932;font-size:10px;font-weight:900}
-#atlasPlayerEditModal .atlas-player-file-mobile span{margin-top:6px!important;font-size:9px!important;color:#8a9099}
-@media(max-width:760px),(pointer:coarse){#atlasPlayerEditModal .atlas-player-file-desktop{display:none!important}#atlasPlayerEditModal .atlas-player-file-zone{min-height:76px;border-style:solid}#atlasPlayerEditModal .atlas-player-file-ui{min-height:76px;padding:14px}#atlasPlayerEditModal .atlas-player-file-zone strong{font-size:13px}#atlasPlayerEditModal .atlas-player-file-mobile{margin-top:0}}
+#atlasPlayerEditModal .atlas-player-file-ui .atlas-player-file-mobile{display:none}
+@media(max-width:760px),(pointer:coarse){
+  #atlasPlayerEditModal .atlas-player-file-desktop{display:none!important}
+  #atlasPlayerEditModal .atlas-player-file-zone{min-height:76px;border-style:solid}
+  #atlasPlayerEditModal .atlas-player-file-ui{min-height:52px;padding:14px}
+  #atlasPlayerEditModal .atlas-player-file-zone strong{font-size:13px}
+  #atlasPlayerEditModal .atlas-player-file-ui .atlas-player-file-mobile{display:block;margin:0}
+  #atlasPlayerEditModal .atlas-player-edit-field .atlas-player-edit-file{min-height:44px;min-width:0;font-size:16px}
+  #atlasPlayerEditModal .atlas-player-edit-file::file-selector-button{min-height:44px;font-size:14px}
+}
 #atlasPlayerEditModal .atlas-player-file-zone:hover,#atlasPlayerEditModal .atlas-player-file-zone.is-dragover{border-color:#e64b4b;background:#fff6f6}
 #atlasPlayerEditModal .atlas-player-file-zone strong{display:block;font-size:12px;font-weight:950;color:#20242b}
 #atlasPlayerEditModal .atlas-player-file-zone span{display:block;margin-top:5px;font-size:10px;color:#747c87}
@@ -21138,16 +21106,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>аватар</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span></label>
-            <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*" aria-label="выбрать аватар с компьютера">
+            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span><span class="atlas-player-file-mobile"><strong>выбрать фото с телефона</strong></span></label>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/*" aria-label="выбрать аватар">
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
         <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>баннер</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span></label>
-            <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*" aria-label="выбрать баннер с компьютера">
+            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span class="atlas-player-file-desktop"><strong>перетащи изображение сюда</strong><span>или выбери файл с компьютера</span></span><span class="atlas-player-file-mobile"><strong>выбрать фото с телефона</strong></span></label>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/*" aria-label="выбрать баннер">
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
@@ -22392,9 +22360,15 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-post-file::file-selector-button{margin-right:8px;padding:10px 12px;border:1px solid #d7dbe1;border-radius:10px;background:#fff;color:#242932;font:800 11px/1.3 "Montserrat",Arial,sans-serif;cursor:pointer}
 #atlas-app .atlas-player-post-file:focus-visible{outline:2px solid #c63838;outline-offset:3px}
 #atlas-app[data-theme="dark"] .atlas-player-post-file::file-selector-button{background:#222a34;border-color:#39424e;color:#f4f5f7}
-#atlas-app .atlas-player-post-mobile-pick{position:relative;display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid rgba(197,48,48,.28);border-radius:14px;background:rgba(197,48,48,.07);color:#c53030;font:950 11px "Montserrat",Arial,sans-serif;cursor:pointer;margin-top:10px;overflow:hidden}
-#atlas-app .atlas-player-post-mobile-file{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;z-index:5!important;cursor:pointer!important;clip:auto!important;clip-path:none!important;-webkit-appearance:none!important;appearance:none!important}
-@media(max-width:760px),(pointer:coarse){#atlas-app .atlas-player-post-drop{display:none}#atlas-app .atlas-player-post-mobile-pick{min-height:52px}}
+#atlas-app .atlas-player-post-drop .atlas-player-file-mobile{display:none}
+@media(max-width:760px),(pointer:coarse){
+  #atlas-app .atlas-player-post-drop{display:grid;min-width:0;padding:14px;border-style:solid}
+  #atlas-app .atlas-player-post-drop .atlas-player-file-desktop{display:none}
+  #atlas-app .atlas-player-post-drop .atlas-player-file-mobile{display:inline}
+  #atlas-app .atlas-player-post-file{min-height:44px;font-size:16px}
+  #atlas-app .atlas-player-post-file::file-selector-button{min-height:44px;font-size:14px}
+  #atlas-app .atlas-player-post-composer-head{flex-wrap:wrap;gap:6px}
+}
 #atlas-app .atlas-player-post-preview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
 #atlas-app .atlas-player-post-preview figure{position:relative;aspect-ratio:1/1;margin:0;border-radius:12px;overflow:hidden;background:#eceff2}
 #atlas-app .atlas-player-post-preview img{width:100%;height:100%;object-fit:cover;display:block}
@@ -22500,7 +22474,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     setStatus('прикреплено фото: '+pendingFiles.length+' / 4','ok');
   }
   async function upload(file,userId){validateImage(file);var client=c();if(!client)throw new Error('supabase ещё загружается.');var ext=(String(file.name||'image').split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';var path=userId+'/posts/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;var up=await client.storage.from('atlas-media').upload(path,file,{upsert:false,contentType:file.type||undefined,cacheControl:'3600'});if(up.error)throw up.error;var pub=client.storage.from('atlas-media').getPublicUrl(up.data.path);return {path:up.data.path,url:pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:''}}
-  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop"><label for="atlasPlayerPostFile">перетащи изображения сюда или выбери с компьютера</label><input class="atlas-player-post-file" id="atlasPlayerPostFile" type="file" accept="image/*" multiple aria-label="выбрать фотографии к посту"><small>до 4 изображений, каждое до 10 мб</small></div><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus" role="status"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
+  function composer(id){if(!own(id))return '';return '<div class="atlas-player-post-create" id="atlasPlayerPostCreate"><button class="atlas-player-post-create-btn" type="button" data-player-post-compose>＋ создать пост</button><form class="atlas-player-post-composer" id="atlasPlayerPostComposer" data-profile-id="'+esc(id)+'"><div class="atlas-player-post-composer-head"><strong>новая публикация</strong><span>текст или до 4 фото</span></div><textarea class="atlas-player-post-text" name="body" maxlength="10000" placeholder="что нового?"></textarea><div class="atlas-player-post-drop" id="atlasPlayerPostDrop"><label for="atlasPlayerPostFile"><span class="atlas-player-file-desktop">перетащи изображения сюда или выбери с компьютера</span><span class="atlas-player-file-mobile">выбрать фото с телефона</span></label><input class="atlas-player-post-file" id="atlasPlayerPostFile" type="file" accept="image/*" multiple aria-label="выбрать фотографии к посту"><small>до 4 изображений, каждое до 10 мб</small></div><div class="atlas-player-post-preview" id="atlasPlayerPostPreview"></div><div class="atlas-player-post-composer-actions"><span class="atlas-player-post-status" id="atlasPlayerPostStatus" role="status"></span><button class="atlas-player-post-submit" type="submit">опубликовать</button></div></form></div>'}
   function canDeleteComment(comment){return own(comment.user_id)||own(activeProfileId)}
   function commentForm(postId,parentId,ph,isReply){if(uid())return '<form class="atlas-player-comment-form'+(isReply?' is-reply':'')+'" data-player-comment-form="'+esc(postId)+'"'+(parentId?' data-parent-comment="'+esc(parentId)+'"':'')+'><textarea class="atlas-player-comment-input" name="body" maxlength="2000" rows="1" placeholder="'+esc(ph||'написать комментарий…')+'" required></textarea><button class="atlas-player-comment-submit" type="submit">отправить</button>'+(isReply?'<button class="atlas-player-comment-reply-cancel" type="button" data-player-comment-reply-cancel="'+esc(parentId)+'" data-comment-post="'+esc(postId)+'">отмена</button>':'')+'</form>';return '<button class="atlas-player-comment-login" type="button" data-player-comment-login>войти, чтобы ответить</button>'}
   function commentActions(comment){var out=['<button class="atlas-player-comment-reply-btn" type="button" data-player-comment-reply="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">ответить</button>'];if(canDeleteComment(comment))out.push('<button class="atlas-player-comment-delete" type="button" data-player-comment-delete="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">удалить</button>');return '<div class="atlas-player-comment-tools">'+out.join('')+'</div>'}
