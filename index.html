@@ -20031,6 +20031,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     window.dispatchEvent(new CustomEvent('atlasPlayerAuthReady', { detail: { profile: profileCache || null, session: sessionCache || null } }));
   }
 
+  window.atlasReloadCurrentProfile = loadProfile;
+
   async function syncSession(session){
     sessionCache = session || null;
     await loadProfile();
@@ -20281,6 +20283,47 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-achievement p{margin:0;color:#7d838d;font-size:12px;line-height:1.5}
 #atlas-app .atlas-player-achievement small{display:block;margin-top:10px;color:#b0b4bb;font-size:10px;font-weight:800}
 #atlas-app .atlas-player-character-empty,#atlas-app .atlas-player-achievement-empty{padding:24px;border:1px dashed rgba(20,24,30,.16);border-radius:18px;color:#858b95;font-size:13px;line-height:1.55}
+#atlas-app .atlas-player-edit-profile{margin-top:18px;border:1px solid rgba(255,255,255,.32);border-radius:999px;background:rgba(12,14,18,.42);color:#fff;padding:10px 15px;font:inherit;font-size:11px;font-weight:950;cursor:pointer;backdrop-filter:blur(10px);transition:.2s ease}
+#atlas-app .atlas-player-edit-profile:hover{background:#fff;color:#171a20;border-color:#fff}
+
+#atlasPlayerEditModal[hidden]{display:none!important}
+#atlasPlayerEditModal{position:fixed;inset:0;z-index:2147483100;display:grid;place-items:center;padding:22px;font-family:"Montserrat",Arial,sans-serif}
+#atlasPlayerEditModal,#atlasPlayerEditModal *{box-sizing:border-box;font-family:"Montserrat",Arial,sans-serif!important}
+#atlasPlayerEditModal .atlas-player-edit-overlay{position:absolute;inset:0;background:rgba(7,10,14,.76);backdrop-filter:blur(9px)}
+#atlasPlayerEditModal .atlas-player-edit-window{position:relative;width:min(680px,100%);max-height:min(820px,calc(100vh - 34px));overflow:auto;border:1px solid rgba(20,25,32,.15);border-radius:26px;background:#fff;color:#14171d;box-shadow:0 28px 90px rgba(0,0,0,.38);padding:28px}
+#atlasPlayerEditModal .atlas-player-edit-close{position:absolute;right:15px;top:14px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f2f4;color:#16191f;font-size:24px;line-height:1;display:grid;place-items:center;cursor:pointer}
+#atlasPlayerEditModal .atlas-player-edit-kicker{display:inline-flex;align-items:center;min-height:26px;padding:5px 10px;border:1px solid rgba(192,45,45,.30);border-radius:999px;background:rgba(192,45,45,.08);color:#c12f2f;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}
+#atlasPlayerEditModal .atlas-player-edit-title{margin:14px 0 6px;font-size:34px;line-height:1;font-weight:950;letter-spacing:-.04em}
+#atlasPlayerEditModal .atlas-player-edit-copy{margin:0 0 21px;color:#747b86;font-size:13px;line-height:1.55}
+#atlasPlayerEditModal .atlas-player-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+#atlasPlayerEditModal .atlas-player-edit-field{display:grid;gap:7px;margin-bottom:13px}
+#atlasPlayerEditModal .atlas-player-edit-field.is-full{grid-column:1/-1}
+#atlasPlayerEditModal .atlas-player-edit-field label{font-size:11px;font-weight:900;color:#414650}
+#atlasPlayerEditModal .atlas-player-edit-field input,#atlasPlayerEditModal .atlas-player-edit-field textarea{width:100%;border:1px solid #dfe2e7;border-radius:13px;background:#f8f9fa;color:#14171d;padding:13px 14px;font:inherit;outline:none;resize:vertical}
+#atlasPlayerEditModal .atlas-player-edit-field textarea{min-height:88px}
+#atlasPlayerEditModal .atlas-player-edit-field input:focus,#atlasPlayerEditModal .atlas-player-edit-field textarea:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
+#atlasPlayerEditModal .atlas-player-edit-file{padding:11px!important;background:#fff!important}
+#atlasPlayerEditModal .atlas-player-edit-hint{margin:-4px 0 0;color:#9a9fa7;font-size:10px;line-height:1.45}
+#atlasPlayerEditModal .atlas-player-edit-check{display:flex;align-items:center;gap:9px;margin:2px 0 14px;font-size:11px;font-weight:850;color:#535963}
+#atlasPlayerEditModal .atlas-player-edit-check input{width:16px;height:16px;accent-color:#c63838}
+#atlasPlayerEditModal .atlas-player-edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+#atlasPlayerEditModal .atlas-player-edit-actions button{border-radius:13px;padding:12px 16px;font:inherit;font-weight:950;cursor:pointer}
+#atlasPlayerEditModal .atlas-player-edit-cancel{border:1px solid #dfe2e7;background:#fff;color:#181b20}
+#atlasPlayerEditModal .atlas-player-edit-save{border:0;background:#15181e;color:#fff;min-width:150px}
+#atlasPlayerEditModal .atlas-player-edit-save:hover{background:#c73737}
+#atlasPlayerEditModal .atlas-player-edit-status{display:none;margin-top:13px;padding:11px 13px;border-radius:12px;font-size:12px;line-height:1.45}
+#atlasPlayerEditModal .atlas-player-edit-status.is-visible{display:block}
+#atlasPlayerEditModal .atlas-player-edit-status.is-error{background:#fff0f0;color:#9e2424;border:1px solid #f1caca}
+#atlasPlayerEditModal .atlas-player-edit-status.is-ok{background:#edf8f0;color:#27683a;border:1px solid #cce8d3}
+#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:1/-1;margin:2px 0 3px;padding:11px 13px;border-radius:12px;background:#f5f6f7;color:#777e88;font-size:10px;line-height:1.5}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-window{background:#11161d;color:#f5f3f0;border-color:rgba(255,255,255,.12)}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-close{background:#20262e;color:#fff}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-copy,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-hint,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-check{color:#9ba1aa}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-field label{color:#c7cbd1}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-field input,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-field textarea{background:#171d25;border-color:#2a323d;color:#fff}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-file{background:#171d25!important}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-cancel{background:#151b22;border-color:#303844;color:#f5f3f0}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-media-note{background:#171d25;color:#9ba1aa}
 
 #atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head h2,
 #atlas-app[data-theme="dark"] .atlas-player-profile-page{color:#f5f2ef}
@@ -20296,7 +20339,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-player-character-empty,#atlas-app[data-theme="dark"] .atlas-player-achievement-empty{border-color:#313944;color:#9ba1aa}
 
 @media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
-@media(max-width:560px){#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}}
+@media(max-width:560px){#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}#atlasPlayerEditModal{padding:10px}#atlasPlayerEditModal .atlas-player-edit-window{padding:23px 17px;border-radius:20px}#atlasPlayerEditModal .atlas-player-edit-title{font-size:29px}#atlasPlayerEditModal .atlas-player-edit-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-edit-field.is-full,#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:auto}}
 </style>
 
 <template data-atlas-page-template="jugadores">
@@ -20325,6 +20368,58 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     </div>
   </section>
 </template>
+
+<div id="atlasPlayerEditModal" hidden aria-hidden="true">
+  <div class="atlas-player-edit-overlay" data-player-edit-close="true"></div>
+  <section class="atlas-player-edit-window" role="dialog" aria-modal="true" aria-labelledby="atlasPlayerEditTitle">
+    <button class="atlas-player-edit-close" type="button" data-player-edit-close="true" aria-label="закрыть">×</button>
+    <span class="atlas-player-edit-kicker">ATLAS PROFILE</span>
+    <h2 class="atlas-player-edit-title" id="atlasPlayerEditTitle">редактировать профиль</h2>
+    <p class="atlas-player-edit-copy">эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.</p>
+    <form id="atlasPlayerEditForm">
+      <div class="atlas-player-edit-grid">
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditName">имя</label>
+          <input id="atlasPlayerEditName" name="display_name" type="text" maxlength="60" autocomplete="off" required>
+        </div>
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditNickname">никнейм / логин</label>
+          <input id="atlasPlayerEditNickname" name="nickname" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9._-]{3,24}" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+          <p class="atlas-player-edit-hint">после смены никнейма входить нужно будет уже под новым логином.</p>
+        </div>
+        <div class="atlas-player-edit-field is-full">
+          <label for="atlasPlayerEditStatus">статус</label>
+          <textarea id="atlasPlayerEditStatus" name="status_text" maxlength="180" placeholder="короткая подпись в профиле"></textarea>
+        </div>
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditVk">VK</label>
+          <input id="atlasPlayerEditVk" name="vk_url" type="url" maxlength="250" placeholder="https://vk.ru/...">
+        </div>
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditBirthday">день рождения</label>
+          <input id="atlasPlayerEditBirthday" name="birthday" type="date">
+        </div>
+        <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
+        <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. старый файл будет заменён новым.</div>
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditAvatar">аватар</label>
+          <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p>
+        </div>
+        <div class="atlas-player-edit-field">
+          <label for="atlasPlayerEditBanner">баннер</label>
+          <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p>
+        </div>
+      </div>
+      <div class="atlas-player-edit-actions">
+        <button class="atlas-player-edit-cancel" type="button" data-player-edit-close="true">отмена</button>
+        <button class="atlas-player-edit-save" type="submit">сохранить</button>
+      </div>
+      <div class="atlas-player-edit-status" id="atlasPlayerEditStatusBox"></div>
+    </form>
+  </section>
+</div>
 
 <script>
 (function(){
@@ -20364,11 +20459,88 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var parts=[]; if(years)parts.push(years+' г.'); if(months)parts.push(months+' мес.'); if(days||!parts.length)parts.push(days+' дн.');
     return parts.join(' ');
   }
+  function birthdayLabel(month,day){
+    if(!month||!day)return '';
+    try{
+      var d=new Date(2000,Number(month)-1,Number(day));
+      return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(d);
+    }catch(_e){return ''}
+  }
+
+  function currentUserId(){
+    return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:'';
+  }
+
+  function isOwnProfile(id){return !!id&&currentUserId()===id}
+
+  function setEditStatus(message,type){
+    var box=document.getElementById('atlasPlayerEditStatusBox');
+    if(!box)return;
+    box.textContent=message||'';
+    box.className='atlas-player-edit-status'+(message?' is-visible':'')+(type==='error'?' is-error':type==='ok'?' is-ok':'');
+  }
+
+  function closePlayerEdit(){
+    var modal=document.getElementById('atlasPlayerEditModal');
+    if(!modal)return;
+    modal.hidden=true;
+    modal.setAttribute('aria-hidden','true');
+    setEditStatus('');
+  }
+
+  async function openPlayerEdit(id){
+    if(!isOwnProfile(id))return;
+    var c=client(); if(!c)return;
+    var modal=document.getElementById('atlasPlayerEditModal');
+    var form=document.getElementById('atlasPlayerEditForm');
+    if(!modal||!form)return;
+    setEditStatus('загружаем данные…','ok');
+    modal.hidden=false;
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    try{
+      var res=await Promise.all([
+        c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url').eq('id',id).maybeSingle(),
+        c.from('profile_private').select('birthday,birthday_visible').eq('id',id).maybeSingle()
+      ]);
+      if(res[0].error)throw res[0].error;
+      if(res[1].error)throw res[1].error;
+      var p=res[0].data||{}, priv=res[1].data||{};
+      form.elements.display_name.value=p.display_name||'';
+      form.elements.nickname.value=p.nickname||'';
+      form.elements.status_text.value=p.status_text||'';
+      form.elements.vk_url.value=p.vk_url||'';
+      form.elements.birthday.value=priv.birthday||'';
+      form.elements.birthday_visible.checked=priv.birthday_visible!==false;
+      form.elements.avatar.value='';
+      form.elements.banner.value='';
+      form.dataset.playerId=id;
+      setEditStatus('');
+    }catch(err){setEditStatus(err&&err.message?err.message:'не удалось загрузить профиль.','error')}
+  }
+
+  function validateMedia(file){
+    if(!file)return;
+    if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type||''))throw new Error('можно загружать только jpg, png, webp или gif.');
+    if(file.size>8*1024*1024)throw new Error('картинка должна весить не больше 8 мб.');
+  }
+
+  async function uploadProfileMedia(userId,file,kind){
+    if(!file)return '';
+    validateMedia(file);
+    var c=client();
+    var path=userId+'/'+kind+'/'+(kind==='avatars'?'avatar':'banner');
+    var up=await c.storage.from('atlas-media').upload(path,file,{upsert:true,contentType:file.type,cacheControl:'60'});
+    if(up.error)throw up.error;
+    var pub=c.storage.from('atlas-media').getPublicUrl(path);
+    var url=pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:'';
+    return url?(url+(url.indexOf('?')>=0?'&':'?')+'v='+Date.now()):'';
+  }
 
   async function getProfiles(force){
     var c=client(); if(!c) throw new Error('supabase ещё загружается');
     if(!force && profilesCache.length && Date.now()-profilesLoadedAt<30000) return profilesCache;
-    var res=await c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role').not('nickname','is',null).order('created_at',{ascending:true});
+    var res=await c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role,birthday_month,birthday_day').not('nickname','is',null).order('created_at',{ascending:true});
     if(res.error) throw res.error;
     profilesCache=res.data||[]; profilesLoadedAt=Date.now(); return profilesCache;
   }
@@ -20417,7 +20589,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   async function fetchPlayerBundle(id){
     var c=client(); if(!c) throw new Error('supabase ещё загружается');
     var results=await Promise.all([
-      c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role').eq('id',id).maybeSingle(),
+      c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role,birthday_month,birthday_day').eq('id',id).maybeSingle(),
       c.from('character_owners').select('character_id,display_order').eq('user_id',id).order('display_order',{ascending:true}),
       c.from('user_achievements').select('earned_at,earned_year,achievements(code,title,description,icon,category)').eq('user_id',id).order('earned_at',{ascending:false}),
       c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1)
@@ -20453,17 +20625,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         heart='<div class="atlas-player-heart">♥ '+esc(relLabel(bundle.relationship.relationship_type))+' с <button type="button" data-player-id="'+esc(bundle.partner.id)+'">@'+esc(bundle.partner.nickname||displayName(bundle.partner))+'</button>'+(dur?' · '+esc(dur):'')+'</div>';
       }
       var vk=p.vk_url?'<a href="'+esc(p.vk_url)+'" target="_blank" rel="noopener">'+esc(p.vk_url)+'</a>':'—';
+      var bday=birthdayLabel(p.birthday_month,p.birthday_day);
+      var editButton=isOwnProfile(p.id)?'<button class="atlas-player-edit-profile" type="button" data-player-edit-id="'+esc(p.id)+'">редактировать профиль</button>':'';
       var overview='<div class="atlas-profile-overview-grid"><div class="atlas-profile-card"><h3>профиль игрока</h3>'+infoRows([
         ['имя',p.display_name||p.nickname,'<span>'+esc(p.display_name||p.nickname)+'</span>'],
         ['никнейм',p.nickname,'<span>@'+esc(p.nickname)+'</span>'],
         ['статус',p.status_text,'<span>'+esc(p.status_text)+'</span>'],
         ['VK',p.vk_url,vk],
+        ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
       ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div></div></div>';
       var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){var x=a.achievements||{};return '<article class="atlas-player-achievement"><div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div><strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>'}).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><span class="atlas-profile-first">@'+esc(p.nickname||'player')+'</span><h2>'+esc(displayName(p))+'</h2><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><span class="atlas-profile-first">@'+esc(p.nickname||'player')+'</span><h2>'+esc(displayName(p))+'</h2><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('achievements',achPanel,false);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
@@ -20479,11 +20654,64 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   document.addEventListener('click',function(e){
+    var edit=e.target.closest('[data-player-edit-id]');
+    if(edit){e.preventDefault();e.stopPropagation();openPlayerEdit(edit.getAttribute('data-player-edit-id'));return}
+    if(e.target.closest('[data-player-edit-close="true"]')){e.preventDefault();closePlayerEdit();document.body.style.overflow='';return}
     var card=e.target.closest('[data-player-id]');
     if(card){e.preventDefault();e.stopPropagation();openPlayerProfile(card.getAttribute('data-player-id'));return}
     var tab=e.target.closest('[data-player-tab]');
     if(tab){e.preventDefault();switchTab(tab.getAttribute('data-player-tab'));return}
   },true);
+
+  var editForm=document.getElementById('atlasPlayerEditForm');
+  if(editForm){
+    editForm.addEventListener('submit',async function(e){
+      e.preventDefault();
+      var id=editForm.dataset.playerId||'';
+      if(!isOwnProfile(id)){setEditStatus('можно редактировать только свой профиль.','error');return}
+      var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
+      var name=String(editForm.elements.display_name.value||'').trim();
+      var nickname=String(editForm.elements.nickname.value||'').trim().toLowerCase();
+      var status=String(editForm.elements.status_text.value||'').trim();
+      var vk=String(editForm.elements.vk_url.value||'').trim();
+      var birthday=String(editForm.elements.birthday.value||'').trim();
+      var birthdayVisible=!!editForm.elements.birthday_visible.checked;
+      if(!name){setEditStatus('укажи имя.','error');return}
+      if(!/^[A-Za-z0-9._-]{3,24}$/.test(nickname)){setEditStatus('никнейм: 3–24 символа, только латиница, цифры, точка, _ или -.','error');return}
+      if(vk && !/^https?:\/\//i.test(vk)){setEditStatus('ссылка VK должна начинаться с http:// или https://','error');return}
+      var avatarFile=editForm.elements.avatar.files&&editForm.elements.avatar.files[0];
+      var bannerFile=editForm.elements.banner.files&&editForm.elements.banner.files[0];
+      try{
+        validateMedia(avatarFile); validateMedia(bannerFile);
+        setEditStatus('сохраняем профиль…','ok');
+        var media=await Promise.all([
+          uploadProfileMedia(id,avatarFile,'avatars'),
+          uploadProfileMedia(id,bannerFile,'banners')
+        ]);
+        var patch={display_name:name,nickname:nickname,status_text:status||null,vk_url:vk||null};
+        if(media[0])patch.avatar_url=media[0];
+        if(media[1])patch.banner_url=media[1];
+        var pr=await c.from('profiles').update(patch).eq('id',id).select('id').maybeSingle();
+        if(pr.error){
+          if(pr.error.code==='23505')throw new Error('этот никнейм уже занят.');
+          throw pr.error;
+        }
+        var priv=await c.from('profile_private').update({birthday:birthday||null,birthday_visible:birthdayVisible}).eq('id',id);
+        if(priv.error)throw priv.error;
+        profilesLoadedAt=0;
+        if(typeof window.atlasReloadCurrentProfile==='function')await window.atlasReloadCurrentProfile();
+        await renderPlayerProfile(id);
+        if(document.getElementById('atlasPlayerGrid'))renderPlayers();
+        setEditStatus('готово. профиль обновлён.','ok');
+        setTimeout(function(){closePlayerEdit();document.body.style.overflow=''},650);
+      }catch(err){setEditStatus(err&&err.message?err.message:'не удалось сохранить профиль.','error')}
+    });
+  }
+
+  document.addEventListener('keydown',function(e){
+    var modal=document.getElementById('atlasPlayerEditModal');
+    if(e.key==='Escape'&&modal&&!modal.hidden){closePlayerEdit();document.body.style.overflow=''}
+  });
 
   function renderHook(pageName){
     if(pageName==='jugadores'||document.getElementById('atlas-page-jugadores')&&document.getElementById('atlas-page-jugadores').classList.contains('active')) setTimeout(renderPlayers,0);
