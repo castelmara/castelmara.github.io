@@ -21987,7 +21987,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var edit=e.target.closest('[data-player-edit-id]');
     if(edit){e.preventDefault();e.stopPropagation();openPlayerEdit(edit.getAttribute('data-player-edit-id'));return}
     if(e.target.closest('[data-player-edit-close="true"]')){e.preventDefault();closePlayerEdit();document.body.style.overflow='';return}
-    var card=e.target.closest('[data-player-id]');
+    // The editor form also stores data-player-id; only navigation buttons may open a profile.
+    var card=e.target.closest('button[data-player-id]');
     if(card){e.preventDefault();e.stopPropagation();openPlayerProfile(card.getAttribute('data-player-id'));return}
     var tab=e.target.closest('[data-player-tab]');
     if(tab){e.preventDefault();switchTab(tab.getAttribute('data-player-tab'));return}
