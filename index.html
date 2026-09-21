@@ -20423,7 +20423,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <input id="atlasPlayerEditBirthday" name="birthday" type="date">
         </div>
         <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
-        <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. старый файл будет заменён новым.</div>
+        <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
         <div class="atlas-player-edit-field">
           <label for="atlasPlayerEditAvatar">аватар</label>
           <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
@@ -20552,12 +20552,36 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(!file)return '';
     validateMedia(file);
     var c=client();
-    var path=userId+'/'+kind+'/'+(kind==='avatars'?'avatar':'banner');
-    var up=await c.storage.from('atlas-media').upload(path,file,{upsert:true,contentType:file.type,cacheControl:'60'});
-    if(up.error)throw up.error;
+    if(!c)throw new Error('supabase ещё загружается.');
+
+    /*
+      Загружаем каждый новый аватар/баннер отдельным объектом.
+      Так Storage не требует upsert поверх существующего файла,
+      из-за которого загрузка могла падать на RLS/update policy.
+    */
+    var mime=String(file.type||'').toLowerCase();
+    var ext=mime==='image/png'?'png':mime==='image/webp'?'webp':mime==='image/gif'?'gif':'jpg';
+    var base=kind==='avatars'?'avatar':'banner';
+    var token=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
+    var path=userId+'/'+kind+'/'+base+'-'+token+'.'+ext;
+
+    var up=await c.storage
+      .from('atlas-media')
+      .upload(path,file,{
+        upsert:false,
+        contentType:file.type||('image/'+ext),
+        cacheControl:'3600'
+      });
+
+    if(up.error){
+      console.error('atlas-media upload failed',up.error);
+      throw new Error('не удалось загрузить '+(kind==='avatars'?'аватар':'баннер')+': '+(up.error.message||'ошибка storage'));
+    }
+
     var pub=c.storage.from('atlas-media').getPublicUrl(path);
     var url=pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:'';
-    return url?(url+(url.indexOf('?')>=0?'&':'?')+'v='+Date.now()):'';
+    if(!url)throw new Error('storage загрузил файл, но не вернул публичную ссылку.');
+    return url;
   }
 
   async function getProfiles(force){
