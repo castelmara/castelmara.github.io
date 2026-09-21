@@ -19760,6 +19760,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasAuthModal .atlas-auth-admin .atlas-auth-field{margin-bottom:9px}
 #atlasAuthModal .atlas-auth-optional{font-weight:600;color:#9b9fa6}
 #atlasAuthModal .atlas-auth-admin-result{margin-top:10px;padding:10px 11px;border-radius:11px;background:#15181e;color:#fff;font-size:12px;line-height:1.45;word-break:break-word}
+#atlasAuthModal .atlas-auth-password{margin:0 0 10px;padding:14px;border:1px solid #e0e3e7;border-radius:16px;background:#fafafa}
+#atlasAuthModal .atlas-auth-password[hidden]{display:none!important}
+#atlasAuthModal .atlas-auth-password-title{display:block;margin:0 0 4px;font-size:13px;font-weight:950;text-transform:lowercase;color:#171a20}
+#atlasAuthModal .atlas-auth-password-copy{margin:0 0 12px;color:#8f959e;font-size:11px;line-height:1.45}
+#atlasAuthModal .atlas-auth-password-result{display:none;margin-top:9px;padding:10px 11px;border-radius:11px;font-size:11px;line-height:1.45}
+#atlasAuthModal .atlas-auth-password-result.is-visible{display:block}
+#atlasAuthModal .atlas-auth-password-result.is-ok{background:#eef8f1;color:#287143;border:1px solid #cce8d4}
+#atlasAuthModal .atlas-auth-password-result.is-error{background:#fff0f0;color:#b83939;border:1px solid #f2caca}
 #atlasAuthModal .atlas-auth-admin-result strong{display:block;color:#ff6868;margin-bottom:3px}
 #atlas-app .atlas-avatar-btn.is-user{overflow:hidden;padding:0;background:#f4f4f4!important;color:#111!important}
 #atlas-app .atlas-avatar-btn.is-user img{width:100%;height:100%;object-fit:cover;display:block}
@@ -19777,6 +19785,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin{background:#171318;border-color:#493036}
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin-copy{color:#9ba1aa}
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin-label{background:#21171a;border-color:#66343b;color:#ff7777}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-password{background:#171d25;border-color:#2a323d}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-password-title{color:#f5f3f0}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-password-copy{color:#9ba1aa}
 @media(max-width:560px){#atlasAuthModal{padding:12px}#atlasAuthModal .atlas-auth-window{padding:23px 18px;border-radius:21px}#atlasAuthModal .atlas-auth-title{font-size:29px}}
 </style>
 
@@ -19865,6 +19876,27 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <div class="atlas-auth-admin-result" id="atlasAdminResetResult" hidden></div>
       </div>
       <button class="atlas-auth-secondary" type="button" id="atlasOpenMyProfileButton" style="margin-bottom:10px">открыть мой профиль</button>
+      <button class="atlas-auth-secondary" type="button" id="atlasChangePasswordToggle" style="margin-bottom:10px">сменить пароль</button>
+      <div class="atlas-auth-password" id="atlasChangePasswordPanel" hidden>
+        <strong class="atlas-auth-password-title">сменить пароль</strong>
+        <p class="atlas-auth-password-copy">введи текущий пароль, затем придумай новый. если вход был по временному паролю — текущим считается именно он.</p>
+        <form id="atlasChangePasswordForm">
+          <div class="atlas-auth-field">
+            <label for="atlasCurrentPassword">текущий пароль</label>
+            <input id="atlasCurrentPassword" name="current_password" type="password" autocomplete="current-password" minlength="8" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasNewPassword">новый пароль</label>
+            <input id="atlasNewPassword" name="new_password" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasNewPasswordAgain">повторить новый пароль</label>
+            <input id="atlasNewPasswordAgain" name="new_password_again" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+          <button class="atlas-auth-primary" type="submit" id="atlasChangePasswordSubmit">изменить пароль</button>
+        </form>
+        <div class="atlas-auth-password-result" id="atlasChangePasswordResult"></div>
+      </div>
       <button class="atlas-auth-secondary" type="button" id="atlasLogoutButton">выйти из аккаунта</button>
       <p class="atlas-auth-note">профиль игрока доступен в каталоге «jugadores».</p>
     </div>
@@ -19897,6 +19929,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   var adminTools = document.getElementById('atlasAdminTools');
   var adminResetForm = document.getElementById('atlasAdminResetForm');
   var adminResetResult = document.getElementById('atlasAdminResetResult');
+  var changePasswordToggle = document.getElementById('atlasChangePasswordToggle');
+  var changePasswordPanel = document.getElementById('atlasChangePasswordPanel');
+  var changePasswordForm = document.getElementById('atlasChangePasswordForm');
+  var changePasswordResult = document.getElementById('atlasChangePasswordResult');
+  var changePasswordSubmit = document.getElementById('atlasChangePasswordSubmit');
   var profileCache = null;
   var sessionCache = null;
 
@@ -20227,10 +20264,105 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     });
   }
 
+  function setPasswordResult(message, kind){
+    if(!changePasswordResult) return;
+    changePasswordResult.textContent = message || '';
+    changePasswordResult.className = 'atlas-auth-password-result' + (message ? ' is-visible ' + (kind === 'ok' ? 'is-ok' : 'is-error') : '');
+  }
+
+  if(changePasswordToggle && changePasswordPanel){
+    changePasswordToggle.addEventListener('click', function(){
+      changePasswordPanel.hidden = !changePasswordPanel.hidden;
+      changePasswordToggle.textContent = changePasswordPanel.hidden ? 'сменить пароль' : 'закрыть смену пароля';
+      setPasswordResult('');
+      if(!changePasswordPanel.hidden){
+        var first = document.getElementById('atlasCurrentPassword');
+        if(first) setTimeout(function(){ first.focus(); }, 0);
+      }
+    });
+  }
+
+  if(changePasswordForm){
+    changePasswordForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      if(!sessionCache || !sessionCache.user){
+        setPasswordResult('сначала войди в аккаунт.','error');
+        return;
+      }
+
+      var form = new FormData(changePasswordForm);
+      var currentPassword = String(form.get('current_password') || '');
+      var newPassword = String(form.get('new_password') || '');
+      var newPasswordAgain = String(form.get('new_password_again') || '');
+
+      if(currentPassword.length < 8){
+        setPasswordResult('введи текущий пароль.','error');
+        return;
+      }
+      if(newPassword.length < 8){
+        setPasswordResult('новый пароль должен содержать минимум 8 символов.','error');
+        return;
+      }
+      if(newPassword !== newPasswordAgain){
+        setPasswordResult('новые пароли не совпадают.','error');
+        return;
+      }
+      if(newPassword === currentPassword){
+        setPasswordResult('новый пароль должен отличаться от текущего.','error');
+        return;
+      }
+
+      var email = sessionCache.user.email || '';
+      if(!email){
+        setPasswordResult('ATLAS не смог проверить текущий пароль.','error');
+        return;
+      }
+
+      var oldText = changePasswordSubmit ? changePasswordSubmit.textContent : '';
+      if(changePasswordSubmit){
+        changePasswordSubmit.disabled = true;
+        changePasswordSubmit.textContent = 'проверяем…';
+      }
+      setPasswordResult('проверяем текущий пароль…','ok');
+
+      try{
+        var verify = await client.auth.signInWithPassword({
+          email: email,
+          password: currentPassword
+        });
+
+        if(verify.error){
+          throw new Error('текущий пароль неверный.');
+        }
+
+        if(changePasswordSubmit) changePasswordSubmit.textContent = 'меняем…';
+        setPasswordResult('меняем пароль…','ok');
+
+        var updated = await client.auth.updateUser({ password: newPassword });
+        if(updated.error) throw updated.error;
+
+        changePasswordForm.reset();
+        setPasswordResult('пароль изменён. теперь входить нужно с новым паролем.','ok');
+      }catch(err){
+        setPasswordResult(err && err.message ? err.message.toLowerCase() : 'не удалось изменить пароль.','error');
+      }finally{
+        if(changePasswordSubmit){
+          changePasswordSubmit.disabled = false;
+          changePasswordSubmit.textContent = oldText || 'изменить пароль';
+        }
+      }
+    });
+  }
+
   logoutButton.addEventListener('click', async function(){
     await client.auth.signOut();
     sessionCache = null;
     profileCache = null;
+    if(changePasswordPanel) changePasswordPanel.hidden = true;
+    if(changePasswordToggle) changePasswordToggle.textContent = 'сменить пароль';
+    if(changePasswordForm) changePasswordForm.reset();
+    setPasswordResult('');
     renderAccount();
     switchTab('login');
     setStatus('вы вышли из аккаунта.','ok');
