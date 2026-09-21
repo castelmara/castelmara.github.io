@@ -2088,6 +2088,24 @@ if (!matches.length) {
   font-size: 12px;
 }
 
+#atlas-app #atlas-page-inicio .atlas-honour-loading,
+#atlas-app #atlas-page-inicio .atlas-honour-empty {
+  padding: 18px 0 4px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+#atlas-app #atlas-page-inicio button.atlas-text-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 #atlas-app #atlas-page-inicio .atlas-text-link {
   color: var(--accent);
   font-size: 11px;
@@ -2794,28 +2812,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             <p class="atlas-mood-explain" id="atlasMoodExplain" hidden>ATLAS выбирает тебе один абсурдный статус на день. изменить его нельзя — завтра выпадет новый.</p>
           </section>
 
-          <section class="atlas-card atlas-search-target" id="inicio-honour-board" data-search-title="honour board active players" data-search-keywords="доска почёта активные игроки">
+          <section class="atlas-card atlas-search-target" id="inicio-honour-board" data-search-title="honour board active players" data-search-keywords="доска почёта активные игроки серии входа jugadores">
             <div class="atlas-card-head">
               <h3>honour board</h3>
-              <button type="button" data-open-page="personajes">view all</button>
+              <button type="button" data-open-page="jugadores">view all</button>
             </div>
 
-            <div class="atlas-honour-row">
-              <span class="atlas-place">1</span>
-              <span><strong>sofya shtangey</strong><span></span></span>
-              <a class="atlas-text-link" href="javascript:void(0)">update me</a>
-            </div>
-
-            <div class="atlas-honour-row">
-              <span class="atlas-place">2</span>
-              <span><strong>'mille 'tendresse</strong><span></span></span>
-              <a class="atlas-text-link" href="javascript:void(0)">update me</a>
-            </div>
-
-            <div class="atlas-honour-row">
-              <span class="atlas-place">3</span>
-              <span><strong>れん 村山</strong><span></span></span>
-              <a class="atlas-text-link" href="javascript:void(0)">update me</a>
+            <div class="atlas-honour-rows" id="atlasHonourBoardRows">
+              <div class="atlas-honour-loading">собираем активность игроков…</div>
             </div>
           </section>
 
@@ -21085,8 +21089,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         </section>
         <section class="atlas-character-owner-panel" id="atlasCharacterOwnerSection" hidden>
           <div class="atlas-character-owner-head">
-            <div><h3>персонажи игрока</h3><p>привяжи к аккаунту до четырёх персонажей. занятые другим игроком персонажи отмечены и недоступны.</p></div>
-            <span class="atlas-character-owner-count" id="atlasCharacterOwnerCount">0 / 4</span>
+            <div><h3>персонажи игрока</h3><p>привяжи к аккаунту любое количество персонажей. занятые другим игроком персонажи отмечены и недоступны.</p></div>
+            <span class="atlas-character-owner-count" id="atlasCharacterOwnerCount">0 выбрано</span>
           </div>
           <input class="atlas-character-owner-search" id="atlasCharacterOwnerSearch" type="search" placeholder="найти персонажа…" autocomplete="off">
           <div class="atlas-character-owner-list" id="atlasCharacterOwnerList"><div class="atlas-character-owner-status">загружаем персонажей…</div></div>
@@ -21278,7 +21282,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       ].join(' ').toLowerCase();
       return hay.indexOf(q)>=0;
     });
-    if(count)count.textContent=state.selected.size+' / 4';
+    if(count)count.textContent=state.selected.size+' выбрано';
     if(!items.length){
       list.innerHTML='<div class="atlas-character-owner-status">ничего не найдено.</div>';
       return;
@@ -21341,7 +21345,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       return;
     }
     var selected=Array.from(state.selected);
-    if(selected.length>4){setCharacterOwnerStatus('можно привязать максимум четырёх персонажей.','error');return}
     var c=client();if(!c)return;
     if(button){button.disabled=true;button.textContent='сохраняем…'}
     setCharacterOwnerStatus('сохраняем привязки…','ok');
@@ -21921,12 +21924,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(!input||!characterOwnerEditorState)return;
     var id=input.getAttribute('data-character-owner-choice');
     if(input.checked){
-      if(characterOwnerEditorState.selected.size>=4){
-        input.checked=false;
-        setCharacterOwnerStatus('можно привязать максимум четырёх персонажей.','error');
-        renderCharacterOwnerChoices();
-        return;
-      }
       characterOwnerEditorState.selected.add(id);
     }else{
       characterOwnerEditorState.selected.delete(id);
@@ -22727,6 +22724,98 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   document.addEventListener('click',function(e){var login=e.target.closest&&e.target.closest('[data-direct-login]');if(login){openLogin();return}var toggle=e.target.closest&&e.target.closest('[data-direct-create-toggle]');if(toggle){var f=document.getElementById('atlasDirectCreateForm');if(f){f.classList.toggle('is-open');if(f.classList.contains('is-open')){var i=f.querySelector('input');if(i)i.focus()}}return}var chat=e.target.closest&&e.target.closest('[data-direct-chat]');if(chat){activeChatId=chat.getAttribute('data-direct-chat')||'';shell();return}var del=e.target.closest&&e.target.closest('[data-direct-delete-message]');if(del){deleteMessage(del.getAttribute('data-direct-delete-message'));return}var prof=e.target.closest&&e.target.closest('[data-direct-profile]');if(prof){var id=prof.getAttribute('data-direct-profile');if(id&&typeof window.atlasOpenPlayerProfile==='function')window.atlasOpenPlayerProfile(id);return}},true);
   window.addEventListener('atlasPlayerAuthReady',function(){if(pageActive())loadChats(activeChatId)});
   window.atlasRenderDirect=render;
+})();
+</script>
+
+
+<!-- ATLAS HONOUR BOARD — live jugadores leaderboard -->
+<script id="atlas-honour-board-script">
+(function(){
+  var renderToken=0;
+
+  function client(){ return window.ATLAS_SUPABASE || null; }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>'"]/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch];
+    });
+  }
+  function displayName(profile){
+    return profile && (profile.display_name || profile.nickname) || 'игрок';
+  }
+  function streakLabel(value){
+    var n=Math.max(0,Number(value)||0),n10=n%10,n100=n%100;
+    var word=(n100>=11&&n100<=14)?'дней':(n10===1?'день':(n10>=2&&n10<=4?'дня':'дней'));
+    return n+' '+word;
+  }
+
+  async function renderHonourBoard(){
+    var root=document.getElementById('atlasHonourBoardRows');
+    if(!root)return;
+    var c=client();
+    if(!c){
+      root.innerHTML='<div class="atlas-honour-loading">подключаем ATLAS…</div>';
+      return;
+    }
+
+    var token=++renderToken;
+    root.innerHTML='<div class="atlas-honour-loading">собираем активность игроков…</div>';
+
+    try{
+      var res=await c.from('profiles')
+        .select('id,nickname,display_name,current_streak,best_streak')
+        .not('nickname','is',null)
+        .order('current_streak',{ascending:false})
+        .order('best_streak',{ascending:false})
+        .order('created_at',{ascending:true})
+        .limit(3);
+
+      if(token!==renderToken)return;
+      if(res.error)throw res.error;
+
+      var rows=res.data||[];
+      if(!rows.length){
+        root.innerHTML='<div class="atlas-honour-empty">пока некого выводить на доску почёта.</div>';
+        return;
+      }
+
+      root.innerHTML=rows.map(function(p,index){
+        var current=Number(p.current_streak)||0;
+        var best=Number(p.best_streak)||0;
+        return '<div class="atlas-honour-row" data-honour-row="'+esc(p.id)+'">'+
+          '<span class="atlas-place">'+(index+1)+'</span>'+
+          '<span><strong>'+esc(displayName(p))+'</strong><span>🔥 '+esc(streakLabel(current))+' подряд · рекорд '+esc(streakLabel(best))+'</span></span>'+
+          '<button class="atlas-text-link" type="button" data-honour-player="'+esc(p.id)+'">профиль</button>'+
+        '</div>';
+      }).join('');
+    }catch(error){
+      if(token!==renderToken)return;
+      console.warn('[ATLAS honour board]',error);
+      root.innerHTML='<div class="atlas-honour-empty">не удалось загрузить доску почёта.</div>';
+    }
+  }
+
+  document.addEventListener('click',function(event){
+    var player=event.target.closest&&event.target.closest('[data-honour-player]');
+    if(player){
+      event.preventDefault();
+      var id=player.getAttribute('data-honour-player')||'';
+      if(!id)return;
+      if(typeof window.atlasOpenPlayerProfile==='function'){
+        window.atlasOpenPlayerProfile(id);
+      }else if(typeof window.atlasOpenPage==='function'){
+        try{sessionStorage.setItem('atlasPlayerProfileId',id)}catch(_e){}
+        window.atlasOpenPage('player-profile');
+      }
+      return;
+    }
+
+    var home=event.target.closest&&event.target.closest('[data-page="inicio"],[data-open-page="inicio"]');
+    if(home)setTimeout(renderHonourBoard,80);
+  },true);
+
+  window.addEventListener('atlasPlayerAuthReady',renderHonourBoard);
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(renderHonourBoard,180)});
+  window.atlasRenderHonourBoard=renderHonourBoard;
 })();
 </script>
 
