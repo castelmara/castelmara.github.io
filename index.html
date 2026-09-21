@@ -840,6 +840,7 @@ body.atlas-modal-open {
       <button class="atlas-nav-item" type="button" data-page="equipos"><span class="atlas-nav-icon">⊙</span><span>equipos</span></button>
       <button class="atlas-nav-item" type="button" data-page="personajes"><span class="atlas-nav-icon">✥</span><span>personajes</span></button>
       <button class="atlas-nav-item" type="button" data-page="jugadores"><span class="atlas-nav-icon">♙</span><span>jugadores</span></button>
+      <button class="atlas-nav-item" type="button" data-page="mi-atlas"><span class="atlas-nav-icon">☆</span><span>mi atlas</span></button>
 
       <button class="atlas-nav-item" type="button" data-page="expediente">
         <span class="atlas-nav-icon atlas-expediente-nav-icon">
@@ -947,6 +948,7 @@ body.atlas-modal-open {
 
     if (window.atlasRenderCharacters) window.atlasRenderCharacters();
     if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
+    if (window.atlasRenderPersonalAtlas) window.atlasRenderPersonalAtlas(pageName);
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -14977,6 +14979,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
                 return '<span>' + esc(tag) + '</span>';
               }).join("") +
             '</div>' +
+            '<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="character" data-target-id="' + esc(character.id) + '" data-target-title="' + esc(profileInfo.fullName || character.fullName || (nameParts.first + ' ' + nameParts.last)) + '" data-target-subtitle="' + esc(character.subtitle || getCardSubtitle(character)) + '" data-target-image="' + esc(heroImage) + '">' +
+              '<button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button>' +
+              '<button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button>' +
+              '<button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button>' +
+            '</div>' +
           '</div>' +
           '<aside class="atlas-profile-status-card">' + statusRowsHtml + '</aside>' +
         '</div>' +
@@ -15011,6 +15018,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     ensureAtlasPage("character-profile");
     renderCharacterProfile(character);
     openAtlasPage("character-profile");
+    if (typeof window.atlasPersonalTrackView === "function") {
+      window.atlasPersonalTrackView({
+        target_type: "character",
+        target_id: character.id,
+        title: character.fullName || character.cardName || character.profileTitle || character.id,
+        subtitle: character.subtitle || "персонаж",
+        image_url: getImage(character, "card") || getImage(character, "hero") || ""
+      });
+    }
+    if (typeof window.atlasPersonalHydrate === "function") setTimeout(window.atlasPersonalHydrate, 0);
   }
 
   function switchCharacterTab(tabName) {
@@ -19328,6 +19345,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     "equipos": "команды",
     "personajes": "персонажи",
     "jugadores": "игроки",
+    "mi atlas": "мой atlas",
+    "guardados": "закладки",
+    "favoritos": "избранное",
+    "notas": "заметки",
+    "historial": "история",
     "expediente": "досье / архив дела",
     "foro": "форум",
     "faq": "частые вопросы",
@@ -19450,6 +19472,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       equipos: "команды",
       personajes: "персонажи",
       jugadores: "игроки",
+      "mi-atlas": "мой atlas",
       expediente: "досье / архив дела",
       foro: "форум",
       faq: "частые вопросы"
@@ -20509,6 +20532,75 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-player-achievement strong{color:#fff}
 #atlas-app[data-theme="dark"] .atlas-player-character-empty,#atlas-app[data-theme="dark"] .atlas-player-achievement-empty{border-color:#313944;color:#9ba1aa}
 
+
+
+/* ===== mi atlas / guardados / favoritos / notas / historial ===== */
+#atlas-app .atlas-personal-shell{padding:4px 0 34px}
+#atlas-app .atlas-personal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}
+#atlas-app .atlas-personal-head h2{margin:0;font-size:42px;line-height:.95;letter-spacing:-.055em;text-transform:lowercase}
+#atlas-app .atlas-personal-head p{max-width:660px;margin:9px 0 0;color:#747b84;font-size:12px;line-height:1.6}
+#atlas-app .atlas-personal-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:0 0 14px;border-bottom:1px solid #e5e7ea}
+#atlas-app .atlas-personal-tab{appearance:none;border:1px solid #dfe2e6;background:#fff;color:#5f6670;border-radius:999px;padding:9px 14px;font:700 11px/1 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
+#atlas-app .atlas-personal-tab.is-active{background:#11151b;border-color:#11151b;color:#fff}
+#atlas-app .atlas-personal-panel{display:none}
+#atlas-app .atlas-personal-panel.is-active{display:block}
+#atlas-app .atlas-personal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+#atlas-app .atlas-personal-card{position:relative;display:flex;min-height:128px;gap:14px;padding:14px;border:1px solid #e4e6e9;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(21,28,36,.045)}
+#atlas-app .atlas-personal-card-media{width:76px;height:96px;border-radius:14px;overflow:hidden;background:linear-gradient(145deg,#252a33,#0f1217);flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:800}
+#atlas-app .atlas-personal-card-media img{width:100%;height:100%;object-fit:cover;display:block}
+#atlas-app .atlas-personal-card-copy{min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start}
+#atlas-app .atlas-personal-card-copy small{color:#9a7070;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+#atlas-app .atlas-personal-card-copy h3{margin:7px 0 3px;font-size:15px;line-height:1.2;text-transform:none}
+#atlas-app .atlas-personal-card-copy p{margin:0;color:#7d838c;font-size:10px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#atlas-app .atlas-personal-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
+#atlas-app .atlas-personal-card-actions button{border:0;border-radius:999px;padding:7px 9px;background:#f0f2f4;color:#454b54;font:700 9px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-personal-card-actions button.is-danger{color:#a53232;background:#fff0f0}
+#atlas-app .atlas-personal-empty{padding:28px;border:1px dashed #d9dde2;border-radius:20px;color:#858b94;text-align:center;font-size:11px;line-height:1.6}
+#atlas-app .atlas-personal-login{padding:34px;border:1px solid #e2e5e8;border-radius:24px;background:#fff;text-align:center}
+#atlas-app .atlas-personal-login strong{display:block;margin-bottom:7px;font-size:18px}
+#atlas-app .atlas-personal-login p{margin:0 0 16px;color:#808791;font-size:11px}
+#atlas-app .atlas-personal-login button,#atlas-app .atlas-note-add{border:0;border-radius:999px;background:#d93e3e;color:#fff;padding:10px 15px;font:800 10px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-note-composer{display:grid;grid-template-columns:180px minmax(0,1fr) auto;gap:9px;margin-bottom:15px;padding:13px;border:1px solid #e3e6e9;border-radius:18px;background:#fff}
+#atlas-app .atlas-note-composer input,#atlas-app .atlas-note-composer textarea{width:100%;box-sizing:border-box;border:1px solid #e0e3e7;border-radius:12px;background:#f8f9fa;color:#222;padding:10px 11px;font:600 11px/1.4 "Montserrat",Arial,sans-serif;outline:0}
+#atlas-app .atlas-note-composer textarea{resize:vertical;min-height:42px;max-height:130px}
+#atlas-app .atlas-note-card{padding:15px;border:1px solid #e4e6e9;border-radius:18px;background:#fff}
+#atlas-app .atlas-note-card.is-done{opacity:.62}
+#atlas-app .atlas-note-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#atlas-app .atlas-note-card h3{margin:0;font-size:14px;text-transform:none}
+#atlas-app .atlas-note-card p{margin:8px 0 0;color:#686f78;font-size:11px;line-height:1.55;white-space:pre-wrap}
+#atlas-app .atlas-note-card small{display:block;margin-top:10px;color:#9aa0a7;font-size:9px}
+#atlas-app .atlas-note-list{display:grid;gap:10px}
+#atlas-app .atlas-note-target{display:inline-flex;margin-top:8px;padding:5px 8px;border-radius:999px;background:#f1f2f4;color:#666d76;font-size:9px;font-weight:700;cursor:pointer;border:0}
+#atlas-app .atlas-history-row{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-bottom:1px solid #eceef0}
+#atlas-app .atlas-history-row:last-child{border-bottom:0}
+#atlas-app .atlas-history-media{width:54px;height:54px;border-radius:12px;overflow:hidden;background:#1d222a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+#atlas-app .atlas-history-media img{width:100%;height:100%;object-fit:cover}
+#atlas-app .atlas-history-copy strong{display:block;font-size:12px}
+#atlas-app .atlas-history-copy span{display:block;margin-top:3px;color:#8b9199;font-size:9px}
+#atlas-app .atlas-history-open{border:0;border-radius:999px;background:#f0f2f4;padding:8px 10px;font:700 9px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-personal-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+#atlas-app .atlas-personal-action{border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(10,12,15,.36);color:#fff;padding:8px 10px;font:700 9px/1 "Montserrat",Arial,sans-serif;backdrop-filter:blur(10px);cursor:pointer}
+#atlas-app .atlas-personal-action.is-active{background:#d83f3f;border-color:#d83f3f}
+#atlasPersonalNoteModal{position:fixed;inset:0;z-index:10070;display:grid;place-items:center;padding:18px}
+#atlasPersonalNoteModal[hidden]{display:none!important}
+#atlasPersonalNoteModal .atlas-note-modal-overlay{position:absolute;inset:0;background:rgba(5,8,12,.62);backdrop-filter:blur(8px)}
+#atlasPersonalNoteModal .atlas-note-modal-window{position:relative;width:min(520px,100%);border-radius:24px;background:#fff;padding:24px;box-shadow:0 30px 90px rgba(0,0,0,.28)}
+#atlasPersonalNoteModal .atlas-note-modal-close{position:absolute;right:14px;top:14px;border:0;background:#f1f2f4;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:20px}
+#atlasPersonalNoteModal h3{margin:0 44px 6px 0;font-size:24px;text-transform:none}
+#atlasPersonalNoteModal p{margin:0 0 14px;color:#7d838b;font-size:10px}
+#atlasPersonalNoteModal input,#atlasPersonalNoteModal textarea{width:100%;box-sizing:border-box;margin-top:8px;border:1px solid #dfe3e7;border-radius:13px;padding:11px 12px;font:600 11px/1.5 "Montserrat",Arial,sans-serif;outline:0}
+#atlasPersonalNoteModal textarea{min-height:140px;resize:vertical}
+#atlasPersonalNoteModal .atlas-note-modal-save{margin-top:12px;border:0;border-radius:999px;background:#d83e3e;color:#fff;padding:10px 15px;font:800 10px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlasPersonalNoteModal .atlas-note-modal-status{margin-top:9px;color:#a23232;font-size:10px}
+#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-tab{background:#141a21;border-color:#2a323c;color:#aeb4bc}
+#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-tab.is-active{background:#d83e3e;border-color:#d83e3e;color:#fff}
+#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-card,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-card,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-login{background:#11161d;border-color:#2a323d;color:#f4f2ef}
+#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer input,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer textarea{background:#171d25;border-color:#303844;color:#fff}
+#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-tabs{border-color:#2a323d}
+#atlas-app[data-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-window{background:#11161d;color:#f4f2ef}
+#atlas-app[data-theme="dark"] #atlasPersonalNoteModal input,#atlas-app[data-theme="dark"] #atlasPersonalNoteModal textarea{background:#171d25;border-color:#303844;color:#fff}
+@media(max-width:700px){#atlas-app .atlas-note-composer{grid-template-columns:1fr}#atlas-app .atlas-personal-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-personal-head h2{font-size:34px}}
+
 @media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
 @media(max-width:560px){#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}#atlasPlayerEditModal{padding:10px}#atlasPlayerEditModal .atlas-player-edit-window{padding:23px 17px;border-radius:20px}#atlasPlayerEditModal .atlas-player-edit-title{font-size:29px}#atlasPlayerEditModal .atlas-player-edit-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-edit-field.is-full,#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:auto}}
 </style>
@@ -20530,6 +20622,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   </section>
 </template>
 
+<template data-atlas-page-template="mi-atlas">
+  <section class="atlas-page" id="atlas-page-mi-atlas">
+    <div class="atlas-page-shell">
+      <div class="atlas-personal-shell" id="atlasPersonalRoot">
+        <div class="atlas-personal-head">
+          <div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров. всё, кроме публично отмеченного избранного, видно только тебе.</p></div>
+        </div>
+        <div class="atlas-personal-empty">загружаем личный ATLAS…</div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <template data-atlas-page-template="player-profile">
   <section class="atlas-page" id="atlas-page-player-profile">
     <div class="atlas-page-shell">
@@ -20539,6 +20644,21 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     </div>
   </section>
 </template>
+
+<div id="atlasPersonalNoteModal" hidden aria-hidden="true">
+  <div class="atlas-note-modal-overlay" data-personal-note-close="true"></div>
+  <section class="atlas-note-modal-window" role="dialog" aria-modal="true">
+    <button class="atlas-note-modal-close" type="button" data-personal-note-close="true" aria-label="закрыть">×</button>
+    <h3 id="atlasPersonalNoteHeading">новая заметка</h3>
+    <p id="atlasPersonalNoteTarget"></p>
+    <form id="atlasPersonalNoteForm">
+      <input name="title" type="text" maxlength="120" placeholder="заголовок">
+      <textarea name="body" maxlength="6000" placeholder="напиши что-нибудь для себя…" required></textarea>
+      <button class="atlas-note-modal-save" type="submit">сохранить заметку</button>
+      <div class="atlas-note-modal-status" id="atlasPersonalNoteStatus"></div>
+    </form>
+  </section>
+</div>
 
 <div id="atlasPlayerEditModal" hidden aria-hidden="true">
   <div class="atlas-player-edit-overlay" data-player-edit-close="true"></div>
@@ -20576,7 +20696,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <label>аватар</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
             <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span><strong>перетащи изображение сюда</strong><span>или нажми и выбери его с компьютера</span><span class="atlas-player-file-pick">выбрать файл</span></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditAvatar"><span><strong>перетащи изображение сюда</strong></span></label>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
@@ -20584,7 +20704,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <label>баннер</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
             <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
-            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span><strong>перетащи изображение сюда</strong><span>или нажми и выбери его с компьютера</span><span class="atlas-player-file-pick">выбрать файл</span></span></label>
+            <label class="atlas-player-file-ui" for="atlasPlayerEditBanner"><span><strong>перетащи изображение сюда</strong></span></label>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
@@ -20874,6 +20994,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var bundle=await fetchPlayerBundle(id), p=bundle.profile;
       if(!p){root.innerHTML='<div class="atlas-player-empty"><strong>профиль не найден</strong></div>';return}
       currentPlayerId=p.id; try{sessionStorage.setItem('atlasPlayerProfileId',p.id)}catch(_e){}
+      if(typeof window.atlasPersonalTrackView==='function') window.atlasPersonalTrackView({target_type:'player',target_id:p.id,title:displayName(p),subtitle:'@'+(p.nickname||'player'),image_url:p.avatar_url||p.banner_url||''});
       var banner=p.banner_url||p.avatar_url||'';
       var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));
       var chars=(bundle.owners||[]).map(function(o){return (window.ATLAS_CHARACTERS||[]).find(function(ch){return ch.id===o.character_id})}).filter(Boolean);
@@ -20897,8 +21018,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){var x=a.achievements||{};return '<article class="atlas-player-achievement"><div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div><strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>'}).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'</div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('achievements',achPanel,false);
+      if(typeof window.atlasPersonalHydrate==='function') setTimeout(window.atlasPersonalHydrate,0);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
 
@@ -21070,5 +21192,186 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 })();
 </script>
 
+\n<script>
+(function(){
+  var activeTab='guardados';
+  var noteContext=null;
+
+  function c(){return window.ATLAS_SUPABASE||null}
+  function uid(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
+  function esc(v){return String(v==null?'':v).replace(/[&<>'"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]})}
+  function fmt(v){if(!v)return '';try{return new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v))}catch(_e){return String(v)}}
+  function first(v){return (String(v||'A').trim().charAt(0)||'A').toUpperCase()}
+  function signedIn(){return !!uid()}
+  function loginPrompt(){var b=document.getElementById('atlasAccountButton');if(b)b.click()}
+
+  function targetFromGroup(group){
+    return {
+      target_type:group.getAttribute('data-target-type')||'other',
+      target_id:group.getAttribute('data-target-id')||'',
+      title:group.getAttribute('data-target-title')||'без названия',
+      subtitle:group.getAttribute('data-target-subtitle')||'',
+      image_url:group.getAttribute('data-target-image')||''
+    };
+  }
+
+  async function stateFor(target){
+    var client=c(), user=uid(); if(!client||!user||!target.target_id)return {bookmark:false,favorite:false};
+    var r=await Promise.all([
+      client.from('atlas_bookmarks').select('id').eq('user_id',user).eq('target_type',target.target_type).eq('target_id',target.target_id).maybeSingle(),
+      client.from('atlas_favorites').select('id').eq('user_id',user).eq('target_type',target.target_type).eq('target_id',target.target_id).maybeSingle()
+    ]);
+    return {bookmark:!!(r[0].data),favorite:!!(r[1].data)};
+  }
+
+  async function hydrate(root){
+    root=root||document;
+    var groups=Array.from(root.querySelectorAll('[data-personal-tools="true"]'));
+    if(!groups.length)return;
+    if(!signedIn()){groups.forEach(function(g){g.querySelectorAll('[data-personal-action]').forEach(function(b){b.classList.remove('is-active')})});return}
+    await Promise.all(groups.map(async function(g){
+      try{
+        var s=await stateFor(targetFromGroup(g));
+        var bb=g.querySelector('[data-personal-action="bookmark"]');
+        var ff=g.querySelector('[data-personal-action="favorite"]');
+        if(bb){bb.classList.toggle('is-active',s.bookmark);bb.textContent=s.bookmark?'★ в закладках':'☆ в закладки'}
+        if(ff){ff.classList.toggle('is-active',s.favorite);ff.textContent=s.favorite?'♥ в избранном':'♡ в избранное'}
+      }catch(_e){}
+    }));
+  }
+
+  async function toggle(table,target,button){
+    if(!signedIn()){loginPrompt();return}
+    var client=c(), user=uid();
+    var find=await client.from(table).select('id').eq('user_id',user).eq('target_type',target.target_type).eq('target_id',target.target_id).maybeSingle();
+    if(find.error)throw find.error;
+    if(find.data){
+      var del=await client.from(table).delete().eq('id',find.data.id); if(del.error)throw del.error;
+    }else{
+      var row={user_id:user,target_type:target.target_type,target_id:target.target_id,title:target.title,subtitle:target.subtitle||null,image_url:target.image_url||null};
+      var ins=await client.from(table).insert(row); if(ins.error)throw ins.error;
+    }
+    if(button)button.classList.toggle('is-active',!find.data);
+    hydrate(button?button.closest('[data-personal-tools="true"]'):document);
+    if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render();
+  }
+
+  function openNote(target){
+    if(!signedIn()){loginPrompt();return}
+    noteContext=target||null;
+    var modal=document.getElementById('atlasPersonalNoteModal'), form=document.getElementById('atlasPersonalNoteForm');
+    if(!modal||!form)return;
+    form.reset();
+    document.getElementById('atlasPersonalNoteTarget').textContent=target&&target.target_id?('к: '+target.title):'личная заметка';
+    document.getElementById('atlasPersonalNoteStatus').textContent='';
+    modal.hidden=false;modal.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
+  }
+  function closeNote(){var modal=document.getElementById('atlasPersonalNoteModal');if(!modal)return;modal.hidden=true;modal.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';noteContext=null}
+
+  async function saveNote(title,body,target){
+    var client=c(), user=uid(); if(!client||!user)throw new Error('сначала войди в аккаунт.');
+    var row={user_id:user,title:title||null,body:body,target_type:target&&target.target_id?target.target_type:null,target_id:target&&target.target_id?target.target_id:null,target_title:target&&target.target_id?target.title:null};
+    var res=await client.from('atlas_notes').insert(row); if(res.error)throw res.error;
+  }
+
+  async function trackView(target){
+    if(!signedIn()||!target||!target.target_id)return;
+    var client=c(); if(!client)return;
+    try{
+      await client.from('atlas_history').upsert({user_id:uid(),target_type:target.target_type,target_id:String(target.target_id),title:target.title||'без названия',subtitle:target.subtitle||null,image_url:target.image_url||null,viewed_at:new Date().toISOString()},{onConflict:'user_id,target_type,target_id'});
+    }catch(_e){}
+  }
+
+  function openTarget(type,id){
+    if(type==='character'&&typeof window.atlasOpenCharacter==='function'){window.atlasOpenCharacter(id);return}
+    if(type==='player'&&typeof window.atlasOpenPlayerProfile==='function'){window.atlasOpenPlayerProfile(id);return}
+  }
+
+  function itemCard(item,kind){
+    var media=item.image_url?'<img src="'+esc(item.image_url)+'" alt="">':esc(first(item.title));
+    return '<article class="atlas-personal-card"><div class="atlas-personal-card-media">'+media+'</div><div class="atlas-personal-card-copy"><small>'+esc(item.target_type||'')+'</small><h3>'+esc(item.title||'без названия')+'</h3><p>'+esc(item.subtitle||'')+'</p><div class="atlas-personal-card-actions"><button type="button" data-personal-open="'+esc(item.target_type)+'" data-personal-id="'+esc(item.target_id)+'">открыть</button>'+(kind==='favorite'?'<button type="button" data-personal-fav-public="'+esc(item.id)+'">'+(item.is_public?'публичное':'только мне')+'</button>':'')+'<button class="is-danger" type="button" data-personal-remove="'+esc(kind)+'" data-personal-row="'+esc(item.id)+'">убрать</button></div></div></article>';
+  }
+
+  function noteCard(n){
+    var target=n.target_id?'<button class="atlas-note-target" type="button" data-personal-open="'+esc(n.target_type)+'" data-personal-id="'+esc(n.target_id)+'">'+esc(n.target_title||n.target_type)+'</button>':'';
+    return '<article class="atlas-note-card'+(n.is_done?' is-done':'')+'"><div class="atlas-note-card-head"><h3>'+esc(n.title||'заметка')+'</h3><div class="atlas-personal-card-actions"><button type="button" data-note-pin="'+esc(n.id)+'">'+(n.is_pinned?'открепить':'закрепить')+'</button><button type="button" data-note-done="'+esc(n.id)+'">'+(n.is_done?'вернуть':'готово')+'</button><button class="is-danger" type="button" data-note-delete="'+esc(n.id)+'">удалить</button></div></div><p>'+esc(n.body||'')+'</p>'+target+'<small>'+esc(fmt(n.updated_at||n.created_at))+'</small></article>';
+  }
+
+  function historyRow(h){
+    var media=h.image_url?'<img src="'+esc(h.image_url)+'" alt="">':esc(first(h.title));
+    return '<div class="atlas-history-row"><div class="atlas-history-media">'+media+'</div><div class="atlas-history-copy"><strong>'+esc(h.title||'без названия')+'</strong><span>'+esc(h.subtitle||h.target_type||'')+' · '+esc(fmt(h.viewed_at))+'</span></div><button class="atlas-history-open" type="button" data-personal-open="'+esc(h.target_type)+'" data-personal-id="'+esc(h.target_id)+'">открыть</button></div>';
+  }
+
+  async function render(){
+    var root=document.getElementById('atlasPersonalRoot'); if(!root)return;
+    if(!signedIn()){
+      root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>закладки, избранное, заметки и история привязаны к аккаунту.</p></div></div><div class="atlas-personal-login"><strong>личный ATLAS закрыт</strong><p>войдите в аккаунт, чтобы открыть свои сохранённые данные.</p><button type="button" data-personal-login>войти</button></div>';
+      return;
+    }
+    var client=c(), user=uid();
+    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><div class="atlas-personal-empty">загружаем личный ATLAS…</div>';
+    var res=await Promise.all([
+      client.from('atlas_bookmarks').select('*').eq('user_id',user).order('created_at',{ascending:false}),
+      client.from('atlas_favorites').select('*').eq('user_id',user).order('created_at',{ascending:false}),
+      client.from('atlas_notes').select('*').eq('user_id',user).order('is_pinned',{ascending:false}).order('updated_at',{ascending:false}),
+      client.from('atlas_history').select('*').eq('user_id',user).order('viewed_at',{ascending:false}).limit(50)
+    ]);
+    for(var i=0;i<res.length;i++){if(res[i].error){root.innerHTML='<div class="atlas-personal-empty">не удалось загрузить личный ATLAS: '+esc(res[i].error.message)+'</div>';return}}
+    var bookmarks=res[0].data||[], favorites=res[1].data||[], notes=res[2].data||[], history=res[3].data||[];
+    function tab(id,label,count){return '<button class="atlas-personal-tab'+(activeTab===id?' is-active':'')+'" type="button" data-personal-tab="'+id+'">'+label+(typeof count==='number'?' · '+count:'')+'</button>'}
+    function panel(id,html){return '<section class="atlas-personal-panel'+(activeTab===id?' is-active':'')+'" data-personal-panel="'+id+'">'+html+'</section>'}
+    var noteComposer='<form class="atlas-note-composer" id="atlasQuickNoteForm"><input name="title" type="text" maxlength="120" placeholder="заголовок"><textarea name="body" maxlength="6000" placeholder="быстрая заметка…" required></textarea><button class="atlas-note-add" type="submit">добавить</button></form>';
+    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','guardados',bookmarks.length)+tab('favoritos','favoritos',favorites.length)+tab('notas','notas',notes.length)+tab('historial','historial',history.length)+'</nav>'+
+      panel('guardados',bookmarks.length?'<div class="atlas-personal-grid">'+bookmarks.map(function(x){return itemCard(x,'bookmark')}).join('')+'</div>':'<div class="atlas-personal-empty">здесь появятся сохранённые профили и другие материалы.</div>')+
+      panel('favoritos',favorites.length?'<div class="atlas-personal-grid">'+favorites.map(function(x){return itemCard(x,'favorite')}).join('')+'</div>':'<div class="atlas-personal-empty">избранное пока пустое.</div>')+
+      panel('notas',noteComposer+(notes.length?'<div class="atlas-note-list">'+notes.map(noteCard).join('')+'</div>':'<div class="atlas-personal-empty">заметок пока нет.</div>'))+
+      panel('historial',history.length?'<div>'+history.map(historyRow).join('')+'</div>':'<div class="atlas-personal-empty">история начнёт заполняться после просмотра профилей.</div>');
+  }
+
+  document.addEventListener('click',async function(e){
+    var login=e.target.closest('[data-personal-login]');if(login){loginPrompt();return}
+    var tab=e.target.closest('[data-personal-tab]');if(tab){activeTab=tab.getAttribute('data-personal-tab')||'guardados';render();return}
+    var open=e.target.closest('[data-personal-open]');if(open){openTarget(open.getAttribute('data-personal-open'),open.getAttribute('data-personal-id'));return}
+    var group=e.target.closest('[data-personal-tools="true"]');
+    var act=e.target.closest('[data-personal-action]');
+    if(group&&act){
+      e.preventDefault();e.stopPropagation();
+      var target=targetFromGroup(group), action=act.getAttribute('data-personal-action');
+      try{if(action==='bookmark')await toggle('atlas_bookmarks',target,act);else if(action==='favorite')await toggle('atlas_favorites',target,act);else if(action==='note')openNote(target)}catch(err){alert((err&&err.message)||'ошибка ATLAS')}
+      return;
+    }
+    if(e.target.closest('[data-personal-note-close="true"]')){closeNote();return}
+    var rem=e.target.closest('[data-personal-remove]');if(rem){
+      var table=rem.getAttribute('data-personal-remove')==='favorite'?'atlas_favorites':'atlas_bookmarks';
+      var rr=await c().from(table).delete().eq('id',rem.getAttribute('data-personal-row')).eq('user_id',uid()); if(!rr.error)render();return;
+    }
+    var pub=e.target.closest('[data-personal-fav-public]');if(pub){
+      var id=pub.getAttribute('data-personal-fav-public');
+      var cur=pub.textContent.trim()==='публичное';
+      var r=await c().from('atlas_favorites').update({is_public:!cur}).eq('id',id).eq('user_id',uid());if(!r.error)render();return;
+    }
+    var del=e.target.closest('[data-note-delete]');if(del){var r=await c().from('atlas_notes').delete().eq('id',del.getAttribute('data-note-delete')).eq('user_id',uid());if(!r.error)render();return}
+    var done=e.target.closest('[data-note-done]');if(done){var id=done.getAttribute('data-note-done');var row=await c().from('atlas_notes').select('is_done').eq('id',id).single();if(!row.error){await c().from('atlas_notes').update({is_done:!row.data.is_done}).eq('id',id);render()}return}
+    var pin=e.target.closest('[data-note-pin]');if(pin){var id=pin.getAttribute('data-note-pin');var row=await c().from('atlas_notes').select('is_pinned').eq('id',id).single();if(!row.error){await c().from('atlas_notes').update({is_pinned:!row.data.is_pinned}).eq('id',id);render()}return}
+    var nav=e.target.closest('[data-page="mi-atlas"]');if(nav)setTimeout(render,0);
+  },true);
+
+  document.addEventListener('submit',async function(e){
+    if(e.target&&e.target.id==='atlasQuickNoteForm'){
+      e.preventDefault();var f=new FormData(e.target);try{await saveNote(String(f.get('title')||'').trim(),String(f.get('body')||'').trim(),null);e.target.reset();render()}catch(err){alert((err&&err.message)||'не удалось сохранить заметку')}return;
+    }
+    if(e.target&&e.target.id==='atlasPersonalNoteForm'){
+      e.preventDefault();var form=e.target, status=document.getElementById('atlasPersonalNoteStatus'), f=new FormData(form);var body=String(f.get('body')||'').trim();if(!body)return;status.textContent='сохраняем…';try{await saveNote(String(f.get('title')||'').trim(),body,noteContext);status.textContent='готово';setTimeout(function(){closeNote();if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render()},350)}catch(err){status.textContent=(err&&err.message)||'ошибка'}return;
+    }
+  },true);
+
+  window.atlasPersonalTrackView=trackView;
+  window.atlasPersonalHydrate=hydrate;
+  window.atlasRenderPersonalAtlas=function(pageName){if(pageName==='mi-atlas'||document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))setTimeout(render,0)};
+  window.addEventListener('atlasPlayerAuthReady',function(){hydrate();if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render()});
+  document.addEventListener('DOMContentLoaded',function(){if((location.hash||'').replace(/^#/,'')==='mi-atlas')setTimeout(render,120)});
+})();
+
+</script>\n
 </body>
 </html>
