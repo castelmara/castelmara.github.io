@@ -20806,6 +20806,23 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function isOwnProfile(id){return !!id&&currentUserId()===id}
 
+  function canRoleEditTarget(viewer,target){
+    if(!viewer||!target)return false;
+    if(viewer.id===target.id)return true;
+    if(viewer.role==='superadmin')return true;
+    if(viewer.role==='admin'&&target.role==='player')return true;
+    return false;
+  }
+
+  async function getEditPermission(targetId){
+    var viewerId=currentUserId();
+    if(!viewerId||!targetId)return {allowed:false,viewer:null,target:null};
+    var list=await getProfiles(false);
+    var viewer=list.find(function(p){return p.id===viewerId})||null;
+    var target=list.find(function(p){return p.id===targetId})||null;
+    return {allowed:canRoleEditTarget(viewer,target),viewer:viewer,target:target};
+  }
+
   var relationshipEditorState=null;
 
   function relationshipTypeLabel(type){
@@ -20951,18 +20968,27 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   async function openPlayerEdit(id){
-    if(!isOwnProfile(id))return;
     var c=client(); if(!c)return;
     var modal=document.getElementById('atlasPlayerEditModal');
     var form=document.getElementById('atlasPlayerEditForm');
     if(!modal||!form)return;
+    var permission;
+    try{permission=await getEditPermission(id)}catch(err){setEditStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
+    if(!permission.allowed)return;
+    var own=isOwnProfile(id);
     setEditStatus('загружаем данные…','ok');
     modal.hidden=false;
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
+    var title=document.getElementById('atlasPlayerEditTitle');
+    var copy=modal.querySelector('.atlas-player-edit-copy');
+    var relSection=document.getElementById('atlasPlayerRelationshipSection');
+    if(title)title.textContent=own?'редактировать профиль':'редактировать профиль игрока';
+    if(copy)copy.textContent=own?'эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.':'режим администрации: изменения сохранятся в публичном профиле этого игрока.';
+    if(relSection)relSection.hidden=!own;
     try{
       var res=await Promise.all([
-        c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url').eq('id',id).maybeSingle(),
+        c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url,role').eq('id',id).maybeSingle(),
         c.from('profile_private').select('birthday,birthday_visible').eq('id',id).maybeSingle()
       ]);
       if(res[0].error)throw res[0].error;
@@ -20979,7 +21005,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       renderFilePreview(form.elements.avatar,'atlasPlayerAvatarPreview');
       renderFilePreview(form.elements.banner,'atlasPlayerBannerPreview');
       form.dataset.playerId=id;
-      await renderRelationshipEditor(id);
+      form.dataset.editMode=own?'self':'staff';
+      if(own)await renderRelationshipEditor(id);
       setEditStatus('');
     }catch(err){setEditStatus(err&&err.message?err.message:'не удалось загрузить профиль.','error')}
   }
@@ -21094,7 +21121,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var media=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':'<span class="atlas-player-card-letter">'+esc(initial(p))+'</span>';
     var badges=['игрок'];
     if(p.current_streak>1) badges.push('🔥 '+p.current_streak);
-    if(p.role==='superadmin') badges.push('админ');
+    if(p.role==='superadmin') badges.push('суперадмин');
+    else if(p.role==='admin') badges.push('админ');
     return '<button class="atlas-player-card" type="button" data-player-id="'+esc(p.id)+'">'+
       '<span class="atlas-player-card-media">'+media+'</span>'+
       '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'player')+'</p></span>'+
@@ -21178,10 +21206,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         familyHtml='<span class="atlas-family-value">♥ '+esc(familyText)+' с <button type="button" data-player-id="'+esc(bundle.partner.id)+'">@'+esc(bundle.partner.nickname||displayName(bundle.partner))+'</button>'+(familyDuration?' · '+esc(familyDuration):'')+'</span>';
       }
       var bday=birthdayLabel(p.birthday_month,p.birthday_day);
-      var editButton=isOwnProfile(p.id)?'<button class="atlas-player-edit-profile" type="button" data-player-edit-id="'+esc(p.id)+'">редактировать профиль</button>':'';
+      var viewerList=await getProfiles(false);
+      var viewer=viewerList.find(function(x){return x.id===currentUserId()})||null;
+      var mayEdit=canRoleEditTarget(viewer,p);
+      var editButton=mayEdit?'<button class="atlas-player-edit-profile" type="button" data-player-edit-id="'+esc(p.id)+'">'+(isOwnProfile(p.id)?'редактировать профиль':'редактировать профиль игрока')+'</button>':'';
       var overview='<div class="atlas-profile-overview-grid"><div class="atlas-profile-card"><h3>профиль игрока</h3>'+infoRows([
         ['имя',p.display_name||p.nickname,'<span>'+esc(p.display_name||p.nickname)+'</span>'],
         ['никнейм',p.nickname,'<span>@'+esc(p.nickname)+'</span>'],
+        ['роль',p.role&&p.role!=='player','<span>'+esc(p.role==='superadmin'?'суперадмин':p.role==='admin'?'админ':'игрок')+'</span>'],
         ['семейный статус',true,familyHtml],
         ['статус',p.status_text,'<span>'+esc(p.status_text)+'</span>'],
         ['VK',p.vk_url,vk],
@@ -21191,7 +21223,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var charPanel=chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи. позже мы свяжем существующие анкеты с никнеймами игроков.</div>';
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){var x=a.achievements||{};return '<article class="atlas-player-achievement"><div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div><strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>'}).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'"><div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+editButton+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('achievements',achPanel,false);
       if(typeof window.atlasPersonalHydrate==='function') setTimeout(window.atlasPersonalHydrate,0);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
@@ -21222,7 +21254,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   async function savePlayerEditForm(editForm){
     if(!editForm || editForm.dataset.saving==='1')return;
     var id=editForm.dataset.playerId||'';
-    if(!isOwnProfile(id)){setEditStatus('можно редактировать только свой профиль.','error');return}
+    var permission;
+    try{permission=await getEditPermission(id)}catch(err){setEditStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
+    if(!permission.allowed){setEditStatus('у тебя нет прав редактировать этот профиль.','error');return}
     var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
 
     var name=String(editForm.elements.display_name.value||'').trim();
@@ -21301,7 +21335,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       profilesCache=[];
 
       /* обновляем быстрый профиль аккаунта и саму страницу */
-      if(typeof window.atlasReloadCurrentProfile==='function'){
+      if(isOwnProfile(id)&&typeof window.atlasReloadCurrentProfile==='function'){
         try{await window.atlasReloadCurrentProfile()}catch(_err){}
       }
       await renderPlayerProfile(id);
