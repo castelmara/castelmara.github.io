@@ -20496,6 +20496,34 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-edit-hint{margin:-4px 0 0;color:#9a9fa7;font-size:10px;line-height:1.45}
 #atlasPlayerEditModal .atlas-player-edit-check{display:flex;align-items:center;gap:9px;margin:2px 0 14px;font-size:11px;font-weight:850;color:#535963}
 #atlasPlayerEditModal .atlas-player-edit-check input{width:16px;height:16px;accent-color:#c63838}
+#atlasPlayerEditModal .atlas-player-relation{grid-column:1/-1;margin:1px 0 5px;padding:16px;border:1px solid #e1e4e8;border-radius:17px;background:#fafafa}
+#atlasPlayerEditModal .atlas-player-relation-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+#atlasPlayerEditModal .atlas-player-relation-head h3{margin:0;font-size:15px;line-height:1.2;font-weight:950;text-transform:lowercase}
+#atlasPlayerEditModal .atlas-player-relation-head p{margin:5px 0 0;color:#898f98;font-size:10px;line-height:1.5}
+#atlasPlayerEditModal .atlas-player-relation-body{display:grid;gap:10px}
+#atlasPlayerEditModal .atlas-relation-current{padding:13px;border-radius:13px;background:#fff;border:1px solid #e3e6e9}
+#atlasPlayerEditModal .atlas-relation-current strong{display:block;color:#171a20;font-size:13px;line-height:1.45}
+#atlasPlayerEditModal .atlas-relation-current p{margin:5px 0 0;color:#7b828c;font-size:10px;line-height:1.5}
+#atlasPlayerEditModal .atlas-relation-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#atlasPlayerEditModal .atlas-relation-grid .is-full{grid-column:1/-1}
+#atlasPlayerEditModal .atlas-relation-grid label{display:grid;gap:6px;color:#535963;font-size:10px;font-weight:900}
+#atlasPlayerEditModal .atlas-relation-grid input,#atlasPlayerEditModal .atlas-relation-grid select{width:100%;height:44px;border:1px solid #dfe2e7;border-radius:12px;background:#fff;color:#171a20;padding:0 12px;font:700 12px/1.2 "Montserrat",Arial,sans-serif;outline:0}
+#atlasPlayerEditModal .atlas-relation-grid input:focus,#atlasPlayerEditModal .atlas-relation-grid select:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
+#atlasPlayerEditModal .atlas-relation-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+#atlasPlayerEditModal .atlas-relation-actions button{border:0;border-radius:999px;padding:10px 13px;background:#171a20;color:#fff;font:900 10px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlasPlayerEditModal .atlas-relation-actions button.is-red{background:#cf3d3d}
+#atlasPlayerEditModal .atlas-relation-actions button.is-light{background:#eceef1;color:#414750}
+#atlasPlayerEditModal .atlas-relation-message{display:none;padding:9px 11px;border-radius:11px;font-size:10px;line-height:1.45}
+#atlasPlayerEditModal .atlas-relation-message.is-visible{display:block}
+#atlasPlayerEditModal .atlas-relation-message.is-error{background:#fff0f0;color:#9d2929;border:1px solid #f1cccc}
+#atlasPlayerEditModal .atlas-relation-message.is-ok{background:#edf8f0;color:#286b3c;border:1px solid #cce8d3}
+#atlas-app .atlas-family-value{display:inline-flex;flex-wrap:wrap;gap:5px;align-items:center}
+#atlas-app .atlas-family-value button{border:0;background:none;padding:0;color:#c83b3b;font:inherit;font-weight:900;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-relation{background:#151b22;border-color:#2b333e}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-current{background:#11161d;border-color:#2a323d}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-current strong{color:#f4f2ef}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid label{color:#b4bac2}
+#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid input,#atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-relation-grid select{background:#171d25;border-color:#303844;color:#fff}
 #atlasPlayerEditModal .atlas-player-edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
 #atlasPlayerEditModal .atlas-player-edit-actions button{border-radius:13px;padding:12px 16px;font:inherit;font-weight:950;cursor:pointer}
 #atlasPlayerEditModal .atlas-player-edit-cancel{border:1px solid #dfe2e7;background:#fff;color:#181b20}
@@ -20602,6 +20630,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 @media(max-width:700px){#atlas-app .atlas-note-composer{grid-template-columns:1fr}#atlas-app .atlas-personal-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-personal-head h2{font-size:34px}}
 
 @media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
+@media(max-width:560px){#atlasPlayerEditModal .atlas-relation-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-relation-grid .is-full{grid-column:auto}}
 @media(max-width:560px){#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}#atlasPlayerEditModal{padding:10px}#atlasPlayerEditModal .atlas-player-edit-window{padding:23px 17px;border-radius:20px}#atlasPlayerEditModal .atlas-player-edit-title{font-size:29px}#atlasPlayerEditModal .atlas-player-edit-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-edit-field.is-full,#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:auto}}
 </style>
 
@@ -20691,6 +20720,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <input id="atlasPlayerEditBirthday" name="birthday" type="date">
         </div>
         <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
+        <section class="atlas-player-relation" id="atlasPlayerRelationshipSection">
+          <div class="atlas-player-relation-head">
+            <div><h3>семейный статус</h3><p>связь появится в обоих профилях только после подтверждения второго игрока.</p></div>
+          </div>
+          <div class="atlas-player-relation-body" id="atlasPlayerRelationshipEditor"><div class="atlas-relation-current"><p>загружаем семейный статус…</p></div></div>
+          <div class="atlas-relation-message" id="atlasPlayerRelationshipMessage"></div>
+        </section>
         <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
         <div class="atlas-player-edit-field">
           <label>аватар</label>
@@ -20770,6 +20806,135 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function isOwnProfile(id){return !!id&&currentUserId()===id}
 
+  var relationshipEditorState=null;
+
+  function relationshipTypeLabel(type){
+    return type==='married'?'в браке':type==='complicated'?'всё сложно':'в отношениях';
+  }
+
+  function setRelationshipMessage(message,type){
+    var box=document.getElementById('atlasPlayerRelationshipMessage');
+    if(!box)return;
+    box.textContent=message||'';
+    box.className='atlas-relation-message'+(message?' is-visible':'')+(type==='error'?' is-error':type==='ok'?' is-ok':'');
+  }
+
+  async function fetchRelationshipEditorState(id){
+    var c=client();
+    if(!c)throw new Error('supabase ещё загружается');
+    var res=await c.from('relationships')
+      .select('id,requester_id,partner_id,relationship_type,status,started_on,created_at')
+      .or('requester_id.eq.'+id+',partner_id.eq.'+id)
+      .in('status',['pending','active'])
+      .order('created_at',{ascending:false})
+      .limit(1);
+    if(res.error)throw res.error;
+    var relation=res.data&&res.data[0]||null,partner=null;
+    if(relation){
+      var partnerId=relation.requester_id===id?relation.partner_id:relation.requester_id;
+      var pr=await c.from('profiles').select('id,nickname,display_name,avatar_url').eq('id',partnerId).maybeSingle();
+      if(pr.error)throw pr.error;
+      partner=pr.data||null;
+    }
+    return {relation:relation,partner:partner};
+  }
+
+  function relationshipTypeOptions(selected){
+    return [
+      ['relationship','в отношениях'],
+      ['married','в браке'],
+      ['complicated','всё сложно']
+    ].map(function(x){return '<option value="'+x[0]+'"'+(x[0]===selected?' selected':'')+'>'+x[1]+'</option>'}).join('');
+  }
+
+  async function renderRelationshipEditor(id,message,type){
+    var root=document.getElementById('atlasPlayerRelationshipEditor');
+    if(!root||!isOwnProfile(id))return;
+    root.innerHTML='<div class="atlas-relation-current"><p>загружаем семейный статус…</p></div>';
+    setRelationshipMessage('');
+    try{
+      relationshipEditorState=await fetchRelationshipEditorState(id);
+      var rel=relationshipEditorState.relation,partner=relationshipEditorState.partner;
+      if(!rel){
+        root.innerHTML='<div class="atlas-relation-grid">'+
+          '<label class="is-full">никнейм второго игрока<input id="atlasRelationPartner" type="text" maxlength="24" placeholder="например, passion" autocomplete="off" autocapitalize="none" spellcheck="false"></label>'+
+          '<label>статус<select id="atlasRelationType">'+relationshipTypeOptions('relationship')+'</select></label>'+
+          '<label>дата начала<input id="atlasRelationDate" type="date"></label>'+
+          '</div><div class="atlas-relation-actions"><button type="button" class="is-red" data-relation-action="send">отправить предложение</button></div>';
+      }else if(rel.status==='pending'){
+        var incoming=rel.partner_id===id;
+        var partnerLabel=partner?'@'+(partner.nickname||displayName(partner)):'другой игрок';
+        var dateText=rel.started_on?' · с '+fmtDate(rel.started_on):'';
+        if(incoming){
+          root.innerHTML='<div class="atlas-relation-current"><strong>'+esc(partnerLabel)+' предлагает: '+esc(relationshipTypeLabel(rel.relationship_type))+'</strong><p>дата начала'+esc(dateText||' не указана')+'. связь появится в профилях только после подтверждения.</p></div>'+
+            '<div class="atlas-relation-actions"><button type="button" class="is-red" data-relation-action="accept">принять</button><button type="button" class="is-light" data-relation-action="reject">отклонить</button></div>';
+        }else{
+          root.innerHTML='<div class="atlas-relation-current"><strong>предложение отправлено '+esc(partnerLabel)+'</strong><p>'+esc(relationshipTypeLabel(rel.relationship_type))+dateText+'. ждём подтверждения второго игрока.</p></div>'+
+            '<div class="atlas-relation-actions"><button type="button" class="is-light" data-relation-action="cancel">отменить предложение</button></div>';
+        }
+      }else{
+        var activePartner=partner?'@'+(partner.nickname||displayName(partner)):'игрок';
+        var duration=relationDuration(rel.started_on);
+        root.innerHTML='<div class="atlas-relation-current"><strong>♥ '+esc(relationshipTypeLabel(rel.relationship_type))+' с <button type="button" data-player-id="'+esc(partner&&partner.id||'')+'" style="border:0;background:none;padding:0;color:#c83b3b;font:inherit;font-weight:900;cursor:pointer;text-decoration:underline">'+esc(activePartner)+'</button></strong><p>'+(duration?'вместе уже '+esc(duration):'дата начала не указана')+'.</p></div>'+
+          '<div class="atlas-relation-grid"><label>статус<select id="atlasRelationType">'+relationshipTypeOptions(rel.relationship_type)+'</select></label><label>дата начала<input id="atlasRelationDate" type="date" value="'+esc(rel.started_on||'')+'"></label></div>'+
+          '<div class="atlas-relation-actions"><button type="button" data-relation-action="save">сохранить статус</button><button type="button" class="is-light" data-relation-action="end">завершить отношения</button></div>';
+      }
+      if(message)setRelationshipMessage(message,type||'ok');
+    }catch(err){
+      root.innerHTML='<div class="atlas-relation-current"><p>не удалось загрузить семейный статус.</p></div>';
+      setRelationshipMessage(err&&err.message?err.message:'ошибка ATLAS','error');
+    }
+  }
+
+  async function handleRelationshipAction(action){
+    var id=currentUserId(),c=client();
+    if(!id||!c)return;
+    setRelationshipMessage('сохраняем…','ok');
+    try{
+      var rel=relationshipEditorState&&relationshipEditorState.relation;
+      if(action==='send'){
+        var login=String((document.getElementById('atlasRelationPartner')||{}).value||'').trim().toLowerCase().replace(/^@/,'');
+        var type=(document.getElementById('atlasRelationType')||{}).value||'relationship';
+        var started=(document.getElementById('atlasRelationDate')||{}).value||null;
+        if(!login)throw new Error('укажи никнейм второго игрока.');
+        var pr=await c.from('profiles').select('id,nickname,display_name').ilike('nickname',login).maybeSingle();
+        if(pr.error)throw pr.error;
+        if(!pr.data)throw new Error('игрок @'+login+' не найден.');
+        if(pr.data.id===id)throw new Error('нельзя связать профиль с самим собой.');
+        var existing=await c.from('relationships').select('id,status').or('requester_id.eq.'+id+',partner_id.eq.'+id).in('status',['pending','active']).limit(1);
+        if(existing.error)throw existing.error;
+        if(existing.data&&existing.data.length)throw new Error('у тебя уже есть активная связь или ожидающее предложение.');
+        var ins=await c.from('relationships').insert({requester_id:id,partner_id:pr.data.id,relationship_type:type,started_on:started}).select('id').single();
+        if(ins.error)throw ins.error;
+        await renderRelationshipEditor(id,'предложение отправлено @'+(pr.data.nickname||login)+'.','ok');
+        return;
+      }
+      if(!rel)throw new Error('связь не найдена.');
+      if(action==='accept'){
+        var a=await c.from('relationships').update({status:'active'}).eq('id',rel.id).select('id').single(); if(a.error)throw a.error;
+        await renderRelationshipEditor(id,'семейный статус подтверждён.','ok');
+      }else if(action==='reject'){
+        var r=await c.from('relationships').update({status:'rejected'}).eq('id',rel.id).select('id').single(); if(r.error)throw r.error;
+        await renderRelationshipEditor(id,'предложение отклонено.','ok');
+      }else if(action==='cancel'){
+        var ca=await c.from('relationships').update({status:'ended'}).eq('id',rel.id).select('id').single(); if(ca.error)throw ca.error;
+        await renderRelationshipEditor(id,'предложение отменено.','ok');
+      }else if(action==='save'){
+        var newType=(document.getElementById('atlasRelationType')||{}).value||rel.relationship_type;
+        var newDate=(document.getElementById('atlasRelationDate')||{}).value||null;
+        var s=await c.from('relationships').update({relationship_type:newType,started_on:newDate}).eq('id',rel.id).select('id').single(); if(s.error)throw s.error;
+        await renderRelationshipEditor(id,'семейный статус обновлён.','ok');
+      }else if(action==='end'){
+        if(!window.confirm('точно завершить отношения?')){setRelationshipMessage('');return;}
+        var en=await c.from('relationships').update({status:'ended'}).eq('id',rel.id).select('id').single(); if(en.error)throw en.error;
+        await renderRelationshipEditor(id,'отношения завершены.','ok');
+      }
+      if(currentPlayerId===id)setTimeout(function(){renderPlayerProfile(id)},0);
+    }catch(err){
+      setRelationshipMessage(err&&err.message?err.message:'не удалось изменить семейный статус.','error');
+    }
+  }
+
   function setEditStatus(message,type){
     var box=document.getElementById('atlasPlayerEditStatusBox');
     if(!box)return;
@@ -20814,6 +20979,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       renderFilePreview(form.elements.avatar,'atlasPlayerAvatarPreview');
       renderFilePreview(form.elements.banner,'atlasPlayerBannerPreview');
       form.dataset.playerId=id;
+      await renderRelationshipEditor(id);
       setEditStatus('');
     }catch(err){setEditStatus(err&&err.message?err.message:'не удалось загрузить профиль.','error')}
   }
@@ -21005,11 +21171,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         heart='<div class="atlas-player-heart">♥ '+esc(relLabel(bundle.relationship.relationship_type))+' с <button type="button" data-player-id="'+esc(bundle.partner.id)+'">@'+esc(bundle.partner.nickname||displayName(bundle.partner))+'</button>'+(dur?' · '+esc(dur):'')+'</div>';
       }
       var vk=p.vk_url?'<a href="'+esc(p.vk_url)+'" target="_blank" rel="noopener">'+esc(p.vk_url)+'</a>':'—';
+      var familyText='не указан',familyHtml='<span>не указан</span>';
+      if(bundle.relationship&&bundle.partner){
+        var familyDuration=relationDuration(bundle.relationship.started_on);
+        familyText=relLabel(bundle.relationship.relationship_type);
+        familyHtml='<span class="atlas-family-value">♥ '+esc(familyText)+' с <button type="button" data-player-id="'+esc(bundle.partner.id)+'">@'+esc(bundle.partner.nickname||displayName(bundle.partner))+'</button>'+(familyDuration?' · '+esc(familyDuration):'')+'</span>';
+      }
       var bday=birthdayLabel(p.birthday_month,p.birthday_day);
       var editButton=isOwnProfile(p.id)?'<button class="atlas-player-edit-profile" type="button" data-player-edit-id="'+esc(p.id)+'">редактировать профиль</button>':'';
       var overview='<div class="atlas-profile-overview-grid"><div class="atlas-profile-card"><h3>профиль игрока</h3>'+infoRows([
         ['имя',p.display_name||p.nickname,'<span>'+esc(p.display_name||p.nickname)+'</span>'],
         ['никнейм',p.nickname,'<span>@'+esc(p.nickname)+'</span>'],
+        ['семейный статус',true,familyHtml],
         ['статус',p.status_text,'<span>'+esc(p.status_text)+'</span>'],
         ['VK',p.vk_url,vk],
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
@@ -21035,6 +21208,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   document.addEventListener('click',function(e){
+    var relationAction=e.target.closest('[data-relation-action]');
+    if(relationAction){e.preventDefault();e.stopPropagation();handleRelationshipAction(relationAction.getAttribute('data-relation-action'));return}
     var edit=e.target.closest('[data-player-edit-id]');
     if(edit){e.preventDefault();e.stopPropagation();openPlayerEdit(edit.getAttribute('data-player-edit-id'));return}
     if(e.target.closest('[data-player-edit-close="true"]')){e.preventDefault();closePlayerEdit();document.body.style.overflow='';return}
