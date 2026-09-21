@@ -20283,7 +20283,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-profile-page .atlas-profile-hero.is-placeholder::before{background-image:radial-gradient(circle at 72% 24%,rgba(199,61,61,.34),transparent 24%),radial-gradient(circle at 28% 78%,rgba(255,255,255,.10),transparent 30%),linear-gradient(135deg,#121317,#030304)}
 #atlas-app .atlas-player-profile-page .atlas-profile-title h2{text-transform:none;overflow-wrap:anywhere}
 #atlas-app .atlas-player-profile-page .atlas-profile-first{text-transform:none;color:rgba(255,255,255,.82);font-size:18px;margin-bottom:10px;font-weight:800;letter-spacing:-.02em}
-#atlas-app .atlas-player-profile-page .atlas-player-profile-nick{display:block;width:max-content;max-width:100%;margin:9px 0 0;color:rgba(255,255,255,.82);font-size:16px;line-height:1.2;font-weight:850;letter-spacing:-.015em;overflow-wrap:anywhere}
+#atlas-app .atlas-player-profile-page .atlas-player-profile-nick{display:block;margin:7px 0 0;color:rgba(255,255,255,.82);font-size:16px;line-height:1.2;font-weight:850;letter-spacing:-.015em;overflow-wrap:anywhere}
 #atlas-app .atlas-player-profile-page .atlas-player-avatar{width:108px;height:108px;border:4px solid rgba(255,255,255,.95);border-radius:50%;overflow:hidden;background:#15171c;color:#fff;display:grid;place-items:center;font-size:40px;font-weight:950;margin-bottom:20px;box-shadow:0 14px 38px rgba(0,0,0,.25)}
 #atlas-app .atlas-player-profile-page .atlas-player-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 #atlas-app .atlas-player-profile-page .atlas-player-heart{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:#ff7373;font-size:13px;font-weight:900}
@@ -20318,10 +20318,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-edit-title{margin:14px 0 6px;font-size:34px;line-height:1;font-weight:950;letter-spacing:-.04em}
 #atlasPlayerEditModal .atlas-player-edit-copy{margin:0 0 21px;color:#747b86;font-size:13px;line-height:1.55}
 #atlasPlayerEditModal .atlas-player-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-#atlasPlayerEditModal .atlas-player-edit-field{display:grid;gap:7px;margin-bottom:13px}
+#atlasPlayerEditModal .atlas-player-edit-field{display:grid;gap:7px;margin-bottom:13px;align-self:start;align-content:start;grid-auto-rows:max-content}
 #atlasPlayerEditModal .atlas-player-edit-field.is-full{grid-column:1/-1}
 #atlasPlayerEditModal .atlas-player-edit-field label{font-size:11px;font-weight:900;color:#414650}
-#atlasPlayerEditModal .atlas-player-edit-field input,#atlasPlayerEditModal .atlas-player-edit-field textarea{width:100%;border:1px solid #dfe2e7;border-radius:13px;background:#f8f9fa;color:#14171d;padding:13px 14px;font:inherit;outline:none;resize:vertical}
+#atlasPlayerEditModal .atlas-player-edit-field input,#atlasPlayerEditModal .atlas-player-edit-field textarea{width:100%;border:1px solid #dfe2e7;border-radius:13px;background:#f8f9fa;color:#14171d;padding:13px 14px;font:inherit;outline:none;resize:vertical;box-sizing:border-box}
+#atlasPlayerEditModal .atlas-player-edit-field input:not([type="file"]){height:54px;min-height:54px}
 #atlasPlayerEditModal .atlas-player-edit-field textarea{min-height:88px}
 #atlasPlayerEditModal .atlas-player-edit-field input:focus,#atlasPlayerEditModal .atlas-player-edit-field textarea:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
 #atlasPlayerEditModal .atlas-player-edit-file{padding:11px!important;background:#fff!important}
@@ -20690,46 +20691,81 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var id=editForm.dataset.playerId||'';
     if(!isOwnProfile(id)){setEditStatus('можно редактировать только свой профиль.','error');return}
     var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
+
     var name=String(editForm.elements.display_name.value||'').trim();
     var nickname=String(editForm.elements.nickname.value||'').trim().toLowerCase();
     var status=String(editForm.elements.status_text.value||'').trim();
     var vk=String(editForm.elements.vk_url.value||'').trim();
     var birthday=String(editForm.elements.birthday.value||'').trim();
     var birthdayVisible=!!editForm.elements.birthday_visible.checked;
+
     if(!name){setEditStatus('укажи имя.','error');return}
     if(!/^[A-Za-z0-9._-]{3,24}$/.test(nickname)){setEditStatus('никнейм: 3–24 символа, только латиница, цифры, точка, _ или -.','error');return}
     if(vk && !/^https?:\/\//i.test(vk)){setEditStatus('ссылка VK должна начинаться с http:// или https://','error');return}
+
     var avatarFile=editForm.elements.avatar.files&&editForm.elements.avatar.files[0];
     var bannerFile=editForm.elements.banner.files&&editForm.elements.banner.files[0];
+
     editForm.dataset.saving='1';
     var saveButton=editForm.querySelector('.atlas-player-edit-save');
     if(saveButton){saveButton.disabled=true;saveButton.textContent='сохраняем…'}
+
     try{
-      validateMedia(avatarFile); validateMedia(bannerFile);
+      validateMedia(avatarFile);
+      validateMedia(bannerFile);
       setEditStatus('сохраняем профиль…','ok');
+
+      /*
+        Профиль сохраняем напрямую через авторизованный Supabase client.
+        Здесь RLS уже разрешает игроку менять только собственную строку,
+        поэтому Edge Function для обычного редактирования не нужна.
+      */
       var media=await Promise.all([
         uploadProfileMedia(id,avatarFile,'avatars'),
         uploadProfileMedia(id,bannerFile,'banners')
       ]);
-      var profilePayload={
-        action:'update_profile',
+
+      var publicUpdate={
         display_name:name,
-        login:nickname,
+        nickname:nickname,
         status_text:status||null,
-        vk_url:vk||null,
-        birthday:birthday||null,
-        birthday_visible:birthdayVisible
+        vk_url:vk||null
       };
-      if(media[0])profilePayload.avatar_url=media[0];
-      if(media[1])profilePayload.banner_url=media[1];
-      var saveRequest=await c.functions.invoke('atlas-user',{body:profilePayload});
-      if(saveRequest.error)throw new Error(saveRequest.error.message||'не удалось сохранить профиль.');
-      var saveData=saveRequest.data||{};
-      if(saveData.error)throw new Error(saveData.error);
-      if(!saveData.ok)throw new Error('ATLAS не подтвердил сохранение профиля.');
+      if(media[0])publicUpdate.avatar_url=media[0];
+      if(media[1])publicUpdate.banner_url=media[1];
+
+      var publicResult=await c
+        .from('profiles')
+        .update(publicUpdate)
+        .eq('id',id)
+        .select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,role')
+        .single();
+
+      if(publicResult.error)throw new Error(publicResult.error.message||'не удалось сохранить основные данные профиля.');
+
+      var privateResult=await c
+        .from('profile_private')
+        .update({
+          birthday:birthday||null,
+          birthday_visible:birthdayVisible
+        })
+        .eq('id',id)
+        .select('id,birthday,birthday_visible')
+        .maybeSingle();
+
+      if(privateResult.error)throw new Error(privateResult.error.message||'не удалось сохранить дату рождения.');
+      if(!privateResult.data)throw new Error('не найдена приватная запись профиля.');
+
       profilesLoadedAt=0;
+      profilesCache=[];
+
+      /* обновляем быстрый профиль аккаунта и саму страницу */
+      if(typeof window.atlasReloadCurrentProfile==='function'){
+        try{await window.atlasReloadCurrentProfile()}catch(_err){}
+      }
       await renderPlayerProfile(id);
-      if(document.getElementById('atlasPlayerGrid'))renderPlayers();
+      if(document.getElementById('atlasPlayerGrid'))await renderPlayers();
+
       setEditStatus('готово. профиль обновлён.','ok');
       setTimeout(function(){closePlayerEdit();document.body.style.overflow=''},650);
     }catch(err){
