@@ -20664,56 +20664,86 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(tab){e.preventDefault();switchTab(tab.getAttribute('data-player-tab'));return}
   },true);
 
-  var editForm=document.getElementById('atlasPlayerEditForm');
-  if(editForm){
-    editForm.addEventListener('submit',async function(e){
-      e.preventDefault();
-      var id=editForm.dataset.playerId||'';
-      if(!isOwnProfile(id)){setEditStatus('можно редактировать только свой профиль.','error');return}
-      var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
-      var name=String(editForm.elements.display_name.value||'').trim();
-      var nickname=String(editForm.elements.nickname.value||'').trim().toLowerCase();
-      var status=String(editForm.elements.status_text.value||'').trim();
-      var vk=String(editForm.elements.vk_url.value||'').trim();
-      var birthday=String(editForm.elements.birthday.value||'').trim();
-      var birthdayVisible=!!editForm.elements.birthday_visible.checked;
-      if(!name){setEditStatus('укажи имя.','error');return}
-      if(!/^[A-Za-z0-9._-]{3,24}$/.test(nickname)){setEditStatus('никнейм: 3–24 символа, только латиница, цифры, точка, _ или -.','error');return}
-      if(vk && !/^https?:\/\//i.test(vk)){setEditStatus('ссылка VK должна начинаться с http:// или https://','error');return}
-      var avatarFile=editForm.elements.avatar.files&&editForm.elements.avatar.files[0];
-      var bannerFile=editForm.elements.banner.files&&editForm.elements.banner.files[0];
-      try{
-        validateMedia(avatarFile); validateMedia(bannerFile);
-        setEditStatus('сохраняем профиль…','ok');
-        var media=await Promise.all([
-          uploadProfileMedia(id,avatarFile,'avatars'),
-          uploadProfileMedia(id,bannerFile,'banners')
-        ]);
-        var profilePayload={
-          action:'update_profile',
-          display_name:name,
-          login:nickname,
-          status_text:status||null,
-          vk_url:vk||null,
-          birthday:birthday||null,
-          birthday_visible:birthdayVisible
-        };
-        if(media[0])profilePayload.avatar_url=media[0];
-        if(media[1])profilePayload.banner_url=media[1];
-        var saveRequest=await c.functions.invoke('atlas-auth',{body:profilePayload});
-        if(saveRequest.error)throw new Error(saveRequest.error.message||'не удалось сохранить профиль.');
-        var saveData=saveRequest.data||{};
-        if(saveData.error)throw new Error(saveData.error);
-        if(!saveData.ok)throw new Error('ATLAS не подтвердил сохранение профиля.');
-        profilesLoadedAt=0;
-        if(typeof window.atlasReloadCurrentProfile==='function')await window.atlasReloadCurrentProfile();
-        await renderPlayerProfile(id);
-        if(document.getElementById('atlasPlayerGrid'))renderPlayers();
-        setEditStatus('готово. профиль обновлён.','ok');
-        setTimeout(function(){closePlayerEdit();document.body.style.overflow=''},650);
-      }catch(err){setEditStatus(err&&err.message?err.message:'не удалось сохранить профиль.','error')}
-    });
+  async function savePlayerEditForm(editForm){
+    if(!editForm || editForm.dataset.saving==='1')return;
+    var id=editForm.dataset.playerId||'';
+    if(!isOwnProfile(id)){setEditStatus('можно редактировать только свой профиль.','error');return}
+    var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
+    var name=String(editForm.elements.display_name.value||'').trim();
+    var nickname=String(editForm.elements.nickname.value||'').trim().toLowerCase();
+    var status=String(editForm.elements.status_text.value||'').trim();
+    var vk=String(editForm.elements.vk_url.value||'').trim();
+    var birthday=String(editForm.elements.birthday.value||'').trim();
+    var birthdayVisible=!!editForm.elements.birthday_visible.checked;
+    if(!name){setEditStatus('укажи имя.','error');return}
+    if(!/^[A-Za-z0-9._-]{3,24}$/.test(nickname)){setEditStatus('никнейм: 3–24 символа, только латиница, цифры, точка, _ или -.','error');return}
+    if(vk && !/^https?:\/\//i.test(vk)){setEditStatus('ссылка VK должна начинаться с http:// или https://','error');return}
+    var avatarFile=editForm.elements.avatar.files&&editForm.elements.avatar.files[0];
+    var bannerFile=editForm.elements.banner.files&&editForm.elements.banner.files[0];
+    editForm.dataset.saving='1';
+    var saveButton=editForm.querySelector('.atlas-player-edit-save');
+    if(saveButton){saveButton.disabled=true;saveButton.textContent='сохраняем…'}
+    try{
+      validateMedia(avatarFile); validateMedia(bannerFile);
+      setEditStatus('сохраняем профиль…','ok');
+      var media=await Promise.all([
+        uploadProfileMedia(id,avatarFile,'avatars'),
+        uploadProfileMedia(id,bannerFile,'banners')
+      ]);
+      var profilePayload={
+        action:'update_profile',
+        display_name:name,
+        login:nickname,
+        status_text:status||null,
+        vk_url:vk||null,
+        birthday:birthday||null,
+        birthday_visible:birthdayVisible
+      };
+      if(media[0])profilePayload.avatar_url=media[0];
+      if(media[1])profilePayload.banner_url=media[1];
+      var saveRequest=await c.functions.invoke('atlas-auth',{body:profilePayload});
+      if(saveRequest.error)throw new Error(saveRequest.error.message||'не удалось сохранить профиль.');
+      var saveData=saveRequest.data||{};
+      if(saveData.error)throw new Error(saveData.error);
+      if(!saveData.ok)throw new Error('ATLAS не подтвердил сохранение профиля.');
+      profilesLoadedAt=0;
+      await renderPlayerProfile(id);
+      if(document.getElementById('atlasPlayerGrid'))renderPlayers();
+      setEditStatus('готово. профиль обновлён.','ok');
+      setTimeout(function(){closePlayerEdit();document.body.style.overflow=''},650);
+    }catch(err){
+      console.error('ATLAS profile save error:',err);
+      setEditStatus(err&&err.message?err.message:'не удалось сохранить профиль.','error');
+    }finally{
+      editForm.dataset.saving='';
+      if(saveButton){saveButton.disabled=false;saveButton.textContent='сохранить'}
+    }
   }
+
+  /* делегируем submit на document, чтобы сохранение не терялось,
+     даже если профиль/модалка были перерисованы */
+  document.addEventListener('submit',function(e){
+    var form=e.target;
+    if(!form || form.id!=='atlasPlayerEditForm')return;
+    e.preventDefault();
+    e.stopPropagation();
+    savePlayerEditForm(form);
+  },true);
+
+  /* отдельный click-fallback: кнопка гарантированно вызывает сохранение */
+  document.addEventListener('click',function(e){
+    var button=e.target.closest('.atlas-player-edit-save');
+    if(!button)return;
+    var form=button.closest('form');
+    if(!form || form.id!=='atlasPlayerEditForm')return;
+    e.preventDefault();
+    e.stopPropagation();
+    if(!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+    savePlayerEditForm(form);
+  },true);
 
   document.addEventListener('keydown',function(e){
     var modal=document.getElementById('atlasPlayerEditModal');
