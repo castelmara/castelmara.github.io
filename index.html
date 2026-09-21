@@ -19747,6 +19747,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasAuthModal .atlas-auth-secondary{width:100%;border:1px solid #dfe2e7;border-radius:13px;background:#fff;color:#181b20;padding:12px 16px;font:inherit;font-weight:900}
 #atlasAuthModal .atlas-auth-secondary:hover{border-color:#c73737;color:#c73737}
 #atlasAuthModal .atlas-auth-note{margin:13px 0 0;color:#90959d;font-size:11px;line-height:1.45;text-align:center}
+#atlasAuthModal .atlas-auth-admin{margin:0 0 16px;padding:15px;border:1px solid #ead4d4;background:#fff7f7;border-radius:15px}
+#atlasAuthModal .atlas-auth-admin-label{display:inline-flex;margin-bottom:8px;border:1px solid #efbcbc;background:#fff;color:#b72e2e;border-radius:999px;padding:4px 8px;font-size:9px;line-height:1;font-weight:950;letter-spacing:.08em}
+#atlasAuthModal .atlas-auth-admin-title{display:block;font-size:15px;line-height:1.2;margin-bottom:5px}
+#atlasAuthModal .atlas-auth-admin-copy{margin:0 0 12px;color:#777e87;font-size:11px;line-height:1.45}
+#atlasAuthModal .atlas-auth-admin .atlas-auth-field{margin-bottom:9px}
+#atlasAuthModal .atlas-auth-optional{font-weight:600;color:#9b9fa6}
+#atlasAuthModal .atlas-auth-admin-result{margin-top:10px;padding:10px 11px;border-radius:11px;background:#15181e;color:#fff;font-size:12px;line-height:1.45;word-break:break-word}
+#atlasAuthModal .atlas-auth-admin-result strong{display:block;color:#ff6868;margin-bottom:3px}
 #atlas-app .atlas-avatar-btn.is-user{overflow:hidden;padding:0;background:#f4f4f4!important;color:#111!important}
 #atlas-app .atlas-avatar-btn.is-user img{width:100%;height:100%;object-fit:cover;display:block}
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-window{background:#11161d;color:#f5f3f0;border-color:rgba(255,255,255,.12)}
@@ -19760,6 +19768,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-field input{background:#171d25;border-color:#2a323d;color:#fff}
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-stat{background:#171d25;border-color:#2a323d}
 #atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-secondary{background:#151b22;border-color:#303844;color:#f5f3f0}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin{background:#171318;border-color:#493036}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin-copy{color:#9ba1aa}
+#atlas-app[data-theme="dark"] #atlasAuthModal .atlas-auth-admin-label{background:#21171a;border-color:#66343b;color:#ff7777}
 @media(max-width:560px){#atlasAuthModal{padding:12px}#atlasAuthModal .atlas-auth-window{padding:23px 18px;border-radius:21px}#atlasAuthModal .atlas-auth-title{font-size:29px}}
 </style>
 
@@ -19781,12 +19792,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       <div class="atlas-auth-pane is-active" data-auth-pane="login">
         <form id="atlasLoginForm">
           <div class="atlas-auth-field">
-            <label for="atlasLoginEmail">email</label>
-            <input id="atlasLoginEmail" name="email" type="email" autocomplete="email" required>
+            <label for="atlasLoginName">логин</label>
+            <input id="atlasLoginName" name="login" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="24" placeholder="например: unsx" required>
           </div>
           <div class="atlas-auth-field">
             <label for="atlasLoginPassword">пароль</label>
-            <input id="atlasLoginPassword" name="password" type="password" autocomplete="current-password" minlength="6" required>
+            <input id="atlasLoginPassword" name="password" type="password" autocomplete="current-password" minlength="8" required>
           </div>
           <button class="atlas-auth-primary" type="submit">войти в ATLAS</button>
         </form>
@@ -19796,25 +19807,25 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <form id="atlasRegisterForm">
           <div class="atlas-auth-field">
             <label for="atlasRegisterName">имя в ATLAS</label>
-            <input id="atlasRegisterName" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="как к тебе обращаться" required>
+            <input id="atlasRegisterName" name="display_name" type="text" maxlength="60" autocomplete="nickname" placeholder="как к тебе обращаться" required>
           </div>
           <div class="atlas-auth-field">
-            <label for="atlasRegisterNickname">никнейм</label>
-            <input id="atlasRegisterNickname" name="nickname" type="text" minlength="2" maxlength="40" placeholder="например: fel" required>
-          </div>
-          <div class="atlas-auth-field">
-            <label for="atlasRegisterEmail">email</label>
-            <input id="atlasRegisterEmail" name="email" type="email" autocomplete="email" required>
+            <label for="atlasRegisterLogin">логин</label>
+            <input id="atlasRegisterLogin" name="login" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="24" pattern="[A-Za-z0-9._-]{3,24}" placeholder="например: fel" required>
           </div>
           <div class="atlas-auth-field">
             <label for="atlasRegisterPassword">пароль</label>
-            <input id="atlasRegisterPassword" name="password" type="password" autocomplete="new-password" minlength="6" required>
+            <input id="atlasRegisterPassword" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasRegisterPasswordAgain">повторить пароль</label>
+            <input id="atlasRegisterPasswordAgain" name="password_again" type="password" autocomplete="new-password" minlength="8" required>
           </div>
           <button class="atlas-auth-primary" type="submit">создать аккаунт</button>
         </form>
       </div>
       <div class="atlas-auth-status" id="atlasAuthStatus"></div>
-      <p class="atlas-auth-note">email не отображается в публичном профиле.</p>
+      <p class="atlas-auth-note">только логин и пароль — почта для регистрации не нужна.</p>
     </div>
 
     <div id="atlasAuthUserView" hidden>
@@ -19829,6 +19840,23 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       <div class="atlas-auth-stats">
         <div class="atlas-auth-stat"><strong id="atlasAuthCurrentStreak">0</strong><span>дней подряд</span></div>
         <div class="atlas-auth-stat"><strong id="atlasAuthBestStreak">0</strong><span>лучший streak</span></div>
+      </div>
+      <div class="atlas-auth-admin" id="atlasAdminTools" hidden>
+        <span class="atlas-auth-admin-label">SUPERADMIN</span>
+        <strong class="atlas-auth-admin-title">сброс пароля игроку</strong>
+        <p class="atlas-auth-admin-copy">укажи логин. временный пароль можно вписать самой или оставить поле пустым — ATLAS сгенерирует его.</p>
+        <form id="atlasAdminResetForm">
+          <div class="atlas-auth-field">
+            <label for="atlasAdminResetLogin">логин игрока</label>
+            <input id="atlasAdminResetLogin" name="login" type="text" autocapitalize="none" spellcheck="false" placeholder="например: player" required>
+          </div>
+          <div class="atlas-auth-field">
+            <label for="atlasAdminResetPassword">временный пароль <span class="atlas-auth-optional">необязательно</span></label>
+            <input id="atlasAdminResetPassword" name="temporary_password" type="text" minlength="8" autocomplete="off" placeholder="оставь пустым для генерации">
+          </div>
+          <button class="atlas-auth-secondary" type="submit">сбросить пароль</button>
+        </form>
+        <div class="atlas-auth-admin-result" id="atlasAdminResetResult" hidden></div>
       </div>
       <button class="atlas-auth-secondary" type="button" id="atlasLogoutButton">выйти из аккаунта</button>
       <p class="atlas-auth-note">полный профиль игрока, персонажи и ачивки добавим следующим этапом.</p>
@@ -19859,6 +19887,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   var loginForm = document.getElementById('atlasLoginForm');
   var registerForm = document.getElementById('atlasRegisterForm');
   var logoutButton = document.getElementById('atlasLogoutButton');
+  var adminTools = document.getElementById('atlasAdminTools');
+  var adminResetForm = document.getElementById('atlasAdminResetForm');
+  var adminResetResult = document.getElementById('atlasAdminResetResult');
   var profileCache = null;
   var sessionCache = null;
 
@@ -19909,6 +19940,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
     if(!signedIn){
       profileCache = null;
+      if(adminTools) adminTools.hidden = true;
+      if(adminResetResult){
+        adminResetResult.hidden = true;
+        adminResetResult.textContent = '';
+      }
       if(accountButton){
         accountButton.classList.remove('is-user');
         accountButton.innerHTML = 'A';
@@ -19918,6 +19954,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     }
 
     var p = profileCache || {};
+    if(adminTools) adminTools.hidden = p.role !== 'superadmin';
+    if(adminResetResult && p.role !== 'superadmin'){
+      adminResetResult.hidden = true;
+      adminResetResult.textContent = '';
+    }
     var displayName = p.display_name || p.nickname || 'игрок';
     var nickname = p.nickname || 'player';
     var avatar = p.avatar_url || '';
@@ -19968,7 +20009,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     }
     await recordDailyLogin(sessionCache.user.id);
     var result = await client.from('profiles')
-      .select('id,nickname,display_name,avatar_url,current_streak,best_streak,status_text')
+      .select('id,nickname,display_name,avatar_url,current_streak,best_streak,status_text,role')
       .eq('id', sessionCache.user.id)
       .maybeSingle();
     if(result.error){
@@ -20000,65 +20041,144 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(e.key === 'Escape' && !modal.hidden) closeModal();
   });
 
+  async function invokeAtlasAuth(payload){
+    var result = await client.functions.invoke('atlas-auth', { body: payload });
+
+    if(result.error){
+      var message = result.error.message || 'ошибка ATLAS';
+      try{
+        if(result.error.context && typeof result.error.context.json === 'function'){
+          var body = await result.error.context.json();
+          if(body && body.error) message = body.error;
+        }
+      }catch(_err){}
+      throw new Error(message);
+    }
+
+    if(result.data && result.data.error){
+      throw new Error(result.data.error);
+    }
+
+    return result.data || {};
+  }
+
+  async function applyAtlasSession(data){
+    if(!data || !data.session || !data.session.access_token || !data.session.refresh_token){
+      throw new Error('ATLAS не получил сессию.');
+    }
+
+    var result = await client.auth.setSession({
+      access_token: data.session.access_token,
+      refresh_token: data.session.refresh_token
+    });
+
+    if(result.error) throw result.error;
+    await syncSession(result.data.session || null);
+  }
+
   loginForm.addEventListener('submit', async function(e){
     e.preventDefault();
-    setStatus('входим в ATLAS…','ok');
     var form = new FormData(loginForm);
-    var result = await client.auth.signInWithPassword({
-      email: String(form.get('email') || '').trim(),
-      password: String(form.get('password') || '')
-    });
-    if(result.error){
-      setStatus(result.error.message,'error');
+    var login = String(form.get('login') || '').trim();
+    var password = String(form.get('password') || '');
+
+    if(!login || !password){
+      setStatus('введи логин и пароль.','error');
       return;
     }
-    setStatus('готово. добро пожаловать обратно.','ok');
-    await syncSession(result.data.session);
-    setTimeout(closeModal, 550);
+
+    setStatus('входим в ATLAS…','ok');
+
+    try{
+      var data = await invokeAtlasAuth({
+        action: 'login',
+        login: login,
+        password: password
+      });
+      await applyAtlasSession(data);
+      setStatus('готово. добро пожаловать обратно.','ok');
+      loginForm.reset();
+      setTimeout(closeModal, 550);
+    }catch(err){
+      setStatus(err && err.message ? err.message : 'не удалось войти.','error');
+    }
   });
 
   registerForm.addEventListener('submit', async function(e){
     e.preventDefault();
     var form = new FormData(registerForm);
     var displayName = String(form.get('display_name') || '').trim();
-    var nickname = String(form.get('nickname') || '').trim();
-    var email = String(form.get('email') || '').trim();
+    var login = String(form.get('login') || '').trim();
     var password = String(form.get('password') || '');
+    var passwordAgain = String(form.get('password_again') || '');
 
-    if(displayName.length < 1 || nickname.length < 2){
-      setStatus('укажи имя и никнейм минимум из двух символов.','error');
+    if(!displayName){
+      setStatus('укажи имя в ATLAS.','error');
+      return;
+    }
+
+    if(!/^[A-Za-z0-9._-]{3,24}$/.test(login)){
+      setStatus('логин: 3–24 символа, только латиница, цифры, точка, _ или -.','error');
+      return;
+    }
+
+    if(password.length < 8){
+      setStatus('пароль должен содержать минимум 8 символов.','error');
+      return;
+    }
+
+    if(password !== passwordAgain){
+      setStatus('пароли не совпадают.','error');
       return;
     }
 
     setStatus('создаём профиль…','ok');
-    var result = await client.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          nickname: nickname,
-          display_name: displayName
-        }
-      }
-    });
 
-    if(result.error){
-      var msg = result.error.message || 'не удалось создать аккаунт';
-      if(/duplicate|unique/i.test(msg)) msg = 'этот никнейм уже занят.';
-      setStatus(msg,'error');
-      return;
-    }
-
-    if(result.data && result.data.session){
+    try{
+      var data = await invokeAtlasAuth({
+        action: 'register',
+        login: login,
+        display_name: displayName,
+        password: password
+      });
+      await applyAtlasSession(data);
       setStatus('аккаунт создан. добро пожаловать в ATLAS.','ok');
-      await syncSession(result.data.session);
       registerForm.reset();
       setTimeout(closeModal, 750);
-    } else {
-      setStatus('аккаунт создан. теперь можно войти.','ok');
-      switchTab('login');
+    }catch(err){
+      setStatus(err && err.message ? err.message : 'не удалось создать аккаунт.','error');
     }
   });
+
+  if(adminResetForm){
+    adminResetForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+      if(!profileCache || profileCache.role !== 'superadmin') return;
+
+      var form = new FormData(adminResetForm);
+      var login = String(form.get('login') || '').trim();
+      var temporaryPassword = String(form.get('temporary_password') || '').trim();
+
+      adminResetResult.hidden = false;
+      adminResetResult.textContent = 'сбрасываем пароль…';
+
+      try{
+        var data = await invokeAtlasAuth({
+          action: 'reset_password',
+          login: login,
+          temporary_password: temporaryPassword
+        });
+        var temp = data.temporary_password || temporaryPassword;
+        adminResetResult.innerHTML = '<strong>пароль сброшен</strong>@' + escapeHtml(data.player && data.player.nickname ? data.player.nickname : login) + '<br>временный пароль: <b>' + escapeHtml(temp) + '</b>';
+        adminResetForm.reset();
+        if(temp && navigator.clipboard && window.isSecureContext){
+          navigator.clipboard.writeText(temp).catch(function(){});
+        }
+      }catch(err){
+        adminResetResult.innerHTML = '<strong>ошибка</strong>' + escapeHtml(err && err.message ? err.message : 'не удалось сбросить пароль.');
+      }
+    });
+  }
 
   logoutButton.addEventListener('click', async function(){
     await client.auth.signOut();
