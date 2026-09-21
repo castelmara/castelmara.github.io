@@ -20476,6 +20476,22 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-edit-profile{position:absolute;top:22px;right:22px;z-index:6;margin:0;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(10,12,16,.52);color:#fff;padding:10px 15px;font:inherit;font-size:11px;font-weight:950;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 10px 26px rgba(0,0,0,.18);transition:.2s ease}
 #atlas-app .atlas-player-edit-profile:hover{background:#fff;color:#171a20;border-color:#fff;transform:translateY(-1px)}
 
+#atlasPlayerEditModal .atlas-player-role-panel{grid-column:1/-1;border:1px solid rgba(196,49,49,.22);border-radius:18px;background:linear-gradient(145deg,#fff7f7,#f8f9fa);padding:16px 17px;margin:2px 0 13px}
+#atlasPlayerEditModal .atlas-player-role-panel[hidden]{display:none!important}
+#atlasPlayerEditModal .atlas-player-role-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
+#atlasPlayerEditModal .atlas-player-role-head h3{margin:0 0 4px;font-size:15px;line-height:1.2;font-weight:950;color:#191c22}
+#atlasPlayerEditModal .atlas-player-role-head p{margin:0;color:#858b95;font-size:11px;line-height:1.5}
+#atlasPlayerEditModal .atlas-player-role-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+#atlasPlayerEditModal .atlas-player-role-controls label{display:grid;gap:7px;color:#414650;font-size:11px;font-weight:900}
+#atlasPlayerEditModal .atlas-player-role-controls select{width:100%;min-height:44px;border:1px solid #dfe2e7;border-radius:13px;background:#fff;color:#14171d;padding:0 13px;font:inherit;font-weight:800;outline:none}
+#atlasPlayerEditModal .atlas-player-role-save{min-height:44px;border:0;border-radius:13px;background:#171a20;color:#fff;padding:0 18px;font:inherit;font-size:11px;font-weight:950;cursor:pointer;white-space:nowrap}
+#atlasPlayerEditModal .atlas-player-role-save:hover{background:#c53030}
+#atlasPlayerEditModal .atlas-player-role-save:disabled{opacity:.55;cursor:default}
+#atlasPlayerEditModal .atlas-player-role-status{min-height:16px;margin-top:10px;color:#8a9099;font-size:11px;font-weight:700}
+#atlasPlayerEditModal .atlas-player-role-status.is-error{color:#bd3030}
+#atlasPlayerEditModal .atlas-player-role-status.is-ok{color:#35724a}
+@media(max-width:640px){#atlasPlayerEditModal .atlas-player-role-controls{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-role-save{width:100%}}
+
 #atlasPlayerEditModal[hidden]{display:none!important}
 #atlasPlayerEditModal{position:fixed;inset:0;z-index:2147483100;display:grid;place-items:center;padding:22px;font-family:"Montserrat",Arial,sans-serif}
 #atlasPlayerEditModal,#atlasPlayerEditModal *{box-sizing:border-box;font-family:"Montserrat",Arial,sans-serif!important}
@@ -20733,6 +20749,21 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <input id="atlasPlayerEditBirthday" name="birthday" type="date">
         </div>
         <label class="atlas-player-edit-check is-full"><input id="atlasPlayerEditBirthdayVisible" name="birthday_visible" type="checkbox" checked> показывать день и месяц рождения в профиле</label>
+        <section class="atlas-player-role-panel" id="atlasPlayerRoleSection" hidden>
+          <div class="atlas-player-role-head">
+            <div><h3>роль игрока</h3><p>этот блок видит только суперадмин. админ может редактировать обычные профили, но не роли и не других админов.</p></div>
+          </div>
+          <div class="atlas-player-role-controls">
+            <label>уровень доступа
+              <select id="atlasPlayerRoleSelect">
+                <option value="player">игрок</option>
+                <option value="admin">админ</option>
+              </select>
+            </label>
+            <button class="atlas-player-role-save" id="atlasPlayerRoleSave" type="button">сохранить роль</button>
+          </div>
+          <div class="atlas-player-role-status" id="atlasPlayerRoleStatus"></div>
+        </section>
         <section class="atlas-player-relation" id="atlasPlayerRelationshipSection">
           <div class="atlas-player-relation-head">
             <div><h3>семейный статус</h3><p>связь появится в обоих профилях только после подтверждения второго игрока.</p></div>
@@ -20834,6 +20865,44 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var viewer=list.find(function(p){return p.id===viewerId})||null;
     var target=list.find(function(p){return p.id===targetId})||null;
     return {allowed:canRoleEditTarget(viewer,target),viewer:viewer,target:target};
+  }
+
+  function roleLabel(role){return role==='superadmin'?'суперадмин':role==='admin'?'админ':'игрок'}
+
+  function setRoleStatus(message,type){
+    var box=document.getElementById('atlasPlayerRoleStatus');
+    if(!box)return;
+    box.textContent=message||'';
+    box.className='atlas-player-role-status'+(type==='error'?' is-error':type==='ok'?' is-ok':'');
+  }
+
+  async function savePlayerRole(){
+    var form=document.getElementById('atlasPlayerEditForm');
+    var section=document.getElementById('atlasPlayerRoleSection');
+    var select=document.getElementById('atlasPlayerRoleSelect');
+    var button=document.getElementById('atlasPlayerRoleSave');
+    if(!form||!section||section.hidden||!select)return;
+    var id=form.dataset.playerId||'';
+    if(!id)return;
+    var permission;
+    try{permission=await getEditPermission(id)}catch(err){setRoleStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
+    if(!permission.viewer||permission.viewer.role!=='superadmin'){setRoleStatus('только суперадмин может менять роли.','error');return}
+    if(isOwnProfile(id)){setRoleStatus('свою роль через ATLAS менять нельзя.','error');return}
+    if(permission.target&&permission.target.role==='superadmin'){setRoleStatus('роль другого суперадмина менять нельзя.','error');return}
+    var newRole=select.value==='admin'?'admin':'player';
+    var c=client();if(!c){setRoleStatus('supabase ещё загружается.','error');return}
+    if(button){button.disabled=true;button.textContent='сохраняем…'}
+    setRoleStatus('обновляем роль…','ok');
+    try{
+      var res=await c.rpc('set_player_role',{p_target:id,p_role:newRole});
+      if(res.error)throw res.error;
+      profilesLoadedAt=0;profilesCache=[];
+      form.dataset.currentRole=newRole;
+      setRoleStatus('готово: '+roleLabel(newRole)+'.','ok');
+      await renderPlayerProfile(id);
+      if(document.getElementById('atlasPlayerGrid'))await renderPlayers();
+    }catch(err){setRoleStatus(err&&err.message?err.message:'не удалось изменить роль.','error')}
+    finally{if(button){button.disabled=false;button.textContent='сохранить роль'}}
   }
 
   var relationshipEditorState=null;
@@ -20996,9 +21065,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var title=document.getElementById('atlasPlayerEditTitle');
     var copy=modal.querySelector('.atlas-player-edit-copy');
     var relSection=document.getElementById('atlasPlayerRelationshipSection');
+    var roleSection=document.getElementById('atlasPlayerRoleSection');
+    var canManageRole=!!(permission.viewer&&permission.viewer.role==='superadmin'&&!own&&permission.target&&permission.target.role!=='superadmin');
     if(title)title.textContent=own?'редактировать профиль':'редактировать профиль игрока';
     if(copy)copy.textContent=own?'эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.':'режим администрации: изменения сохранятся в публичном профиле этого игрока.';
     if(relSection)relSection.hidden=!own;
+    if(roleSection)roleSection.hidden=!canManageRole;
+    setRoleStatus('');
     try{
       var res=await Promise.all([
         c.from('profiles').select('id,nickname,display_name,status_text,vk_url,avatar_url,banner_url,role').eq('id',id).maybeSingle(),
@@ -21019,6 +21092,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       renderFilePreview(form.elements.banner,'atlasPlayerBannerPreview');
       form.dataset.playerId=id;
       form.dataset.editMode=own?'self':'staff';
+      form.dataset.currentRole=p.role||'player';
+      var roleSelect=document.getElementById('atlasPlayerRoleSelect');
+      if(roleSelect)roleSelect.value=p.role==='admin'?'admin':'player';
       if(own)await renderRelationshipEditor(id);
       setEditStatus('');
     }catch(err){setEditStatus(err&&err.message?err.message:'не удалось загрузить профиль.','error')}
@@ -21260,6 +21336,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   document.addEventListener('click',function(e){
+    var roleSave=e.target.closest('#atlasPlayerRoleSave');
+    if(roleSave){e.preventDefault();e.stopPropagation();savePlayerRole();return}
     var relationAction=e.target.closest('[data-relation-action]');
     if(relationAction){e.preventDefault();e.stopPropagation();handleRelationshipAction(relationAction.getAttribute('data-relation-action'));return}
     var edit=e.target.closest('[data-player-edit-id]');
