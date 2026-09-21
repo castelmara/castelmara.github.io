@@ -883,6 +883,16 @@ body.atlas-modal-open {
 
       <div class="atlas-top-actions">
         <button class="atlas-top-icon" type="button" aria-label="messages">✉</button>
+        <div class="atlas-notifications-wrap" id="atlasNotificationsWrap">
+          <button class="atlas-top-icon atlas-notifications-button" type="button" id="atlasNotificationsButton" aria-label="уведомления" title="уведомления">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+            <span class="atlas-notifications-badge" id="atlasNotificationsBadge" hidden>0</span>
+          </button>
+          <div class="atlas-notifications-panel" id="atlasNotificationsPanel" hidden>
+            <div class="atlas-notifications-head"><div><small>atlas</small><strong>уведомления</strong></div><button type="button" id="atlasNotificationsReadAll">прочитать все</button></div>
+            <div class="atlas-notifications-list" id="atlasNotificationsList"><div class="atlas-notifications-empty">пока тихо.</div></div>
+          </div>
+        </div>
         <button class="atlas-top-icon atlas-theme-toggle" type="button" id="atlasThemeToggle" aria-label="theme" title="тёмная тема">☾</button>
         <button class="atlas-avatar-btn" type="button" id="atlasAccountButton" aria-label="аккаунт" title="аккаунт">A</button>
       </div>
@@ -21500,7 +21510,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 })();
 </script>
 
-\n<script>
+<script>
 (function(){
   var activeTab='guardados';
   var noteContext=null;
@@ -21680,7 +21690,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   document.addEventListener('DOMContentLoaded',function(){if((location.hash||'').replace(/^#/,'')==='mi-atlas')setTimeout(render,120)});
 })();
 
-</script>\n
+</script>
 
 <style id="atlas-player-social-styles">
 #atlas-app .atlas-player-social-loading,#atlas-app .atlas-player-social-empty{padding:34px;border:1px dashed #dfe2e7;border-radius:20px;background:#fff;color:#9298a2;text-align:center;font:800 12px/1.6 "Montserrat",Arial,sans-serif}
@@ -21812,5 +21822,119 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   window.atlasRenderPlayerSocial=load;
 })();
 </script>
+
+<style id="atlas-notifications-style">
+#atlas-app .atlas-notifications-wrap{position:relative;display:inline-flex}
+#atlas-app .atlas-notifications-button{position:relative}
+#atlas-app .atlas-notifications-button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#atlas-app .atlas-notifications-badge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border:2px solid #f2f1ef;border-radius:999px;background:#d83e48;color:#fff;display:inline-flex;align-items:center;justify-content:center;font:900 9px/1 "Montserrat",Arial,sans-serif}
+#atlas-app .atlas-notifications-panel{position:absolute;right:0;top:52px;width:min(390px,calc(100vw - 24px));max-height:min(560px,calc(100vh - 100px));overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 24px 70px rgba(15,18,25,.20);z-index:80}
+#atlas-app .atlas-notifications-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 17px;border-bottom:1px solid var(--line)}
+#atlas-app .atlas-notifications-head small{display:block;margin-bottom:3px;color:#c53030;font-size:8px;line-height:1;font-weight:950;letter-spacing:.16em;text-transform:uppercase}
+#atlas-app .atlas-notifications-head strong{display:block;color:#171a20;font-size:14px;line-height:1.1;font-weight:950;text-transform:lowercase}
+#atlas-app .atlas-notifications-head button{border:0;background:none;color:#8f959f;padding:4px 0;font:850 9px/1 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
+#atlas-app .atlas-notifications-head button:hover{color:#c53030}
+#atlas-app .atlas-notifications-list{max-height:480px;overflow:auto;padding:7px}
+#atlas-app .atlas-notification-item{width:100%;display:grid;grid-template-columns:38px minmax(0,1fr) 7px;gap:10px;align-items:center;border:0;border-radius:14px;background:transparent;padding:10px;text-align:left;cursor:pointer}
+#atlas-app .atlas-notification-item:hover{background:#f5f3f1}
+#atlas-app .atlas-notification-item.is-unread{background:#faf1f1}
+#atlas-app .atlas-notification-item.is-unread:hover{background:#f7e9e9}
+#atlas-app .atlas-notification-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#171a20;color:#fff;font-size:12px;font-weight:950}
+#atlas-app .atlas-notification-avatar img{width:100%;height:100%;display:block;object-fit:cover}
+#atlas-app .atlas-notification-copy{min-width:0;color:#333740;font-size:10px;line-height:1.45;font-weight:700}
+#atlas-app .atlas-notification-copy strong{color:#171a20;font-weight:950}
+#atlas-app .atlas-notification-copy time{display:block;margin-top:3px;color:#9aa0a9;font-size:8px;font-weight:750}
+#atlas-app .atlas-notification-dot{width:7px;height:7px;border-radius:50%;background:transparent}
+#atlas-app .atlas-notification-item.is-unread .atlas-notification-dot{background:#d83e48}
+#atlas-app .atlas-notifications-empty{padding:34px 18px;text-align:center;color:#9aa0a9;font-size:10px;font-weight:800}
+#atlas-app[data-theme="dark"] .atlas-notifications-badge{border-color:#0d1116}
+#atlas-app[data-theme="dark"] .atlas-notifications-panel{background:#11161d;border-color:rgba(255,255,255,.10);box-shadow:0 24px 70px rgba(0,0,0,.45)}
+#atlas-app[data-theme="dark"] .atlas-notifications-head{border-color:rgba(255,255,255,.08)}
+#atlas-app[data-theme="dark"] .atlas-notifications-head strong,#atlas-app[data-theme="dark"] .atlas-notification-copy strong{color:#f3efec}
+#atlas-app[data-theme="dark"] .atlas-notification-copy{color:#c7c3c0}
+#atlas-app[data-theme="dark"] .atlas-notification-item:hover{background:rgba(255,255,255,.05)}
+#atlas-app[data-theme="dark"] .atlas-notification-item.is-unread{background:rgba(216,62,72,.11)}
+#atlas-app[data-theme="dark"] .atlas-notification-item.is-unread:hover{background:rgba(216,62,72,.16)}
+@media(max-width:720px){#atlas-app .atlas-notifications-panel{position:fixed;right:12px;top:72px;width:calc(100vw - 24px);max-height:calc(100vh - 90px)}}
+</style>
+
+<script id="atlas-notifications-script">
+(function(){
+  var channel=null, rows=[], actorMap={};
+  function c(){return window.ATLAS_SUPABASE||null}
+  function uid(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
+  function esc(v){return String(v==null?'':v).replace(/[&<>'"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]})}
+  function initial(p){return (String((p&&p.display_name)||(p&&p.nickname)||'A').trim().charAt(0)||'A').toUpperCase()}
+  function ago(v){var d=new Date(v),diff=Math.max(0,Date.now()-d.getTime()),m=Math.floor(diff/60000);if(m<1)return 'сейчас';if(m<60)return m+' мин. назад';var h=Math.floor(m/60);if(h<24)return h+' ч. назад';var day=Math.floor(h/24);if(day<7)return day+' дн. назад';try{return new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'short'}).format(d)}catch(_e){return ''}}
+  function copy(n,p){var name=esc((p&&p.display_name)||(p&&p.nickname)||'кто-то');if(n.kind==='post_like')return '<strong>'+name+'</strong> поставил'+(((p&&p.display_name)||'').toLowerCase().endsWith('а')?'а':'')+' ♥ вашей публикации';if(n.kind==='post_comment')return '<strong>'+name+'</strong> оставил'+(((p&&p.display_name)||'').toLowerCase().endsWith('а')?'а':'')+' комментарий к вашей публикации';return n.message?esc(n.message):'<strong>'+name+'</strong> — новое событие'}
+  function render(){var badge=document.getElementById('atlasNotificationsBadge'),list=document.getElementById('atlasNotificationsList');if(!badge||!list)return;var unread=rows.filter(function(x){return !x.is_read}).length;if(unread){badge.hidden=false;badge.textContent=unread>99?'99+':String(unread)}else{badge.hidden=true;badge.textContent='0'}if(!rows.length){list.innerHTML='<div class="atlas-notifications-empty">пока тихо.</div>';return}list.innerHTML=rows.map(function(n){var p=actorMap[n.actor_id]||{};var av=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));return '<button class="atlas-notification-item'+(!n.is_read?' is-unread':'')+'" type="button" data-atlas-notification="'+esc(n.id)+'"><span class="atlas-notification-avatar">'+av+'</span><span class="atlas-notification-copy">'+copy(n,p)+'<time>'+esc(ago(n.created_at))+'</time></span><span class="atlas-notification-dot"></span></button>'}).join('')}
+  async function load(){var client=c(),user=uid();if(!client||!user){rows=[];actorMap={};render();return}var rr=await client.from('atlas_notifications').select('id,user_id,actor_id,kind,target_type,target_id,profile_id,message,is_read,created_at').eq('user_id',user).order('created_at',{ascending:false}).limit(30);if(rr.error){console.warn('[ATLAS notifications]',rr.error);return}rows=rr.data||[];var ids=Array.from(new Set(rows.map(function(x){return x.actor_id}).filter(Boolean)));actorMap={};if(ids.length){var pr=await client.from('profiles').select('id,nickname,display_name,avatar_url').in('id',ids);if(!pr.error)(pr.data||[]).forEach(function(x){actorMap[x.id]=x})}render()}
+  function subscribe(){var client=c(),user=uid();if(!client||!user)return;if(channel){try{client.removeChannel(channel)}catch(_e){}channel=null}try{channel=client.channel('atlas-notifications-'+user).on('postgres_changes',{event:'INSERT',schema:'public',table:'atlas_notifications',filter:'user_id=eq.'+user},function(){load()}).subscribe()}catch(_e){}}
+  async function mark(id){var client=c(),user=uid();if(!client||!user)return;await client.from('atlas_notifications').update({is_read:true}).eq('id',id).eq('user_id',user);var n=rows.find(function(x){return x.id===id});if(n)n.is_read=true;render()}
+  function openTarget(n){if(!n)return;var panel=document.getElementById('atlasNotificationsPanel');if(panel)panel.hidden=true;if(n.profile_id&&typeof window.atlasOpenPlayerProfile==='function'){window.atlasOpenPlayerProfile(n.profile_id);if(n.target_type==='post'&&n.target_id){setTimeout(function(){var tab=document.querySelector('[data-player-tab="posts"]');if(tab)tab.click()},220);setTimeout(function(){var post=document.querySelector('[data-post-id="'+CSS.escape(String(n.target_id))+'"]');if(post)post.scrollIntoView({behavior:'smooth',block:'center'})},700)}}}
+  document.addEventListener('click',async function(e){var btn=e.target.closest&&e.target.closest('#atlasNotificationsButton');if(btn){e.preventDefault();e.stopPropagation();if(!uid()){var a=document.getElementById('atlasAccountButton');if(a)a.click();return}var panel=document.getElementById('atlasNotificationsPanel');if(panel){panel.hidden=!panel.hidden;if(!panel.hidden)load()}return}var all=e.target.closest&&e.target.closest('#atlasNotificationsReadAll');if(all){e.preventDefault();var client=c(),user=uid();if(client&&user){await client.from('atlas_notifications').update({is_read:true}).eq('user_id',user).eq('is_read',false);rows.forEach(function(x){x.is_read=true});render()}return}var item=e.target.closest&&e.target.closest('[data-atlas-notification]');if(item){var id=item.getAttribute('data-atlas-notification'),n=rows.find(function(x){return x.id===id});await mark(id);openTarget(n);return}var wrap=document.getElementById('atlasNotificationsWrap'),panel=document.getElementById('atlasNotificationsPanel');if(panel&&!panel.hidden&&wrap&&!wrap.contains(e.target))panel.hidden=true},true);
+  window.addEventListener('atlasPlayerAuthReady',function(){setTimeout(function(){load();subscribe()},50)});
+  setTimeout(function(){load();subscribe()},1200);
+})();
+</script>
+
+<style id="atlas-layout-lock-fix">
+/* desktop: keep the ATLAS navigation anchored while the page scrolls */
+@media (min-width: 861px) {
+  #atlas-app {
+    display: block !important;
+    min-height: 100vh !important;
+  }
+
+  #atlas-app .atlas-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 244px !important;
+    height: 100vh !important;
+    z-index: 60 !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+
+  #atlas-app .atlas-main {
+    width: calc(100% - 244px) !important;
+    min-width: 0 !important;
+    margin-left: 244px !important;
+  }
+
+  /* right-hand publication statistics should stay in view with the feed */
+  #atlas-app .atlas-player-posts-layout {
+    overflow: visible !important;
+    align-items: start !important;
+  }
+
+  #atlas-app .atlas-player-post-stats {
+    position: sticky !important;
+    top: 102px !important;
+    align-self: start !important;
+    height: max-content !important;
+    max-height: calc(100vh - 118px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: thin;
+  }
+}
+
+/* mobile keeps the existing slide-out sidebar and normal document flow */
+@media (max-width: 860px) {
+  #atlas-app .atlas-main {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  #atlas-app .atlas-player-post-stats {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+</style>
+
 </body>
 </html>
