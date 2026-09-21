@@ -20689,23 +20689,22 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           uploadProfileMedia(id,avatarFile,'avatars'),
           uploadProfileMedia(id,bannerFile,'banners')
         ]);
-        var rpcPayload={
-          p_display_name:name,
-          p_nickname:nickname,
-          p_status_text:status||null,
-          p_vk_url:vk||null,
-          p_birthday:birthday||null,
-          p_birthday_visible:birthdayVisible,
-          p_avatar_url:media[0]||null,
-          p_banner_url:media[1]||null
+        var profilePayload={
+          action:'update_profile',
+          display_name:name,
+          login:nickname,
+          status_text:status||null,
+          vk_url:vk||null,
+          birthday:birthday||null,
+          birthday_visible:birthdayVisible
         };
-        var saved=await c.rpc('update_my_player_profile',rpcPayload);
-        if(saved.error){
-          var saveMessage=saved.error.message||'';
-          if(saved.error.code==='23505'||/уже занят|already exists|duplicate/i.test(saveMessage))throw new Error('этот никнейм уже занят.');
-          if(saved.error.code==='PGRST202'||/update_my_player_profile/i.test(saveMessage))throw new Error('не найдена функция сохранения профиля. сначала запусти sql 06_player_profile_save.');
-          throw saved.error;
-        }
+        if(media[0])profilePayload.avatar_url=media[0];
+        if(media[1])profilePayload.banner_url=media[1];
+        var saveRequest=await c.functions.invoke('atlas-auth',{body:profilePayload});
+        if(saveRequest.error)throw new Error(saveRequest.error.message||'не удалось сохранить профиль.');
+        var saveData=saveRequest.data||{};
+        if(saveData.error)throw new Error(saveData.error);
+        if(!saveData.ok)throw new Error('ATLAS не подтвердил сохранение профиля.');
         profilesLoadedAt=0;
         if(typeof window.atlasReloadCurrentProfile==='function')await window.atlasReloadCurrentProfile();
         await renderPlayerProfile(id);
