@@ -20284,6 +20284,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       profileCache = null;
     } else {
       profileCache = result.data || null;
+      if(profileCache && profileCache.role === 'superadmin'){
+        profileCache.current_streak = 999;
+        profileCache.best_streak = Math.max(999, Number(profileCache.best_streak) || 0);
+      }
     }
     if(cursorResult&&cursorResult.error){
       console.warn('ATLAS cursor:',cursorResult.error.message);
@@ -21758,7 +21762,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(!force && profilesCache.length && Date.now()-profilesLoadedAt<30000) return profilesCache;
     var res=await c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role,birthday_month,birthday_day').not('nickname','is',null).order('created_at',{ascending:true});
     if(res.error) throw res.error;
-    profilesCache=res.data||[]; profilesLoadedAt=Date.now(); return profilesCache;
+    profilesCache=(res.data||[]).map(function(p){
+      if(p && p.role==='superadmin'){
+        p.current_streak=999;
+        p.best_streak=Math.max(999,Number(p.best_streak)||0);
+      }
+      return p;
+    });
+    profilesLoadedAt=Date.now(); return profilesCache;
   }
 
   function playerCard(p){
@@ -21834,13 +21845,45 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1)
     ]);
     for(var i=0;i<results.length;i++){ if(results[i].error) throw results[i].error; }
+    var publicProfile=results[0].data;
+    var publicAchievements=results[2].data||[];
+
+    if(publicProfile && publicProfile.role==='superadmin'){
+      publicProfile.current_streak=999;
+      publicProfile.best_streak=Math.max(999,Number(publicProfile.best_streak)||0);
+
+      /* Superadmin showcase: display every achievement that currently exists in ATLAS.
+         Real earned rows keep their original date; missing achievements are display grants only. */
+      var allAchievements=await c.from('achievements')
+        .select('code,title,description,icon,category')
+        .order('code',{ascending:true});
+      if(!allAchievements.error){
+        var ownedCodes=new Set(publicAchievements.map(function(row){
+          return String(row&&row.achievements&&row.achievements.code||'');
+        }).filter(Boolean));
+        (allAchievements.data||[]).forEach(function(def){
+          var code=String(def&&def.code||'');
+          if(!code||ownedCodes.has(code))return;
+          publicAchievements.push({
+            earned_at:null,
+            earned_year:null,
+            achievements:def,
+            _atlasSuperGrant:true
+          });
+          ownedCodes.add(code);
+        });
+      }else{
+        console.warn('[ATLAS superadmin achievements]',allAchievements.error.message||allAchievements.error);
+      }
+    }
+
     var rel=results[3].data&&results[3].data[0]||null, partner=null;
     if(rel){
       var partnerId=rel.requester_id===id?rel.partner_id:rel.requester_id;
       var pr=await c.from('profiles').select('id,nickname,display_name,avatar_url').eq('id',partnerId).maybeSingle();
       if(!pr.error) partner=pr.data||null;
     }
-    return {profile:results[0].data,owners:results[1].data||[],achievements:results[2].data||[],relationship:rel,partner:partner};
+    return {profile:publicProfile,owners:results[1].data||[],achievements:publicAchievements,relationship:rel,partner:partner};
   }
 
   function relLabel(type){return type==='married'?'в браке':type==='complicated'?'всё сложно':'в отношениях'}
@@ -21895,7 +21938,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         var streakMatch=code.match(/^streak_(\d+)$/);
         var cls='atlas-player-achievement'+(streakMatch?' is-streak':'')+(x.category==='rare'?' is-rare':'');
         var icon=streakMatch?'<div class="atlas-achievement-shield"><span>'+esc(streakMatch[1])+'</span></div>':'<div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div>';
-        return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(fmtDate(a.earned_at))+'</small></article>';
+        return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
       }).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
       root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
@@ -22762,8 +22805,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
     try{
       var res=await c.from('profiles')
-        .select('id,nickname,display_name,current_streak,best_streak')
+        .select('id,nickname,display_name,current_streak,best_streak,role')
         .not('nickname','is',null)
+        .or('role.is.null,role.neq.superadmin')
         .order('current_streak',{ascending:false})
         .order('best_streak',{ascending:false})
         .order('created_at',{ascending:true})
