@@ -20325,9 +20325,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlasPlayerEditModal .atlas-player-edit-field input:not([type="file"]){height:54px;min-height:54px}
 #atlasPlayerEditModal .atlas-player-edit-field textarea{min-height:88px}
 #atlasPlayerEditModal .atlas-player-edit-field input:focus,#atlasPlayerEditModal .atlas-player-edit-field textarea:focus{border-color:#c63838;box-shadow:0 0 0 3px rgba(198,56,56,.10)}
-#atlasPlayerEditModal .atlas-player-edit-file{padding:11px!important;background:#fff!important}
-#atlasPlayerEditModal .atlas-player-edit-file{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important;clip:rect(0 0 0 0)!important}
-#atlasPlayerEditModal .atlas-player-file-zone{display:flex;align-items:center;justify-content:center;min-height:92px;padding:16px;border:1.5px dashed #cfd4dc;border-radius:14px;background:#fafbfc;cursor:pointer;transition:.18s ease;text-align:center}
+#atlasPlayerEditModal .atlas-player-edit-file{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;cursor:pointer!important;pointer-events:auto!important;z-index:5!important;padding:0!important;border:0!important;margin:0!important}
+#atlasPlayerEditModal .atlas-player-file-zone{position:relative;display:flex;align-items:center;justify-content:center;min-height:92px;padding:16px;border:1.5px dashed #cfd4dc;border-radius:14px;background:#fafbfc;cursor:pointer;transition:.18s ease;text-align:center;overflow:hidden}
+#atlasPlayerEditModal .atlas-player-file-zone>div{position:relative;z-index:1;pointer-events:none}
 #atlasPlayerEditModal .atlas-player-file-zone:hover,#atlasPlayerEditModal .atlas-player-file-zone.is-dragover{border-color:#e64b4b;background:#fff6f6}
 #atlasPlayerEditModal .atlas-player-file-zone strong{display:block;font-size:12px;font-weight:950;color:#20242b}
 #atlasPlayerEditModal .atlas-player-file-zone span{display:block;margin-top:5px;font-size:10px;color:#747c87}
@@ -20441,17 +20441,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
         <div class="atlas-player-edit-field">
           <label>аватар</label>
-          <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
-            <div><strong>перетащи изображение сюда</strong><span>или выбери его с компьютера</span><label class="atlas-player-file-pick" for="atlasPlayerEditAvatar">выбрать файл</label></div>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditAvatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <div><strong>перетащи изображение сюда</strong><span>или нажми и выбери его с компьютера</span><span class="atlas-player-file-pick">выбрать файл</span></div>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше квадратное или портретное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerAvatarPreview"></div>
         </div>
         <div class="atlas-player-edit-field">
           <label>баннер</label>
-          <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditBanner">
-            <div><strong>перетащи изображение сюда</strong><span>или выбери его с компьютера</span><label class="atlas-player-file-pick" for="atlasPlayerEditBanner">выбрать файл</label></div>
+            <input class="atlas-player-edit-file" id="atlasPlayerEditBanner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <div><strong>перетащи изображение сюда</strong><span>или нажми и выбери его с компьютера</span><span class="atlas-player-file-pick">выбрать файл</span></div>
           </div>
           <p class="atlas-player-edit-hint">до 8 мб. лучше горизонтальное изображение.</p><div class="atlas-player-file-preview" id="atlasPlayerBannerPreview"></div>
         </div>
@@ -20618,14 +20618,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       try{input.files=files}catch(_e2){}
     }
     input.dispatchEvent(new Event('change',{bubbles:true}));
-  },true);
-
-  document.addEventListener('click',function(e){
-    var zone=e.target&&e.target.closest?e.target.closest('[data-file-zone]'):null;
-    if(!zone)return;
-    if(e.target.closest&&e.target.closest('.atlas-player-file-pick'))return;
-    var input=document.getElementById(zone.getAttribute('data-file-zone'));
-    if(input){e.preventDefault();input.click()}
   },true);
 
   function validateMedia(file){
