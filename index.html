@@ -20088,6 +20088,27 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     return result.data || {};
   }
 
+  async function invokeAtlasUser(payload){
+    var result = await client.functions.invoke('atlas-user', { body: payload });
+
+    if(result.error){
+      var message = result.error.message || 'ошибка ATLAS';
+      try{
+        if(result.error.context && typeof result.error.context.json === 'function'){
+          var body = await result.error.context.json();
+          if(body && body.error) message = body.error;
+        }
+      }catch(_err){}
+      throw new Error(message);
+    }
+
+    if(result.data && result.data.error){
+      throw new Error(result.data.error);
+    }
+
+    return result.data || {};
+  }
+
   async function applyAtlasSession(data){
     if(!data || !data.session || !data.session.access_token || !data.session.refresh_token){
       throw new Error('ATLAS не получил сессию.');
@@ -20189,7 +20210,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       adminResetResult.textContent = 'сбрасываем пароль…';
 
       try{
-        var data = await invokeAtlasAuth({
+        var data = await invokeAtlasUser({
           action: 'reset_password',
           login: login,
           temporary_password: temporaryPassword
@@ -20701,7 +20722,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       };
       if(media[0])profilePayload.avatar_url=media[0];
       if(media[1])profilePayload.banner_url=media[1];
-      var saveRequest=await c.functions.invoke('atlas-auth',{body:profilePayload});
+      var saveRequest=await c.functions.invoke('atlas-user',{body:profilePayload});
       if(saveRequest.error)throw new Error(saveRequest.error.message||'не удалось сохранить профиль.');
       var saveData=saveRequest.data||{};
       if(saveData.error)throw new Error(saveData.error);
