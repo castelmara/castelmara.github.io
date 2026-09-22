@@ -22946,9 +22946,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-direct-attach{width:44px;height:44px;border:1px solid #e0e3e7;border-radius:14px;background:#fafbfc;color:#646a73;display:grid;place-items:center;cursor:pointer;font-size:17px;box-sizing:border-box}
 #atlas-app .atlas-direct-attach:hover{border-color:#e1b6b6;background:#fff6f6}
 #atlas-app .atlas-direct-attach input{display:none}
-#atlas-app .atlas-direct-typing{min-height:17px;margin:-2px 0 7px;color:#9197a0;font:700 8px/1.4 "Montserrat",Arial,sans-serif;opacity:0;transition:opacity .15s ease}
-#atlas-app .atlas-direct-typing.is-active{opacity:1}
-#atlas-app .atlas-direct-typing>span{display:inline-block;width:5px;height:5px;margin:0 6px 1px 0;border-radius:50%;background:#c53030;box-shadow:8px 0 0 rgba(197,48,48,.65),16px 0 0 rgba(197,48,48,.35)}
+#atlas-app .atlas-direct-typing{display:none;margin:0 0 9px;padding:8px 11px;border:1px solid rgba(197,48,48,.14);border-radius:12px;background:rgba(197,48,48,.07);color:#8f3b3b;font:800 10px/1.35 "Montserrat",Arial,sans-serif;letter-spacing:.01em}
+#atlas-app .atlas-direct-typing.is-active{display:flex;align-items:center;gap:9px}
+#atlas-app .atlas-direct-typing>span{display:inline-block;width:5px;height:5px;flex:0 0 5px;border-radius:50%;background:#c53030;box-shadow:8px 0 0 rgba(197,48,48,.68),16px 0 0 rgba(197,48,48,.38);animation:atlasDirectTypingPulse 1s ease-in-out infinite}
+@keyframes atlasDirectTypingPulse{0%,100%{opacity:.45;transform:translateY(0)}50%{opacity:1;transform:translateY(-1px)}}
 #atlas-app[data-theme="dark"] .atlas-direct-participants-panel{background:#11151b;border-color:rgba(255,255,255,.11);box-shadow:0 18px 48px rgba(0,0,0,.35)}
 #atlas-app[data-theme="dark"] .atlas-direct-participants-head strong{color:#eeeae7}
 #atlas-app[data-theme="dark"] .atlas-direct-participants-head button,#atlas-app[data-theme="dark"] .atlas-direct-participant,#atlas-app[data-theme="dark"] .atlas-direct-pending-file,#atlas-app[data-theme="dark"] .atlas-direct-attach{background:#171c23;border-color:rgba(255,255,255,.10);color:#c3c7cd}
@@ -22956,6 +22957,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-direct-attachment-image span,#atlas-app[data-theme="dark"] .atlas-direct-attachment-file small{color:#8e959f}
 #atlas-app[data-theme="dark"] .atlas-direct-file-icon{background:#1b2028}
 #atlas-app[data-theme="dark"] .atlas-direct-mobile-back{background:#171c23;border-color:rgba(255,255,255,.11);color:#eeeae7}
+#atlas-app[data-theme="dark"] .atlas-direct-typing{background:rgba(197,48,48,.12);border-color:rgba(226,108,108,.18);color:#e2a3a3}
 @media(max-width:900px){
   #atlas-app .atlas-direct-layout{height:calc(100dvh - 150px);min-height:560px;display:block;overflow:hidden}
   #atlas-app .atlas-direct-channels{height:100%;max-height:none!important;border:0!important}
@@ -23200,7 +23202,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     updateGlobalUnreadBadge();
   }
 
-  function renderMessagesOnly(){var box=document.getElementById('atlasDirectMessages');if(box)box.innerHTML=messagesHtml();updateTypingIndicator()}
+  function renderMessagesOnly(){
+    var box=document.getElementById('atlasDirectMessages');
+    if(!box){updateTypingIndicator();return}
+    var oldTop=box.scrollTop,oldHeight=box.scrollHeight;
+    var nearBottom=oldHeight-oldTop-box.clientHeight<180;
+    box.innerHTML=messagesHtml();
+    if(nearBottom){
+      box.scrollTop=box.scrollHeight;
+      requestAnimationFrame(function(){var fresh=document.getElementById('atlasDirectMessages');if(fresh)fresh.scrollTop=fresh.scrollHeight});
+    }else{
+      box.scrollTop=oldTop;
+    }
+    updateTypingIndicator();
+  }
   function renderChatListOnly(){var list=document.querySelector('#atlasDirectRoot .atlas-direct-channel-list');if(list)list.innerHTML=chatListHtml();updateGlobalUnreadBadge()}
   function renderChatPhotoOnly(){
     var c=active(),mark=document.querySelector('#atlasDirectRoot .atlas-direct-chat-mark');if(!c||!mark)return;
@@ -23314,6 +23329,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           receiptTimer=setTimeout(async function(){await loadReadReceipts(chatId);renderMessagesOnly()},80);
         })
         .on('presence',{event:'sync'},syncTypingPresence)
+        .on('presence',{event:'join'},syncTypingPresence)
+        .on('presence',{event:'leave'},syncTypingPresence)
         .subscribe(function(status){if(status==='SUBSCRIBED')trackTyping(false)});
     }catch(_e){realtimeChannel=null}
   }
@@ -23532,6 +23549,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       await loadInboxMessages();await loadUnreadCounts();await refreshActiveChat(ch.id,false);
       var fresh=active();if(fresh){var ns=stateFor(fresh);ns.persona=persona;ns.body='';ns.date=fresh.rp_date||'';ns.time=formatTime(fresh.next_rp_time);var di=document.getElementById('atlasDirectComposerDate'),ti=document.getElementById('atlasDirectComposerTime');if(di)di.value=ns.date;if(ti)ti.value=ns.time}
       setMessageStatus('', 'ok');scrollMessages(true);
+      requestAnimationFrame(function(){
+        var bodyFocus=document.getElementById('atlasDirectMessageBody');
+        if(bodyFocus){try{bodyFocus.focus({preventScroll:true})}catch(_e){bodyFocus.focus()}}
+      });
     }catch(err){
       if(uploaded.length){try{await c.storage.from('atlas-media').remove(uploaded.map(function(x){return x.storage_path}))}catch(_e){}}
       setMessageStatus(err&&err.message?err.message:'не удалось отправить сообщение.','error');
