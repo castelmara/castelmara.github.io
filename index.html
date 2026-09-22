@@ -20685,6 +20685,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-player-achievement.is-rare{background:linear-gradient(145deg,#2a2417,#151b22);border-color:rgba(215,169,72,.28)}
 #atlas-app .atlas-player-achievement strong{display:block;margin-bottom:6px;font-size:15px;color:#171a20}
 #atlas-app .atlas-player-achievement p{margin:0;color:#7d838d;font-size:12px;line-height:1.5}
+#atlas-app .atlas-player-achievement-requirement{margin-top:12px;padding-top:10px;border-top:1px solid rgba(20,24,30,.08);color:#9a7b3f;font-size:10px;line-height:1.45;font-weight:750}
+#atlas-app .atlas-player-achievement-requirement span{font-weight:900;text-transform:lowercase}
+#atlas-app .atlas-player-achievement.is-secret{position:relative}
+#atlas-app .atlas-achievement-secret-badge{display:inline-flex;align-items:center;margin:0 0 10px;padding:5px 8px;border-radius:999px;background:rgba(122,82,168,.10);color:#7955a6;font:900 8px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+#atlas-app[data-theme="dark"] .atlas-achievement-secret-badge{background:rgba(184,139,236,.12);color:#c9a5ef}
 #atlas-app .atlas-player-achievement small{display:block;margin-top:10px;color:#b0b4bb;font-size:10px;font-weight:800}
 #atlas-app .atlas-player-character-empty,#atlas-app .atlas-player-achievement-empty{padding:24px;border:1px dashed rgba(20,24,30,.16);border-radius:18px;color:#858b95;font-size:13px;line-height:1.55}
 #atlas-app .atlas-player-profile-page .atlas-profile-hero{position:relative}
@@ -20900,6 +20905,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-player-metric strong{color:#fff}
 #atlas-app[data-theme="dark"] .atlas-player-achievement{background:#151b22;border-color:#2a323d}
 #atlas-app[data-theme="dark"] .atlas-player-achievement strong{color:#fff}
+#atlas-app[data-theme="dark"] .atlas-player-achievement-requirement{border-color:rgba(255,255,255,.08);color:#d1b16e}
 #atlas-app[data-theme="dark"] .atlas-player-character-empty,#atlas-app[data-theme="dark"] .atlas-player-achievement-empty{border-color:#313944;color:#9ba1aa}
 
 
@@ -21845,29 +21851,54 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var results=await Promise.all([
       c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role,birthday_month,birthday_day').eq('id',id).maybeSingle(),
       c.from('character_owners').select('character_id,display_order').eq('user_id',id).order('display_order',{ascending:true}),
-      c.from('user_achievements').select('earned_at,earned_year,achievements(code,title,description,icon,category)').eq('user_id',id).order('earned_at',{ascending:false}),
+      c.from('user_achievements').select('earned_at,earned_year,achievements(code,title,description,requirement,icon,category,is_secret,personal_user_id)').eq('user_id',id).order('earned_at',{ascending:false}),
       c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1)
     ]);
     for(var i=0;i<results.length;i++){ if(results[i].error) throw results[i].error; }
     var publicProfile=results[0].data;
-    var publicAchievements=results[2].data||[];
+    /* Если RLS скрывает секретное определение ачивки от текущего зрителя,
+       Supabase может вернуть связь achievements=null. Такие строки не рисуем. */
+    var publicAchievements=(results[2].data||[]).filter(function(row){
+      return !!(row&&row.achievements);
+    });
 
+    /* 999-дневный статус остаётся свойством самого superadmin-профиля. */
     if(publicProfile && publicProfile.role==='superadmin'){
       publicProfile.current_streak=999;
       publicProfile.best_streak=Math.max(999,Number(publicProfile.best_streak)||0);
+    }
 
-      /* Superadmin showcase: display every achievement that currently exists in ATLAS.
-         Real earned rows keep their original date; missing achievements are display grants only. */
+    /* Полный каталог, включая скрытые ачивки и их условия, показываем только
+       superadmin, когда он смотрит СВОЙ профиль. Для остальных пользователей
+       не существует публичного списка заблокированных секретных достижений. */
+    var viewerId=currentUserId();
+    var viewerRole='';
+    if(viewerId){
+      if(publicProfile && viewerId===publicProfile.id){
+        viewerRole=publicProfile.role||'';
+      }else{
+        var viewerResult=await c.from('profiles').select('role').eq('id',viewerId).maybeSingle();
+        if(!viewerResult.error&&viewerResult.data)viewerRole=viewerResult.data.role||'';
+      }
+    }
+
+    if(publicProfile && viewerRole==='superadmin' && viewerId===publicProfile.id){
       var allAchievements=await c.from('achievements')
-        .select('code,title,description,icon,category')
+        .select('code,title,description,requirement,icon,category,is_secret,personal_user_id')
         .order('code',{ascending:true});
       if(!allAchievements.error){
         var ownedCodes=new Set(publicAchievements.map(function(row){
           return String(row&&row.achievements&&row.achievements.code||'');
         }).filter(Boolean));
+
         (allAchievements.data||[]).forEach(function(def){
           var code=String(def&&def.code||'');
+
+          /* Именные достижения чужих игроков не превращаются в
+             "доступ суперадмина" и не появляются в его коллекции. */
+          if(def&&def.personal_user_id&&def.personal_user_id!==publicProfile.id)return;
           if(!code||ownedCodes.has(code))return;
+
           publicAchievements.push({
             earned_at:null,
             earned_year:null,
@@ -21940,9 +21971,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         var x=a.achievements||{};
         var code=String(x.code||'');
         var streakMatch=code.match(/^streak_(\d+)$/);
-        var cls='atlas-player-achievement'+(streakMatch?' is-streak':'')+(x.category==='rare'?' is-rare':'');
+        var cls='atlas-player-achievement'+(streakMatch?' is-streak':'')+(x.category==='rare'?' is-rare':'')+(x.is_secret?' is-secret':'');
         var icon=streakMatch?'<div class="atlas-achievement-shield"><span>'+esc(streakMatch[1])+'</span></div>':'<div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div>';
-        return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p><small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
+        var secretBadge=x.is_secret?'<div class="atlas-achievement-secret-badge">секретная ачивка</div>':'';
+        var requirement=x.requirement?'<div class="atlas-player-achievement-requirement"><span>условие:</span> '+esc(x.requirement)+'</div>':'';
+        return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+secretBadge+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p>'+requirement+'<small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
       }).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
       root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
@@ -23640,6 +23673,45 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 
   window.atlasHydrateCharacterPersona=hydrate;
   window.atlasOpenCharacterPersona=open;
+})();
+</script>
+
+
+<!-- ATLAS ACHIEVEMENT UNLOCK TOAST -->
+<style id="atlas-achievement-toast-style">
+#atlasAchievementToasts{position:fixed;right:22px;top:92px;z-index:999999;display:grid;gap:10px;width:min(360px,calc(100vw - 28px));pointer-events:none}
+#atlasAchievementToasts .atlas-achievement-toast{pointer-events:auto;display:grid;grid-template-columns:48px minmax(0,1fr) 28px;gap:12px;align-items:center;padding:14px;border:1px solid rgba(20,24,30,.10);border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 18px 48px rgba(16,20,28,.18);backdrop-filter:blur(16px);transform:translateY(-10px);opacity:0;animation:atlasAchievementToastIn .28s ease forwards}
+#atlasAchievementToasts .atlas-achievement-toast.is-leaving{animation:atlasAchievementToastOut .25s ease forwards}
+#atlasAchievementToasts .atlas-achievement-toast-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#181c23;color:#fff;font-size:24px;line-height:1}
+#atlasAchievementToasts .atlas-achievement-toast-copy{min-width:0}
+#atlasAchievementToasts .atlas-achievement-toast-kicker{display:block;margin:0 0 4px;color:#c53030;font:900 8px/1 "Montserrat",Arial,sans-serif;letter-spacing:.10em;text-transform:uppercase}
+#atlasAchievementToasts .atlas-achievement-toast strong{display:block;color:#171a20;font:900 14px/1.2 "Montserrat",Arial,sans-serif}
+#atlasAchievementToasts .atlas-achievement-toast p{margin:5px 0 0;color:#777e88;font:650 10px/1.45 "Montserrat",Arial,sans-serif}
+#atlasAchievementToasts .atlas-achievement-toast-close{width:28px;height:28px;border:0;border-radius:999px;background:#f1f2f4;color:#7a8089;cursor:pointer;font-size:16px;line-height:1}
+#atlas-app[data-theme="dark"]~#atlasAchievementToasts .atlas-achievement-toast,#atlasAchievementToasts[data-theme="dark"] .atlas-achievement-toast{background:rgba(18,23,30,.96);border-color:rgba(255,255,255,.10);box-shadow:0 18px 48px rgba(0,0,0,.38)}
+#atlas-app[data-theme="dark"]~#atlasAchievementToasts .atlas-achievement-toast strong,#atlasAchievementToasts[data-theme="dark"] .atlas-achievement-toast strong{color:#f5f2ef}
+#atlas-app[data-theme="dark"]~#atlasAchievementToasts .atlas-achievement-toast p,#atlasAchievementToasts[data-theme="dark"] .atlas-achievement-toast p{color:#a2a8b0}
+#atlas-app[data-theme="dark"]~#atlasAchievementToasts .atlas-achievement-toast-close,#atlasAchievementToasts[data-theme="dark"] .atlas-achievement-toast-close{background:#242b34;color:#c7ccd2}
+@keyframes atlasAchievementToastIn{to{transform:translateY(0);opacity:1}}
+@keyframes atlasAchievementToastOut{to{transform:translateY(-8px);opacity:0}}
+@media(max-width:640px){#atlasAchievementToasts{right:14px;top:78px;width:calc(100vw - 28px)}}
+</style>
+<div id="atlasAchievementToasts" aria-live="polite" aria-atomic="false"></div>
+<script id="atlas-achievement-toast-script">
+(function(){
+  var channel=null,currentUid='';
+  function client(){return window.ATLAS_SUPABASE||null}
+  function uid(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
+  function esc(v){return String(v==null?'':v).replace(/[&<>\"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]})}
+  function root(){return document.getElementById('atlasAchievementToasts')}
+  function syncTheme(){var r=root(),app=document.getElementById('atlas-app');if(!r||!app)return;r.dataset.theme=app.getAttribute('data-theme')||''}
+  function removeToast(el){if(!el)return;el.classList.add('is-leaving');setTimeout(function(){if(el&&el.parentNode)el.parentNode.removeChild(el)},260)}
+  function show(def){var r=root();if(!r||!def)return;syncTheme();var el=document.createElement('article');el.className='atlas-achievement-toast';el.innerHTML='<div class="atlas-achievement-toast-icon">'+esc(def.icon||'✦')+'</div><div class="atlas-achievement-toast-copy"><span class="atlas-achievement-toast-kicker">достижение разблокировано'+(def.is_secret?' · секретное':'')+'</span><strong>'+esc(def.title||'новая ачивка')+'</strong><p>'+esc(def.description||'')+'</p></div><button class="atlas-achievement-toast-close" type="button" aria-label="закрыть">×</button>';var close=el.querySelector('.atlas-achievement-toast-close');if(close)close.addEventListener('click',function(){removeToast(el)});r.appendChild(el);setTimeout(function(){removeToast(el)},6500)}
+  async function onInsert(payload){var c=client();if(!c||!payload||!payload.new||!payload.new.achievement_id)return;var res=await c.from('achievements').select('id,title,description,icon,is_secret').eq('id',payload.new.achievement_id).maybeSingle();if(!res.error&&res.data)show(res.data)}
+  async function subscribe(){var c=client(),u=uid();if(!c)return;if(channel&&u===currentUid)return;if(channel){try{await c.removeChannel(channel)}catch(_e){}channel=null}currentUid=u;if(!u)return;channel=c.channel('atlas-achievements-'+u).on('postgres_changes',{event:'INSERT',schema:'public',table:'user_achievements',filter:'user_id=eq.'+u},onInsert).subscribe()}
+  window.addEventListener('atlasPlayerAuthReady',function(){subscribe()});
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(subscribe,600)});
+  window.atlasShowAchievementToast=show;
 })();
 </script>
 
