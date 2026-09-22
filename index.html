@@ -22946,9 +22946,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-direct-attach{width:44px;height:44px;border:1px solid #e0e3e7;border-radius:14px;background:#fafbfc;color:#646a73;display:grid;place-items:center;cursor:pointer;font-size:17px;box-sizing:border-box}
 #atlas-app .atlas-direct-attach:hover{border-color:#e1b6b6;background:#fff6f6}
 #atlas-app .atlas-direct-attach input{display:none}
-#atlas-app .atlas-direct-typing{display:none;margin:0 0 9px;padding:8px 11px;border:1px solid rgba(197,48,48,.14);border-radius:12px;background:rgba(197,48,48,.07);color:#8f3b3b;font:800 10px/1.35 "Montserrat",Arial,sans-serif;letter-spacing:.01em}
-#atlas-app .atlas-direct-typing.is-active{display:flex;align-items:center;gap:9px}
-#atlas-app .atlas-direct-typing>span{display:inline-block;width:5px;height:5px;flex:0 0 5px;border-radius:50%;background:#c53030;box-shadow:8px 0 0 rgba(197,48,48,.68),16px 0 0 rgba(197,48,48,.38);animation:atlasDirectTypingPulse 1s ease-in-out infinite}
+#atlas-app .atlas-direct-typing{display:none;margin:0 0 10px;padding:10px 13px;border:1px solid rgba(197,48,48,.28);border-left:3px solid #c53030;border-radius:12px;background:rgba(197,48,48,.10);color:#9f2525;font:900 12px/1.35 "Montserrat",Arial,sans-serif;letter-spacing:.01em;box-shadow:0 5px 18px rgba(197,48,48,.06)}
+#atlas-app .atlas-direct-typing.is-active{display:flex;align-items:center;gap:11px}
+#atlas-app .atlas-direct-typing>span{display:inline-block;width:6px;height:6px;flex:0 0 6px;margin-right:12px;border-radius:50%;background:#c53030;box-shadow:9px 0 0 rgba(197,48,48,.72),18px 0 0 rgba(197,48,48,.42);animation:atlasDirectTypingPulse .85s ease-in-out infinite}
 @keyframes atlasDirectTypingPulse{0%,100%{opacity:.45;transform:translateY(0)}50%{opacity:1;transform:translateY(-1px)}}
 #atlas-app[data-theme="dark"] .atlas-direct-participants-panel{background:#11151b;border-color:rgba(255,255,255,.11);box-shadow:0 18px 48px rgba(0,0,0,.35)}
 #atlas-app[data-theme="dark"] .atlas-direct-participants-head strong{color:#eeeae7}
@@ -22992,8 +22992,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   var activeChatId='',panelMode='chat',renderToken=0,messageToken=0,chatSearch='';
   var messagesLoading=false,messagesError='',replyTargetId='',participantPanelOpen=false,mobileChatOpen=false;
   var composerByChat={};
-  var realtimeChannel=null,realtimeTimer=null,inboxChannel=null,inboxTimer=null,receiptTimer=null,typingTimer=null;
-  var typingPersonaIds=[],directLoadedForUid='',directLoadPromise=null,lastAuthUid='';
+  var realtimeChannel=null,realtimeTimer=null,inboxChannel=null,inboxTimer=null,receiptTimer=null,typingTimer=null,typingCleanupTimer=null;
+  var realtimeChatId='',inboxRealtimeUid='',typingPersonaIds=[],typingPeers={},directLoadedForUid='',directLoadPromise=null,lastAuthUid='';
+  var directInstanceId='d'+Math.random().toString(36).slice(2)+Date.now().toString(36),lastRenderedChatId='';
 
   function client(){return window.ATLAS_SUPABASE||null}
   function uid(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
@@ -23195,24 +23196,54 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function shell(){
     var r=root();if(!r)return;
-    if(!uid()){r.innerHTML='<div class="atlas-direct-gate"><strong>atlas direct закрыт</strong><span>войдите в аккаунт, чтобы открыть свои ролевые переписки.</span><br><button type="button" data-direct-login>войти</button></div>';return}
+    var pageY=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0;
+    var oldBox=document.getElementById('atlasDirectMessages');
+    var preserveMessageScroll=!!(oldBox&&lastRenderedChatId&&lastRenderedChatId===activeChatId);
+    var oldMsgTop=preserveMessageScroll?oldBox.scrollTop:0;
+    var oldMsgDistance=preserveMessageScroll?(oldBox.scrollHeight-oldBox.scrollTop-oldBox.clientHeight):0;
+
+    if(!uid()){r.innerHTML='<div class="atlas-direct-gate"><strong>atlas direct закрыт</strong><span>войдите в аккаунт, чтобы открыть свои ролевые переписки.</span><br><button type="button" data-direct-login>войти</button></div>';lastRenderedChatId='';return}
     var c=active();
     var main=panelMode==='create'?createView():panelMode==='manage'&&c&&canManage(c)?manageView(c):c?chatView(c):'<div class="atlas-direct-chat-body"><div class="atlas-direct-message-empty">'+(myPersonas().length?'создай первый чат кнопкой + слева.':'сначала создай ATLAS-профиль своему персонажу.')+'</div></div>';
     r.innerHTML='<div class="atlas-direct-layout'+(mobileChatOpen?' is-mobile-chat':'')+'"><aside class="atlas-direct-channels"><div class="atlas-direct-channels-head"><strong>чаты</strong><button class="atlas-direct-create-toggle" type="button" data-direct-create title="создать чат">+</button></div><div class="atlas-direct-chat-search-wrap"><input class="atlas-direct-chat-search" id="atlasDirectChatSearch" type="search" value="'+esc(chatSearch)+'" placeholder="найти чат или персонажа…" autocomplete="off"></div><div class="atlas-direct-channel-list">'+chatListHtml()+'</div></aside><section class="atlas-direct-chat">'+main+'</section></div>';
+    lastRenderedChatId=activeChatId||'';
+
+    var freshBox=document.getElementById('atlasDirectMessages');
+    if(freshBox&&preserveMessageScroll){
+      if(oldMsgDistance<180)freshBox.scrollTop=freshBox.scrollHeight;
+      else freshBox.scrollTop=Math.min(oldMsgTop,Math.max(0,freshBox.scrollHeight-freshBox.clientHeight));
+    }
+    try{window.scrollTo({top:pageY,left:0,behavior:'auto'})}catch(_e){window.scrollTo(0,pageY)}
     updateGlobalUnreadBadge();
   }
 
   function renderMessagesOnly(){
     var box=document.getElementById('atlasDirectMessages');
     if(!box){updateTypingIndicator();return}
-    var oldTop=box.scrollTop,oldHeight=box.scrollHeight;
-    var nearBottom=oldHeight-oldTop-box.clientHeight<180;
+
+    var oldTop=box.scrollTop,oldHeight=box.scrollHeight,oldDistance=oldHeight-oldTop-box.clientHeight;
+    var nearBottom=oldDistance<180,anchorId='',anchorOffset=0;
+    if(!nearBottom){
+      var nodes=box.querySelectorAll('[data-direct-message-id]');
+      for(var i=0;i<nodes.length;i++){
+        if(nodes[i].offsetTop+nodes[i].offsetHeight>=oldTop){
+          anchorId=nodes[i].getAttribute('data-direct-message-id')||'';
+          anchorOffset=nodes[i].offsetTop-oldTop;
+          break;
+        }
+      }
+    }
+
     box.innerHTML=messagesHtml();
+
     if(nearBottom){
       box.scrollTop=box.scrollHeight;
-      requestAnimationFrame(function(){var fresh=document.getElementById('atlasDirectMessages');if(fresh)fresh.scrollTop=fresh.scrollHeight});
+    }else if(anchorId){
+      var anchor=box.querySelector('[data-direct-message-id="'+anchorId.replace(/"/g,'\\"')+'"]');
+      if(anchor)box.scrollTop=Math.max(0,anchor.offsetTop-anchorOffset);
+      else box.scrollTop=Math.max(0,box.scrollHeight-box.clientHeight-oldDistance);
     }else{
-      box.scrollTop=oldTop;
+      box.scrollTop=Math.max(0,box.scrollHeight-box.clientHeight-oldDistance);
     }
     updateTypingIndicator();
   }
@@ -23250,7 +23281,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var r=await c.rpc('mark_direct_chat_read',{p_chat:chatId});if(r.error)return;
     unreadByChat[chatId]=0;
     await loadReadReceipts(chatId);
-    renderChatListOnly();renderMessagesOnly();
+    renderChatListOnly();
+    broadcastDirectEvent('read_changed',chatId,{user_id:uid()});
   }
 
   function updateTypingIndicator(){
@@ -23258,27 +23290,79 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var names=typingPersonaIds.map(function(id){return pName(personaById(id))}).filter(Boolean);
     if(!names.length){e.classList.remove('is-active');e.innerHTML='';return}
     var label=names.slice(0,2).join(', ')+(names.length>2?' и ещё '+(names.length-2):'');
-    e.classList.add('is-active');e.innerHTML='<span></span>'+esc(label)+' печатает…';
+    e.classList.add('is-active');e.innerHTML='<span></span><strong>'+esc(label)+'</strong>&nbsp;печатает…';
+  }
+
+  function rebuildTypingIds(){
+    var now=Date.now(),seen={};typingPersonaIds=[];
+    Object.keys(typingPeers).forEach(function(key){
+      var row=typingPeers[key];
+      if(!row||row.expires<=now){delete typingPeers[key];return}
+      if(row.persona_id&&!seen[row.persona_id]){seen[row.persona_id]=1;typingPersonaIds.push(row.persona_id)}
+    });
+    updateTypingIndicator();
+    if(typingCleanupTimer){clearTimeout(typingCleanupTimer);typingCleanupTimer=null}
+    if(Object.keys(typingPeers).length){
+      typingCleanupTimer=setTimeout(function(){rebuildTypingIds()},900);
+    }
+  }
+
+  function receiveTyping(payload){
+    payload=payload||{};
+    if(!payload.user_id||payload.user_id===uid()||!payload.persona_id)return;
+    var key=String(payload.user_id)+'|'+String(payload.instance_id||payload.persona_id);
+    if(payload.typing){
+      typingPeers[key]={persona_id:payload.persona_id,expires:Date.now()+3200};
+    }else{
+      delete typingPeers[key];
+    }
+    rebuildTypingIds();
   }
 
   function syncTypingPresence(){
-    typingPersonaIds=[];if(!realtimeChannel||typeof realtimeChannel.presenceState!=='function'){updateTypingIndicator();return}
+    if(!realtimeChannel||typeof realtimeChannel.presenceState!=='function')return;
     try{
-      var state=realtimeChannel.presenceState()||{},seen={};
-      Object.keys(state).forEach(function(key){(state[key]||[]).forEach(function(meta){if(meta&&meta.typing&&meta.persona_id&&meta.user_id!==uid()&&!seen[meta.persona_id]){seen[meta.persona_id]=1;typingPersonaIds.push(meta.persona_id)}})});
+      var state=realtimeChannel.presenceState()||{};
+      Object.keys(state).forEach(function(key){
+        (state[key]||[]).forEach(function(meta){
+          if(meta&&meta.typing&&meta.persona_id&&meta.user_id!==uid()){
+            receiveTyping({user_id:meta.user_id,persona_id:meta.persona_id,instance_id:meta.instance_id||key,typing:true});
+          }
+        });
+      });
     }catch(_e){}
-    updateTypingIndicator();
+  }
+
+  function channelSend(channel,event,payload){
+    if(!channel||typeof channel.send!=='function')return;
+    try{
+      var p=channel.send({type:'broadcast',event:event,payload:payload||{}});
+      if(p&&typeof p.catch==='function')p.catch(function(){});
+    }catch(_e){}
+  }
+
+  function broadcastDirectEvent(kind,chatId,extra){
+    var payload=Object.assign({kind:kind||'refresh',chat_id:chatId||activeChatId||'',user_id:uid(),instance_id:directInstanceId,at:new Date().toISOString()},extra||{});
+    if(realtimeChannel&&realtimeChatId===payload.chat_id)channelSend(realtimeChannel,'direct_event',payload);
+    channelSend(inboxChannel,'direct_inbox_event',payload);
   }
 
   function trackTyping(on){
-    if(!realtimeChannel||typeof realtimeChannel.track!=='function'||!active())return;
-    var s=stateFor(active());
-    try{realtimeChannel.track({user_id:uid(),persona_id:s.persona||'',typing:!!on,at:new Date().toISOString()})}catch(_e){}
+    if(!realtimeChannel||!active()||realtimeChatId!==activeChatId)return;
+    var s=stateFor(active()),payload={user_id:uid(),persona_id:s.persona||'',instance_id:directInstanceId,typing:!!on,at:new Date().toISOString()};
+    channelSend(realtimeChannel,'typing',payload);
+    if(typeof realtimeChannel.track==='function'){
+      try{
+        var p=realtimeChannel.track(payload);
+        if(p&&typeof p.catch==='function')p.catch(function(){});
+      }catch(_e){}
+    }
   }
 
   function scheduleTyping(){
-    trackTyping(true);if(typingTimer)clearTimeout(typingTimer);
-    typingTimer=setTimeout(function(){trackTyping(false)},1300);
+    trackTyping(true);
+    if(typingTimer)clearTimeout(typingTimer);
+    typingTimer=setTimeout(function(){trackTyping(false)},2400);
   }
 
   async function loadInboxMessages(){
@@ -23307,15 +23391,35 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   }
 
   function stopRealtime(){
-    var c=client();if(realtimeTimer){clearTimeout(realtimeTimer);realtimeTimer=null}if(receiptTimer){clearTimeout(receiptTimer);receiptTimer=null}if(typingTimer){clearTimeout(typingTimer);typingTimer=null}
+    var c=client();if(realtimeTimer){clearTimeout(realtimeTimer);realtimeTimer=null}if(receiptTimer){clearTimeout(receiptTimer);receiptTimer=null}if(typingTimer){clearTimeout(typingTimer);typingTimer=null}if(typingCleanupTimer){clearTimeout(typingCleanupTimer);typingCleanupTimer=null}
     if(realtimeChannel&&c&&typeof c.removeChannel==='function'){try{c.removeChannel(realtimeChannel)}catch(_e){}}
-    realtimeChannel=null;typingPersonaIds=[];updateTypingIndicator();
+    realtimeChannel=null;realtimeChatId='';typingPeers={};typingPersonaIds=[];updateTypingIndicator();
   }
 
   function subscribeMessages(chatId){
-    stopRealtime();var c=client();if(!c||!chatId||typeof c.channel!=='function')return;
+    var c=client();if(!c||!chatId||typeof c.channel!=='function')return;
+    if(realtimeChannel&&realtimeChatId===chatId)return;
+    stopRealtime();
+    realtimeChatId=chatId;
     try{
-      realtimeChannel=c.channel('atlas-direct-v3-'+chatId+'-'+Date.now(),{config:{presence:{key:uid()}}})
+      realtimeChannel=c.channel('atlas-direct-chat-'+chatId,{
+        config:{
+          presence:{key:(uid()||'anon')+'-'+directInstanceId},
+          broadcast:{self:false,ack:false}
+        }
+      })
+        .on('broadcast',{event:'typing'},function(msg){receiveTyping(msg&&msg.payload||{})})
+        .on('broadcast',{event:'direct_event'},function(msg){
+          var payload=msg&&msg.payload||{};
+          if(payload.chat_id!==chatId||activeChatId!==chatId)return;
+          if(payload.kind==='read_changed'){
+            if(receiptTimer)clearTimeout(receiptTimer);
+            receiptTimer=setTimeout(async function(){await loadReadReceipts(chatId);renderMessagesOnly()},50);
+            return;
+          }
+          if(realtimeTimer)clearTimeout(realtimeTimer);
+          realtimeTimer=setTimeout(function(){refreshActiveChat(chatId,true)},50);
+        })
         .on('postgres_changes',{event:'*',schema:'public',table:'direct_messages',filter:'chat_id=eq.'+chatId},function(){
           if(activeChatId!==chatId)return;if(realtimeTimer)clearTimeout(realtimeTimer);
           realtimeTimer=setTimeout(function(){refreshActiveChat(chatId,true)},80);
@@ -23329,35 +23433,57 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           receiptTimer=setTimeout(async function(){await loadReadReceipts(chatId);renderMessagesOnly()},80);
         })
         .on('presence',{event:'sync'},syncTypingPresence)
-        .on('presence',{event:'join'},syncTypingPresence)
-        .on('presence',{event:'leave'},syncTypingPresence)
-        .subscribe(function(status){if(status==='SUBSCRIBED')trackTyping(false)});
-    }catch(_e){realtimeChannel=null}
+        .subscribe(function(status){
+          if(status==='SUBSCRIBED'){
+            trackTyping(false);
+            if(activeChatId===chatId)refreshActiveChat(chatId,true);
+          }
+        });
+    }catch(_e){realtimeChannel=null;realtimeChatId=''}
   }
 
   function stopInboxRealtime(){
     var c=client();if(inboxTimer){clearTimeout(inboxTimer);inboxTimer=null}
     if(inboxChannel&&c&&typeof c.removeChannel==='function'){try{c.removeChannel(inboxChannel)}catch(_e){}}
-    inboxChannel=null;
+    inboxChannel=null;inboxRealtimeUid='';
   }
 
   function subscribeInbox(){
-    stopInboxRealtime();var c=client();if(!c||!uid()||typeof c.channel!=='function')return;
+    var c=client(),u=uid();if(!c||!u||typeof c.channel!=='function')return;
+    if(inboxChannel&&inboxRealtimeUid===u)return;
+    stopInboxRealtime();inboxRealtimeUid=u;
     try{
-      inboxChannel=c.channel('atlas-direct-inbox-'+uid()+'-'+Date.now()).on('postgres_changes',{event:'*',schema:'public',table:'direct_messages'},function(payload){
-        var row=payload&&((payload.new&&payload.new.id)?payload.new:payload.old)||{};
-        if(!row.chat_id)return;
-        if(payload&&payload.eventType==='INSERT'){var ch=chats.find(function(x){return x.id===row.chat_id});if(ch)ch.updated_at=row.created_at||ch.updated_at}
-        if(row.chat_id===activeChatId&&pageActive()&&(!isMobile()||mobileChatOpen)){setTimeout(function(){markChatRead(row.chat_id)},120)}
-        if(inboxTimer)clearTimeout(inboxTimer);
-        inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},100);
-      }).on('postgres_changes',{event:'UPDATE',schema:'public',table:'direct_chats'},function(payload){
-        var row=payload&&payload.new||{};if(!row.id)return;
-        var idx=chats.findIndex(function(x){return x.id===row.id});
-        if(idx>=0)chats[idx]=Object.assign({},chats[idx],row);
-        renderChatListOnly();if(row.id===activeChatId)renderChatPhotoOnly();
-      }).subscribe();
-    }catch(_e){inboxChannel=null}
+      inboxChannel=c.channel('atlas-direct-inbox-global',{config:{broadcast:{self:false,ack:false}}})
+        .on('broadcast',{event:'direct_inbox_event'},function(msg){
+          var payload=msg&&msg.payload||{},chatId=payload.chat_id||'';
+          if(!chatId||!chats.some(function(x){return x.id===chatId}))return;
+          if(payload.kind==='read_changed'&&chatId===activeChatId){
+            if(receiptTimer)clearTimeout(receiptTimer);
+            receiptTimer=setTimeout(async function(){await loadReadReceipts(chatId);renderMessagesOnly()},50);
+          }
+          if(chatId===activeChatId&&payload.kind!=='read_changed'&&pageActive()&&(!isMobile()||mobileChatOpen)){
+            if(realtimeTimer)clearTimeout(realtimeTimer);
+            realtimeTimer=setTimeout(function(){refreshActiveChat(chatId,true)},55);
+          }
+          if(inboxTimer)clearTimeout(inboxTimer);
+          inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},70);
+        })
+        .on('postgres_changes',{event:'*',schema:'public',table:'direct_messages'},function(payload){
+          var row=payload&&((payload.new&&payload.new.id)?payload.new:payload.old)||{};
+          if(!row.chat_id)return;
+          if(payload&&payload.eventType==='INSERT'){var ch=chats.find(function(x){return x.id===row.chat_id});if(ch)ch.updated_at=row.created_at||ch.updated_at}
+          if(row.chat_id===activeChatId&&pageActive()&&(!isMobile()||mobileChatOpen)){setTimeout(function(){markChatRead(row.chat_id)},120)}
+          if(inboxTimer)clearTimeout(inboxTimer);
+          inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},100);
+        })
+        .on('postgres_changes',{event:'UPDATE',schema:'public',table:'direct_chats'},function(payload){
+          var row=payload&&payload.new||{};if(!row.id)return;
+          var idx=chats.findIndex(function(x){return x.id===row.id});
+          if(idx>=0)chats[idx]=Object.assign({},chats[idx],row);
+          renderChatListOnly();if(row.id===activeChatId)renderChatPhotoOnly();
+        })
+        .subscribe();
+    }catch(_e){inboxChannel=null;inboxRealtimeUid=''}
   }
 
   async function refreshActiveChat(chatId,fromRealtime){
@@ -23542,6 +23668,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       setMessageStatus('отправляем…');
       var rr=await c.rpc('send_direct_message_v3',{p_chat:ch.id,p_persona:persona,p_body:body,p_reply_to:replyTargetId||null,p_rp_datetime:date+'T'+time+':00',p_attachments:uploaded});
       if(rr.error)throw new Error(rr.error.message||'не удалось отправить сообщение.');
+      broadcastDirectEvent('message_changed',ch.id,{message_id:rr.data||''});
       s.body='';replyTargetId='';pendingFiles=[];
       var bodyEl=document.getElementById('atlasDirectMessageBody');if(bodyEl)bodyEl.value='';
       var pend=document.getElementById('atlasDirectPendingFiles');if(pend)pend.innerHTML='';
@@ -23561,11 +23688,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   async function editMessage(id){
     var c=client(),m=messageById(id);if(!c||!m)return;var next=prompt('изменить сообщение:',cleanMessageBody(m.body));if(next===null)return;next=String(next).trim();if(!next||next===String(m.body||'').trim())return;
-    var rr=await c.rpc('edit_direct_message',{p_message:id,p_body:next});if(rr.error){alert(rr.error.message||'не удалось изменить сообщение.');return}await loadMessages(activeChatId);shell();scrollMessages(false)
+    var rr=await c.rpc('edit_direct_message',{p_message:id,p_body:next});if(rr.error){alert(rr.error.message||'не удалось изменить сообщение.');return}
+    broadcastDirectEvent('message_changed',activeChatId,{message_id:id});
+    await refreshActiveChat(activeChatId,false);
   }
 
   async function deleteMessage(id){
-    var c=client();if(!c||!id)return;if(!confirm('удалить это сообщение?'))return;var rr=await c.rpc('delete_direct_message',{p_message:id});if(rr.error){alert(rr.error.message||'не удалось удалить сообщение.');return}if(replyTargetId===id)replyTargetId='';await loadMessages(activeChatId);shell();scrollMessages(false)
+    var c=client();if(!c||!id)return;if(!confirm('удалить это сообщение?'))return;var rr=await c.rpc('delete_direct_message',{p_message:id});if(rr.error){alert(rr.error.message||'не удалось удалить сообщение.');return}
+    if(replyTargetId===id)replyTargetId='';
+    broadcastDirectEvent('message_changed',activeChatId,{message_id:id});
+    await refreshActiveChat(activeChatId,false);
   }
 
   function startReply(id){if(!messageById(id))return;replyTargetId=id;shell();setTimeout(function(){var t=document.getElementById('atlasDirectMessageBody');if(t)t.focus()},0)}
@@ -23594,11 +23726,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(e.target&&e.target.id==='atlasDirectCreateChatPhoto'){var f=e.target.files&&e.target.files[0];if(!f)return;try{validateChatPhoto(f);var box=e.target.closest('.atlas-direct-chat-photo-box'),preview=box&&box.querySelector('.atlas-direct-chat-photo-preview');if(preview){var u=URL.createObjectURL(f);preview.innerHTML='<img src="'+esc(u)+'" alt="">'}}catch(err){e.target.value='';setStatus(err.message,'error')}return}
     var ch=active(),s=ch?stateFor(ch):null;if(s&&e.target&&e.target.id==='atlasDirectComposerPersona'){trackTyping(false);s.persona=e.target.value||''}
   },true);
-  document.addEventListener('keydown',function(e){if(e.target&&e.target.id==='atlasDirectMessageBody'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();var f=e.target.closest('form');if(f&&typeof f.requestSubmit==='function')f.requestSubmit()}},true);
+  document.addEventListener('keydown',function(e){if(e.target&&e.target.id==='atlasDirectMessageBody'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();e.stopPropagation();if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();var f=e.target.closest('form');if(f&&typeof f.requestSubmit==='function')f.requestSubmit()}},true);
   document.addEventListener('submit',function(e){
     var f=e.target&&e.target.closest?e.target.closest('#atlasDirectCreateForm'):null;if(f){e.preventDefault();createChat(f);return}
     var m=e.target&&e.target.closest?e.target.closest('#atlasDirectManageForm'):null;if(m){e.preventDefault();saveManage(m);return}
-    var msg=e.target&&e.target.closest?e.target.closest('#atlasDirectMessageForm'):null;if(msg){e.preventDefault();sendMessage(msg);return}
+    var msg=e.target&&e.target.closest?e.target.closest('#atlasDirectMessageForm'):null;if(msg){e.preventDefault();e.stopPropagation();var y=window.pageYOffset||document.documentElement.scrollTop||0;sendMessage(msg).finally(function(){try{window.scrollTo({top:y,left:0,behavior:'auto'})}catch(_e){window.scrollTo(0,y)}});return}
   },true);
   document.addEventListener('click',function(e){
     var login=e.target.closest&&e.target.closest('[data-direct-login]');if(login){openLogin();return}
