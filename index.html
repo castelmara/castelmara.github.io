@@ -22855,6 +22855,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-direct-message-status.is-ok{color:#4c8050}
 #atlas-app .atlas-direct-composer-note{padding:13px 16px;border-top:1px solid #eceef1;background:#fafbfc;color:#848a93;font:700 10px/1.5 "Montserrat",Arial,sans-serif;text-align:center}
 #atlas-app .atlas-direct-message-empty{display:grid;place-items:center;min-height:100%;padding:32px;border:1px dashed #e1e4e8;border-radius:22px;background:#fafbfc;color:#6f7580;font:700 13px/1.7 "Montserrat",Arial,sans-serif;text-align:center}
+#atlas-app .atlas-direct-chat-photo-box{display:grid;grid-template-columns:86px minmax(0,1fr);gap:14px;align-items:center;padding:14px;border:1px solid #e7e9ec;border-radius:18px;background:#fafbfc}
+#atlas-app .atlas-direct-chat-photo-preview{width:86px;height:86px;border-radius:22px;overflow:hidden;background:#eceef2;color:#727883;display:grid;place-items:center;font:900 24px/1 "Montserrat",Arial,sans-serif;box-shadow:inset 0 0 0 1px rgba(0,0,0,.035)}
+#atlas-app .atlas-direct-chat-photo-preview img{width:100%;height:100%;object-fit:cover;display:block}
+#atlas-app .atlas-direct-chat-photo-copy{min-width:0}
+#atlas-app .atlas-direct-chat-photo-copy strong{display:block;color:#262a31;font:900 11px/1.3 "Montserrat",Arial,sans-serif}
+#atlas-app .atlas-direct-chat-photo-copy p{margin:5px 0 10px;color:#8c929b;font:600 9px/1.45 "Montserrat",Arial,sans-serif}
+#atlas-app .atlas-direct-chat-photo-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#atlas-app .atlas-direct-chat-photo-pick{display:inline-flex;align-items:center;justify-content:center;border:1px solid #dde1e5;border-radius:999px;background:#fff;color:#555b64;padding:8px 11px;font:850 8px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-direct-chat-photo-pick:hover{border-color:#e0b3b3;color:#c53030;background:#fff7f7}
+#atlas-app .atlas-direct-chat-photo-pick input{display:none}
+#atlas-app .atlas-direct-chat-photo-remove{border:0;border-radius:999px;background:#f1f2f4;color:#858b94;padding:8px 11px;font:850 8px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-direct-chat-photo-remove:hover{background:#fff0f0;color:#c53030}
+#atlas-app .atlas-direct-chat-photo-remove:disabled{opacity:.4;cursor:default}
+#atlas-app .atlas-direct-create-photo{margin-bottom:2px}
 #atlas-app[data-theme="dark"] .atlas-direct-head h2{color:#f4f1ee}
 #atlas-app[data-theme="dark"] .atlas-direct-head p{color:#9ba0a8}
 #atlas-app[data-theme="dark"] .atlas-direct-layout,#atlas-app[data-theme="dark"] .atlas-direct-loading,#atlas-app[data-theme="dark"] .atlas-direct-gate,#atlas-app[data-theme="dark"] .atlas-direct-empty{background:#11151b;border-color:rgba(255,255,255,.10);box-shadow:none;color:#aaaeb6}
@@ -22871,6 +22885,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] .atlas-direct-message-empty{color:#b1b6be}
 #atlas-app[data-theme="dark"] .atlas-direct-rp-card strong{color:#f1eeeb}
 #atlas-app[data-theme="dark"] .atlas-direct-field input,#atlas-app[data-theme="dark"] .atlas-direct-field select,#atlas-app[data-theme="dark"] .atlas-direct-persona-search{background:#0b0e13;border-color:rgba(255,255,255,.11);color:#eeeae7}
+#atlas-app[data-theme="dark"] .atlas-direct-chat-photo-box{background:#0d1117;border-color:rgba(255,255,255,.10)}
+#atlas-app[data-theme="dark"] .atlas-direct-chat-photo-copy strong{color:#f1eeeb}
+#atlas-app[data-theme="dark"] .atlas-direct-chat-photo-pick{background:#171c23;border-color:rgba(255,255,255,.11);color:#c4c8ce}
+#atlas-app[data-theme="dark"] .atlas-direct-chat-photo-remove{background:#171c23;color:#9ca2ab}
 #atlas-app[data-theme="dark"] .atlas-direct-persona-choice:hover{background:#151a21;border-color:rgba(255,255,255,.10)}
 #atlas-app[data-theme="dark"] .atlas-direct-secondary{background:#151a21;border-color:rgba(255,255,255,.12);color:#c5c8ce}
 #atlas-app[data-theme="dark"] .atlas-direct-danger{background:rgba(197,48,48,.12);border-color:rgba(197,48,48,.28);color:#ff7878}
@@ -22989,6 +23007,15 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function pName(p){return String(p&&p.display_name||p&&p.nickname||'persona')}
   function pInitial(p){return (pName(p).trim().charAt(0)||'A').toUpperCase()}
   function pAvatar(p,cls){return '<span class="'+cls+'">'+(p&&p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(pInitial(p)))+'</span>'}
+  function chatPhotoUrl(c){
+    if(!c||!c.image_path)return '';
+    var cl=client();if(!cl)return '';
+    try{var pub=cl.storage.from('atlas-media').getPublicUrl(c.image_path);return pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:''}catch(_e){return ''}
+  }
+  function chatAvatar(c,lead,cls){
+    var url=chatPhotoUrl(c);
+    return '<span class="'+cls+'">'+(url?'<img src="'+esc(url)+'" alt="">':(lead&&lead.avatar_url?'<img src="'+esc(lead.avatar_url)+'" alt="">':esc(pInitial(lead))))+'</span>';
+  }
   function chatMembers(chatId){return memberRows.filter(function(m){return m.chat_id===chatId}).map(function(m){return personaById(m.persona_id)}).filter(Boolean)}
   function myChatPersonas(c){if(!c)return[];return chatMembers(c.id).filter(function(p){return p.owner_user_id===uid()})}
   function canManage(c){return !!(c&&(c.created_by_user_id===uid()||staff()))}
@@ -23042,7 +23069,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var members=chatMembers(c.id),lead=personaById(c.created_by_persona_id)||members[0]||null,lm=lastMessageFor(c.id),author=lm?personaById(lm.persona_id):null;
       var preview=lm?'<b>'+esc(pName(author))+':</b> '+esc(cleanPreview(lm.body||'')):esc(formatDate(c.rp_date)+' · '+members.length+' уч.');
       var clock=lm?formatTime(lm.rp_datetime):formatTime(c.next_rp_time),unread=unreadFor(c.id);
-      return '<button class="atlas-direct-channel'+(c.id===activeChatId?' is-active':'')+(c.is_archived?' is-archived':'')+'" type="button" data-direct-chat="'+esc(c.id)+'">'+pAvatar(lead,'atlas-direct-channel-icon')+'<span class="atlas-direct-channel-copy"><span class="atlas-direct-channel-top"><strong>'+esc(c.title||'без названия')+'</strong><span class="atlas-direct-channel-meta"><time>'+esc(clock)+'</time>'+(unread?'<b class="atlas-direct-unread">'+esc(unread>99?'99+':unread)+'</b>':'')+'</span></span><span class="atlas-direct-channel-preview">'+preview+'</span></span></button>'
+      return '<button class="atlas-direct-channel'+(c.id===activeChatId?' is-active':'')+(c.is_archived?' is-archived':'')+'" type="button" data-direct-chat="'+esc(c.id)+'">'+chatAvatar(c,lead,'atlas-direct-channel-icon')+'<span class="atlas-direct-channel-copy"><span class="atlas-direct-channel-top"><strong>'+esc(c.title||'без названия')+'</strong><span class="atlas-direct-channel-meta"><time>'+esc(clock)+'</time>'+(unread?'<b class="atlas-direct-unread">'+esc(unread>99?'99+':unread)+'</b>':'')+'</span></span><span class="atlas-direct-channel-preview">'+preview+'</span></span></button>'
     }).join('')}
     return (live.length?'<div class="atlas-direct-list-label">активные</div>'+rows(live):'')+(arch.length?'<div class="atlas-direct-list-label">архив</div>'+rows(arch):'');
   }
@@ -23132,7 +23159,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function chatView(c){
     var lead=personaById(c.created_by_persona_id)||chatMembers(c.id)[0]||null;
-    return '<header class="atlas-direct-chat-head"><button class="atlas-direct-mobile-back" type="button" data-direct-mobile-back aria-label="к списку чатов">‹</button>'+pAvatar(lead,'atlas-direct-chat-mark')+'<div class="atlas-direct-chat-title"><strong>'+esc(c.title||'чат')+'</strong><span>'+(c.is_archived?'архив · ':'')+esc(formatDate(c.rp_date))+' · следующее сообщение '+esc(formatTime(c.next_rp_time))+' · '+chatMembers(c.id).length+' уч.</span></div><div class="atlas-direct-chat-actions"><button class="atlas-direct-manage-btn" type="button" data-direct-members>участники</button>'+(canManage(c)?'<button class="atlas-direct-manage-btn" type="button" data-direct-manage>управление</button>':'')+'</div></header>'+participantsPanelHtml(c)+'<div class="atlas-direct-chat-view"><div class="atlas-direct-messages" id="atlasDirectMessages">'+messagesHtml()+'</div>'+composerHtml(c)+'</div>';
+    return '<header class="atlas-direct-chat-head"><button class="atlas-direct-mobile-back" type="button" data-direct-mobile-back aria-label="к списку чатов">‹</button>'+chatAvatar(c,lead,'atlas-direct-chat-mark')+'<div class="atlas-direct-chat-title"><strong>'+esc(c.title||'чат')+'</strong><span>'+(c.is_archived?'архив · ':'')+esc(formatDate(c.rp_date))+' · следующее сообщение '+esc(formatTime(c.next_rp_time))+' · '+chatMembers(c.id).length+' уч.</span></div><div class="atlas-direct-chat-actions"><button class="atlas-direct-manage-btn" type="button" data-direct-members>участники</button>'+(canManage(c)?'<button class="atlas-direct-manage-btn" type="button" data-direct-manage>управление</button>':'')+'</div></header>'+participantsPanelHtml(c)+'<div class="atlas-direct-chat-view"><div class="atlas-direct-messages" id="atlasDirectMessages">'+messagesHtml()+'</div>'+composerHtml(c)+'</div>';
   }
 
   function personaChoiceHtml(p,checked){
@@ -23140,10 +23167,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     return '<label class="atlas-direct-persona-choice" data-direct-persona-choice data-search="'+esc(search)+'"><input type="checkbox" name="member_persona" value="'+esc(p.id)+'"'+(checked?' checked':'')+'>'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span></span></label>';
   }
 
+  function chatPhotoControlHtml(c,createMode){
+    var lead=c?(personaById(c.created_by_persona_id)||chatMembers(c.id)[0]||null):(myPersonas()[0]||null);
+    var preview=createMode?pAvatar(lead,'atlas-direct-chat-photo-preview'):chatAvatar(c,lead,'atlas-direct-chat-photo-preview');
+    var inputId=createMode?'atlasDirectCreateChatPhoto':'atlasDirectChatPhotoInput';
+    var label=createMode?'добавить фото':'сменить фото';
+    return '<div class="atlas-direct-chat-photo-box'+(createMode?' atlas-direct-create-photo':'')+'">'+preview+'<div class="atlas-direct-chat-photo-copy"><strong>фото чата</strong><p>оно будет показываться в списке чатов и в шапке переписки. до 8 МБ.</p><div class="atlas-direct-chat-photo-actions"><label class="atlas-direct-chat-photo-pick">'+label+'<input id="'+inputId+'" name="chat_photo" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/heic,image/heif"></label>'+(!createMode?'<button class="atlas-direct-chat-photo-remove" type="button" data-direct-remove-chat-photo'+(c&&c.image_path?'':' disabled')+'>убрать фото</button>':'')+'</div></div></div>';
+  }
+
   function createView(){
     var mine=myPersonas();
     if(!mine.length)return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>сначала создай ATLAS-профиль хотя бы одному своему персонажу.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div></div></div>';
-    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>создатель и участники — именно персонажи, а не аккаунты игроков.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div><form class="atlas-direct-form" id="atlasDirectCreateForm"><div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" placeholder="осенний вечер" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" required></label><label class="atlas-direct-field"><span>первое время</span><input name="rp_time" type="time" value="12:00" required></label></div><label class="atlas-direct-field"><span>создать от лица</span><select name="creator_persona" required>'+mine.map(function(p){return '<option value="'+esc(p.id)+'">'+esc(pName(p))+' · @'+esc(p.nickname||'persona')+'</option>'}).join('')+'</select></label><div class="atlas-direct-persona-picker"><div class="atlas-direct-section-head"><h3>участники</h3><span>можно добавить сразу</span></div><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+personas.map(function(p){return personaChoiceHtml(p,false)}).join('')+'</div></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-back>отмена</button><button class="atlas-direct-primary" type="submit">создать чат</button></div></form></div></div>';
+    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>создатель и участники — именно персонажи, а не аккаунты игроков.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div><form class="atlas-direct-form" id="atlasDirectCreateForm"><div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" placeholder="осенний вечер" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" required></label><label class="atlas-direct-field"><span>первое время</span><input name="rp_time" type="time" value="12:00" required></label></div>'+chatPhotoControlHtml(null,true)+'<label class="atlas-direct-field"><span>создать от лица</span><select name="creator_persona" required>'+mine.map(function(p){return '<option value="'+esc(p.id)+'">'+esc(pName(p))+' · @'+esc(p.nickname||'persona')+'</option>'}).join('')+'</select></label><div class="atlas-direct-persona-picker"><div class="atlas-direct-section-head"><h3>участники</h3><span>можно добавить сразу</span></div><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+personas.map(function(p){return personaChoiceHtml(p,false)}).join('')+'</div></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-back>отмена</button><button class="atlas-direct-primary" type="submit">создать чат</button></div></form></div></div>';
   }
 
   function manageMemberHtml(c,p){
@@ -23153,7 +23188,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function manageView(c){
     var members=chatMembers(c.id),memberIds=members.map(function(p){return p.id}),available=personas.filter(function(p){return memberIds.indexOf(p.id)<0});
-    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>управление чатом</h3><p>'+esc(c.title||'чат')+'</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>к чату</button></div><form class="atlas-direct-form" id="atlasDirectManageForm"><div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" value="'+esc(c.title||'')+'" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" value="'+esc(c.rp_date||'')+'" required></label><label class="atlas-direct-field"><span>следующее время</span><input name="rp_time" type="time" value="'+esc(formatTime(c.next_rp_time))+'" required></label></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-archive="'+(c.is_archived?'0':'1')+'">'+(c.is_archived?'вернуть из архива':'в архив')+'</button><button class="atlas-direct-primary" type="submit">сохранить настройки</button></div></form><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>участники</h3><span>'+members.length+'</span></div><div class="atlas-direct-manage-members">'+members.map(function(p){return manageMemberHtml(c,p)}).join('')+'</div></section><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>добавить персонажа</h3><span>'+available.length+' доступно</span></div>'+(available.length?'<div class="atlas-direct-persona-picker"><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+available.map(function(p){var search=(pName(p)+' '+(p.nickname||'')+' '+(p.character_id||'')).toLowerCase();return '<button class="atlas-direct-persona-choice" type="button" data-direct-add-member="'+esc(p.id)+'" data-search="'+esc(search)+'" style="grid-template-columns:34px minmax(0,1fr)">'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span></span></button>'}).join('')+'</div></div>':'<div class="atlas-direct-placeholder">все существующие ATLAS-persona уже добавлены в этот чат.</div>')+'</section><div class="atlas-direct-divider"></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-danger" type="button" data-direct-delete-chat>удалить чат</button></div></div></div>';
+    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>управление чатом</h3><p>'+esc(c.title||'чат')+'</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>к чату</button></div><form class="atlas-direct-form" id="atlasDirectManageForm">'+chatPhotoControlHtml(c,false)+'<div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" value="'+esc(c.title||'')+'" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" value="'+esc(c.rp_date||'')+'" required></label><label class="atlas-direct-field"><span>следующее время</span><input name="rp_time" type="time" value="'+esc(formatTime(c.next_rp_time))+'" required></label></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-archive="'+(c.is_archived?'0':'1')+'">'+(c.is_archived?'вернуть из архива':'в архив')+'</button><button class="atlas-direct-primary" type="submit">сохранить настройки</button></div></form><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>участники</h3><span>'+members.length+'</span></div><div class="atlas-direct-manage-members">'+members.map(function(p){return manageMemberHtml(c,p)}).join('')+'</div></section><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>добавить персонажа</h3><span>'+available.length+' доступно</span></div>'+(available.length?'<div class="atlas-direct-persona-picker"><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+available.map(function(p){var search=(pName(p)+' '+(p.nickname||'')+' '+(p.character_id||'')).toLowerCase();return '<button class="atlas-direct-persona-choice" type="button" data-direct-add-member="'+esc(p.id)+'" data-search="'+esc(search)+'" style="grid-template-columns:34px minmax(0,1fr)">'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span></span></button>'}).join('')+'</div></div>':'<div class="atlas-direct-placeholder">все существующие ATLAS-persona уже добавлены в этот чат.</div>')+'</section><div class="atlas-direct-divider"></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-danger" type="button" data-direct-delete-chat>удалить чат</button></div></div></div>';
   }
 
   function shell(){
@@ -23167,6 +23202,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function renderMessagesOnly(){var box=document.getElementById('atlasDirectMessages');if(box)box.innerHTML=messagesHtml();updateTypingIndicator()}
   function renderChatListOnly(){var list=document.querySelector('#atlasDirectRoot .atlas-direct-channel-list');if(list)list.innerHTML=chatListHtml();updateGlobalUnreadBadge()}
+  function renderChatPhotoOnly(){
+    var c=active(),mark=document.querySelector('#atlasDirectRoot .atlas-direct-chat-mark');if(!c||!mark)return;
+    var lead=personaById(c.created_by_persona_id)||chatMembers(c.id)[0]||null,url=chatPhotoUrl(c);
+    mark.innerHTML=url?'<img src="'+esc(url)+'" alt="">':(lead&&lead.avatar_url?'<img src="'+esc(lead.avatar_url)+'" alt="">':esc(pInitial(lead)));
+  }
   function scrollMessages(force){setTimeout(function(){var box=document.getElementById('atlasDirectMessages');if(box&&(force||box.scrollHeight-box.scrollTop-box.clientHeight<180))box.scrollTop=box.scrollHeight},0)}
 
   function updateGlobalUnreadBadge(){
@@ -23294,6 +23334,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         if(row.chat_id===activeChatId&&pageActive()&&(!isMobile()||mobileChatOpen)){setTimeout(function(){markChatRead(row.chat_id)},120)}
         if(inboxTimer)clearTimeout(inboxTimer);
         inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},100);
+      }).on('postgres_changes',{event:'UPDATE',schema:'public',table:'direct_chats'},function(payload){
+        var row=payload&&payload.new||{};if(!row.id)return;
+        var idx=chats.findIndex(function(x){return x.id===row.id});
+        if(idx>=0)chats[idx]=Object.assign({},chats[idx],row);
+        renderChatListOnly();if(row.id===activeChatId)renderChatPhotoOnly();
       }).subscribe();
     }catch(_e){inboxChannel=null}
   }
@@ -23301,7 +23346,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   async function refreshActiveChat(chatId,fromRealtime){
     var c=client();if(!c||!chatId||activeChatId!==chatId)return;
     var oldBox=document.getElementById('atlasDirectMessages'),nearBottom=!oldBox||oldBox.scrollHeight-oldBox.scrollTop-oldBox.clientHeight<180;
-    var cr=await c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,is_archived,created_at,updated_at').eq('id',chatId).maybeSingle();
+    var cr=await c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,image_path,is_archived,created_at,updated_at').eq('id',chatId).maybeSingle();
     if(!cr.error&&cr.data){var idx=chats.findIndex(function(x){return x.id===chatId});if(idx>=0)chats[idx]=cr.data}
     await loadMessages(chatId);if(activeChatId!==chatId)return;
     renderMessagesOnly();renderChatListOnly();
@@ -23330,7 +23375,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var token=++renderToken;
       if(!chats.length&&!personas.length)r.innerHTML='<div class="atlas-direct-loading">загружаем direct…</div>';
       var rs=await Promise.all([
-        c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,is_archived,created_at,updated_at').order('updated_at',{ascending:false}),
+        c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,image_path,is_archived,created_at,updated_at').order('updated_at',{ascending:false}),
         c.from('atlas_personas').select('id,character_id,owner_user_id,display_name,nickname,avatar_url,status_text,created_at').order('display_name',{ascending:true})
       ]);
       if(token!==renderToken)return;
@@ -23388,16 +23433,72 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     return {storage_path:up.data.path,public_url:url,file_name:file.name||name,mime_type:mime,file_size:Number(file.size||0)};
   }
 
+  function validateChatPhoto(file){
+    if(!file)return;
+    var mime=fileMime(file),name=String(file.name||'').toLowerCase();
+    if(!imageMime(mime)&&!/\.(png|jpe?g|gif|webp|heic|heif)$/i.test(name))throw new Error('фото чата должно быть изображением');
+    if(Number(file.size||0)>8388608)throw new Error('фото чата должно быть не больше 8 МБ');
+  }
+
+  async function uploadChatPhoto(file,chatId){
+    var c=client();if(!c||!chatId)throw new Error('чат недоступен');
+    validateChatPhoto(file);
+    var mime=fileMime(file),name=String(file.name||'photo'),ext=(name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+    if(ext==='jpeg')ext='jpg';
+    var token=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(String(Date.now())+'-'+Math.random().toString(36).slice(2));
+    var path=uid()+'/direct/chat-photos/'+chatId+'/'+token+'.'+ext;
+    var up=await c.storage.from('atlas-media').upload(path,file,{upsert:false,contentType:mime,cacheControl:'3600'});
+    if(up.error)throw new Error('storage: '+(up.error.message||'не удалось загрузить фото чата'));
+    return up.data&&up.data.path?up.data.path:path;
+  }
+
+  async function setChatPhotoPath(chatId,path){
+    var c=client();if(!c)return {error:new Error('supabase недоступен')};
+    return await c.rpc('set_direct_chat_image',{p_chat:chatId,p_image_path:path||null});
+  }
+
+  async function replaceChatPhoto(file){
+    var c=client(),ch=active();if(!c||!ch||!file)return;
+    try{
+      validateChatPhoto(file);setStatus('загружаем фото чата…');
+      var oldPath=ch.image_path||'',path=await uploadChatPhoto(file,ch.id);
+      var rr=await setChatPhotoPath(ch.id,path);
+      if(rr.error){try{await c.storage.from('atlas-media').remove([path])}catch(_e){};throw new Error(rr.error.message||'не удалось сохранить фото чата')}
+      if(oldPath&&oldPath.indexOf(uid()+'/')===0){try{await c.storage.from('atlas-media').remove([oldPath])}catch(_e){}}
+      await loadData(ch.id);panelMode='manage';shell();setStatus('фото чата обновлено.','ok');
+    }catch(err){setStatus(err&&err.message?err.message:'не удалось обновить фото чата.','error')}
+  }
+
+  async function removeChatPhoto(){
+    var c=client(),ch=active();if(!c||!ch||!ch.image_path)return;
+    var oldPath=ch.image_path;setStatus('убираем фото…');
+    var rr=await setChatPhotoPath(ch.id,null);
+    if(rr.error){setStatus(rr.error.message||'не удалось убрать фото чата.','error');return}
+    if(oldPath.indexOf(uid()+'/')===0){try{await c.storage.from('atlas-media').remove([oldPath])}catch(_e){}}
+    await loadData(ch.id);panelMode='manage';shell();setStatus('фото чата убрано.','ok');
+  }
+
   async function createChat(form){
     var c=client();if(!c)return;
     var title=String(form.elements.title.value||'').trim(),date=form.elements.rp_date.value,time=form.elements.rp_time.value,creator=form.elements.creator_persona.value;
     var members=Array.from(form.querySelectorAll('input[name="member_persona"]:checked')).map(function(x){return x.value}).filter(Boolean);
+    var photoInput=form.elements.chat_photo,photo=photoInput&&photoInput.files?photoInput.files[0]:null;
     if(!title||!date||!time||!creator){setStatus('заполни название, дату, время и persona создателя.','error');return}
+    try{validateChatPhoto(photo)}catch(err){setStatus(err.message,'error');return}
     var btn=form.querySelector('[type="submit"]');btn.disabled=true;setStatus('создаём чат…');
     var rr=await c.rpc('create_direct_chat',{p_title:title,p_rp_date:date,p_next_rp_time:time,p_creator_persona:creator,p_member_personas:members});
-    btn.disabled=false;
-    if(rr.error){setStatus(rr.error.message||'не удалось создать чат.','error');return}
-    activeChatId=rr.data||'';panelMode='chat';replyTargetId='';await loadData(activeChatId);
+    if(rr.error){btn.disabled=false;setStatus(rr.error.message||'не удалось создать чат.','error');return}
+    activeChatId=rr.data||'';
+    var photoError='';
+    if(photo&&activeChatId){
+      try{
+        setStatus('чат создан · загружаем фото…');
+        var path=await uploadChatPhoto(photo,activeChatId),pr=await setChatPhotoPath(activeChatId,path);
+        if(pr.error){try{await c.storage.from('atlas-media').remove([path])}catch(_e){};throw new Error(pr.error.message||'не удалось сохранить фото чата')}
+      }catch(err){photoError=err&&err.message?err.message:'не удалось загрузить фото'}
+    }
+    btn.disabled=false;panelMode='chat';replyTargetId='';await loadData(activeChatId);
+    if(photoError)setTimeout(function(){alert('чат создан, но фото не загрузилось: '+photoError)},0);
   }
 
   async function saveManage(form){
@@ -23468,6 +23569,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   },true);
   document.addEventListener('change',function(e){
     if(e.target&&e.target.id==='atlasDirectFileInput'){try{addPendingFiles(e.target.files)}catch(err){setMessageStatus(err.message||'не удалось добавить файл','error')}finally{e.target.value=''}return}
+    if(e.target&&e.target.id==='atlasDirectChatPhotoInput'){var photo=e.target.files&&e.target.files[0];e.target.value='';if(photo)replaceChatPhoto(photo);return}
+    if(e.target&&e.target.id==='atlasDirectCreateChatPhoto'){var f=e.target.files&&e.target.files[0];if(!f)return;try{validateChatPhoto(f);var box=e.target.closest('.atlas-direct-chat-photo-box'),preview=box&&box.querySelector('.atlas-direct-chat-photo-preview');if(preview){var u=URL.createObjectURL(f);preview.innerHTML='<img src="'+esc(u)+'" alt="">'}}catch(err){e.target.value='';setStatus(err.message,'error')}return}
     var ch=active(),s=ch?stateFor(ch):null;if(s&&e.target&&e.target.id==='atlasDirectComposerPersona'){trackTyping(false);s.persona=e.target.value||''}
   },true);
   document.addEventListener('keydown',function(e){if(e.target&&e.target.id==='atlasDirectMessageBody'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();var f=e.target.closest('form');if(f&&typeof f.requestSubmit==='function')f.requestSubmit()}},true);
@@ -23486,6 +23589,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var removeFile=e.target.closest&&e.target.closest('[data-direct-remove-file]');if(removeFile){var ix=Number(removeFile.getAttribute('data-direct-remove-file'));if(Number.isInteger(ix)&&ix>=0){pendingFiles.splice(ix,1);var pp=document.getElementById('atlasDirectPendingFiles');if(pp)pp.innerHTML=pendingFilesHtml()}return}
     var chat=e.target.closest&&e.target.closest('[data-direct-chat]');if(chat){openChat(chat.getAttribute('data-direct-chat')||'');return}
     var manage=e.target.closest&&e.target.closest('[data-direct-manage]');if(manage){participantPanelOpen=false;panelMode='manage';shell();return}
+    var removePhoto=e.target.closest&&e.target.closest('[data-direct-remove-chat-photo]');if(removePhoto&&!removePhoto.disabled){removeChatPhoto();return}
     var arch=e.target.closest&&e.target.closest('[data-direct-archive]');if(arch){toggleArchive(arch.getAttribute('data-direct-archive'));return}
     var add=e.target.closest&&e.target.closest('[data-direct-add-member]');if(add){addMember(add.getAttribute('data-direct-add-member'));return}
     var rem=e.target.closest&&e.target.closest('[data-direct-remove-member]');if(rem){removeMember(rem.getAttribute('data-direct-remove-member'));return}
