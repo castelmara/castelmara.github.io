@@ -926,8 +926,8 @@
     "name": "ariella de ville",
     "player": "aurora williams",
     "face": "dua lipa",
-    "category": "castelmara",
-    "existing": "new",
+    "category": "estudiantes",
+    "existing": "full",
     "image": "assets/characters/ariella-de-ville.jpg",
     "nameRu": "ариэлла де вилль",
     "photoCredit": "assets/characters/credits.html#ariella-de-ville"
@@ -937,8 +937,8 @@
     "name": "nicolás serrano",
     "player": "aurora williams",
     "face": "josh heuston",
-    "category": "castelmara",
-    "existing": "new",
+    "category": "estudiantes",
+    "existing": "full",
     "image": "assets/characters/nicolas-serrano.jpg",
     "nameRu": "николас серрано",
     "photoCredit": "assets/characters/credits.html#nicolas-serrano"
@@ -948,8 +948,8 @@
     "name": "william de bianco",
     "player": "sofia shtangey",
     "face": "joe keery",
-    "category": "castelmara",
-    "existing": "new",
+    "category": "estudiantes",
+    "existing": "full",
     "image": "assets/characters/william-de-bianco.png",
     "nameRu": "уильям де бьянко",
     "photoCredit": "assets/characters/credits.html#william-de-bianco"
@@ -959,8 +959,8 @@
     "name": "francisco ramos",
     "player": "sofia shtangey",
     "face": "marc guiu",
-    "category": "castelmara",
-    "existing": "new",
+    "category": "estudiantes",
+    "existing": "full",
     "image": "assets/characters/francisco-ramos.jpg",
     "nameRu": "франсиско рамос",
     "photoCredit": "assets/characters/credits.html#francisco-ramos"
@@ -990,9 +990,9 @@
     "name": "mariella alcaraz",
     "player": "noah arden",
     "face": "christina nadin",
-    "category": "entrenadores",
+    "category": "castelmara",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3030-6565-4664-b632-383339326630/mariella_alcaraz.jpg",
+    "image": "assets/characters/mariella-alcaraz.jpg",
     "nameRu": "мариэлла алькарас"
   },
   {
@@ -1021,11 +1021,31 @@
     "name": "bianca solís",
     "player": "appealing antagonist",
     "face": "florboncuero",
-    "category": "entrenadores",
+    "category": "castelmara",
     "existing": "new",
     "image": "assets/characters/bianca-solis.jpg",
     "nameRu": "бьянка солис",
     "photoCredit": "assets/characters/credits.html#bianca-solis"
+  },
+  {
+    "id": "siena-sinclair",
+    "name": "siena amelie sinclair",
+    "player": "aurora_williams",
+    "face": "tara tornquist",
+    "category": "estudiantes",
+    "existing": "full",
+    "image": "assets/characters/siena-sinclair.jpg",
+    "nameRu": "сиена амели синклер"
+  },
+  {
+    "id": "tello-de-giron",
+    "name": "tello de girón",
+    "player": "id543623073",
+    "face": "damian hardung",
+    "category": "estudiantes",
+    "existing": "full",
+    "image": "assets/characters/tello-de-giron.jpg",
+    "nameRu": "тельо де хирон"
   }
 ];
   window.ATLAS_CHARACTER_NAMES_RU = {
@@ -1179,7 +1199,9 @@
   "francisco-ramos": "франсиско рамос",
   "marcus-perez": "маркус перес",
   "mariella-alcaraz": "мариэлла алькарас",
-  "bianca-solis": "бьянка солис"
+  "bianca-solis": "бьянка солис",
+  "siena-sinclair": "сиена амели синклер",
+  "tello-de-giron": "тельо де хирон"
 };
   window.ATLAS_CHARACTER_DIRECTORY = records;
   window.ATLAS_CARD_ONLY = window.ATLAS_CARD_ONLY || [];

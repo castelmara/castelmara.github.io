@@ -1018,8 +1018,8 @@ level: "профессионал",
                     "birthDate": "хх.хх.2004",
                     "placeOfBirth": "мадрид, испания.",
                     "course": "2 курс",
-                    faculty: "факультет спортивной аналитики, управления, права и агентской деятельности",
-                    department: "кафедра спортивного права и агентской деятельности",
+                    faculty: "факультет спортивной аналитики",
+                    department: "кафедра спортивной аналитики и статистики",
                     "specialization": "капитан группы поддержки",
                     "team": "«castelmara foxes»",
                     "level": "профессионал",
@@ -1063,7 +1063,7 @@ level: "профессионал",
                     "text": "ответственная, дипломатичная и очень социальная девушка. умеет нравиться людям и быстро находить общий язык практически с любым человеком. предпочитает избегать открытых конфликтов, даже если понимает, что иногда молчание может оказаться неправильным решением."
                 },
                 "motivation": {
-                    "text": ""
+                    "text": "седрик наблюдательный, собранный и уверенный в собственных выводах. он быстро замечает чужие ошибки, запоминает мелочи и редко меняет мнение без веской причины. говорит прямо и не особенно заботится о том, насколько приятно прозвучат его слова. он может быть резким, снисходительным и неприятным в споре, но редко повышает голос или устраивает открытые конфликты. с близкими седрик внимательный и заботливый: он запоминает расписания, замечает перемены в настроении и приносит нужные вещи раньше, чем его успевают попросить, но о собственных чувствах говорит тяжело. именно рядом с важными людьми его привычная уверенность чаще всего даёт сбой."
                 },
                 "extra": {
                     "text": "причина получения письма: причина почти такая же, как и у оливера – рамона имела власть и не воспользовалась ею, предпочитая закрывать глаза на происходящее. дурной пример заразительный, как оказалось."
@@ -1161,7 +1161,7 @@ level: "профессионал",
                     "team": "группа поддержки «castelmara foxes»",
                     "level": "профессионал",
                     "status": "не активен",
-                    "atlasNickname": "—",
+                    "atlasNickname": "cedjoy",
                     "socialNickname": "",
                     "faceclaim": "dasha taran."
                 },
@@ -1200,7 +1200,7 @@ level: "профессионал",
                     "text": "добрая, чувствительная и очень зависимая от мнения окружающих девушка. старается избегать конфликтов и часто выбирает самый безопасный путь, даже если понимает, что поступает неправильно. тяжело переживает чувство вины и редко прощает собственные ошибки."
                 },
                 "motivation": {
-                    "text": ""
+                    "text": "— после перелома бедро иногда болит после долгой ходьбы, резкой смены погоды или слишком большой нагрузки, и седрик терпеть не может, когда ему предлагают помощь без просьбы.\n— он знает, кто его отец, и несколько лет назад сам нашёл кендрика через старые документы марчеллы и открытые источники, но так и не попытался выйти на связь.\n— седрик до сих пор хранит форму из лицея, командные фотографии и медаль с последнего турнира перед травмой.\n— день рождения он не отмечает: дата его рождения совпадает с днём смерти марчеллы.\n— в личной жизни седрик давно запутался в чувствах к лучшему другу и к девушке, которая находится рядом с ним."
                 },
                 "extra": {
                     "text": "причина получения письма: для мигеля поступок евы – предательство. в своём электронном дневнике он часто упоминал о том, что скучает по их дружбе. со времён поступления в академию тон постов изменился на обвиняющий. эмджею было грустно из-за того, что эвелина ничего не говорила, когда слышала как давид подшучивает над ним, и верила слухом про отца и покупку места в составе.\n\nполучила письмо с намёком на чувство вины и обвинениями, что дружба последние годы была односторонней."
@@ -1993,7 +1993,6 @@ level: "профессионал",
 ];
 
   const ATLAS_CHARACTER_DATA_NEW_CANONS_ESTUDIANTES = [
-    
     {
         "id": "cedric-joy",
         "type": "student_academic",
@@ -2003,7 +2002,7 @@ level: "профессионал",
         "cardSubtitle": "канон",
         "fullName": "седрик джой",
         "originalName": "cedric joy",
-        "subtitle": "студент последнего курса / агентская деятельность",
+        "subtitle": "студент 4 курса / спортивная аналитика",
         "category": "estudiantes",
         "role": "студент",
         "cardImage": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
@@ -2011,8 +2010,10 @@ level: "профессионал",
         "banner": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
         "tags": [
             "estudiantes",
-            "agency",
-            "agencia deportiva"
+            "analytics",
+            "statistics",
+            "scouting",
+            "volleyball"
         ],
         "card": {
             "image": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
@@ -2028,15 +2029,15 @@ level: "профессионал",
                     "fullName": "седрик джой",
                     "originalName": "cedric joy",
                     "nicknames": "—",
-                    "birthDate": "—",
-                    "placeOfBirth": "—",
-                    "course": "последний курс",
-                    faculty: "факультет спортивной аналитики, управления, права и агентской деятельности",
-                    department: "кафедра спортивного права и агентской деятельности",
-"level": "—",
+                    "birthDate": "26.04.2002",
+                    "placeOfBirth": "кастельмара, испания",
+                    "course": "4 курс",
+                    "faculty": "факультет спортивной аналитики",
+                    "department": "кафедра спортивной аналитики и статистики",
+                    "level": "профессионал",
                     "status": "не активен",
-                    "atlasNickname": "—",
-                    "socialNickname": "—",
+                    "atlasNickname": "cedjoy",
+                    "socialNickname": "enjoymydihh",
                     "faceclaim": "benjamin voisin",
                     "relation": "—"
                 },
@@ -2046,11 +2047,11 @@ level: "профессионал",
                     "items": [
                         {
                             "label": "харизма",
-                            "value": "5/10"
+                            "value": "7/10"
                         },
                         {
                             "label": "дисциплина",
-                            "value": "5/10"
+                            "value": "8/10"
                         },
                         {
                             "label": "социальность",
@@ -2058,27 +2059,27 @@ level: "профессионал",
                         },
                         {
                             "label": "амбиции",
-                            "value": "5/10"
+                            "value": "9/10"
                         },
                         {
                             "label": "стрессоустойчивость",
-                            "value": "5/10"
+                            "value": "6/10"
                         }
                     ]
                 }
             },
             "dossier": {
                 "biography": {
-                    "text": "седрик джой пришёл в скаутинг после того, как окончательно понял: его собственная спортивная история не станет той, о которой мечтали дома. раньше он играл достаточно хорошо, чтобы вокруг него держались ожидания, но недостаточно стабильно, чтобы эти ожидания выдержать. травма только ускорила то, что и так назревало. первое время седрик воспринимал скаутинг как запасной выход, почти как признание поражения, но потом обнаружил, что смотреть на игру со стороны ему удаётся лучше, чем быть внутри неё.\n\nк последнему курсу седрик стал человеком, к чьим отчётам прислушиваются даже те, кто недолюбливает его тон. он пишет прямо, иногда неприятно, без попытки спасти чужую самооценку красивыми словами. кастельмара нужна ему как стартовая площадка: он хочет уйти отсюда не с абстрактным дипломом, а с контактами, рекомендациями и репутацией человека, который редко ошибается в прогнозах. седрик не романтизирует спорт. для него игрок — это потенциал, риск, тело, характер, окружение и цифры."
+                    "text": "седрик джой родился и вырос в кастельмаре. имя его деда, аракеля джоя, в городе знали задолго до появления самого седрика: в конце восьмидесятых и начале девяностых аракель играл форвардом за \"валенсию\" и оставил после себя репутацию большого игрока. сам седрик деда никогда не видел — тот умер ещё до его рождения, — но с детства жил рядом с чужими воспоминаниями, газетными вырезками и ожиданиями, которые окружающие автоматически связывали с фамилией джой.\n\nматери седрик тоже не знал. марчелла, единственная дочь аракеля и мервии, уехала в норвегию, там забеременела, а затем вернулась в кастельмару одна, после того как кендрик — отец ребёнка — просто исчез. марчелла умерла в день родов, и седрика вырастила бабушка. мервия не была особенно мягкой, но именно она стала для него домом, опорой и единственным по-настоящему близким человеком. она не делала из внука продолжение семейной легенды и не заставляла его идти в футбол — поэтому, когда седрик выбрал волейбол, никто дома не спорил.\n\nв шестнадцать лет седрик попал в лицей кастельмары на волейбольное направление. он не был безоговорочным талантом, но держался достаточно уверенно, чтобы рассчитывать на дальнейший рост. всё изменил неудачный перелом бедра на одном из выездных соревнований. операция, реабилитация и постоянные попытки вернуться затянулись, а потом стало очевидно, что прежние нагрузки нога больше не выдержит. уход из спорта дался ему тяжелее самой травмы: вместе с площадкой он потерял привычную цель и ощущение, что его место в спорте определено заранее.\n\nименно после травмы седрик впервые всерьёз переключился на спортивную аналитику. сначала он просто разбирал игры знакомых, спорил с чужими оценками и делал пометки для себя, но быстро понял, что умеет видеть больше, чем казалось. после окончания лицея он остался в кастельмаре и поступил на факультет спортивной аналитики, выбрав кафедру спортивной аналитики и статистики. к четвёртому курсу к его мнению начали прислушиваться даже те, кого раздражает его тон: седрик пишет прямо, без попытки сделать выводы мягче, и рассматривает игрока не только как набор цифр, но и как сочетание тела, характера, дисциплины, окружения и потенциала."
                 },
                 "motivation": {
-                    "text": "седрик хочет выйти из кастельмары с репутацией человека, чьи прогнозы стоят внимания. для него академия — не финальная точка, а вход в большой спортивный рынок."
+                    "text": "седрик хочет покинуть кастельмару с репутацией человека, к чьим прогнозам действительно прислушиваются. ему недостаточно просто получить диплом: он нарабатывает связи, участвует в реальных разборах и постепенно подводит себя к профессиональному скаутингу. седрик мечтает сотрудничать с крупными клубами, влиять на трансферы и однажды оказаться в положении, где именно его мнение может решить, заметят игрока или нет."
                 },
                 "personality": {
-                    "text": ""
+                    "text": "седрик наблюдательный, собранный и уверенный в собственных выводах. он быстро замечает чужие ошибки, запоминает мелочи и редко меняет мнение без веской причины. говорит прямо и не особенно заботится о том, насколько приятно прозвучат его слова. он может быть резким, снисходительным и неприятным в споре, но редко повышает голос или устраивает открытые конфликты. с близкими седрик внимательный и заботливый: он запоминает расписания, замечает перемены в настроении и приносит нужные вещи раньше, чем его успевают попросить, но о собственных чувствах говорит тяжело. именно рядом с важными людьми его привычная уверенность чаще всего даёт сбой."
                 },
                 "extra": {
-                    "text": ""
+                    "text": "— после перелома бедро иногда болит после долгой ходьбы, резкой смены погоды или слишком большой нагрузки, и седрик терпеть не может, когда ему предлагают помощь без просьбы.\n— он знает, кто его отец, и несколько лет назад сам нашёл кендрика через старые документы марчеллы и открытые источники, но так и не попытался выйти на связь.\n— седрик до сих пор хранит форму из лицея, командные фотографии и медаль с последнего турнира перед травмой.\n— день рождения он не отмечает: дата его рождения совпадает с днём смерти марчеллы.\n— в личной жизни седрик давно запутался в чувствах к лучшему другу и к девушке, которая находится рядом с ним."
                 }
             },
             "relations": {}
@@ -2088,18 +2089,9 @@ level: "профессионал",
             "name": "",
             "url": ""
         }
-    },
-    
-    
-    
-    
-    
-    
+    }
 
-
-    
-    ];
-
+  ];
   window.ATLAS_CHARACTERS = window.ATLAS_CHARACTERS.filter(function(character) {
     return !character || ATLAS_CHARACTER_DATA_NEW_CANONS_ESTUDIANTES_IDS.indexOf(character.id) === -1;
   });
@@ -2225,10 +2217,10 @@ level: "профессионал",
 
     {
           id: "mariella-alcaraz",
-          category: "estudiantes",
+          category: "castelmara",
           name: "Mariella Alcaraz",
           player: "noah arden",
-          image: "https://static.tildacdn.com/tild3030-6565-4664-b632-383339326630/mariella_alcaraz.jpg"
+          image: "assets/characters/mariella-alcaraz.jpg"
         },
 
     {
@@ -2481,6 +2473,295 @@ level: "профессионал",
 
 
 
+
+/* ATLAS: новые полные профили студентов — 23.09.2026. */
+(function () {
+  var ids = [
+    "ariella-de-ville",
+    "nicolas-serrano",
+    "william-de-bianco",
+    "francisco-ramos",
+    "siena-sinclair",
+    "tello-de-giron"
+  ];
+
+  var profiles = [
+    {
+      id: "ariella-de-ville",
+      type: "student_sport",
+      status: "active",
+      player: { id: "aurora_williams", name: "эля", url: "https://vk.com/aurora_williams" },
+      name: "Ариэлла Алексис де Вилль",
+      cardName: "Ariella de Ville",
+      cardSubtitle: "",
+      profileTitle: "Ariella Alexis de Ville",
+      fullName: "Ариэлла Алексис де Вилль",
+      originalName: "Ariella Alexis de Ville",
+      subtitle: "студентка 2 курса / группа поддержки Castelmara Foxes",
+      category: "estudiantes",
+      role: "студентка",
+      cardImage: "assets/characters/ariella-de-ville.jpg",
+      avatar: "assets/characters/ariella-de-ville.jpg",
+      banner: "assets/characters/ariella-de-ville.jpg",
+      tags: ["estudiantes", "спортсмен", "группа поддержки"],
+      card: { image: "assets/characters/ariella-de-ville.jpg", tag: "2 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/ariella-de-ville.jpg",
+        avatar: "assets/characters/ariella-de-ville.jpg",
+        overview: { mainInfo: {
+          fullName: "Ариэлла Алексис де Вилль",
+          originalName: "Ariella Alexis de Ville",
+          age: "20 лет",
+          course: "2 курс",
+          faculty: "факультет спортивной аналитики, управления, права и агентской деятельности",
+          department: "кафедра спортивного права и агентской деятельности",
+          specialization: "группа поддержки",
+          team: "группа поддержки «Castelmara Foxes»",
+          level: "студентка-спортсменка",
+          status: "активный",
+          atlasNickname: "deville",
+          socialNickname: "lexa",
+          faceclaim: "Dua Lipa"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/4rWhFTgAL" },
+          { kicker: "vk", label: "#ariella_deville@casadelartepp", url: "https://vk.ru/casadelartepp/ariella_deville" },
+          { kicker: "анкета", label: "ariella_alexis_de ville.docx", url: "https://vk.ru/doc615505386_705285055?hash=o2GJrzRiGo5VsKuhk7Tjc2QofNlGZ0yJjobozhiDSlX&dl=ZzvAhFy3gRUN8PE3mKzfksqfzSj5Kkci6Tbz8ZdZUhg" }
+        ]
+      }
+    },
+    {
+      id: "nicolas-serrano",
+      type: "student_sport",
+      status: "active",
+      player: { id: "aurora_williams", name: "эля", url: "https://vk.com/aurora_williams" },
+      name: "Николас Хавьер Серрано",
+      cardName: "Nicolás Serrano",
+      cardSubtitle: "",
+      profileTitle: "Nicolás Javier Serrano",
+      fullName: "Николас Хавьер Серрано",
+      originalName: "Nicolás Javier Serrano",
+      subtitle: "студент 3 курса / Castelmara Wolves #77",
+      category: "estudiantes",
+      role: "студент-спортсмен",
+      cardImage: "assets/characters/nicolas-serrano.jpg",
+      avatar: "assets/characters/nicolas-serrano.jpg",
+      banner: "assets/characters/nicolas-serrano.jpg",
+      tags: ["estudiantes", "спортсмен", "хоккей", "Castelmara Wolves"],
+      card: { image: "assets/characters/nicolas-serrano.jpg", tag: "3 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/nicolas-serrano.jpg",
+        avatar: "assets/characters/nicolas-serrano.jpg",
+        overview: { mainInfo: {
+          fullName: "Николас Хавьер Серрано",
+          originalName: "Nicolás Javier Serrano",
+          age: "21 год",
+          course: "3 курс",
+          faculty: "факультет игровых видов спорта",
+          department: "кафедра хоккея",
+          team: "Castelmara Wolves, центральный нападающий, №77",
+          level: "студент-спортсмен",
+          status: "активный",
+          atlasNickname: "nick.serrano",
+          socialNickname: "nclsr",
+          faceclaim: "Josh Heuston"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/4DzEiVUXS" },
+          { kicker: "vk", label: "#nicolas_serrano@casadelartepp", url: "https://vk.ru/casadelartepp/nicolas_serrano" }
+        ]
+      }
+    },
+    {
+      id: "william-de-bianco",
+      type: "student_sport",
+      status: "active",
+      player: { id: "id181376816", name: "софа", url: "https://vk.com/id181376816" },
+      name: "Уильям Луис де Бьянко",
+      cardName: "William de Bianco",
+      cardSubtitle: "",
+      profileTitle: "William Louis de Bianco",
+      fullName: "Уильям Луис де Бьянко",
+      originalName: "William Louis de Bianco",
+      subtitle: "студент 4 курса / Castelmara Wall #18",
+      category: "estudiantes",
+      role: "студент-спортсмен",
+      cardImage: "assets/characters/william-de-bianco.png",
+      avatar: "assets/characters/william-de-bianco.png",
+      banner: "assets/characters/william-de-bianco.png",
+      tags: ["estudiantes", "спортсмен", "баскетбол", "Castelmara Wall"],
+      card: { image: "assets/characters/william-de-bianco.png", tag: "4 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/william-de-bianco.png",
+        avatar: "assets/characters/william-de-bianco.png",
+        overview: { mainInfo: {
+          fullName: "Уильям Луис де Бьянко",
+          originalName: "William Louis de Bianco",
+          age: "22 года",
+          course: "4 курс",
+          faculty: "факультет игровых видов спорта",
+          department: "кафедра баскетбола",
+          team: "Castelmara Wall, атакующий защитник, №18",
+          level: "студент-спортсмен",
+          status: "активный",
+          atlasNickname: "wldb18",
+          socialNickname: "willinthewall",
+          faceclaim: "Joe Keery"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/5vluVckXk" },
+          { kicker: "vk", label: "#william_debianco@casadelartepp", url: "https://vk.ru/casadelartepp/william_debianco" }
+        ]
+      }
+    },
+    {
+      id: "francisco-ramos",
+      type: "student_sport",
+      status: "active",
+      player: { id: "id181376816", name: "софа", url: "https://vk.com/id181376816" },
+      name: "Франсиско Джулиан Рамос",
+      cardName: "Francisco Ramos",
+      cardSubtitle: "",
+      profileTitle: "Francisco Julián Ramos",
+      fullName: "Франсиско Джулиан Рамос",
+      originalName: "Francisco Julián Ramos",
+      subtitle: "студент 3 курса / Castelmara Hellhounds #13",
+      category: "estudiantes",
+      role: "студент-спортсмен",
+      cardImage: "assets/characters/francisco-ramos.jpg",
+      avatar: "assets/characters/francisco-ramos.jpg",
+      banner: "assets/characters/francisco-ramos.jpg",
+      tags: ["estudiantes", "спортсмен", "футбол", "Castelmara Hellhounds"],
+      card: { image: "assets/characters/francisco-ramos.jpg", tag: "3 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/francisco-ramos.jpg",
+        avatar: "assets/characters/francisco-ramos.jpg",
+        overview: { mainInfo: {
+          fullName: "Франсиско Джулиан Рамос",
+          originalName: "Francisco Julián Ramos",
+          age: "21 год",
+          course: "3 курс",
+          faculty: "факультет игровых видов спорта",
+          department: "кафедра футбола",
+          team: "Castelmara Hellhounds, центральный защитник, №13",
+          level: "студент-спортсмен",
+          status: "активный",
+          atlasNickname: "fr.julian13",
+          socialNickname: "og_kjchico",
+          faceclaim: "Marc Guiu"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/7nI9wPxA2" },
+          { kicker: "vk", label: "#francisco_ramos@casadelartepp", url: "https://vk.ru/casadelartepp/francisco_ramos" },
+          { kicker: "анкета", label: "франсиско рамос.docx", url: "https://vk.ru/doc181376816_712112206?hash=ROVr7cS4jtmLIRHgr481ARyTb956XboksxHRENNmeA4&dl=MhzkYoIWHClLGjQMG7vcZzVU99J0DwUyByf9uEe42z8" }
+        ]
+      }
+    },
+    {
+      id: "siena-sinclair",
+      type: "student_sport",
+      status: "active",
+      player: { id: "aurora_williams", name: "эля", url: "https://vk.com/aurora_williams" },
+      name: "Сиена Амели Синклер",
+      cardName: "Siena Sinclair",
+      cardSubtitle: "",
+      profileTitle: "Siena Amelie Sinclair",
+      fullName: "Сиена Амели Синклер",
+      originalName: "Siena Amelie Sinclair",
+      subtitle: "студентка 2 курса / большой теннис",
+      category: "estudiantes",
+      role: "студентка-спортсменка",
+      cardImage: "assets/characters/siena-sinclair.jpg",
+      avatar: "assets/characters/siena-sinclair.jpg",
+      banner: "assets/characters/siena-sinclair.jpg",
+      tags: ["estudiantes", "спортсмен", "теннис"],
+      card: { image: "assets/characters/siena-sinclair.jpg", tag: "2 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/siena-sinclair.jpg",
+        avatar: "assets/characters/siena-sinclair.jpg",
+        overview: { mainInfo: {
+          fullName: "Сиена Амели Синклер",
+          originalName: "Siena Amelie Sinclair",
+          age: "19 лет",
+          course: "2 курс",
+          faculty: "факультет индивидуальных видов спорта",
+          department: "кафедра тенниса",
+          team: "большой теннис",
+          level: "студентка-спортсменка",
+          status: "активный",
+          atlasNickname: "siena.sinclair",
+          socialNickname: "sienair",
+          faceclaim: "Tara Tornquist"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/7rOYob047" },
+          { kicker: "vk", label: "#siena_sinclair@casadelartepp", url: "https://vk.ru/casadelartepp/siena_sinclair" }
+        ]
+      }
+    },
+    {
+      id: "tello-de-giron",
+      type: "student_sport",
+      status: "active",
+      player: { id: "id543623073", name: "стар", url: "https://vk.com/id543623073" },
+      name: "Тельо де Хирон",
+      cardName: "Tello de Girón",
+      cardSubtitle: "",
+      profileTitle: "Tello de Girón",
+      fullName: "Тельо де Хирон",
+      originalName: "Tello de Girón",
+      subtitle: "студент 3 курса / Castelmara Sunbirds #9",
+      category: "estudiantes",
+      role: "студент-спортсмен",
+      cardImage: "assets/characters/tello-de-giron.jpg",
+      avatar: "assets/characters/tello-de-giron.jpg",
+      banner: "assets/characters/tello-de-giron.jpg",
+      tags: ["estudiantes", "спортсмен", "волейбол", "Castelmara Sunbirds"],
+      card: { image: "assets/characters/tello-de-giron.jpg", tag: "3 курс", statusLabel: "активный", short: "" },
+      profile: {
+        heroImage: "assets/characters/tello-de-giron.jpg",
+        avatar: "assets/characters/tello-de-giron.jpg",
+        overview: { mainInfo: {
+          fullName: "Тельо де Хирон",
+          originalName: "Tello de Girón",
+          age: "21 год",
+          course: "3 курс",
+          faculty: "факультет игровых видов спорта",
+          department: "кафедра волейбола",
+          team: "Castelmara Sunbirds, капитан / диагональный, №9",
+          level: "студент-спортсмен",
+          status: "активный",
+          atlasNickname: "tellogiron",
+          socialNickname: "tellobird",
+          faceclaim: "Damian Hardung"
+        }},
+        dossier: {}, relations: {},
+        externalLinks: [
+          { kicker: "pinterest", label: "референсы", url: "https://pin.it/2IfMa0sf6" }
+        ]
+      }
+    }
+  ];
+
+  window.ATLAS_CHARACTERS = (window.ATLAS_CHARACTERS || []).filter(function (character) {
+    return !character || ids.indexOf(character.id) === -1;
+  }).concat(profiles);
+
+  window.ATLAS_CARD_ONLY = (window.ATLAS_CARD_ONLY || []).filter(function (character) {
+    return !character || ids.indexOf(character.id) === -1;
+  });
+
+  window.dispatchEvent(new CustomEvent("atlasCharactersReady", {
+    detail: { characters: window.ATLAS_CHARACTERS, added: profiles, source: "student-profiles-20260923" }
+  }));
+})();
+
+
 /* ATLAS students: hero tag normalization v2.
    Game sports: department + team.
    Non-game students: department only.
@@ -2546,13 +2827,19 @@ level: "профессионал",
     "oliver-brown": "«castelmara foxes», капитан / атакующий полузащитник",
     "blaise-lancer": "«castelmara guards», центральный нападающий",
     "pablo-de-longa": "«castelmara guards», вратарь",
-    "david-capurro": "«castelmara foxes», центральный защитник"
+    "david-capurro": "«castelmara foxes», центральный защитник",
+    "nicolas-serrano": "Castelmara Wolves, центральный нападающий, №77",
+    "william-de-bianco": "Castelmara Wall, атакующий защитник, №18",
+    "francisco-ramos": "Castelmara Hellhounds, центральный защитник, №13",
+    "siena-sinclair": "большой теннис",
+    "tello-de-giron": "Castelmara Sunbirds, капитан / диагональный, №9"
   };
 
   var CHEER_TEAM_LABELS = {
     "ramona-martina-suarez": "КАПИТАН группы поддержки «castelmara foxes»",
     "evelina-de-la-rosa": "группа поддержки «castelmara foxes»",
-    "alexa-soriano": "группа поддержки «castelmara foxes»"
+    "alexa-soriano": "группа поддержки «castelmara foxes»",
+    "ariella-de-ville": "группа поддержки «Castelmara Foxes»"
   };
 
   var CHEER_IDS = {

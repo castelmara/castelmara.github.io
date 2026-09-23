@@ -403,9 +403,9 @@
     "subtitle": "ассистент тренера футбольной команды «castelmara hellhounds»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "diego-caceres.png",
-    "avatar": "diego-caceres.png",
-    "banner": "diego-caceres.png",
+    "cardImage": "assets/characters/diego-caceres.jpg",
+    "avatar": "assets/characters/diego-caceres.jpg",
+    "banner": "assets/characters/diego-caceres.jpg",
     "tags": [
       "adult",
       "coach",
@@ -413,14 +413,14 @@
       "castelmara hellhounds"
     ],
     "card": {
-      "image": "diego-caceres.png",
+      "image": "assets/characters/diego-caceres.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
     },
     "profile": {
-      "heroImage": "diego-caceres.png",
-      "avatar": "diego-caceres.png",
+      "heroImage": "assets/characters/diego-caceres.jpg",
+      "avatar": "assets/characters/diego-caceres.jpg",
       "overview": {
         "mainInfo": {
           "fullName": "Диего Касерес",
@@ -4845,7 +4845,7 @@
     "subtitle": "тренер по спортивной гимнастике (женская), кафедра гимнастики и акробатики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "carina-escobar.webp",
+    "cardImage": "assets/characters/carina-escobar.webp",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4855,7 +4855,7 @@
       "кафедра гимнастики и акробатики"
     ],
     "card": {
-      "image": "carina-escobar.webp",
+      "image": "assets/characters/carina-escobar.webp",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
