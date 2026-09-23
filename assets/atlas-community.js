@@ -11,10 +11,11 @@
     return base.concat(rosterCatalog.filter(c => !seen.has(c.id)));
   };
   const name = c => c?.fullName || c?.name || c?.cardName || c?.id || '';
+  const rosterName = c => window.ATLAS_CHARACTER_NAMES_RU?.[c?.id] || c?.nameRu || name(c);
   const groups = {family:'семья',friends:'друзья',love:'любовь',tension:'сложные отношения',plot:'сюжетные связи',colleagues:'коллеги',students:'студенты'};
   const link = p => p ? '<button type="button" class="atlas-community-link" data-community-player="'+esc(p.id)+'">'+esc(p.display_name || p.nickname)+' · @'+esc(p.nickname)+'</button>' : '<span>игрок не привязан</span>';
   let owners = [], profiles = [], ownersAt = 0, ownersPending = null, ownerEpoch = 0;
-  let teams = [], members = [], rosterAllowed = false, editor = null, modalReturnFocus = null;
+  let teams = [], members = [], rosterAllowed = false, rosterAllowedFor = null, rosterAccessVersion = 0, editor = null, modalReturnFocus = null;
   const custom = new Map();
   const pendingCustom = new Map();
 
@@ -32,7 +33,7 @@
   function errorText(err) {
     if (err?.code === '23505') return 'Запись уже изменена или капитан этой команды уже назначен. Обновите состав и проверьте данные.';
     if (err?.code === '42501') return 'Нет прав на сохранение. Проверьте, что вы вошли в нужный аккаунт.';
-    if (err?.code === 'PGRST205' || err?.code === '42P01') return 'Обновление базы ещё не установлено. Обратитесь к администратору.';
+    if (err?.code === 'PGRST205' || err?.code === 'PGRST202' || err?.code === '42P01') return 'Обновление базы ещё не установлено. Обратитесь к администратору.';
     return err?.message || 'Не удалось сохранить изменения. Попробуйте ещё раз.';
   }
   async function loadOwners(force = false) {
@@ -54,8 +55,8 @@
     return profiles.find(p => p.id === owners.find(o => o.character_id === id)?.user_id);
   }
   function decorateCards() {
-    document.querySelectorAll('button.atlas-entrenador-card').forEach(card => {
-      const p = owner(card.dataset.atlasEntrenadorId);
+    document.querySelectorAll('.atlas-entrenador-card').forEach(card => {
+      const p = owner(card.dataset.atlasEntrenadorId || card.dataset.communityCharacter);
       let wrap = card.closest('.atlas-community-coach-wrap');
       if (!wrap && p) { wrap=document.createElement('div'); wrap.className='atlas-community-coach-wrap'; card.before(wrap); wrap.appendChild(card); }
       if (!wrap) return;
@@ -65,6 +66,7 @@
       if (tag.dataset.ownerKey !== key) { tag.innerHTML=p?link(p):''; tag.dataset.ownerKey=key; }
     });
     document.querySelectorAll('[data-community-character], .atlas-card-only-wrapper').forEach(card => {
+      if (card.classList.contains('atlas-entrenador-card')) return;
       const id = card.dataset.communityCharacter || card.id.replace(/^card-only-/, '');
       const p = owner(id);
       const subtitle = card.querySelector('.atlas-character-card-text p');
@@ -240,32 +242,58 @@
     }
   }
 
+  function renderRosterActions() {
+    const profile = window.ATLAS_CURRENT_PROFILE;
+    const allowed = !!uid() && (rosterAllowedFor === uid() ? rosterAllowed : profile?.id === uid() && profile.role === 'superadmin');
+    ['atlasRosterHeroActions','atlasRosterToolbar'].forEach(id => {
+      const toolbar = document.getElementById(id); if (!toolbar) return;
+      toolbar.hidden = !allowed;
+      if (allowed && !toolbar.querySelector('[data-community-roster-edit]')) toolbar.innerHTML = '<button type="button" class="atlas-community-edit" data-community-roster-edit>редактировать составы и группы поддержки</button>';
+      if (!allowed) toolbar.innerHTML = '';
+    });
+  }
+  async function refreshRosterAccess() {
+    const startedFor = uid(), version = ++rosterAccessVersion;
+    if (rosterAllowedFor !== startedFor) { rosterAllowed = false; rosterAllowedFor = null; }
+    renderRosterActions();
+    if (!client()) return false;
+    const allowed = await read(client().rpc('atlas_can_manage_rosters'));
+    if (uid() !== startedFor || version !== rosterAccessVersion) return false;
+    rosterAllowed = allowed === true; rosterAllowedFor = startedFor;
+    renderRosterActions();
+    return rosterAllowed;
+  }
+  window.atlasRenderEquipos = function () {
+    renderRosterActions();
+    refreshRosterAccess().catch(() => {});
+  };
   window.atlasLoadRoster = async function () {
     if (!client()) throw new Error('Нет подключения к ATLAS.');
     const startedFor = uid();
     const result = await Promise.all([
       read(client().from('atlas_teams').select('*').order('name')),
       read(client().from('atlas_team_members').select('*')),
-      read(client().rpc('atlas_can_manage_rosters')),
+      refreshRosterAccess(),
       read(client().from('atlas_character_catalog').select('id,name').eq('active',true))
     ]);
     if (uid() !== startedFor) throw new Error('Аккаунт изменился. Обновите составы.');
-    teams = result[0] || []; members = result[1] || []; rosterAllowed = result[2] === true;
+    teams = result[0] || []; members = result[1] || [];
     rosterCatalog = result[3] || [];
     return members.filter(m => m.kind === 'athlete').map(m => {
       const c = allCharacters().find(x => x.id === m.character_id);
-      return {id:m.character_id, name:name(c)||m.character_id, profile:m.character_id, team:teams.find(t => t.id === m.team_id)?.name || '', position:m.position,captaincy:m.captaincy,visible_in_roster:m.visible?'yes':'no'};
+      return {id:m.character_id, name:rosterName(c)||m.character_id, profile:m.character_id, team:teams.find(t => t.id === m.team_id)?.name || '', position:m.position,captaincy:m.captaincy,visible_in_roster:m.visible?'yes':'no'};
     });
   };
   function characterLink(c) {
     const hasCard = character(c?.id) || (window.ATLAS_CARD_ONLY || []).some(x => x.id === c?.id);
-    return hasCard ? '<button class="atlas-community-link" type="button" data-community-character-open="'+esc(c?.id || '')+'">'+esc(name(c))+'</button>' : '<span>'+esc(name(c))+'</span>';
+    return hasCard ? '<button class="atlas-community-link" type="button" data-community-character-open="'+esc(c?.id || '')+'">'+esc(rosterName(c))+'</button>' : '<span>'+esc(rosterName(c))+'</span>';
   }
   window.atlasDecorateRosters = function () {
+    renderRosterActions();
     const holder = document.getElementById('atlas-team-rosters-holder'); if (!holder) return;
     let toolbar = document.getElementById('atlasRosterToolbar');
     if (!toolbar) { toolbar = document.createElement('div'); toolbar.id = 'atlasRosterToolbar'; holder.before(toolbar); }
-    toolbar.innerHTML = rosterAllowed ? '<button type="button" class="atlas-community-edit" data-community-roster-edit>редактировать составы и группы поддержки</button>' : '';
+    renderRosterActions();
     holder.querySelectorAll('.atlas-team-roster-card').forEach(card => {
       card.querySelector('.atlas-community-cheer')?.remove();
       const title = card.querySelector('h5')?.textContent?.trim().toLowerCase();
@@ -296,16 +324,19 @@
   }
   function rosterRows() {
     const box = document.getElementById('atlasRosterEditorRows'); if (!box) return;
-    box.innerHTML = members.map((m,i) => '<div class="atlas-community-roster-row"><span>'+esc(name(allCharacters().find(c => c.id===m.character_id)) || m.character_id)+'<small>'+esc(teams.find(t => t.id===m.team_id)?.name)+' · '+(m.kind==='cheer'?'группа поддержки':'команда')+(m.captaincy==='captain'?' · капитан':'')+(!m.visible?' · скрыт':'')+'</small></span><button type="button" data-community-roster-row="'+i+'">изменить</button><button type="button" data-community-roster-remove="'+i+'">убрать</button></div>').join('');
+    box.innerHTML = members.map((m,i) => '<div class="atlas-community-roster-row"><span>'+esc(rosterName(allCharacters().find(c => c.id===m.character_id)) || m.character_id)+'<small>'+esc(teams.find(t => t.id===m.team_id)?.name)+' · '+(m.kind==='cheer'?'группа поддержки':'команда')+(m.captaincy==='captain'?' · капитан':'')+(!m.visible?' · скрыт':'')+'</small></span><button type="button" data-community-roster-row="'+i+'">изменить</button><button type="button" data-community-roster-remove="'+i+'">убрать</button></div>').join('');
+  }
+  function rosterCharacterOptions() {
+    return allCharacters().slice().sort((a,b) => rosterName(a).localeCompare(rosterName(b),'ru')).map(c => '<option value="'+esc(c.id)+'">'+esc(rosterName(c))+'</option>').join('');
   }
   async function openRosterEditor() {
     dialog('составы команд','<p>загружаем составы…</p>'); editor = {kind:'roster',user:uid(),saving:false,selected:null}; const state = editor;
     try {
       await reloadRoster(); if (editor !== state) return;
-      if (!rosterAllowed) throw new Error('Редактор доступен пасс и суперадминистратору.');
+      if (!rosterAllowed || rosterAllowedFor !== uid()) throw new Error('Редактор доступен пасс и суперадминистратору.');
       const modal = document.getElementById('atlasCommunityDialog'); modal.querySelector('p').remove();
       const form = document.createElement('form'); form.id = 'atlasRosterEditorForm';
-      form.innerHTML = '<label>персонаж<select name="character_id" required>'+allCharacters().map(c => '<option value="'+esc(c.id)+'">'+esc(name(c))+'</option>').join('')+'</select></label><label>раздел<select name="kind"><option value="athlete">команда</option><option value="cheer">группа поддержки</option></select></label><label>команда<select name="team_id">'+teams.map(t => '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>').join('')+'</select></label><label>позиция<select name="position"></select></label><label>роль<select name="captaincy"><option value="none">участник / участница</option><option value="captain">капитан</option><option value="vice-captain">заместитель капитана</option><option value="reserve captain">резервный капитан</option></select></label><label><input type="checkbox" name="visible" checked> показывать в составе</label><div class="atlas-community-form-actions"><button type="button" data-community-roster-new>новая запись</button><button type="submit">сохранить</button></div><small>При смене капитана сначала снимите эту роль с предыдущего.</small>';
+      form.innerHTML = '<label>персонаж<select name="character_id" required>'+rosterCharacterOptions()+'</select></label><label>раздел<select name="kind"><option value="athlete">команда</option><option value="cheer">группа поддержки</option></select></label><label>команда<select name="team_id">'+teams.map(t => '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>').join('')+'</select></label><label>позиция<select name="position"></select></label><label>роль<select name="captaincy"><option value="none">участник / участница</option><option value="captain">капитан</option><option value="vice-captain">заместитель капитана</option><option value="reserve captain">резервный капитан</option></select></label><label><input type="checkbox" name="visible" checked> показывать в составе</label><div class="atlas-community-form-actions"><button type="button" data-community-roster-new>новая запись</button><button type="submit">сохранить</button></div><small>При смене капитана сначала снимите эту роль с предыдущего.</small>';
       modal.insertBefore(form,modal.querySelector('#atlasCommunityStatus')); positionOptions(form);
       const rows = document.createElement('div'); rows.id = 'atlasRosterEditorRows'; modal.appendChild(rows); rosterRows();
     } catch (err) { status(errorText(err)); }
@@ -334,7 +365,7 @@
   }
   async function removeRoster(index) {
     if (editor?.saving) return; const row = members[index]; if (!row) return;
-    if (!confirm('Убрать '+name(allCharacters().find(c => c.id === row.character_id))+' из этого состава?')) return;
+    if (!confirm('Убрать '+rosterName(allCharacters().find(c => c.id === row.character_id))+' из этого состава?')) return;
     const state = editor;
     try {
       lock(true); const deleted = await checked(client().from('atlas_team_members').delete().eq('character_id',row.character_id).eq('kind',row.kind).eq('updated_at',row.updated_at).select('character_id'));
@@ -379,6 +410,8 @@
   });
   window.addEventListener('atlasPlayerAuthReady',() => {
     ownerEpoch++; ownersAt = 0; custom.clear();
+    rosterAccessVersion++; rosterAllowed = false; rosterAllowedFor = null;
+    renderRosterActions();
     document.querySelector('[data-community-edit]')?.remove();
     if (editor && editor.user !== uid()) { editor.saving = false; closeModal(); }
     loadOwners(true).then(() => { const id = document.getElementById('atlasCharacterProfileRoot')?.dataset.communityId; if (id) window.atlasHydrateCommunityCharacter(id); }).catch(() => {});
@@ -386,5 +419,5 @@
   });
   window.addEventListener('atlasCharactersReady',window.atlasCommunityCards);
   window.addEventListener('atlasCharacterOwnersChanged',() => { ownersAt=0; loadOwners(true).catch(() => {}); });
-  document.addEventListener('DOMContentLoaded',() => { window.atlasCommunityCards(); });
+  document.addEventListener('DOMContentLoaded',() => { window.atlasCommunityCards(); window.atlasRenderEquipos(); });
 })();
