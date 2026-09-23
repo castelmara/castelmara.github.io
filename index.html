@@ -12634,11 +12634,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   }
 
   function getCharacterShort(character) {
-    return character.cardSubtitle ||
-           (character.card && character.card.short) ||
-           character.subtitle ||
-           character.role ||
-           "";
+    return [character.cardSubtitle, character.card && character.card.short, character.subtitle, character.role]
+      .find(function(value) { return value && !/^\s*\//.test(value); }) || "";
   }
 
   function renderEntrenadoresPage() {
@@ -12668,7 +12665,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       var short = getCharacterShort(character);
       var tag = character.card && character.card.tag ? character.card.tag : "тренер";
       var full = fullIds.has(character.id), element = full ? 'button' : 'article';
-      if (!full && !short) short = '/ ' + (character.player || '');
 
       return '<div class="atlas-community-coach-wrap">' +
         '<'+element+' class="atlas-entrenador-card atlas-search-target'+(full?'':' atlas-card-only')+'" '+(full?'type="button" data-atlas-entrenador-id="'+esc(character.id)+'"':'id="card-only-'+esc(character.id)+'" data-community-character="'+esc(character.id)+'" title="анкета закрыта"')+
@@ -14527,10 +14523,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     btn.innerHTML =
       imageHtml +
-      '<span class="atlas-character-card-text">' +
+      '<span class="atlas-character-card-details"><span class="atlas-character-card-text">' +
         '<h3>' + esc((character.cardName || character.name || "").toUpperCase()) + '</h3>' +
-        '<p>' + esc(getCardSubtitle(character)) + '</p>' +
-      '</span>';
+      '</span></span>';
 
     article.appendChild(btn);
     return article;
@@ -15325,6 +15320,7 @@ ATLAS — CARD ONLY CHARACTERS
       "atlas-character-card atlas-search-target atlas-card-only-wrapper";
 
     article.id = "card-only-" + character.id;
+    article.dataset.communityCharacter = character.id;
 
 
     article.dataset.searchTitle = [
@@ -15369,17 +15365,13 @@ ATLAS — CARD ONLY CHARACTERS
 
       imageHtml +
 
-      '<span class="atlas-character-card-text">' +
+      '<span class="atlas-character-card-details"><span class="atlas-character-card-text">' +
 
         '<h3>' +
           esc(character.name.toUpperCase()) +
         '</h3>' +
 
-        '<p>/ ' +
-          esc(character.player) +
-        '</p>' +
-
-      '</span>';
+      '</span></span>';
 
 
     article.appendChild(card);
@@ -21911,11 +21903,11 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 
   function renderOwnedCharacterCard(ch){
     var img=characterOwnerImage(ch);
-    var copy='<span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3><p>'+esc(ch._atlasCardOnly?'краткая карточка':((ch.card&&ch.card.short)||ch.subtitle||''))+'</p></span>';
+    var copy='<span class="atlas-character-card-details"><span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3></span></span>';
     if(ch._atlasCardOnly){
-      return '<article class="atlas-character-card"><div class="atlas-character-card-btn atlas-card-only">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</div></article>';
+      return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><div class="atlas-character-card-btn atlas-card-only">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</div></article>';
     }
-    return '<article class="atlas-character-card"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
+    return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
       (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
   }
 
@@ -22056,6 +22048,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       if(typeof window.atlasPersonalHydrate==='function') setTimeout(window.atlasPersonalHydrate,0);
       if(typeof window.atlasRenderPlayerSocial==='function') setTimeout(function(){window.atlasRenderPlayerSocial(p.id)},0);
       if(window.atlasHydrateCommunityPlayer) window.atlasHydrateCommunityPlayer(p.id);
+      if(window.atlasCommunityCards) window.atlasCommunityCards();
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
 
