@@ -20680,10 +20680,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app #atlas-page-player-profile,
 #atlas-app #atlas-page-jugadores *,
 #atlas-app #atlas-page-player-profile *{font-family:"Montserrat",Arial,sans-serif!important;box-sizing:border-box}
-#atlas-app .atlas-player-catalog-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
-#atlas-app .atlas-player-catalog-head h2{margin:0;font-size:clamp(36px,5vw,64px);line-height:.92;font-weight:950;letter-spacing:-.055em;text-transform:lowercase}
-#atlas-app .atlas-player-catalog-head p{margin:10px 0 0;color:#737986;font-size:14px;line-height:1.55;max-width:680px}
-#atlas-app .atlas-player-count{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:34px;padding:0 12px;border:1px solid rgba(201,61,61,.28);border-radius:999px;background:rgba(201,61,61,.07);color:#c73d3d;font-size:12px;font-weight:950;white-space:nowrap}
+#atlas-app .atlas-player-catalog-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px;padding:28px 30px;min-height:240px;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,rgba(6,10,18,.82),rgba(9,13,22,.55)),url("assets/page-headers/jugadores-hero.webp") center/cover no-repeat;box-shadow:0 18px 42px rgba(16,19,26,.14)}
+#atlas-app .atlas-player-catalog-head>*{position:relative;z-index:1}
+#atlas-app .atlas-player-catalog-head h2{margin:0;font-size:clamp(36px,5vw,64px);line-height:.92;font-weight:950;letter-spacing:-.055em;text-transform:lowercase;color:#f8f3ef}
+#atlas-app .atlas-player-catalog-head p{margin:10px 0 0;color:rgba(248,243,239,.86);font-size:14px;line-height:1.55;max-width:680px}
+#atlas-app .atlas-player-count{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(10,12,18,.34);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:950;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.12)}
 #atlas-app .atlas-player-grid{display:grid;grid-template-columns:repeat(auto-fill,230px);gap:22px;align-items:start;justify-content:start;margin-top:24px}
 #atlas-app .atlas-player-card{width:230px;height:315px;border:0;border-radius:28px;padding:0;overflow:hidden;position:relative;display:block;background:#111;color:#fff;cursor:pointer;text-align:left;box-shadow:0 18px 42px rgba(23,23,31,.12);transition:transform .24s ease,box-shadow .24s ease}
 #atlas-app .atlas-player-card:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(23,23,31,.18)}
@@ -20968,9 +20969,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
 /* ===== mi atlas / guardados / favoritos / notas / historial ===== */
 #atlas-app .atlas-personal-shell{padding:4px 0 34px}
-#atlas-app .atlas-personal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}
-#atlas-app .atlas-personal-head h2{margin:0;font-size:42px;line-height:.95;letter-spacing:-.055em;text-transform:lowercase}
-#atlas-app .atlas-personal-head p{max-width:760px;margin:10px 0 0;color:#747b84;font-size:14px;line-height:1.65}
+#atlas-app .atlas-personal-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px;padding:28px 30px;min-height:240px;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,rgba(17,24,46,.46),rgba(11,16,38,.22)),url("assets/page-headers/mi-atlas-hero.png") center/cover no-repeat;box-shadow:0 18px 42px rgba(16,19,26,.10)}
+#atlas-app .atlas-personal-head>*{position:relative;z-index:1}
+#atlas-app .atlas-personal-head h2{margin:0;font-size:42px;line-height:.95;letter-spacing:-.055em;text-transform:lowercase;color:#f8f3ef}
+#atlas-app .atlas-personal-head p{max-width:760px;margin:10px 0 0;color:rgba(248,243,239,.9);font-size:14px;line-height:1.65}
 #atlas-app .atlas-personal-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:0 0 14px;border-bottom:1px solid #e5e7ea}
 #atlas-app .atlas-personal-tab{appearance:none;border:1px solid #dfe2e6;background:#fff;color:#5f6670;border-radius:999px;padding:10px 15px;font:700 12px/1 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
 #atlas-app .atlas-personal-tab.is-active{background:#11151b;border-color:#11151b;color:#fff}
@@ -22784,10 +22786,11 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 #atlas-app #atlas-page-direct{min-height:0}
 #atlas-app #atlas-page-direct .atlas-direct-shell{max-width:1320px;padding:8px 0 0}
 #atlas-app:has(#atlas-page-direct.active) .atlas-pages-holder{padding-bottom:0!important;min-height:0}
-#atlas-app .atlas-direct-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:18px}
-#atlas-app .atlas-direct-kicker{display:inline-flex;margin:0 0 9px;padding:6px 9px;border-radius:999px;background:#f7ecec;color:#c53030;font:900 9px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
-#atlas-app .atlas-direct-head h2{margin:0;color:#17191f;font:900 clamp(38px,4vw,58px)/.96 "Montserrat",Arial,sans-serif;letter-spacing:-.05em;text-transform:lowercase}
-#atlas-app .atlas-direct-head p{max-width:760px;margin:10px 0 0;color:#747983;font:600 12px/1.6 "Montserrat",Arial,sans-serif}
+#atlas-app .atlas-direct-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:18px;padding:28px 30px;min-height:240px;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,rgba(20,22,60,.34),rgba(30,31,86,.18)),url("assets/page-headers/direct-hero.png") center/cover no-repeat;box-shadow:0 18px 42px rgba(16,19,26,.10)}
+#atlas-app .atlas-direct-head>*{position:relative;z-index:1}
+#atlas-app .atlas-direct-kicker{display:inline-flex;margin:0 0 9px;padding:6px 9px;border-radius:999px;background:rgba(245,232,245,.88);color:#4950be;font:900 9px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+#atlas-app .atlas-direct-head h2{margin:0;color:#f8f3ef;font:900 clamp(38px,4vw,58px)/.96 "Montserrat",Arial,sans-serif;letter-spacing:-.05em;text-transform:lowercase}
+#atlas-app .atlas-direct-head p{max-width:760px;margin:10px 0 0;color:rgba(248,243,239,.88);font:600 12px/1.6 "Montserrat",Arial,sans-serif}
 #atlas-app .atlas-direct-loading,#atlas-app .atlas-direct-gate,#atlas-app .atlas-direct-empty{border:1px solid #e8eaed;border-radius:20px;background:#fff;padding:24px;color:#7d828b;font:700 12px/1.6 "Montserrat",Arial,sans-serif}
 #atlas-app .atlas-direct-gate strong{display:block;margin-bottom:5px;color:#20232a;font-size:15px;font-weight:900}
 #atlas-app .atlas-direct-gate button{margin-top:14px;border:0;border-radius:999px;background:#1b1e24;color:#fff;padding:10px 15px;font:900 10px/1 "Montserrat",Arial,sans-serif;cursor:pointer}
