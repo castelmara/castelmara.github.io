@@ -401,7 +401,20 @@
     box.innerHTML = members.map((m,i) => '<div class="atlas-community-roster-row"><span>'+esc(rosterName(allCharacters().find(c => c.id===m.character_id)) || m.character_id)+'<small>'+esc(teams.find(t => t.id===m.team_id)?.name)+' · '+(m.kind==='cheer'?'группа поддержки':'команда')+(m.captaincy==='captain'?' · капитан':'')+(!m.visible?' · скрыт':'')+'</small></span><button type="button" data-community-roster-row="'+i+'">изменить</button><button type="button" data-community-roster-remove="'+i+'">убрать</button></div>').join('');
   }
   function rosterCharacterOptions() {
-    return allCharacters().slice().sort((a,b) => rosterName(a).localeCompare(rosterName(b),'ru')).map(c => '<option value="'+esc(c.id)+'">'+esc(rosterName(c))+'</option>').join('');
+    return allCharacters().slice().sort((a,b) => rosterName(a).localeCompare(rosterName(b),'ru')).map(c => '<option value="'+esc(rosterName(c))+'" data-id="'+esc(c.id)+'">'+esc(c.id)+'</option>').join('');
+  }
+  function resolveRosterCharacterValue(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const normalized = raw.toLowerCase();
+    const found = allCharacters().find(c => c.id === raw || rosterName(c).toLowerCase() === normalized || String(c.name || '').toLowerCase() === normalized || String(c.cardName || '').toLowerCase() === normalized || String(c.fullName || '').toLowerCase() === normalized);
+    return found ? found.id : raw;
+  }
+  function rosterCharacterDisplay(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const found = allCharacters().find(c => c.id === raw || rosterName(c) === raw || String(c.name || '') === raw || String(c.cardName || '') === raw || String(c.fullName || '') === raw);
+    return found ? rosterName(found) : raw;
   }
   async function openRosterEditor() {
     dialog('составы команд','<p>загружаем составы…</p>'); editor = {kind:'roster',user:uid(),saving:false,selected:null}; const state = editor;
@@ -410,7 +423,7 @@
       if (!rosterAllowed || rosterAllowedFor !== uid()) throw new Error('Редактор доступен пасс и суперадминистратору.');
       const modal = document.getElementById('atlasCommunityDialog'); modal.querySelector('p').remove();
       const form = document.createElement('form'); form.id = 'atlasRosterEditorForm';
-      form.innerHTML = '<label>персонаж<select name="character_id" required>'+rosterCharacterOptions()+'</select></label><label>раздел<select name="kind"><option value="athlete">команда</option><option value="cheer">группа поддержки</option></select></label><label>команда<select name="team_id">'+teams.map(t => '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>').join('')+'</select></label><label>позиция<select name="position"></select></label><label>роль<select name="captaincy"><option value="none">участник / участница</option><option value="captain">капитан</option><option value="vice-captain">заместитель капитана</option><option value="reserve captain">резервный капитан</option></select></label><label><input type="checkbox" name="visible" checked> показывать в составе</label><div class="atlas-community-form-actions"><button type="button" data-community-roster-new>новая запись</button><button type="submit">сохранить</button></div><small>При смене капитана сначала снимите эту роль с предыдущего.</small>';
+      form.innerHTML = '<label>персонаж<input name="character_id" type="text" list="atlasRosterCharacterList" placeholder="выбери персонажа из списка или впиши имя вручную" autocomplete="off" required><datalist id="atlasRosterCharacterList">'+rosterCharacterOptions()+'</datalist></label><label>раздел<select name="kind"><option value="athlete">команда</option><option value="cheer">группа поддержки</option></select></label><label>команда<select name="team_id">'+teams.map(t => '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>').join('')+'</select></label><label>позиция<select name="position"></select></label><label>роль<select name="captaincy"><option value="none">участник / участница</option><option value="captain">капитан</option><option value="vice-captain">заместитель капитана</option><option value="reserve captain">резервный капитан</option></select></label><label><input type="checkbox" name="visible" checked> показывать в составе</label><div class="atlas-community-form-actions"><button type="button" data-community-roster-new>новая запись</button><button type="submit">сохранить</button></div><small>можно выбрать персонажа из выпадающего списка или вписать имя вручную. при смене капитана сначала снимите эту роль с предыдущего.</small>';
       modal.insertBefore(form,modal.querySelector('#atlasCommunityStatus')); positionOptions(form);
       const rows = document.createElement('div'); rows.id = 'atlasRosterEditorRows'; modal.appendChild(rows); rosterRows();
     } catch (err) { status(errorText(err)); }
@@ -418,7 +431,10 @@
   function selectRoster(index) {
     const form = document.getElementById('atlasRosterEditorForm'); if (!form) return;
     const row = members[index]; editor.selected = row || null;
-    if (!row) form.reset(); else ['character_id','kind','team_id','captaincy'].forEach(k => form.elements[k].value = row[k]);
+    if (!row) form.reset(); else {
+      form.elements.character_id.value = rosterCharacterDisplay(row.character_id);
+      ['kind','team_id','captaincy'].forEach(k => form.elements[k].value = row[k]);
+    }
     positionOptions(form,row?.position || ''); form.elements.visible.checked = row ? row.visible : true;
     form.elements.character_id.disabled = !!row; form.elements.kind.disabled = !!row;
     form.scrollIntoView({block:'start',behavior:'smooth'}); status('');
@@ -426,7 +442,9 @@
   async function saveRoster(form) {
     const state = editor; if (!state || state.saving) return;
     const row = {};
-    ['character_id','kind','team_id','position','captaincy'].forEach(k => row[k] = form.elements[k].value);
+    row.character_id = resolveRosterCharacterValue(form.elements.character_id.value);
+    ['kind','team_id','position','captaincy'].forEach(k => row[k] = form.elements[k].value);
+    if (!row.character_id) throw new Error('Укажите персонажа или впишите имя вручную.');
     row.visible = form.elements.visible.checked;
     try {
       if (state.user !== uid()) throw new Error('Аккаунт изменился. Откройте редактор заново.');
