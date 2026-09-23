@@ -34,7 +34,7 @@
   <div class="atlas-loader-stage">
     <div class="atlas-loader-logo">ATLAS</div>
     <div class="atlas-loader-spinner"></div>
-    <div class="atlas-loader-message" id="atlas-random-message">atlas online</div>
+    <div class="atlas-loader-message" id="atlas-random-message">ATLAS в сети</div>
   </div>
 </div>
 <script>
@@ -872,7 +872,7 @@ body.atlas-modal-open {
     </button>
 
     <nav class="atlas-nav" aria-label="ATLAS navigation">
-      <button class="atlas-nav-item active" type="button" data-page="inicio"><span class="atlas-nav-icon">⌂</span><span>home</span></button>
+      <button class="atlas-nav-item active" type="button" data-page="inicio"><span class="atlas-nav-icon">⌂</span><span>главная</span></button>
       <button class="atlas-nav-item" type="button" data-page="ciudad"><span class="atlas-nav-icon">◇</span><span>ciudad</span></button>
       <button class="atlas-nav-item" type="button" data-page="trama"><span class="atlas-nav-icon">✦</span><span>trama</span></button>
       <button class="atlas-nav-item" type="button" data-page="academia"><span class="atlas-nav-icon">▣</span><span>academia</span></button>
@@ -881,7 +881,7 @@ body.atlas-modal-open {
       <button class="atlas-nav-item" type="button" data-page="personajes"><span class="atlas-nav-icon">✥</span><span>personajes</span></button>
       <button class="atlas-nav-item" type="button" data-page="jugadores"><span class="atlas-nav-icon">♙</span><span>jugadores</span></button>
       <button class="atlas-nav-item" type="button" data-page="mi-atlas"><span class="atlas-nav-icon">☆</span><span>mi atlas</span></button>
-      <button class="atlas-nav-item" type="button" data-page="direct"><span class="atlas-nav-icon">◈</span><span>direct</span></button>
+      <button class="atlas-nav-item" type="button" data-page="direct"><span class="atlas-nav-icon">◈</span><span>сообщения</span></button>
 
       <button class="atlas-nav-item" type="button" data-page="expediente">
         <span class="atlas-nav-icon atlas-expediente-nav-icon">
@@ -903,10 +903,10 @@ body.atlas-modal-open {
            alt="castelmara crest">
 
       <h3 class="atlas-sidebar-title">Academia de Alto Rendimiento castelmara</h3>
-      <p class="atlas-sidebar-note">ATLAS // online<br>portal interno de castelmara</p>
+      <p class="atlas-sidebar-note">ATLAS // в сети<br>внутренний портал кастельмары</p>
 
       <div class="atlas-weather-card">
-        <span>☼ castelmara,<br>Spain</span>
+        <span>☼ castelmara,<br>Испания</span>
         <b>24°C</b>
       </div>
     </div>
@@ -914,7 +914,7 @@ body.atlas-modal-open {
 
   <main class="atlas-main">
     <div class="atlas-topbar">
-      <button class="atlas-menu-btn" type="button" aria-label="menu">≡</button>
+      <button class="atlas-menu-btn" type="button" aria-label="меню">≡</button>
 
       <div class="atlas-search-wrap">
         <input class="atlas-search" id="atlasSearch" type="search" placeholder="поиск по ATLAS..." autocomplete="off">
@@ -923,6 +923,10 @@ body.atlas-modal-open {
       </div>
 
       <div class="atlas-top-actions">
+        <button class="atlas-top-icon atlas-chat-shortcut" type="button" data-open-page="direct" aria-label="сообщения" title="сообщения">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 9.5 14.5M21 3l-7 18-4.5-6.5L3 10z"/></svg>
+          <span class="atlas-direct-global-badge" hidden>0</span>
+        </button>
         <div class="atlas-notifications-wrap" id="atlasNotificationsWrap">
           <button class="atlas-top-icon atlas-notifications-button" type="button" id="atlasNotificationsButton" aria-label="уведомления" title="уведомления">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
@@ -933,7 +937,7 @@ body.atlas-modal-open {
             <div class="atlas-notifications-list" id="atlasNotificationsList"><div class="atlas-notifications-empty">пока тихо.</div></div>
           </div>
         </div>
-        <button class="atlas-top-icon atlas-theme-toggle" type="button" id="atlasThemeToggle" aria-label="theme" title="тёмная тема">☾</button>
+        <button class="atlas-top-icon atlas-theme-toggle" type="button" id="atlasThemeToggle" aria-label="тема" title="тёмная тема">☾</button>
         <button class="atlas-avatar-btn" type="button" id="atlasAccountButton" aria-label="аккаунт" title="аккаунт">A</button>
       </div>
     </div>
@@ -1016,7 +1020,7 @@ body.atlas-modal-open {
       '<section class="atlas-page active" id="atlas-page-inicio">' +
         '<div class="atlas-page-shell">' +
           '<div class="atlas-page-heading">' +
-            '<h2>home</h2>' +
+            '<h2>главная</h2>' +
             '<p>ATLAS espera datos del sistema.</p>' +
           '</div>' +
         '</div>' +
@@ -1508,7 +1512,7 @@ if (!matches.length) {
     if (btn) {
       btn.textContent = nextTheme === 'dark' ? '☀' : '☾';
       btn.setAttribute('title', nextTheme === 'dark' ? 'светлая тема' : 'тёмная тема');
-      btn.setAttribute('aria-label', nextTheme === 'dark' ? 'light theme' : 'dark theme');
+      btn.setAttribute('aria-label', nextTheme === 'dark' ? 'светлая тема' : 'тёмная тема');
     }
 
     try {
@@ -2652,10 +2656,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                    data-search-title="home welcome atlas"
                    data-search-keywords="главная атлас кастельмара welcome">
             <div class="atlas-hero-content">
-<p class="atlas-hero-kicker">ATLAS siempre tiene algo nuevo para ti.</p>
-              <h1>Bienvenido otra vez, <span>extraño.</span></h1>
-<p class="atlas-hero-text">Nuevos avisos, archivos y rutas internas ya están disponibles.</p>
-              <button class="atlas-hero-btn" type="button" data-open-page="foro">view announcements</button>
+<p class="atlas-hero-kicker">В ATLAS всегда найдётся что-то новое.</p>
+              <h1>с возвращением, <span>extraño.</span></h1>
+<p class="atlas-hero-text">Новые объявления, архивы и внутренние маршруты уже доступны.</p>
+              <button class="atlas-hero-btn" type="button" data-open-page="foro">все объявления</button>
             </div>
           </section>
 
@@ -2665,8 +2669,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                      data-search-title="today schedule classes lessons academy"
                      data-search-keywords="расписание занятия уроки предметы тренировки академия schedule classes">
               <div class="atlas-card-head">
-                <h3>today's schedule</h3>
-                <button type="button" data-open-page="academia">view full schedule</button>
+                <h3>расписание на сегодня</h3>
+                <button type="button" data-open-page="academia">полное расписание</button>
               </div>
             </section>
 
@@ -2675,8 +2679,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                      data-search-title="atlas digest guide quests story updates"
                      data-search-keywords="дайджест гайд квесты сюжет обновления">
               <div class="atlas-card-head">
-                <h3>atlas digest</h3>
-                <button type="button" data-open-page="foro">view all</button>
+                <h3>сводка ATLAS</h3>
+                <button type="button" data-open-page="foro">смотреть все</button>
               </div>
 
               <a class="atlas-digest-row" href="https://vk.com/@casadelartepp-kak-zhe-polzovatsya-saitom" target="_blank" rel="noopener">
@@ -2685,7 +2689,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                   <strong>guía del portal ATLAS</strong>
                   <span>обозначение кнопок · как пользоваться сайтом</span>
                 </span>
-                <span class="atlas-badge blue">guide</span>
+                <span class="atlas-badge blue">путеводитель</span>
               </a>
 
               <a class="atlas-digest-row" href="javascript:void(0)">
@@ -2694,7 +2698,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                   <strong>resúmenes de quests</strong>
                   <span>краткие сводки · активные и завершённые квесты</span>
                 </span>
-                <span class="atlas-badge">quests</span>
+                <span class="atlas-badge">квесты</span>
               </a>
 
               <a class="atlas-digest-row" href="javascript:void(0)">
@@ -2703,7 +2707,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                   <strong>episodios de trama</strong>
                   <span>сюжетные эпизоды · публичные сцены · главы</span>
                 </span>
-                <span class="atlas-badge green">story</span>
+                <span class="atlas-badge green">история</span>
               </a>
 
               <a class="atlas-digest-row" href="javascript:void(0)">
@@ -2712,7 +2716,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                   <strong>últimas actualizaciones</strong>
                   <span>новые материалы · изменения · важные объявления</span>
                 </span>
-                <span class="atlas-badge blue">update</span>
+                <span class="atlas-badge blue">обновление</span>
               </a>
             </section>
           </div>
@@ -2722,20 +2726,20 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
          id="inicio-orientation"
          data-search-title="orientation access castelmara atlas"
          data-search-keywords="ориентация доступ кастельмара атлас город академия архив">
-  <span class="atlas-card-kicker">orientation</span>
+  <span class="atlas-card-kicker">знакомство</span>
   <h3>точка входа в систему.</h3>
   <p>Город, академия, события и внутренние архивы связаны между собой. ATLAS помогает быстро понять, где ты находишься и какие разделы уже открыты.</p>
-  <button type="button" data-open-page="ciudad">open ciudad →</button>
+  <button type="button" data-open-page="ciudad">открыть город →</button>
 </section>
 
 <section class="atlas-mini-panel atlas-search-target"
          id="inicio-registry-note"
          data-search-title="registry access atlas records"
          data-search-keywords="реестр доступ записи факультеты команды академия">
-  <span class="atlas-card-kicker">registry</span>
+  <span class="atlas-card-kicker">реестр</span>
   <h3>перед входом в реестр.</h3>
   <p>Сверь данные по факультетам, командам и правилам академии. Внутренние записи ATLAS опираются на официальную структуру castelmara.</p>
-  <button type="button" data-open-page="facultades">open facultades →</button>
+  <button type="button" data-open-page="facultades">открыть факультеты →</button>
 </section>
 
 <section class="atlas-mini-panel atlas-search-target"
@@ -2744,8 +2748,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
          data-search-keywords="экспедиенте мигель расследование дело архив хронология">
   <span class="atlas-card-kicker">expediente</span>
   <h3>дело Мигеля обновляется.</h3>
-  <p>Связанные записи, письма и хронология будут постепенно появляться в закрытом архиве ATLAS по мере обработки материалов.</p>
-  <button type="button" data-open-page="expediente">open expediente →</button>
+  <p>Связанные записи, письма и хронология собраны в закрытом архиве ATLAS.</p>
+  <button type="button" data-open-page="expediente">открыть дело →</button>
 </section>
           </div>
 
@@ -2754,45 +2758,45 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
         <aside class="atlas-home-right">
           <section class="atlas-card atlas-search-target" id="inicio-events" data-search-title="upcoming events" data-search-keywords="события открытие перекличка квест сюжет">
             <div class="atlas-card-head">
-              <h3>upcoming events</h3>
-              <button type="button" data-open-page="foro">view all</button>
+              <h3>ближайшие события</h3>
+              <button type="button" data-open-page="foro">смотреть все</button>
             </div>
 
             <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>aug</small><b>25</b></span>
-              <span class="atlas-row-main"><strong>посвещение</strong><span>20:00 · Welcome to castelmara</span></span>
+              <span class="atlas-event-date"><small>авг</small><b>25</b></span>
+              <span class="atlas-row-main"><strong>посвещение</strong><span>20:00 · добро пожаловать в кастельмару</span></span>
             </div>
 
             <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>aug</small><b>28</b></span>
+              <span class="atlas-event-date"><small>авг</small><b>28</b></span>
               <span class="atlas-row-main"><strong>перекличка</strong><span>28 августа — 03 сентября</span></span>
             </div>
 
             <div class="atlas-event-row">
               <span class="atlas-event-date"><small>???</small><b>?</b></span>
-              <span class="atlas-row-main"><strong>quest i</strong><span>date pending · details incoming</span></span>
+              <span class="atlas-row-main"><strong>квест I</strong><span>дата не назначена</span></span>
             </div>
 
             <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>jul-sep</small><b>?</b></span>
+              <span class="atlas-event-date"><small>июл–сен</small><b>?</b></span>
               <span class="atlas-row-main"><strong>сюжетный эпизод se: offside</strong><span>следите за обновлениями</span></span>
             </div>
           </section>
 
           <section class="atlas-card atlas-search-target" id="inicio-admin-board" data-search-title="admin board staff contacts" data-search-keywords="админы фел referee playmaker goalkeeper defender">
             <div class="atlas-card-head">
-              <h3>admin board</h3>
-              <button type="button" data-open-page="foro">view all</button>
+              <h3>администрация</h3>
+              <button type="button" data-open-page="foro">смотреть все</button>
             </div>
 
             <div class="atlas-news-card" style="cursor: default;">
-              <strong>The people behind castelmara.</strong>
-              <span>staff contacts</span>
+              <strong>люди, которые создают кастельмару.</strong>
+              <span>связаться с администрацией</span>
               <div class="atlas-admin-grid">
-                <a class="atlas-admin-btn" href="https://vk.com/appleboms" target="_blank" rel="noopener">referee</a>
-                <a class="atlas-admin-btn" href="https://vk.com/passtion" target="_blank" rel="noopener">playmaker</a>
-                <a class="atlas-admin-btn" href="https://vk.com/forkyou69" target="_blank" rel="noopener">goalkeeper</a>
-                <a class="atlas-admin-btn" href="https://vk.com/xiaoxiuminie" target="_blank" rel="noopener">defender</a>
+                <a class="atlas-admin-btn" href="https://vk.com/appleboms" target="_blank" rel="noopener">активность</a>
+                <a class="atlas-admin-btn" href="https://vk.com/passtion" target="_blank" rel="noopener">эпизоды</a>
+                <a class="atlas-admin-btn" href="https://vk.com/forkyou69" target="_blank" rel="noopener">сайт</a>
+                <a class="atlas-admin-btn" href="https://vk.com/xiaoxiuminie" target="_blank" rel="noopener">сюжет</a>
               </div>
             </div>
           </section>
@@ -2800,8 +2804,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
           <section class="atlas-card atlas-mood-check atlas-search-target" id="inicio-mood-check" data-search-title="atlas mood check кто я сегодня" data-search-keywords="кто я сегодня ежедневный рандом статус настроение">
             <div class="atlas-mood-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="atlas-card-head">
-              <h3>atlas mood check</h3>
-              <span class="atlas-mood-date" id="atlasMoodDate">today</span>
+              <h3>настроение дня</h3>
+              <span class="atlas-mood-date" id="atlasMoodDate">сегодня</span>
             </div>
             <div class="atlas-mood-result" id="atlasMoodResult">
               <span>сегодня вы —</span>
@@ -2813,8 +2817,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 
           <section class="atlas-card atlas-search-target" id="inicio-honour-board" data-search-title="honour board active players" data-search-keywords="доска почёта активные игроки серии входа jugadores">
             <div class="atlas-card-head">
-              <h3>honour board</h3>
-              <button type="button" data-open-page="jugadores">view all</button>
+              <h3>доска почёта</h3>
+              <button type="button" data-open-page="jugadores">смотреть все</button>
             </div>
 
             <div class="atlas-honour-rows" id="atlasHonourBoardRows">
@@ -2824,13 +2828,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 
           <section class="atlas-card atlas-search-target" id="inicio-campus-news" data-search-title="campus news funeral miguel garcia jr" data-search-keywords="новости кампуса похороны мигель гарсия младший funeral">
             <div class="atlas-card-head">
-              <h3>campus news</h3>
-              <button type="button" data-open-page="expediente">view all</button>
+              <h3>новости кампуса</h3>
+              <button type="button" data-open-page="expediente">смотреть все</button>
             </div>
 
             <button class="atlas-news-card" type="button" data-modal-target="miguel-funeral-article">
               <strong>Прощание с Мигелем Гарсия младшим.</strong>
-              <span>leer más →</span>
+              <span>читать дальше →</span>
             </button>
           </section>
         </aside>
@@ -4637,17 +4641,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-secret-gate .atlas-secret-btn.pri
           </p>
 
           <div class="trama-chapter-bottom">
-            <button class="trama-chapter-btn" type="button" data-trama-modal-open="miguel">abrir capítulo</button>
+            <button class="trama-chapter-btn" type="button" data-trama-modal-open="miguel">открыть главу</button>
           </div>
         </article>
 
         <article class="trama-chapter-card atlas-search-target"
                  id="trama-chapter-2"
-                 data-search-title="capitulo ii coming soon"
+                 data-search-title="capitulo ii пока нет событий"
                  data-search-keywords="глава вторая скоро сюжет продолжение">
           <div class="trama-chapter-top">
             <span class="trama-chapter-num">capítulo ii</span>
-            <span class="trama-status muted">coming soon</span>
+            <span class="trama-status muted">пока нет событий</span>
           </div>
 
           <h3>sincronización pendiente</h3>
@@ -4872,7 +4876,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-secret-gate .atlas-secret-btn.pri
 <div id="atlas-secret-gate" aria-hidden="true">
   <div class="atlas-secret-box" role="dialog" aria-modal="true" aria-label="clave de acceso">
     <span class="atlas-secret-kicker">atlas / acceso restringido</span>
-    <h3>clave de acceso</h3>
+    <h3>код доступа</h3>
     <p>для просмотра скрытого архива требуется внутренняя дата доступа.</p>
 
     <input class="atlas-secret-input"
@@ -4882,11 +4886,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-secret-gate .atlas-secret-btn.pri
            placeholder="••••"
            aria-label="clave de acceso">
 
-    <div class="atlas-secret-error">clave incorrecta</div>
+    <div class="atlas-secret-error">неверный код</div>
 
     <div class="atlas-secret-actions">
-      <button class="atlas-secret-btn secondary" type="button" data-secret-close>cancelar</button>
-      <button class="atlas-secret-btn primary" type="button" data-secret-submit>entrar</button>
+      <button class="atlas-secret-btn secondary" type="button" data-secret-close>отмена</button>
+      <button class="atlas-secret-btn primary" type="button" data-secret-submit>войти</button>
     </div>
   </div>
 </div>
@@ -6714,7 +6718,7 @@ body:has(#atlas-app[data-theme="dark"]) #trama-letter-modal .trama-letter-paper 
         <details class="atlas-faq-item atlas-search-target" id="academy-atlas" data-search-title="atlas внутренняя платформа академии" data-search-keywords="atlas платформа соцсеть расписание оценки чаты посты правила игра">
           <summary><span class="atlas-academia-summary-title"><span class="atlas-academia-summary-emoji" aria-hidden="true">🖥️</span><span>ATLAS</span></span></summary>
           <div class="atlas-academia-content">
-            <h3>ATLAS — plataforma interna castelmara</h3>
+            <h3>ATLAS — внутренний портал кастельмары</h3>
 
             <p>Академическая Трансляционная Локальная Авторизованная Система.</p>
 
@@ -9777,10 +9781,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
 
   // актуальная опубликованная таблица Google Sheets, вкладка gid=427133292
-  const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT-pqgs-JQr0FkD7lkQIDLzBkRBHIcRDP9DRDbFW7-6jAzOEfw6-Zv8mY_CCGDHalelONiUNkOZyb19/pub?gid=427133292&single=true&output=csv";
+
 
   let ATLAS_SHEET_CHARACTERS = [];
   let ATLAS_SHEET_LOADED = false;
+  let ATLAS_SHEET_ERROR = false;
 
   const ATLAS_POSITION_ALIASES = {
     "goalkeeper": "portero",
@@ -10123,30 +10128,26 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       });
   }
 
+  function applySavedRoster(characters) {
+    ATLAS_SHEET_CHARACTERS=characters;
+    ATLAS_SHEET_LOADED=true;
+    ATLAS_SHEET_ERROR=false;
+    window.ATLAS_ROSTER_CHARACTERS=characters;
+    applyGoogleSheetCharactersToRosters(characters);
+    renderAtlasTeamRosters(true);
+  }
+  window.atlasApplyRoster=applySavedRoster;
   async function loadAtlasCharactersFromGoogleSheets() {
     try {
-      const response = await fetch(GOOGLE_SHEET_CSV_URL, { cache: "no-store" });
-
-      if (!response.ok) {
-        throw new Error("CSV response status: " + response.status);
-      }
-
-      const csvText = await response.text();
-      const rows = parseAtlasCSV(csvText);
-      const characters = atlasRowsToObjects(rows);
-
-      ATLAS_SHEET_CHARACTERS = characters;
-      ATLAS_SHEET_LOADED = true;
-      window.ATLAS_ROSTER_CHARACTERS = characters;
-
-      applyGoogleSheetCharactersToRosters(characters);
-      renderAtlasTeamRosters(true);
-
-      console.log("[ATLAS] team roster loaded from Google Sheets:", characters.length);
+      if (!window.atlasLoadRoster) throw new Error('Редактор составов не загружен.');
+      applySavedRoster(await window.atlasLoadRoster());
     } catch (error) {
-      console.error("[ATLAS] failed to load team roster from Google Sheets:", error);
+      ATLAS_SHEET_ERROR=true;
+      renderAtlasTeamRosters(true);
+      console.error('[ATLAS] ошибка загрузки составов',error);
     }
   }
+  document.addEventListener('click',function(e){if(e.target.closest('[data-roster-retry]'))loadAtlasCharactersFromGoogleSheets()});
 
 
   function escapeHtml(value) {
@@ -10296,10 +10297,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       const id = isObject ? player.id : "";
       const profile = isObject ? player.profile : "";
       const captaincyLabel = isObject ? getCaptaincyShortLabel(player.captaincy) : "";
+      const hasCard = (window.ATLAS_CHARACTERS || []).concat(window.ATLAS_CARD_ONLY || []).some(function(c){return c.id === id || c.id === profile;});
 
       html += '<span class="atlas-player-slot is-filled atlas-search-target"' +
-        (id ? ' data-atlas-roster-character-id="' + escapeHtml(id) + '"' : '') +
-        (profile ? ' data-atlas-roster-profile="' + escapeHtml(profile) + '"' : '') +
+        (id && hasCard ? ' data-atlas-roster-character-id="' + escapeHtml(id) + '"' : '') +
+        (profile && hasCard ? ' data-atlas-roster-profile="' + escapeHtml(profile) + '"' : '') +
         ' data-search-title="' + escapeHtml(name) + '"' +
         ' data-search-keywords="' + escapeHtml([id, profile, player.tags].filter(Boolean).join(" ")) + '">' +
         escapeHtml(name) +
@@ -10396,12 +10398,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     if (!holder || (holder.dataset.rendered === "true" && !force)) return;
 
+    if (!ATLAS_SHEET_LOADED) {
+      holder.innerHTML=ATLAS_SHEET_ERROR?'<div class="atlas-profile-empty">Не удалось загрузить составы. Проверьте подключение и установку обновления базы. <button type="button" data-roster-retry>повторить</button></div>':'<div class="atlas-profile-empty">загружаем составы…</div>';
+      holder.dataset.rendered='true';
+      return;
+    }
+
     if (ATLAS_SHEET_LOADED) {
       applyGoogleSheetCharactersToRosters(ATLAS_SHEET_CHARACTERS);
     }
 
     holder.innerHTML = ATLAS_TEAM_ROSTERS.map(renderSportGroup).join("");
     holder.dataset.rendered = "true";
+    if(window.atlasDecorateRosters)window.atlasDecorateRosters();
   }
 
   function safeCssEscape(value) {
@@ -10461,8 +10470,15 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         window.atlasOpenCharacter(target);
         return true;
       }
+      const brief = (window.ATLAS_CARD_ONLY || []).find(function(c){return c.id === target;});
+      if (brief && window.atlasOpenPage) {
+        window.atlasOpenPage('personajes-' + brief.category);
+        setTimeout(function(){document.getElementById('card-only-' + brief.id)?.scrollIntoView({block:'center'});},100);
+        return true;
+      }
     }
 
+    if (!candidates.length) return false;
     console.warn("[ATLAS] character not found in ATLAS_CHARACTERS:", candidates);
     return false;
   }
@@ -11252,7 +11268,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
                 data-open-page="personajes-fuera-castelmara"
                 data-search-title="fuera de castelmara personajes outside castelmara"
                 data-search-keywords="персонажи вне кастельмары вне академии outside fuera de castelmara">
-          <span>outside</span>
+          <span>вне академии</span>
           <h3>fuera de castelmara</h3>
           <small>персонажи вне академии</small>
         </button>
@@ -12568,6 +12584,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     app.classList.remove("sidebar-open");
 
+    if (window.atlasRenderDirect && pageName !== 'direct') window.atlasRenderDirect(pageName);
+
     if (typeof window.atlasRenderCharacters === "function") {
       setTimeout(window.atlasRenderCharacters, 60);
       setTimeout(window.atlasRenderCharacters, 240);
@@ -12643,6 +12661,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
           '</span>' +
         '</button>';
     }).join("");
+    if (window.atlasCommunityCards) window.atlasCommunityCards();
   }
   function parseBusyCsv(csvText) {
     var rows = [];
@@ -14278,7 +14297,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
       <div class="atlas-character-empty" data-empty-category="estudiantes">
         <strong>каталог пока пуст</strong>
-        <p>студенты появятся здесь после добавления объектов в character data.</p>
+        <p>в этом разделе пока нет персонажей.</p>
       </div>
     </div>
   </section>
@@ -14441,6 +14460,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     });
 
     app.classList.remove("sidebar-open");
+    if (window.atlasRenderDirect && pageName !== 'direct') window.atlasRenderDirect(pageName);
 
     if (app.scrollIntoView) {
       app.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -14451,7 +14471,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     var article = document.createElement("article");
     article.className = "atlas-character-card atlas-search-target";
     article.id = "character-" + character.id;
-    article.dataset.atlasProfileId = character.id;
+    article.dataset.communityCharacter = character.id;
 
     article.dataset.searchTitle = [
       character.name,
@@ -14517,6 +14537,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         empty.style.display = filtered.length ? "none" : "block";
       }
     });
+    if (window.atlasCommunityCards) window.atlasCommunityCards();
   }
 
   function createInfoRowsFromObject(obj) {
@@ -14717,7 +14738,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
   function renderIndicators(indicators) {
     if (!indicators || !indicators.items || !indicators.items.length) {
-      return '<div class="atlas-profile-empty"><strong>показатели пока пустые</strong><p>сюда можно добавить профильные данные персонажа.</p></div>';
+      return '<div class="atlas-profile-empty"><strong>показатели пока пустые</strong><p></p></div>';
     }
 
     var hasBars = indicators.display === "bars" || indicators.items.some(function(item) {
@@ -14860,7 +14881,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     ].filter(Boolean).join("");
 
     if (!cards) {
-      return '<div class="atlas-profile-empty"><strong>личное дело пока пустое</strong><p>сюда можно добавить биографию, характер, мотивацию и дополнительные факты.</p></div>';
+      return '<div class="atlas-profile-empty"><strong>личное дело пока пустое</strong></div>';
     }
 
     return '<div class="atlas-profile-section-stack">' + cards + '</div>';
@@ -14890,7 +14911,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     var relations = character.profile && character.profile.relations ? character.profile.relations : character.relations;
 
     if (!relations) {
-      return '<div class="atlas-profile-empty"><strong>связи пока не добавлены</strong><p>сюда можно добавить семью, союзников, напряжённые отношения и сюжетные связи.</p></div>';
+      return '<div class="atlas-profile-empty"><strong>связи пока не добавлены</strong><p></p></div>';
     }
 
     var blocks = [
@@ -14904,7 +14925,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     ].filter(Boolean).join("");
 
     if (!blocks) {
-      return '<div class="atlas-profile-empty"><strong>связи пока не добавлены</strong><p>сюда можно добавить семью, союзников, напряжённые отношения и сюжетные связи.</p></div>';
+      return '<div class="atlas-profile-empty"><strong>связи пока не добавлены</strong><p></p></div>';
     }
 
     return '<div class="atlas-profile-section-stack">' + blocks + '</div>';
@@ -15038,7 +15059,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     root.innerHTML =
       '<section class="atlas-profile-hero" style="--character-banner: url(\'' + esc(heroImage) + '\');">' +
         '<button class="atlas-profile-back" type="button" data-character-back="true">← назад</button>' +
-        '<button class="atlas-profile-more" type="button" aria-label="more">...</button>' +
         '<div class="atlas-profile-hero-content">' +
           '<div class="atlas-profile-title">' +
             '<span class="atlas-profile-first">' + esc(nameParts.first) + '</span>' +
@@ -15069,6 +15089,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       tabPanel("overview", renderOverview(character), true) +
       tabPanel("dossier", renderDossier(character), false) +
       tabPanel("relations", renderRelations(character), false);
+    if (window.atlasHydrateCommunityCharacter) window.atlasHydrateCommunityCharacter(character.id);
   }
 
   function openCharacterProfile(characterId) {
@@ -15163,10 +15184,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 </script>
 
 <!-- CASTELMARA: modular character data -->
-<script src="data/students.js?v=20260912-1"></script>
-<script src="data/staff.js?v=20260912-1"></script>
-<script src="data/coaches.js?v=20260912-1"></script>
-<script src="data/leon.js?v=20260912-2"></script>
+<script src="data/students.js?v=20260923-1"></script>
+<script src="data/staff.js?v=20260923-1"></script>
+<script src="data/coaches.js?v=20260923-1"></script>
+<script src="data/leon.js?v=20260923-1"></script>
 <!-- SOURCE: \Вставлений text(20260912-144950).txt -->
 <!--
 =========================================================
@@ -15419,6 +15440,7 @@ ATLAS — CARD ONLY CHARACTERS
       }
 
     });
+    if (window.atlasCommunityCards) window.atlasCommunityCards();
   }
 
 
@@ -16989,7 +17011,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
             <span class="foro-help-tag">сайт / доступ</span>
             <h3>если сайт не работает</h3>
             <p>ошибка на странице, не открывается вкладка, сломалась анкета, пропал блок или нужен доступ.</p>
-            <strong>написать referee</strong>
+            <strong>написать администратору активности</strong>
           </div>
         </a>
 
@@ -17006,7 +17028,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
             <span class="foro-help-tag">сюжет / анкеты</span>
             <h3>если вопрос по сюжету и анкетам</h3>
             <p>квесты, сюжетные линии, анкеты, каноны, связи персонажей и логика событий.</p>
-            <strong>написать playmaker</strong>
+            <strong>написать администратору эпизодов</strong>
           </div>
         </a>
 
@@ -17023,7 +17045,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
             <span class="foro-help-tag">эпизоды / оформление</span>
             <h3>если вопрос по эпизодам</h3>
             <p>открытие эпизодов, перенос, продление, оформление игровых веток и организационные вопросы по игре.</p>
-            <strong>написать goalkeeper</strong>
+            <strong>написать администратору сайта</strong>
           </div>
         </a>
 
@@ -17040,7 +17062,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
             <span class="foro-help-tag">активность / учёт</span>
             <h3>если пропадаешь</h3>
             <p>перекличка, отсутствие, учёт активности, предупреждения и возвращение после паузы.</p>
-            <strong>написать defender</strong>
+            <strong>написать администратору сюжета</strong>
           </div>
         </a>
       </div>
@@ -20015,7 +20037,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     <button class="atlas-auth-close" type="button" data-auth-close="true" aria-label="закрыть">×</button>
 
     <div id="atlasAuthGuestView">
-      <span class="atlas-auth-kicker">ATLAS ACCOUNT</span>
+      <span class="atlas-auth-kicker">АККАУНТ ATLAS</span>
       <h2 class="atlas-auth-title" id="atlasAuthTitle">добро пожаловать</h2>
       <p class="atlas-auth-subtitle">вход в личный профиль игрока кастельмары.</p>
 
@@ -20064,12 +20086,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     </div>
 
     <div id="atlasAuthUserView" hidden>
-      <span class="atlas-auth-kicker">PLAYER PROFILE</span>
+      <span class="atlas-auth-kicker">ПРОФИЛЬ ИГРОКА</span>
       <div class="atlas-auth-profile-head">
         <div class="atlas-auth-profile-avatar" id="atlasAuthProfileAvatar">A</div>
         <div>
           <div class="atlas-auth-profile-name" id="atlasAuthProfileName">игрок</div>
-          <div class="atlas-auth-profile-nick" id="atlasAuthProfileNick">@player</div>
+          <div class="atlas-auth-profile-nick" id="atlasAuthProfileNick">@игрок</div>
         </div>
       </div>
       <div class="atlas-auth-stats">
@@ -20077,7 +20099,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         <div class="atlas-auth-stat"><strong id="atlasAuthBestStreak">0</strong><span>лучшая серия входа</span></div>
       </div>
       <div class="atlas-auth-admin" id="atlasAdminTools" hidden>
-        <span class="atlas-auth-admin-label">SUPERADMIN</span>
+        <span class="atlas-auth-admin-label">СУПЕРАДМИН</span>
         <strong class="atlas-auth-admin-title">сброс пароля игроку</strong>
         <p class="atlas-auth-admin-copy">укажи логин. временный пароль можно вписать самой или оставить поле пустым — ATLAS сгенерирует его.</p>
         <form id="atlasAdminResetForm">
@@ -21030,6 +21052,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     <form id="atlasPersonalNoteForm">
       <input name="title" type="text" maxlength="120" placeholder="заголовок">
       <textarea name="body" maxlength="6000" placeholder="напиши что-нибудь для себя…" required></textarea>
+      <label class="atlas-note-privacy"><input name="is_public" type="checkbox"> публичная заметка — видна в этом профиле всем</label>
       <button class="atlas-note-modal-save" type="submit">сохранить заметку</button>
       <div class="atlas-note-modal-status" id="atlasPersonalNoteStatus"></div>
     </form>
@@ -21040,7 +21063,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   <div class="atlas-player-edit-overlay" data-player-edit-close="true"></div>
   <section class="atlas-player-edit-window" role="dialog" aria-modal="true" aria-labelledby="atlasPlayerEditTitle">
     <button class="atlas-player-edit-close" type="button" data-player-edit-close="true" aria-label="закрыть">×</button>
-    <span class="atlas-player-edit-kicker">ATLAS PROFILE</span>
+    <span class="atlas-player-edit-kicker">ПРОФИЛЬ ATLAS</span>
     <h2 class="atlas-player-edit-title" id="atlasPlayerEditTitle">редактировать профиль</h2>
     <p class="atlas-player-edit-copy">эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.</p>
     <form id="atlasPlayerEditForm">
@@ -21119,7 +21142,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
           <div class="atlas-player-relation-body" id="atlasPlayerRelationshipEditor"><div class="atlas-relation-current"><p>загружаем семейный статус…</p></div></div>
           <div class="atlas-relation-message" id="atlasPlayerRelationshipMessage"></div>
         </section>
-        <div class="atlas-player-edit-media-note">аватар и баннер загружаются в твою личную папку atlas-media. после сохранения новый файл сразу появится в профиле.</div>
+        <div class="atlas-player-edit-media-note">выберите фото или баннер с телефона или компьютера. после сохранения изображение появится в профиле.</div>
         <div class="atlas-player-edit-field atlas-player-edit-photo-field">
           <label>аватар</label>
           <div class="atlas-player-file-zone" data-file-zone="atlasPlayerEditAvatar">
@@ -21397,6 +21420,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
       await loadCharacterOwnerEditor(targetId);
       setCharacterOwnerStatus('готово. персонажи привязаны к аккаунту.','ok');
+      window.dispatchEvent(new CustomEvent('atlasCharacterOwnersChanged'));
       if(currentPlayerId===targetId)await renderPlayerProfile(targetId);
     }catch(err){
       setCharacterOwnerStatus(err&&err.message?err.message:'не удалось сохранить персонажей.','error');
@@ -21658,7 +21682,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       renderFilePreview(form.elements.banner,'atlasPlayerBannerPreview');
       form.dataset.playerId=id;
       form.dataset.editMode=own?'self':'staff';
-      form.dataset.currentRole=p.role||'player';
+      form.dataset.currentRole=p.role||'игрок';
       var roleSelect=document.getElementById('atlasPlayerRoleSelect');
       if(roleSelect)roleSelect.value=p.role==='admin'?'admin':'player';
       if(own)await renderRelationshipEditor(id);
@@ -21789,7 +21813,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     else if(p.role==='admin') badges.push('админ');
     return '<button class="atlas-player-card" type="button" data-player-id="'+esc(p.id)+'">'+
       '<span class="atlas-player-card-media">'+media+'</span>'+
-      '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'player')+'</p></span>'+
+      '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'игрок')+'</p></span>'+
     '</button>';
   }
 
@@ -21837,7 +21861,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function renderOwnedCharacterCard(ch){
     var img=characterOwnerImage(ch);
-    var copy='<span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3><p>'+esc(ch._atlasCardOnly?'анкета появится позже':((ch.card&&ch.card.short)||ch.subtitle||''))+'</p></span>';
+    var copy='<span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3><p>'+esc(ch._atlasCardOnly?'краткая карточка':((ch.card&&ch.card.short)||ch.subtitle||''))+'</p></span>';
     if(ch._atlasCardOnly){
       return '<article class="atlas-character-card"><div class="atlas-character-card-btn atlas-card-only">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</div></article>';
     }
@@ -21931,7 +21955,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var bundle=await fetchPlayerBundle(id), p=bundle.profile;
       if(!p){root.innerHTML='<div class="atlas-player-empty"><strong>профиль не найден</strong></div>';return}
       currentPlayerId=p.id; try{sessionStorage.setItem('atlasPlayerProfileId',p.id)}catch(_e){}
-      if(typeof window.atlasPersonalTrackView==='function') window.atlasPersonalTrackView({target_type:'player',target_id:p.id,title:displayName(p),subtitle:'@'+(p.nickname||'player'),image_url:p.avatar_url||p.banner_url||''});
+      if(typeof window.atlasPersonalTrackView==='function') window.atlasPersonalTrackView({target_type:'player',target_id:p.id,title:displayName(p),subtitle:'@'+(p.nickname||'игрок'),image_url:p.avatar_url||p.banner_url||''});
       var banner=p.banner_url||p.avatar_url||'';
       var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));
       var chars=(bundle.owners||[]).map(function(o){return findAssignableCharacter(o.character_id)}).filter(Boolean);
@@ -21977,10 +22001,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
         return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+secretBadge+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p>'+requirement+'<small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
       }).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'player')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'player')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'игрок')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'игрок')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('posts','посты',false)+tabButton('photos','фото',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('posts','<div id="atlasPlayerPostsRoot" class="atlas-player-social-loading">загружаем публикации…</div>',false)+tabPanel('photos','<div id="atlasPlayerPhotosRoot" class="atlas-player-social-loading">загружаем фотографии…</div>',false)+tabPanel('achievements',achPanel,false);
       if(typeof window.atlasPersonalHydrate==='function') setTimeout(window.atlasPersonalHydrate,0);
       if(typeof window.atlasRenderPlayerSocial==='function') setTimeout(function(){window.atlasRenderPlayerSocial(p.id)},0);
+      if(window.atlasHydrateCommunityPlayer) window.atlasHydrateCommunityPlayer(p.id);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
 
@@ -22278,6 +22303,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     }
     if(button)button.classList.toggle('is-active',!find.data);
     hydrate(button?button.closest('[data-personal-tools="true"]'):document);
+    if(table==='atlas_favorites'&&window.atlasCommunityRefreshSocial)window.atlasCommunityRefreshSocial();
     if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render();
   }
 
@@ -22287,16 +22313,21 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var modal=document.getElementById('atlasPersonalNoteModal'), form=document.getElementById('atlasPersonalNoteForm');
     if(!modal||!form)return;
     form.reset();
+    delete form.dataset.noteId;
+    document.getElementById('atlasPersonalNoteHeading').textContent='новая заметка';
+    form.elements.is_public.disabled=!(target&&target.target_id);
     document.getElementById('atlasPersonalNoteTarget').textContent=target&&target.target_id?('к: '+target.title):'личная заметка';
     document.getElementById('atlasPersonalNoteStatus').textContent='';
     modal.hidden=false;modal.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
   }
   function closeNote(){var modal=document.getElementById('atlasPersonalNoteModal');if(!modal)return;modal.hidden=true;modal.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';noteContext=null}
 
-  async function saveNote(title,body,target){
+  async function saveNote(title,body,target,isPublic,noteId){
     var client=c(), user=uid(); if(!client||!user)throw new Error('сначала войди в аккаунт.');
     var row={user_id:user,title:title||null,body:body,target_type:target&&target.target_id?target.target_type:null,target_id:target&&target.target_id?target.target_id:null,target_title:target&&target.target_id?target.title:null};
-    var res=await client.from('atlas_notes').insert(row); if(res.error)throw res.error;
+    row.is_public=!!(isPublic&&target&&target.target_id);
+    var res=noteId?await client.from('atlas_notes').update(row).eq('id',noteId).eq('user_id',user):await client.from('atlas_notes').insert(row); if(res.error)throw res.error;
+    if(window.atlasCommunityRefreshSocial)window.atlasCommunityRefreshSocial();
   }
 
   async function trackView(target){
@@ -22314,12 +22345,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function itemCard(item,kind){
     var media=item.image_url?'<img src="'+esc(item.image_url)+'" alt="">':esc(first(item.title));
-    return '<article class="atlas-personal-card"><div class="atlas-personal-card-media">'+media+'</div><div class="atlas-personal-card-copy"><small>'+esc(item.target_type||'')+'</small><h3>'+esc(item.title||'без названия')+'</h3><p>'+esc(item.subtitle||'')+'</p><div class="atlas-personal-card-actions"><button type="button" data-personal-open="'+esc(item.target_type)+'" data-personal-id="'+esc(item.target_id)+'">открыть</button>'+(kind==='favorite'?'<button type="button" data-personal-fav-public="'+esc(item.id)+'">'+(item.is_public?'публичное':'только мне')+'</button>':'')+'<button class="is-danger" type="button" data-personal-remove="'+esc(kind)+'" data-personal-row="'+esc(item.id)+'">убрать</button></div></div></article>';
+    return '<article class="atlas-personal-card"><div class="atlas-personal-card-media">'+media+'</div><div class="atlas-personal-card-copy"><small>'+esc(item.target_type==='character'?'персонаж':item.target_type==='player'?'игрок':'материал')+'</small><h3>'+esc(item.title||'без названия')+'</h3><p>'+esc(item.subtitle||'')+'</p><div class="atlas-personal-card-actions"><button type="button" data-personal-open="'+esc(item.target_type)+'" data-personal-id="'+esc(item.target_id)+'">открыть</button>'+'<button class="is-danger" type="button" data-personal-remove="'+esc(kind)+'" data-personal-row="'+esc(item.id)+'">убрать</button></div></div></article>';
   }
 
   function noteCard(n){
     var target=n.target_id?'<button class="atlas-note-target" type="button" data-personal-open="'+esc(n.target_type)+'" data-personal-id="'+esc(n.target_id)+'">'+esc(n.target_title||n.target_type)+'</button>':'';
-    return '<article class="atlas-note-card'+(n.is_done?' is-done':'')+'"><div class="atlas-note-card-head"><h3>'+esc(n.title||'заметка')+'</h3><div class="atlas-personal-card-actions"><button type="button" data-note-pin="'+esc(n.id)+'">'+(n.is_pinned?'открепить':'закрепить')+'</button><button type="button" data-note-done="'+esc(n.id)+'">'+(n.is_done?'вернуть':'готово')+'</button><button class="is-danger" type="button" data-note-delete="'+esc(n.id)+'">удалить</button></div></div><p>'+esc(n.body||'')+'</p>'+target+'<small>'+esc(fmt(n.updated_at||n.created_at))+'</small></article>';
+    return '<article class="atlas-note-card'+(n.is_done?' is-done':'')+'"><div class="atlas-note-card-head"><h3>'+esc(n.title||'заметка')+'</h3><div class="atlas-personal-card-actions"><button type="button" data-note-edit="'+esc(n.id)+'">изменить · '+(n.is_public?'публичная':'личная')+'</button><button type="button" data-note-pin="'+esc(n.id)+'">'+(n.is_pinned?'открепить':'закрепить')+'</button><button type="button" data-note-done="'+esc(n.id)+'">'+(n.is_done?'вернуть':'готово')+'</button><button class="is-danger" type="button" data-note-delete="'+esc(n.id)+'">удалить</button></div></div><p>'+esc(n.body||'')+'</p>'+target+'<small>'+esc(fmt(n.updated_at||n.created_at))+'</small></article>';
   }
 
   function historyRow(h){
@@ -22346,7 +22377,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     function tab(id,label,count){return '<button class="atlas-personal-tab'+(activeTab===id?' is-active':'')+'" type="button" data-personal-tab="'+id+'">'+label+(typeof count==='number'?' · '+count:'')+'</button>'}
     function panel(id,html){return '<section class="atlas-personal-panel'+(activeTab===id?' is-active':'')+'" data-personal-panel="'+id+'">'+html+'</section>'}
     var noteComposer='<form class="atlas-note-composer" id="atlasQuickNoteForm"><input name="title" type="text" maxlength="120" placeholder="заголовок"><textarea name="body" maxlength="6000" placeholder="быстрая заметка…" required></textarea><button class="atlas-note-add" type="submit">добавить</button></form>';
-    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','guardados',bookmarks.length)+tab('favoritos','favoritos',favorites.length)+tab('notas','notas',notes.length)+tab('historial','historial',history.length)+'</nav>'+
+    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','закладки',bookmarks.length)+tab('favoritos','избранное',favorites.length)+tab('notas','заметки',notes.length)+tab('historial','история',history.length)+'</nav>'+
       panel('guardados',bookmarks.length?'<div class="atlas-personal-grid">'+bookmarks.map(function(x){return itemCard(x,'bookmark')}).join('')+'</div>':'<div class="atlas-personal-empty">здесь появятся сохранённые профили и другие материалы.</div>')+
       panel('favoritos',favorites.length?'<div class="atlas-personal-grid">'+favorites.map(function(x){return itemCard(x,'favorite')}).join('')+'</div>':'<div class="atlas-personal-empty">избранное пока пустое.</div>')+
       panel('notas',noteComposer+(notes.length?'<div class="atlas-note-list">'+notes.map(noteCard).join('')+'</div>':'<div class="atlas-personal-empty">заметок пока нет.</div>'))+
@@ -22375,6 +22406,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       var cur=pub.textContent.trim()==='публичное';
       var r=await c().from('atlas_favorites').update({is_public:!cur}).eq('id',id).eq('user_id',uid());if(!r.error)render();return;
     }
+    var edit=e.target.closest('[data-note-edit]');if(edit){
+      try{
+        var nr=await c().from('atlas_notes').select('*').eq('id',edit.getAttribute('data-note-edit')).eq('user_id',uid()).single();if(nr.error)throw nr.error;
+        var n=nr.data;openNote(n.target_id?{target_type:n.target_type,target_id:n.target_id,title:n.target_title}:null);
+        var nf=document.getElementById('atlasPersonalNoteForm');nf.dataset.noteId=n.id;nf.elements.title.value=n.title||'';nf.elements.body.value=n.body||'';nf.elements.is_public.checked=!!n.is_public;
+        document.getElementById('atlasPersonalNoteHeading').textContent='изменить заметку';
+      }catch(err){alert(err.message||'не удалось открыть заметку')}return;
+    }
     var del=e.target.closest('[data-note-delete]');if(del){var r=await c().from('atlas_notes').delete().eq('id',del.getAttribute('data-note-delete')).eq('user_id',uid());if(!r.error)render();return}
     var done=e.target.closest('[data-note-done]');if(done){var id=done.getAttribute('data-note-done');var row=await c().from('atlas_notes').select('is_done').eq('id',id).single();if(!row.error){await c().from('atlas_notes').update({is_done:!row.data.is_done}).eq('id',id);render()}return}
     var pin=e.target.closest('[data-note-pin]');if(pin){var id=pin.getAttribute('data-note-pin');var row=await c().from('atlas_notes').select('is_pinned').eq('id',id).single();if(!row.error){await c().from('atlas_notes').update({is_pinned:!row.data.is_pinned}).eq('id',id);render()}return}
@@ -22386,7 +22425,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       e.preventDefault();var f=new FormData(e.target);try{await saveNote(String(f.get('title')||'').trim(),String(f.get('body')||'').trim(),null);e.target.reset();render()}catch(err){alert((err&&err.message)||'не удалось сохранить заметку')}return;
     }
     if(e.target&&e.target.id==='atlasPersonalNoteForm'){
-      e.preventDefault();var form=e.target, status=document.getElementById('atlasPersonalNoteStatus'), f=new FormData(form);var body=String(f.get('body')||'').trim();if(!body)return;status.textContent='сохраняем…';try{await saveNote(String(f.get('title')||'').trim(),body,noteContext);status.textContent='готово';setTimeout(function(){closeNote();if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render()},350)}catch(err){status.textContent=(err&&err.message)||'ошибка'}return;
+      e.preventDefault();var form=e.target, status=document.getElementById('atlasPersonalNoteStatus'), f=new FormData(form);var body=String(f.get('body')||'').trim();if(!body)return;status.textContent='сохраняем…';try{await saveNote(String(f.get('title')||'').trim(),body,noteContext,f.get('is_public')==='on',form.dataset.noteId);status.textContent='готово';setTimeout(function(){closeNote();if(document.getElementById('atlas-page-mi-atlas')&&document.getElementById('atlas-page-mi-atlas').classList.contains('active'))render()},350)}catch(err){status.textContent=(err&&err.message)||'ошибка'}return;
     }
   },true);
 
@@ -22554,11 +22593,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function canDeleteComment(comment){return own(comment.user_id)||own(activeProfileId)}
   function commentForm(postId,parentId,ph,isReply){if(uid())return '<form class="atlas-player-comment-form'+(isReply?' is-reply':'')+'" data-player-comment-form="'+esc(postId)+'"'+(parentId?' data-parent-comment="'+esc(parentId)+'"':'')+'><textarea class="atlas-player-comment-input" name="body" maxlength="2000" rows="1" placeholder="'+esc(ph||'написать комментарий…')+'" required></textarea><button class="atlas-player-comment-submit" type="submit">отправить</button>'+(isReply?'<button class="atlas-player-comment-reply-cancel" type="button" data-player-comment-reply-cancel="'+esc(parentId)+'" data-comment-post="'+esc(postId)+'">отмена</button>':'')+'</form>';return '<button class="atlas-player-comment-login" type="button" data-player-comment-login>войти, чтобы ответить</button>'}
   function commentActions(comment){var out=['<button class="atlas-player-comment-reply-btn" type="button" data-player-comment-reply="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">ответить</button>'];if(canDeleteComment(comment))out.push('<button class="atlas-player-comment-delete" type="button" data-player-comment-delete="'+esc(comment.id)+'" data-comment-post="'+esc(comment.post_id)+'">удалить</button>');return '<div class="atlas-player-comment-tools">'+out.join('')+'</div>'}
-  function commentCard(comment,profiles,isReply){var p=profiles[comment.user_id]||{nickname:'player',display_name:'игрок'};var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));return '<div class="atlas-player-comment'+(isReply?' is-reply':'')+'" data-comment-id="'+esc(comment.id)+'"><div class="atlas-player-comment-avatar">'+avatar+'</div><div class="atlas-player-comment-main"><div class="atlas-player-comment-bubble"><div class="atlas-player-comment-meta"><strong>'+esc(p.display_name||p.nickname)+'</strong><span>@'+esc(p.nickname||'player')+' · '+esc(fmt(comment.created_at))+'</span></div><div class="atlas-player-comment-text">'+esc(comment.body||'')+'</div></div>'+commentActions(comment)+'</div></div>'}
+  function commentCard(comment,profiles,isReply){var p=profiles[comment.user_id]||{nickname:'player',display_name:'игрок'};var avatar=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(initial(p));return '<div class="atlas-player-comment'+(isReply?' is-reply':'')+'" data-comment-id="'+esc(comment.id)+'"><div class="atlas-player-comment-avatar">'+avatar+'</div><div class="atlas-player-comment-main"><div class="atlas-player-comment-bubble"><div class="atlas-player-comment-meta"><strong>'+esc(p.display_name||p.nickname)+'</strong><span>@'+esc(p.nickname||'игрок')+' · '+esc(fmt(comment.created_at))+'</span></div><div class="atlas-player-comment-text">'+esc(comment.body||'')+'</div></div>'+commentActions(comment)+'</div></div>'}
   function commentThread(postId,comment,childrenMap,profiles,depth){depth=depth||0;var replyForm=openReplyForms[comment.id]?'<div class="atlas-player-comment-reply-form-wrap">'+commentForm(postId,comment.id,'написать ответ…',true)+'</div>':'';var replies=childrenMap[comment.id]||[];var children=replies.length?'<div class="atlas-player-comment-children">'+replies.map(function(x){return commentThread(postId,x,childrenMap,profiles,depth+1)}).join('')+'</div>':'';return '<div class="atlas-player-comment-thread">'+commentCard(comment,profiles,depth>0)+replyForm+children+'</div>'}
   function commentsBlock(postId,comments,profiles){var childrenMap={},roots=[];(comments||[]).forEach(function(x){if(x.parent_comment_id)(childrenMap[x.parent_comment_id]||(childrenMap[x.parent_comment_id]=[])).push(x);else roots.push(x)});var list=roots.map(function(x){return commentThread(postId,x,childrenMap,profiles,0)}).join('');var form=commentForm(postId,'','написать комментарий…',false);return '<div class="atlas-player-comments'+(openCommentPosts[postId]?' is-open':'')+'" data-comments-panel="'+esc(postId)+'">'+(list?'<div class="atlas-player-comment-list">'+list+'</div>':'')+form+'</div>'}
   function statsBlock(posts,images,likes,comments){var totalPosts=(posts||[]).length,totalPhotos=(images||[]).length,totalLikes=(likes||[]).length,totalComments=(comments||[]).length,totalReactions=totalLikes+totalComments,avg=totalPosts?(Math.round((totalLikes/totalPosts)*10)/10):0,counts={};(likes||[]).forEach(function(x){counts[x.post_id]=(counts[x.post_id]||0)+1});var best=null,bestLikes=-1;(posts||[]).forEach(function(p){var n=counts[p.id]||0;if(n>bestLikes){best=p;bestLikes=n}});var bestText='публикаций пока нет';if(best){var raw=String(best.body||'').trim();bestText=(raw?raw.slice(0,90)+(raw.length>90?'…':''):'публикация с фото')+' · ♥ '+bestLikes}return '<aside class="atlas-player-post-stats"><section class="atlas-player-post-stats-card"><span class="atlas-player-post-stats-kicker">atlas activity</span><h3 class="atlas-player-post-stats-title">статистика профиля</h3><p class="atlas-player-post-stats-sub">активность публикаций этого игрока.</p><div class="atlas-player-post-stats-grid"><div class="atlas-player-post-stat"><strong>'+esc(totalPosts)+'</strong><span>публикаций</span></div><div class="atlas-player-post-stat"><strong>'+esc(totalPhotos)+'</strong><span>фотографий</span></div><div class="atlas-player-post-stat"><strong>'+esc(totalLikes)+'</strong><span>лайков</span></div><div class="atlas-player-post-stat"><strong>'+esc(totalComments)+'</strong><span>комментариев</span></div></div></section><section class="atlas-player-post-stats-card atlas-player-post-stats-detail"><div class="atlas-player-post-detail-row"><span>всего реакций</span><strong>'+esc(totalReactions)+'</strong></div><div class="atlas-player-post-detail-row"><span>в среднем лайков на пост</span><strong>'+esc(avg)+'</strong></div><div class="atlas-player-post-best"><small>самая популярная публикация</small><b>'+esc(bestText)+'</b></div></section></aside>'}
-  function postCard(post,profile,likes,userLike,images,comments,commentProfiles){var avatar=profile.avatar_url?'<img src="'+esc(profile.avatar_url)+'" alt="">':esc(initial(profile));var body=post.body?'<div class="atlas-player-post-body">'+esc(post.body)+'</div>':'';var imgs=(images||[]).map(function(x){return '<img src="'+esc(x.public_url||x.url||'')+'" alt="">'}).join('');var grid=imgs?'<div class="atlas-player-post-images'+((images||[]).length===1?' is-one':'')+'">'+imgs+'</div>':'';var del=own(post.author_id)?'<div class="atlas-player-post-menu"><button type="button" data-player-post-delete="'+esc(post.id)+'">удалить</button></div>':'';var cc=(comments||[]).length;return '<article class="atlas-player-post" data-post-id="'+esc(post.id)+'"><div class="atlas-player-post-head"><div class="atlas-player-post-avatar">'+avatar+'</div><div class="atlas-player-post-author"><strong>'+esc(profile.display_name||profile.nickname)+'</strong><span>@'+esc(profile.nickname||'player')+' · '+esc(fmt(post.created_at))+'</span></div>'+del+'</div>'+body+grid+'<div class="atlas-player-post-foot"><button type="button" class="atlas-player-post-like'+(userLike?' is-active':'')+'" data-player-post-like="'+esc(post.id)+'">♥ '+esc(likes||0)+'</button><button type="button" class="atlas-player-post-comments-btn" data-player-post-comments="'+esc(post.id)+'">💬 '+esc(cc)+'</button></div>'+commentsBlock(post.id,comments,commentProfiles)+'</article>'}
+  function postCard(post,profile,likes,userLike,images,comments,commentProfiles){var avatar=profile.avatar_url?'<img src="'+esc(profile.avatar_url)+'" alt="">':esc(initial(profile));var body=post.body?'<div class="atlas-player-post-body">'+esc(post.body)+'</div>':'';var imgs=(images||[]).map(function(x){return '<img src="'+esc(x.public_url||x.url||'')+'" alt="">'}).join('');var grid=imgs?'<div class="atlas-player-post-images'+((images||[]).length===1?' is-one':'')+'">'+imgs+'</div>':'';var del=own(post.author_id)?'<div class="atlas-player-post-menu"><button type="button" data-player-post-delete="'+esc(post.id)+'">удалить</button></div>':'';var cc=(comments||[]).length;return '<article class="atlas-player-post" data-post-id="'+esc(post.id)+'"><div class="atlas-player-post-head"><div class="atlas-player-post-avatar">'+avatar+'</div><div class="atlas-player-post-author"><strong>'+esc(profile.display_name||profile.nickname)+'</strong><span>@'+esc(profile.nickname||'игрок')+' · '+esc(fmt(post.created_at))+'</span></div>'+del+'</div>'+body+grid+'<div class="atlas-player-post-foot"><button type="button" class="atlas-player-post-like'+(userLike?' is-active':'')+'" data-player-post-like="'+esc(post.id)+'">♥ '+esc(likes||0)+'</button><button type="button" class="atlas-player-post-comments-btn" data-player-post-comments="'+esc(post.id)+'">💬 '+esc(cc)+'</button></div>'+commentsBlock(post.id,comments,commentProfiles)+'</article>'}
   async function load(id){var client=c();if(!client)return;activeProfileId=id;var postsRoot=document.getElementById('atlasPlayerPostsRoot'),photosRoot=document.getElementById('atlasPlayerPhotosRoot');if(!postsRoot&&!photosRoot)return;try{var pr=await client.from('profiles').select('id,nickname,display_name,avatar_url').eq('id',id).maybeSingle();if(pr.error)throw pr.error;var profile=pr.data||{id:id,nickname:'player',display_name:'игрок'};var po=await client.from('posts').select('id,author_id,body,created_at,updated_at').eq('author_id',id).order('created_at',{ascending:false});if(po.error)throw po.error;var posts=po.data||[],ids=posts.map(function(x){return x.id});var images=[],likes=[],comments=[];if(ids.length){var ir=await client.from('post_images').select('id,post_id,storage_path,sort_order').in('post_id',ids).order('sort_order',{ascending:true});if(ir.error)throw ir.error;images=ir.data||[];var lr=await client.from('post_likes').select('post_id,user_id').in('post_id',ids);if(lr.error)throw lr.error;likes=lr.data||[];var cr=await client.from('post_comments').select('id,post_id,user_id,body,created_at,parent_comment_id').in('post_id',ids).order('created_at',{ascending:true});if(cr.error)throw cr.error;comments=cr.data||[]}var imageMap={};images.forEach(function(x){var pub=client.storage.from('atlas-media').getPublicUrl(x.storage_path);x.public_url=pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:'';(imageMap[x.post_id]||(imageMap[x.post_id]=[])).push(x)});var likeCount={},myLikes={};likes.forEach(function(x){likeCount[x.post_id]=(likeCount[x.post_id]||0)+1;if(x.user_id===uid())myLikes[x.post_id]=true});var commentMap={};comments.forEach(function(x){(commentMap[x.post_id]||(commentMap[x.post_id]=[])).push(x)});var commentProfiles={};var commentUserIds=Array.from(new Set(comments.map(function(x){return x.user_id}).filter(Boolean)));if(commentUserIds.length){var cpr=await client.from('profiles').select('id,nickname,display_name,avatar_url').in('id',commentUserIds);if(cpr.error)throw cpr.error;(cpr.data||[]).forEach(function(x){commentProfiles[x.id]=x})}if(postsRoot){var feedHtml=composer(id)+(posts.length?'<div class="atlas-player-post-list">'+posts.map(function(p){return postCard(p,profile,likeCount[p.id]||0,!!myLikes[p.id],imageMap[p.id]||[],commentMap[p.id]||[],commentProfiles)}).join('')+'</div>':'<div class="atlas-player-social-empty">публикаций пока нет.</div>');postsRoot.innerHTML='<div class="atlas-player-posts-layout"><div class="atlas-player-posts-feed">'+feedHtml+'</div>'+statsBlock(posts,images,likes,comments)+'</div>'}if(photosRoot){var all=images.slice().sort(function(a,b){var pa=posts.find(function(p){return p.id===a.post_id}),pb=posts.find(function(p){return p.id===b.post_id});return new Date(pb&&pb.created_at||0)-new Date(pa&&pa.created_at||0)});photosRoot.innerHTML=all.length?'<div class="atlas-player-photo-grid">'+all.map(function(x){return '<button class="atlas-player-photo-tile" type="button" data-player-photo-post="'+esc(x.post_id)+'"><img src="'+esc(x.public_url||'')+'" alt=""></button>'}).join('')+'</div>':'<div class="atlas-player-social-empty">фотографий пока нет.</div>'}bindDrop()}catch(err){var msg=esc(err&&err.message?err.message:'ошибка atlas');if(postsRoot)postsRoot.innerHTML='<div class="atlas-player-social-empty">не удалось загрузить публикации: '+msg+'</div>';if(photosRoot)photosRoot.innerHTML='<div class="atlas-player-social-empty">не удалось загрузить фотографии.</div>'}}
   function bindDrop(){var d=document.getElementById('atlasPlayerPostDrop');if(!d||d.dataset.bound==='1')return;d.dataset.bound='1';['dragenter','dragover'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.add('is-over')})});['dragleave','drop'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.remove('is-over')})});d.addEventListener('drop',function(e){try{addFiles(e.dataTransfer.files)}catch(err){setStatus(err.message,'error')}})}
   document.addEventListener('change',function(e){
@@ -22691,7 +22730,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 <template data-atlas-page-template="direct">
   <section class="atlas-page" id="atlas-page-direct">
     <div class="atlas-page-shell atlas-direct-shell">
-      <div id="atlasDirectRoot"><div class="atlas-direct-loading">подключаем direct…</div></div>
+      <div id="atlasDirectRoot"><div class="atlas-direct-loading">подключаем сообщения…</div></div>
     </div>
   </section>
 </template>
@@ -23006,7 +23045,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function openLogin(){var a=document.getElementById('atlasAccountButton');if(a)a.click()}
   function personaById(id){return personas.find(function(p){return p.id===id})||null}
   function myPersonas(){return personas.filter(function(p){return p.owner_user_id===uid()})}
-  function pName(p){return String(p&&p.display_name||p&&p.nickname||'persona')}
+  function pName(p){return String(p&&p.display_name||p&&p.nickname||'персонаж')}
   function pInitial(p){return (pName(p).trim().charAt(0)||'A').toUpperCase()}
   function pAvatar(p,cls){return '<span class="'+cls+'">'+(p&&p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':esc(pInitial(p)))+'</span>'}
   function chatPhotoUrl(c){
@@ -23027,7 +23066,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function active(){return chats.find(function(c){return c.id===activeChatId})||null}
   function messageById(id){return messages.find(function(m){return m.id===id})||null}
   function cleanMessageBody(v){return String(v||'').replace(/\u200B/g,'').trim()}
-  function isMobile(){try{return window.matchMedia('(max-width:900px)').matches}catch(_e){return window.innerWidth<=900}}
+  function isMobile(){return true}
   function attachmentsFor(messageId){return attachmentByMessage[messageId]||[]}
   function unreadFor(chatId){return Math.max(0,Number(unreadByChat[chatId]||0))}
   function safeFilename(v){return String(v||'file').replace(/[^a-zA-Z0-9а-яА-ЯёЁ._ -]+/g,'').trim().slice(0,120)||'file'}
@@ -23126,7 +23165,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var p=personaById(m.persona_id),own=!!(p&&p.owner_user_id===uid()),day=rpDatePart(m.rp_datetime),sep=day&&day!==prevDate?'<div class="atlas-direct-day" data-direct-day="'+esc(day)+'">'+esc(formatDate(day))+'</div>':'';
     var actions='<div class="atlas-direct-message-actions"><button type="button" data-direct-reply-message="'+esc(m.id)+'">ответить</button>'+(messageCanModify(m)?'<button type="button" data-direct-edit-message="'+esc(m.id)+'">изменить</button><button type="button" data-direct-delete-message="'+esc(m.id)+'">удалить</button>':'')+'</div>';
     var body=cleanMessageBody(m.body),bodyHtml=body?'<div class="atlas-direct-message-text">'+nl(body)+'</div>':'';
-    return sep+'<article class="atlas-direct-message'+(own?' is-own':'')+'" data-direct-message-id="'+esc(m.id)+'">'+pAvatar(p,'atlas-direct-message-avatar')+'<div class="atlas-direct-message-main"><div class="atlas-direct-message-head"><strong>'+esc(pName(p))+'</strong><span>@'+esc(p&&p.nickname||'persona')+'</span></div><div class="atlas-direct-message-bubble">'+replyPreview(m.reply_to)+bodyHtml+attachmentHtml(m.id)+'<div class="atlas-direct-message-foot"><span>'+esc(formatTime(m.rp_datetime))+'</span>'+(m.edited_at?'<span>изменено</span>':'')+readReceiptHtml(m)+'</div></div>'+actions+'</div></article>';
+    return sep+'<article class="atlas-direct-message'+(own?' is-own':'')+'" data-direct-message-id="'+esc(m.id)+'">'+pAvatar(p,'atlas-direct-message-avatar')+'<div class="atlas-direct-message-main"><div class="atlas-direct-message-head"><strong>'+esc(pName(p))+'</strong><span>@'+esc(p&&p.nickname||'персонаж')+'</span></div><div class="atlas-direct-message-bubble">'+replyPreview(m.reply_to)+bodyHtml+attachmentHtml(m.id)+'<div class="atlas-direct-message-foot"><span>'+esc(formatTime(m.rp_datetime))+'</span>'+(m.edited_at?'<span>изменено</span>':'')+readReceiptHtml(m)+'</div></div>'+actions+'</div></article>';
   }
 
   function messagesHtml(){
@@ -23148,16 +23187,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function composerHtml(c){
     if(c.is_archived)return '<div class="atlas-direct-composer-note">чат в архиве — новые сообщения отправить нельзя.</div>';
     var mine=myChatPersonas(c);
-    if(!mine.length)return '<div class="atlas-direct-composer-note">ты можешь читать этот чат, но среди участников нет ни одной твоей ATLAS-persona.</div>';
+    if(!mine.length)return '<div class="atlas-direct-composer-note">ты можешь читать этот чат, но среди участников нет ни одного твоего персонажа ATLAS.</div>';
     var s=stateFor(c),reply=replyTargetId?messageById(replyTargetId):null;
     var replyBar=reply?'<div class="atlas-direct-reply-bar"><span>ответ для <strong>'+esc(pName(personaById(reply.persona_id)))+'</strong>: '+esc(cleanMessageBody(reply.body).replace(/\s+/g,' ').slice(0,100)||'📎 вложение')+'</span><button type="button" data-direct-cancel-reply aria-label="отменить ответ">×</button></div>':'';
-    return '<form class="atlas-direct-composer" id="atlasDirectMessageForm">'+typingHtml()+replyBar+'<div class="atlas-direct-composer-controls"><label class="atlas-direct-composer-control"><span>отправить как</span><select id="atlasDirectComposerPersona" name="persona">'+mine.map(function(p){return '<option value="'+esc(p.id)+'"'+(p.id===s.persona?' selected':'')+'>'+esc(pName(p))+' · @'+esc(p.nickname||'persona')+'</option>'}).join('')+'</select></label><label class="atlas-direct-composer-control"><span>ролевая дата</span><input id="atlasDirectComposerDate" name="rp_date" type="date" value="'+esc(s.date)+'" required></label><label class="atlas-direct-composer-control"><span>время</span><input id="atlasDirectComposerTime" name="rp_time" type="time" value="'+esc(s.time)+'" required></label></div><div id="atlasDirectPendingFiles">'+pendingFilesHtml()+'</div><div class="atlas-direct-composer-row"><textarea id="atlasDirectMessageBody" name="body" maxlength="4000" placeholder="написать сообщение…">'+esc(s.body)+'</textarea><div class="atlas-direct-composer-actions"><label class="atlas-direct-attach" title="прикрепить файл">📎<input id="atlasDirectFileInput" type="file" multiple accept="image/*,.pdf,.txt,.doc,.docx"></label><button class="atlas-direct-send" type="submit" title="отправить">➤</button></div></div><div class="atlas-direct-message-status" id="atlasDirectMessageStatus"></div></form>';
+    return '<form class="atlas-direct-composer" id="atlasDirectMessageForm">'+typingHtml()+replyBar+'<div class="atlas-direct-composer-controls"><label class="atlas-direct-composer-control"><span>отправить как</span><select id="atlasDirectComposerPersona" name="persona">'+mine.map(function(p){return '<option value="'+esc(p.id)+'"'+(p.id===s.persona?' selected':'')+'>'+esc(pName(p))+' · @'+esc(p.nickname||'персонаж')+'</option>'}).join('')+'</select></label><label class="atlas-direct-composer-control"><span>ролевая дата</span><input id="atlasDirectComposerDate" name="rp_date" type="date" value="'+esc(s.date)+'" required></label><label class="atlas-direct-composer-control"><span>время</span><input id="atlasDirectComposerTime" name="rp_time" type="time" value="'+esc(s.time)+'" required></label></div><div id="atlasDirectPendingFiles">'+pendingFilesHtml()+'</div><div class="atlas-direct-composer-row"><textarea id="atlasDirectMessageBody" name="body" maxlength="4000" placeholder="написать сообщение…">'+esc(s.body)+'</textarea><div class="atlas-direct-composer-actions"><label class="atlas-direct-attach" title="прикрепить файл">📎<input id="atlasDirectFileInput" type="file" multiple accept="image/*,.pdf,.txt,.doc,.docx"></label><button class="atlas-direct-send" type="submit" title="отправить">➤</button></div></div><div class="atlas-direct-message-status" id="atlasDirectMessageStatus"></div></form>';
   }
 
   function participantsPanelHtml(c){
     if(!participantPanelOpen)return '';
     var members=chatMembers(c.id);
-    return '<aside class="atlas-direct-participants-panel"><div class="atlas-direct-participants-head"><div><strong>участники</strong><span>'+members.length+' persona</span></div><button type="button" data-direct-members-close aria-label="закрыть">×</button></div><div class="atlas-direct-participants-list">'+members.map(function(p){return '<div class="atlas-direct-participant">'+pAvatar(p,'atlas-direct-member-avatar')+'<div class="atlas-direct-member-copy"><strong>'+esc(pName(p))+(p.owner_user_id===uid()?' <em>ты</em>':'')+'</strong><span>@'+esc(p.nickname||'persona')+'</span>'+(p.status_text?'<small>'+esc(p.status_text)+'</small>':'')+'</div></div>'}).join('')+'</div></aside>';
+    return '<aside class="atlas-direct-participants-panel"><div class="atlas-direct-participants-head"><div><strong>участники</strong><span>'+members.length+' персонажей</span></div><button type="button" data-direct-members-close aria-label="закрыть">×</button></div><div class="atlas-direct-participants-list">'+members.map(function(p){return '<div class="atlas-direct-participant">'+pAvatar(p,'atlas-direct-member-avatar')+'<div class="atlas-direct-member-copy"><strong>'+esc(pName(p))+(p.owner_user_id===uid()?' <em>ты</em>':'')+'</strong><span>@'+esc(p.nickname||'персонаж')+'</span>'+(p.status_text?'<small>'+esc(p.status_text)+'</small>':'')+'</div></div>'}).join('')+'</div></aside>';
   }
 
   function chatView(c){
@@ -23167,7 +23206,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   function personaChoiceHtml(p,checked){
     var search=(pName(p)+' '+(p.nickname||'')+' '+(p.character_id||'')).toLowerCase();
-    return '<label class="atlas-direct-persona-choice" data-direct-persona-choice data-search="'+esc(search)+'"><input type="checkbox" name="member_persona" value="'+esc(p.id)+'"'+(checked?' checked':'')+'>'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span></span></label>';
+    return '<label class="atlas-direct-persona-choice" data-direct-persona-choice data-search="'+esc(search)+'"><input type="checkbox" name="member_persona" value="'+esc(p.id)+'"'+(checked?' checked':'')+'>'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'персонаж')+'</span></span></label>';
   }
 
   function chatPhotoControlHtml(c,createMode){
@@ -23181,17 +23220,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   function createView(){
     var mine=myPersonas();
     if(!mine.length)return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>сначала создай ATLAS-профиль хотя бы одному своему персонажу.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div></div></div>';
-    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>создатель и участники — именно персонажи, а не аккаунты игроков.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div><form class="atlas-direct-form" id="atlasDirectCreateForm"><div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" placeholder="осенний вечер" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" required></label><label class="atlas-direct-field"><span>первое время</span><input name="rp_time" type="time" value="12:00" required></label></div>'+chatPhotoControlHtml(null,true)+'<label class="atlas-direct-field"><span>создать от лица</span><select name="creator_persona" required>'+mine.map(function(p){return '<option value="'+esc(p.id)+'">'+esc(pName(p))+' · @'+esc(p.nickname||'persona')+'</option>'}).join('')+'</select></label><div class="atlas-direct-persona-picker"><div class="atlas-direct-section-head"><h3>участники</h3><span>можно добавить сразу</span></div><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+personas.map(function(p){return personaChoiceHtml(p,false)}).join('')+'</div></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-back>отмена</button><button class="atlas-direct-primary" type="submit">создать чат</button></div></form></div></div>';
+    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>новый чат</h3><p>создатель и участники — именно персонажи, а не аккаунты игроков.</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>назад</button></div><form class="atlas-direct-form" id="atlasDirectCreateForm"><div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" placeholder="осенний вечер" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" required></label><label class="atlas-direct-field"><span>первое время</span><input name="rp_time" type="time" value="12:00" required></label></div>'+chatPhotoControlHtml(null,true)+'<label class="atlas-direct-field"><span>создать от лица</span><select name="creator_persona" required>'+mine.map(function(p){return '<option value="'+esc(p.id)+'">'+esc(pName(p))+' · @'+esc(p.nickname||'персонаж')+'</option>'}).join('')+'</select></label><div class="atlas-direct-persona-picker"><div class="atlas-direct-section-head"><h3>участники</h3><span>можно добавить сразу</span></div><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+personas.filter(function(p){return !p.is_archived}).map(function(p){return personaChoiceHtml(p,false)}).join('')+'</div></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-back>отмена</button><button class="atlas-direct-primary" type="submit">создать чат</button></div></form></div></div>';
   }
 
   function manageMemberHtml(c,p){
     var creator=p.id===c.created_by_persona_id;
-    return '<div class="atlas-direct-manage-member">'+pAvatar(p,'atlas-direct-member-avatar')+'<div class="atlas-direct-member-copy"><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span>'+(creator?'<small>persona создателя</small>':'')+'</div><button type="button" data-direct-remove-member="'+esc(p.id)+'"'+(creator?' disabled title="persona создателя оставляем в чате"':'')+'>убрать</button></div>';
+    return '<div class="atlas-direct-manage-member">'+pAvatar(p,'atlas-direct-member-avatar')+'<div class="atlas-direct-member-copy"><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'персонаж')+'</span>'+(creator?'<small>персонаж создателя</small>':'')+'</div><button type="button" data-direct-remove-member="'+esc(p.id)+'"'+(creator?' disabled title="персонажа создателя оставляем в чате"':'')+'>убрать</button></div>';
   }
 
   function manageView(c){
-    var members=chatMembers(c.id),memberIds=members.map(function(p){return p.id}),available=personas.filter(function(p){return memberIds.indexOf(p.id)<0});
-    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>управление чатом</h3><p>'+esc(c.title||'чат')+'</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>к чату</button></div><form class="atlas-direct-form" id="atlasDirectManageForm">'+chatPhotoControlHtml(c,false)+'<div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" value="'+esc(c.title||'')+'" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" value="'+esc(c.rp_date||'')+'" required></label><label class="atlas-direct-field"><span>следующее время</span><input name="rp_time" type="time" value="'+esc(formatTime(c.next_rp_time))+'" required></label></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-archive="'+(c.is_archived?'0':'1')+'">'+(c.is_archived?'вернуть из архива':'в архив')+'</button><button class="atlas-direct-primary" type="submit">сохранить настройки</button></div></form><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>участники</h3><span>'+members.length+'</span></div><div class="atlas-direct-manage-members">'+members.map(function(p){return manageMemberHtml(c,p)}).join('')+'</div></section><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>добавить персонажа</h3><span>'+available.length+' доступно</span></div>'+(available.length?'<div class="atlas-direct-persona-picker"><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+available.map(function(p){var search=(pName(p)+' '+(p.nickname||'')+' '+(p.character_id||'')).toLowerCase();return '<button class="atlas-direct-persona-choice" type="button" data-direct-add-member="'+esc(p.id)+'" data-search="'+esc(search)+'" style="grid-template-columns:34px minmax(0,1fr)">'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'persona')+'</span></span></button>'}).join('')+'</div></div>':'<div class="atlas-direct-placeholder">все существующие ATLAS-persona уже добавлены в этот чат.</div>')+'</section><div class="atlas-direct-divider"></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-danger" type="button" data-direct-delete-chat>удалить чат</button></div></div></div>';
+    var members=chatMembers(c.id),memberIds=members.map(function(p){return p.id}),available=personas.filter(function(p){return !p.is_archived&&memberIds.indexOf(p.id)<0});
+    return '<div class="atlas-direct-chat-body"><div class="atlas-direct-panel"><div class="atlas-direct-panel-head"><div><h3>управление чатом</h3><p>'+esc(c.title||'чат')+'</p></div><button class="atlas-direct-back-btn" type="button" data-direct-back>к чату</button></div><form class="atlas-direct-form" id="atlasDirectManageForm">'+chatPhotoControlHtml(c,false)+'<div class="atlas-direct-form-grid"><label class="atlas-direct-field"><span>название</span><input name="title" maxlength="120" value="'+esc(c.title||'')+'" required></label><label class="atlas-direct-field"><span>ролевая дата</span><input name="rp_date" type="date" value="'+esc(c.rp_date||'')+'" required></label><label class="atlas-direct-field"><span>следующее время</span><input name="rp_time" type="time" value="'+esc(formatTime(c.next_rp_time))+'" required></label></div><div class="atlas-direct-form-actions"><button class="atlas-direct-secondary" type="button" data-direct-archive="'+(c.is_archived?'0':'1')+'">'+(c.is_archived?'вернуть из архива':'в архив')+'</button><button class="atlas-direct-primary" type="submit">сохранить настройки</button></div></form><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>участники</h3><span>'+members.length+'</span></div><div class="atlas-direct-manage-members">'+members.map(function(p){return manageMemberHtml(c,p)}).join('')+'</div></section><div class="atlas-direct-divider"></div><section><div class="atlas-direct-section-head"><h3>добавить персонажа</h3><span>'+available.length+' доступно</span></div>'+(available.length?'<div class="atlas-direct-persona-picker"><input class="atlas-direct-persona-search" type="search" data-direct-persona-search placeholder="найти персонажа…" autocomplete="off"><div class="atlas-direct-persona-list">'+available.map(function(p){var search=(pName(p)+' '+(p.nickname||'')+' '+(p.character_id||'')).toLowerCase();return '<button class="atlas-direct-persona-choice" type="button" data-direct-add-member="'+esc(p.id)+'" data-search="'+esc(search)+'" style="grid-template-columns:34px minmax(0,1fr)">'+pAvatar(p,'atlas-direct-persona-mini')+'<span><strong>'+esc(pName(p))+'</strong><span>@'+esc(p.nickname||'персонаж')+'</span></span></button>'}).join('')+'</div></div>':'<div class="atlas-direct-placeholder">все существующие персонажи ATLAS уже добавлены в этот чат.</div>')+'</section><div class="atlas-direct-divider"></div><div class="atlas-direct-form-status" id="atlasDirectFormStatus"></div><div class="atlas-direct-form-actions"><button class="atlas-direct-danger" type="button" data-direct-delete-chat>удалить чат</button></div></div></div>';
   }
 
   function shell(){
@@ -23202,7 +23241,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var focused=document.activeElement,focusId=focused&&r.contains(focused)?focused.id:'';
     var selection=focusId&&typeof focused.selectionStart==='number'?[focused.selectionStart,focused.selectionEnd]:null;
 
-    if(!uid()){r.innerHTML='<div class="atlas-direct-gate"><strong>atlas direct закрыт</strong><span>войдите в аккаунт, чтобы открыть свои ролевые переписки.</span><br><button type="button" data-direct-login>войти</button></div>';lastRenderedChatId='';return}
+    if(!uid()){r.innerHTML='<div class="atlas-direct-gate"><strong>сообщения ATLAS закрыты</strong><span>войдите в аккаунт, чтобы открыть свои ролевые переписки.</span><br><button type="button" data-direct-login>войти</button></div>';lastRenderedChatId='';return}
     var c=active();
     var main=panelMode==='create'?createView():panelMode==='manage'&&c&&canManage(c)?manageView(c):c?chatView(c):'<div class="atlas-direct-chat-body"><div class="atlas-direct-message-empty">'+(myPersonas().length?'создай первый чат кнопкой + слева.':'сначала создай ATLAS-профиль своему персонажу.')+'</div></div>';
     r.innerHTML='<div class="atlas-direct-layout'+(mobileChatOpen?' is-mobile-chat':'')+'"><aside class="atlas-direct-channels"><div class="atlas-direct-channels-head"><strong>чаты</strong><button class="atlas-direct-create-toggle" type="button" data-direct-create title="создать чат">+</button></div><div class="atlas-direct-chat-search-wrap"><input class="atlas-direct-chat-search" id="atlasDirectChatSearch" type="search" value="'+esc(chatSearch)+'" placeholder="найти чат или персонажа…" autocomplete="off"></div><div class="atlas-direct-channel-list">'+chatListHtml()+'</div></aside><section class="atlas-direct-chat">'+main+'</section></div>';
@@ -23349,10 +23388,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var version=Number(payload.seq)||Date.parse(payload.at||'')||0;
     if(version&&peerVersions[key]>=version)return;
     if(version)peerVersions[key]=version;
-    // Keep the indicator visible for the whole shared visit, including pauses in typing.
-    var present=typeof payload.in_chat==='boolean'?payload.in_chat:!!payload.typing;
+    // Присутствие в чате не означает набор текста.
+    var present=payload.typing===true && payload.in_chat!==false;
     if(present){
-      typingPeers[key]={persona_id:payload.persona_id,expires:Date.now()+(payload.in_chat?15000:5500)};
+      typingPeers[key]={persona_id:payload.persona_id,expires:Date.now()+5500};
     }else{
       delete typingPeers[key];
     }
@@ -23595,14 +23634,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     }
     directLoadPromise=(async function(){
       var token=++renderToken,view=chatViewVersion;
-      if(!chats.length&&!personas.length)r.innerHTML='<div class="atlas-direct-loading">загружаем direct…</div>';
+      if(!chats.length&&!personas.length)r.innerHTML='<div class="atlas-direct-loading">загружаем сообщения…</div>';
       var rs=await Promise.all([
         c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,image_path,is_archived,created_at,updated_at').order('created_at',{ascending:false}).order('id',{ascending:true}),
-        c.from('atlas_personas').select('id,character_id,owner_user_id,display_name,nickname,avatar_url,status_text,created_at').order('display_name',{ascending:true})
+        c.from('atlas_personas').select('id,character_id,owner_user_id,display_name,nickname,avatar_url,status_text,created_at,is_archived').order('display_name',{ascending:true})
       ]);
       if(token!==renderToken||uid()!==currentUid||view!==chatViewVersion)return;
       if(rs[0].error){r.innerHTML='<div class="atlas-direct-empty">не удалось загрузить чаты: '+esc(rs[0].error.message||'ошибка')+'</div>';return}
-      if(rs[1].error){r.innerHTML='<div class="atlas-direct-empty">не удалось загрузить ATLAS-persona: '+esc(rs[1].error.message||'ошибка')+'</div>';return}
+      if(rs[1].error){r.innerHTML='<div class="atlas-direct-empty">не удалось загрузить персонажей ATLAS: '+esc(rs[1].error.message||'ошибка')+'</div>';return}
       chats=rs[0].data||[];personas=rs[1].data||[];memberRows=[];
       if(chats.length){
         var ids=chats.map(function(x){return x.id});
@@ -23717,7 +23756,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var title=String(form.elements.title.value||'').trim(),date=form.elements.rp_date.value,time=form.elements.rp_time.value,creator=form.elements.creator_persona.value;
     var members=Array.from(form.querySelectorAll('input[name="member_persona"]:checked')).map(function(x){return x.value}).filter(Boolean);
     var photoInput=form.elements.chat_photo,photo=photoInput&&photoInput.files?photoInput.files[0]:null;
-    if(!title||!date||!time||!creator){setStatus('заполни название, дату, время и persona создателя.','error');return}
+    if(!title||!date||!time||!creator){setStatus('заполни название, дату, время и выбери персонажа создателя.','error');return}
     try{validateChatPhoto(photo)}catch(err){setStatus(err.message,'error');return}
     var btn=form.querySelector('[type="submit"]');btn.disabled=true;setStatus('создаём чат…');
     var rr=await c.rpc('create_direct_chat',{p_title:title,p_rp_date:date,p_next_rp_time:time,p_creator_persona:creator,p_member_personas:members});
@@ -23752,7 +23791,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     var s=stateFor(ch),persona=form.elements.persona.value,date=form.elements.rp_date.value,time=form.elements.rp_time.value,body=String(form.elements.body.value||'').trim();
     var view=chatViewVersion,files=pendingFiles.slice(),replyId=replyTargetId,draftBody=form.elements.body.value||'';
     s.persona=persona;s.date=date;s.time=time;s.body=form.elements.body.value||'';
-    if(!persona||!date||!time||(!body&&!pendingFiles.length)){setMessageStatus('выбери persona, дату, время и добавь текст или вложение.','error');return}
+    if(!persona||!date||!time||(!body&&!pendingFiles.length)){setMessageStatus('выбери персонажа, дату, время и добавь текст или вложение.','error');return}
     var btn=form.querySelector('[type="submit"]');if(btn.disabled)return;btn.disabled=true;trackTyping(false);
     var uploaded=[],messageSent=false;
     try{
@@ -23990,76 +24029,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 @media(max-width:860px){#atlas-app #atlas-page-inicio #inicio-mood-check .atlas-mood-result strong{font-size:27px}}
 </style>
 
-<script id="atlas-mood-check-script">
-(function(){
-  var moods=[
-    'сладкая булочка','сонный капитан','главная сплетница кампуса','человек-пятница','потерянный носок из прачечной',
-    'талисман победы','королева драматичных выходов','случайный гений','неофициальный психолог команды','гроза дедлайнов',
-    'любимый человек деканата','красный флаг с хорошей причёской','ходячая катастрофа','чемпион по откладыванию дел','главный герой чужого эдита',
-    'тот самый странный тип из библиотеки','профессиональный похититель худи','звезда группового чата','локальная знаменитость','причина внепланового собрания',
-    'самый красивый человек в радиусе километра','моральная поддержка с кофе','человек с идеальным алиби','секретное оружие команды','победитель внутреннего монолога',
-    'тот, кому сегодня всё можно','непредсказуемый сюжетный поворот','человек, которого обсуждают в раздевалке','очень убедительная плохая идея','любимчик судьбы',
-    'виновник чужой бессонницы','легенда ещё до выпуска','мастер исчезать перед уборкой','человек с вайбом пятницы','опасно обаятельная проблема',
-    'эмоциональная поддержка кампуса','главный поставщик мемов','романтическая угроза','случайный свидетель драмы','единственная рабочая клетка команды',
-    'причина опоздания всей группы','будущая запись в протоколе','тот, кто всё понял, но промолчал','маленькая академическая легенда','любимый кошмар тренера',
-    'очень занятый ничем человек','персонаж с секретной сценой после титров','ходячее оправдание','самый подозрительный невиновный','неотменённая тренировка',
-    'человек, которому нужен плед','официальный талисман хаоса','чья-то лучшая идея','загадка без правильного ответа','победа без дополнительного времени',
-    'тот самый взгляд через весь зал','причина проверить уведомления','неожиданно хороший совет','человек с запасным планом','сегодняшняя гордость ATLAS'
-  ];
-  var lastKey='';
-  function madridDate(){
-    var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),map={};
-    parts.forEach(function(x){map[x.type]=x.value});
-    return map.year+'-'+map.month+'-'+map.day;
-  }
-  function readableDate(){
-    try{return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Madrid',day:'numeric',month:'long'}).format(new Date())}
-    catch(_e){return 'сегодня'}
-  }
-  function hash(value){
-    var h=2166136261;
-    for(var i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}
-    return h>>>0;
-  }
-  function currentUserId(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
-  function render(){
-    var result=document.getElementById('atlasMoodResult'),date=document.getElementById('atlasMoodDate');
-    if(!result||!date)return;
-    var day=madridDate(),userId=currentUserId();
-    date.textContent=readableDate();
-    if(!userId){
-      result.innerHTML='<span>кто вы сегодня?</span><strong>войдите в ATLAS, чтобы узнать</strong>';
-      lastKey='guest-'+day;
-      return;
-    }
-    var key=userId+'|'+day;
-    result.innerHTML='<span>сегодня вы —</span><strong>'+moods[hash(key)%moods.length]+'</strong>';
-    lastKey=key;
-  }
-  document.addEventListener('click',function(e){
-    var toggle=e.target.closest&&e.target.closest('#atlasMoodExplainToggle');
-    if(toggle){
-      var text=document.getElementById('atlasMoodExplain'),open=toggle.getAttribute('aria-expanded')==='true';
-      toggle.setAttribute('aria-expanded',String(!open));
-      toggle.textContent=open?'что это вообще значит?':'ладно, понятно';
-      if(text)text.hidden=open;
-      return;
-    }
-    var guest=e.target.closest&&e.target.closest('#atlasMoodResult');
-    if(guest&&!currentUserId()){
-      var account=document.getElementById('atlasAccountButton');
-      if(account)account.click();
-      return;
-    }
-    var nav=e.target.closest&&e.target.closest('.atlas-nav-item, [data-open-page]');
-    if(nav)setTimeout(render,80);
-  },true);
-  window.addEventListener('atlasPlayerAuthReady',render);
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(render,120)});
-  setInterval(function(){var key=(currentUserId()||'guest')+'|'+madridDate();if(key!==lastKey)render()},60000);
-  window.atlasRenderMoodCheck=render;
-})();
-</script>
+<script src="assets/atlas-mood.js?v=20260923-1"></script>
 
 
 <!-- ATLAS PERSONAS — character social identity -->
@@ -24142,7 +24112,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
   async function bundle(characterId){
     var client=c();if(!client)throw new Error('supabase ещё загружается.');
     var r=await Promise.all([
-      client.from('atlas_personas').select('id,character_id,owner_user_id,nickname,display_name,avatar_url,status_text,created_at,updated_at').eq('character_id',characterId).maybeSingle(),
+      client.from('atlas_personas').select('id,character_id,owner_user_id,nickname,display_name,avatar_url,status_text,created_at,updated_at,is_archived').eq('character_id',characterId).maybeSingle(),
       client.from('character_owners').select('character_id,user_id').eq('character_id',characterId).maybeSingle()
     ]);
     if(r[0].error)throw r[0].error;if(r[1].error)throw r[1].error;
@@ -24170,7 +24140,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
         slot.innerHTML='';
       }
     }catch(err){
-      console.warn('[ATLAS persona]',err);
+      console.warn('[персонаж ATLAS]',err);
       slot.innerHTML='';
     }
   }
@@ -24181,7 +24151,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
     modal=document.createElement('div');
     modal.id='atlasPersonaModal';
     modal.setAttribute('aria-hidden','true');
-    modal.innerHTML='<div class="atlas-persona-overlay" data-atlas-persona-close="true"></div><section class="atlas-persona-dialog" role="dialog" aria-modal="true"><header class="atlas-persona-head"><div><small>atlas persona</small><strong id="atlasPersonaModalTitle">ATLAS-профиль</strong></div><button class="atlas-persona-close" type="button" data-atlas-persona-close="true" aria-label="закрыть">×</button></header><div class="atlas-persona-body" id="atlasPersonaModalBody"></div></section>';
+    modal.innerHTML='<div class="atlas-persona-overlay" data-atlas-persona-close="true"></div><section class="atlas-persona-dialog" role="dialog" aria-modal="true"><header class="atlas-persona-head"><div><small>персонаж ATLAS</small><strong id="atlasPersonaModalTitle">ATLAS-профиль</strong></div><button class="atlas-persona-close" type="button" data-atlas-persona-close="true" aria-label="закрыть">×</button></header><div class="atlas-persona-body" id="atlasPersonaModalBody"></div></section>';
     document.body.appendChild(modal);
     return modal;
   }
@@ -24195,7 +24165,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 
   function formHtml(ch,b){
     var p=b.persona||null,name=p&&p.display_name||charName(ch),nick=p&&p.nickname||'',fallback=charAvatar(ch),avatar=p&&p.avatar_url||fallback,status=p&&p.status_text||'';
-    return '<div class="atlas-persona-intro"><div class="atlas-persona-avatar" id="atlasPersonaAvatarPreview">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'A')+'</div><div><h3>'+esc(name)+'</h3><p>'+esc(ch.id)+' · '+(p?'ATLAS-профиль уже создан':'новая persona для Direct и социальной части ATLAS')+'</p></div></div>'+
+    return '<div class="atlas-persona-intro"><div class="atlas-persona-avatar" id="atlasPersonaAvatarPreview">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'A')+'</div><div><h3>'+esc(name)+'</h3><p>'+esc(ch.id)+' · '+(p?'ATLAS-профиль уже создан':'новый профиль персонажа для переписок в ATLAS')+'</p></div></div>'+
       '<form class="atlas-persona-form" id="atlasPersonaForm">'+
         '<label class="atlas-persona-field"><span>имя в ATLAS</span><input id="atlasPersonaDisplayName" type="text" maxlength="80" value="'+esc(name)+'" autocomplete="off" required></label>'+
         '<label class="atlas-persona-field"><span>@nickname</span><div class="atlas-persona-nick-wrap"><span>@</span><input id="atlasPersonaNickname" type="text" maxlength="32" value="'+esc(nick)+'" placeholder="nickname" autocomplete="off" required></div></label>'+
@@ -24215,7 +24185,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
     activeCharacterId=characterId;pendingAvatarFile=null;resetAvatar=false;
     var ch=character(characterId);if(!ch)return;
     openModal();var body=document.getElementById('atlasPersonaModalBody'),title=document.getElementById('atlasPersonaModalTitle');
-    if(title)title.textContent='ATLAS-профиль';if(body)body.innerHTML='<div class="atlas-character-persona-loading">загружаем persona…</div>';
+    if(title)title.textContent='ATLAS-профиль';if(body)body.innerHTML='<div class="atlas-character-persona-loading">загружаем профиль персонажа…</div>';
     try{
       var b=await bundle(characterId);activePersona=b.persona;activeOwner=b.owner;activeCanManage=b.canManage;
       if(!b.persona&&!b.canManage){if(body)body.innerHTML='<div class="atlas-persona-status is-error">этот персонаж пока не имеет ATLAS-профиля.</div>';return}
@@ -24230,7 +24200,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
     var type=String(file.type||'').toLowerCase();if(type.indexOf('image/')!==0)throw new Error('выбери именно изображение.');if(file.size>8*1024*1024)throw new Error('картинка должна весить не больше 8 мб.');
     var ext=(String(file.name||'image.jpg').split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
     var token=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(String(Date.now())+'-'+Math.random().toString(36).slice(2));
-    var safe=String(activeCharacterId||'persona').replace(/[^a-z0-9_-]/gi,'-');
+    var safe=String(activeCharacterId||'персонаж').replace(/[^a-z0-9_-]/gi,'-');
     var path=me+'/personas/'+safe+'/avatar-'+token+'.'+ext;
     var up=await client.storage.from('atlas-media').upload(path,file,{upsert:false,contentType:file.type||undefined,cacheControl:'3600'});if(up.error)throw up.error;
     var pub=client.storage.from('atlas-media').getPublicUrl(up.data.path);var url=pub&&pub.data&&pub.data.publicUrl?pub.data.publicUrl:'';if(!url)throw new Error('storage не вернул публичную ссылку.');return url;
@@ -24313,5 +24283,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 })();
 </script>
 
+<link rel="stylesheet" href="assets/atlas-community.css?v=20260923-1">
+<script src="assets/atlas-community.js?v=20260923-1"></script>
 </body>
 </html>
