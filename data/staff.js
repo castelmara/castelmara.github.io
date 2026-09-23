@@ -407,31 +407,9 @@
           image: "https://static.tildacdn.com/tild3964-3638-4166-b930-363562343734/marcus_perez.png"
         },
 
-    {
-          id: "valentina-gallardo",
-          category: "castelmara",
-          name: "Valentina Gallardo",
-          player: "avy jorraelan",
-          image: "https://static.tildacdn.com/tild3434-6165-4634-a132-343662666462/noroot.png"
-        },
+    
 
-    {
-          id: "nicholas-hawthorne",
-          category: "castelmara",
-          name: "Nicholas Hawthorne",
-          player: "nannette finlay",
-          image: "https://static.tildacdn.com/tild3035-3638-4162-b436-303732633130/nicholas_hawthorne.jpg"
-        },
-
-    {
-          id: "malakai-ashford",
-          category: "castelmara",
-          name: "Malakai Ashford",
-          player: "nannette finlay",
-          image: "https://static.tildacdn.com/tild3238-3734-4938-a431-313865633335/malakai_ashford.jpg"
-        }
-  ];
+      ];
   var existing = new Set(window.ATLAS_CARD_ONLY.map(function(x){ return x && x.id; }));
   items.forEach(function(x){ if (x && !existing.has(x.id)) window.ATLAS_CARD_ONLY.push(x); });
 })();
-
