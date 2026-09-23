@@ -54,30 +54,104 @@
   function owner(id) {
     return profiles.find(p => p.id === owners.find(o => o.character_id === id)?.user_id);
   }
+  function cardCharacter(id) {
+    return character(id) || (window.ATLAS_CARD_ONLY || []).find(c => c.id === id);
+  }
+  function staticPlayer(c) {
+    const record = (window.ATLAS_CHARACTER_DIRECTORY || []).find(r => r.id === c.id);
+    const candidates = [c.player, c.profile?.player, c.owner, c.profile?.owner, record?.player];
+    for (const item of candidates) {
+      if (!item) continue;
+      if (typeof item === 'string') {
+        const raw = item.trim();
+        if (!raw) continue;
+        const tagged = raw.match(/^(.*?)\s*[·•\-–—,/]\s*@([\w.-]+)$/u);
+        if (tagged) {
+          return {name: tagged[1].trim(), nickname: tagged[2].trim().replace(/^@+/, ''), url: ''};
+        }
+        if (raw.startsWith('@')) return {name: '', nickname: raw.replace(/^@+/, ''), url: ''};
+        return {name: raw, nickname: '', url: ''};
+      }
+      const name = String(item.name || item.display_name || '').trim();
+      const nickname = String(item.nickname || item.id || '').trim().replace(/^@+/, '');
+      const url = String(item.url || '').trim();
+      if (name || nickname) return {name, nickname, url};
+    }
+    return null;
+  }
+  function playerInlineParts(name, nickname) {
+    const safeName = String(name || '').trim();
+    const safeNick = String(nickname || '').trim().replace(/^@+/, '');
+    const bits = [];
+    if (safeName) bits.push('<span class="atlas-card-player-name">'+esc(safeName)+'</span>');
+    if (safeName && safeNick) bits.push('<span class="atlas-card-player-sep">·</span>');
+    if (safeNick) bits.push('<span class="atlas-card-player-nick">@'+esc(safeNick)+'</span>');
+    return bits.join('');
+  }
+  function cardDetails(c) {
+    const info = c.profile?.overview?.mainInfo || {};
+    const student = c.category === 'estudiantes' || /^student_/.test(c.type || '');
+    let faculty = String(info.faculty || '').trim();
+    let department = String(info.department || '').trim();
+    const split = faculty.match(/^(.*?)[,;]\s*(кафедра(?:\s|$).*)$/i);
+    if (split) { faculty = split[1].trim(); department = department || split[2].trim(); }
+    const course = String(info.course || info.year || c.course || c.year || '').trim();
+    const numbered = course.match(/^([1-4])(?:\s*курс)?$/i);
+    const badge = student ? (numbered ? numbered[1]+' КУРС' : course) :
+      (c.card?.tag || (c.category === 'entrenadores' ? 'тренер' : c.role || ''));
+    const subtitle = String(c.cardSubtitle || c.subtitle || c.role || '').trim();
+    const lines = student ? [faculty, department].filter(Boolean) :
+      [subtitle.startsWith('/') ? (c.subtitle || c.role || '') : subtitle].filter(Boolean);
+    return {badge, lines};
+  }
+  function cardDetailsHtml(c) {
+    const details = cardDetails(c);
+    return (details.badge ? '<span class="atlas-character-card-badge">'+esc(details.badge)+'</span>' : '')+
+      '<span class="atlas-character-card-text"><h3>'+esc(c.cardName || c.name || c.fullName || c.id)+'</h3>'+
+      details.lines.map(line => '<p>'+esc(line)+'</p>').join('')+'</span>';
+  }
+  window.atlasCardDetailsHtml = cardDetailsHtml;
+  function cardPlayerHtml(c) {
+    const p = owner(c.id);
+    if (p) {
+      const label = playerInlineParts(p.display_name || '', p.nickname || '');
+      const finalLabel = label || '<span class="atlas-card-player-name">профиль игрока</span>';
+      return '<button type="button" class="atlas-community-link atlas-card-player-link" data-community-player="'+esc(p.id)+'">'+finalLabel+'</button>';
+    }
+    const fallback = staticPlayer(c);
+    if (!fallback) return '';
+    const label = playerInlineParts(fallback.name || '', fallback.nickname || '');
+    if (!label) return '';
+    return '<span class="atlas-card-player-fallback">'+label+'</span>';
+  }
+  function decoratePlayerBlock(container, c) {
+    const html = cardPlayerHtml(c);
+    let block = container.querySelector('.atlas-community-owner');
+    if (!block && html) {
+      block = document.createElement('div'); block.className = 'atlas-community-owner'; container.appendChild(block);
+    }
+    if (block) {
+      if (block.dataset.playerHtml !== html) { block.innerHTML = html; block.dataset.playerHtml = html; }
+      block.hidden = !html;
+    }
+  }
   function decorateCards() {
     document.querySelectorAll('.atlas-entrenador-card').forEach(card => {
-      const p = owner(card.dataset.atlasEntrenadorId || card.dataset.communityCharacter);
+      const c = cardCharacter(card.dataset.atlasEntrenadorId || card.dataset.communityCharacter);
+      if (!c) return;
       let wrap = card.closest('.atlas-community-coach-wrap');
-      if (!wrap && p) { wrap=document.createElement('div'); wrap.className='atlas-community-coach-wrap'; card.before(wrap); wrap.appendChild(card); }
-      if (!wrap) return;
-      let tag=wrap.querySelector('.atlas-community-coach-owner');
-      if (!tag) { tag=document.createElement('div'); tag.className='atlas-community-coach-owner'; wrap.appendChild(tag); }
-      const key=p?[p.id,p.nickname,p.display_name].join('|'):'';
-      if (tag.dataset.ownerKey !== key) { tag.innerHTML=p?link(p):''; tag.dataset.ownerKey=key; }
+      if (!wrap) { wrap=document.createElement('div'); wrap.className='atlas-community-coach-wrap'; card.before(wrap); wrap.appendChild(card); }
+      decoratePlayerBlock(wrap,c);
     });
     document.querySelectorAll('[data-community-character], .atlas-card-only-wrapper').forEach(card => {
       if (card.classList.contains('atlas-entrenador-card')) return;
       const id = card.dataset.communityCharacter || card.id.replace(/^card-only-/, '');
-      const p = owner(id);
-      const subtitle = card.querySelector('.atlas-character-card-text p');
-      if (subtitle && p && subtitle.textContent !== (p.display_name || p.nickname)) subtitle.textContent = p.display_name || p.nickname;
-      let tag = card.querySelector('.atlas-community-owner');
-      if (!tag && p) { tag = document.createElement('div'); tag.className = 'atlas-community-owner'; card.appendChild(tag); }
-      if (tag) {
-        const key=p?[p.id,p.nickname,p.display_name].join('|'):'';
-        if (tag.dataset.ownerKey !== key) { tag.innerHTML = p ? link(p) : ''; tag.dataset.ownerKey=key; }
-        tag.hidden = !p;
-      }
+      const c = cardCharacter(id);
+      if (!c) return;
+      const details = card.querySelector('.atlas-character-card-details');
+      const html = cardDetailsHtml(c);
+      if (details && details.dataset.detailsHtml !== html) { details.innerHTML = html; details.dataset.detailsHtml = html; }
+      decoratePlayerBlock(card,c);
     });
   }
   window.atlasCommunityCards = function () { decorateCards(); loadOwners().catch(() => {}); };
