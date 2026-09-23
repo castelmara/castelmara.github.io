@@ -1,0 +1,56 @@
+#atlas-app .atlas-community-link{border:0;background:none;color:#ca444a;font:inherit;font-weight:800;padding:4px 0;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#atlas-app .atlas-community-owner{position:absolute;bottom:12px;left:16px;right:12px;z-index:2}
+#atlas-app .atlas-community-owner .atlas-community-link{color:white;font-size:10px;line-height:1.3;text-shadow:0 1px 5px #000}
+#atlas-app .atlas-community-coach-wrap{min-width:0;display:flex;flex-direction:column}
+#atlas-app .atlas-community-coach-wrap>.atlas-entrenador-card{width:100%;flex:1}
+#atlas-app .atlas-community-coach-owner{padding:8px 4px;font-size:11px}
+#atlas-app [data-community-character]:has(.atlas-community-owner:not([hidden])) .atlas-character-card-text{padding-bottom:35px}
+#atlas-app .atlas-community-edit{border:1px solid #b6383e;background:#b6383e;color:white;border-radius:14px;padding:12px 16px;font:800 12px/1.3 Montserrat,Arial,sans-serif;cursor:pointer}
+#atlas-app .atlas-profile-hero>.atlas-community-edit{position:absolute;top:18px;right:18px;z-index:4}
+#atlas-app .atlas-community-portrait{margin:0;overflow:hidden;border-radius:24px;aspect-ratio:4/5;background:#171b22}
+#atlas-app .atlas-community-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+#atlas-app .atlas-community-social{margin-top:20px}
+#atlas-app .atlas-community-count{font-size:16px;font-weight:800;margin-bottom:24px}
+#atlas-app .atlas-community-count small{font-weight:500;color:#9299a7;font-size:11px;margin-left:10px}
+#atlas-app .atlas-community-public-note,#atlas-app .atlas-community-relation{padding:14px 0;border-bottom:1px solid #858b982f}
+#atlas-app .atlas-community-public-note strong,#atlas-app .atlas-community-relation small{display:block;margin-top:6px}
+#atlas-app .atlas-community-public-note p,#atlas-app .atlas-community-relation p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.7}
+#atlas-app #atlasRosterToolbar{margin:16px 0}
+#atlas-app .atlas-community-cheer{padding:18px;border-top:1px solid #858b9840}
+#atlas-app .atlas-community-cheer h6{font:900 13px/1.4 Montserrat,Arial,sans-serif;margin:0 0 9px}
+#atlas-app .atlas-community-cheer>div{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px}
+#atlas-app .atlas-community-captain{background:#b6383e22;color:#ce5055;padding:4px 7px;border-radius:9px;font-size:10px}
+#atlasCommunityDialog{box-sizing:border-box;width:min(760px,calc(100vw - 24px));max-height:90dvh;overflow:auto;border:1px solid #9aa2af55;border-radius:24px;padding:24px;background:#fafbfc;color:#161c25;font:13px/1.6 Montserrat,Arial,sans-serif}
+#atlasCommunityDialog::backdrop{background:#070a11b8;backdrop-filter:blur(5px)}
+#atlas-app[data-theme="dark"] #atlasCommunityDialog{background:#11171e;color:#edf1f8}
+#atlasCommunityDialog .atlas-community-modal-head{display:flex;gap:18px;align-items:center;justify-content:space-between}
+#atlasCommunityDialog h2{margin:0;font-size:22px;line-height:1.2}
+#atlasCommunityDialog button{border:1px solid #9aa2af55;border-radius:12px;padding:10px 14px;background:#858b9819;color:inherit;font:800 12px/1.3 Montserrat,Arial,sans-serif;cursor:pointer;min-height:44px}
+#atlasCommunityDialog button[type="submit"]{background:#b6383e;color:white;border-color:#b6383e}
+#atlasCommunityDialog :disabled{opacity:.55;cursor:wait}
+#atlasCommunityDialog label{display:grid;gap:6px;font-weight:700;margin:10px 0;min-width:0}
+#atlasCommunityDialog input:not([type="checkbox"]),#atlasCommunityDialog select,#atlasCommunityDialog textarea{box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid #9299a755;border-radius:10px;font:inherit;color:inherit;background:#858b9814}
+#atlasCommunityDialog option{background:#f4f6f8;color:#171c24}
+#atlasCommunityDialog textarea{min-height:90px;resize:vertical}
+#atlasCommunityDialog .atlas-community-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#atlasCommunityDialog .atlas-community-media-grid img{display:block;width:100%;height:150px;object-fit:cover;border-radius:14px;background:#858b9822}
+#atlasCommunityDialog .atlas-community-media-grid small{font-weight:500;font-size:11px}
+#atlasCommunityDialog .atlas-community-relation-row{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:18px 0;border-bottom:1px solid #9299a744}
+#atlasCommunityDialog .atlas-community-wide{grid-column:1/-1}
+#atlasCommunityDialog .atlas-community-form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:22px}
+#atlasCommunityDialog .atlas-community-roster-row{display:flex;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #9299a744}
+#atlasCommunityDialog .atlas-community-roster-row>span{flex:1;min-width:0}
+#atlasCommunityDialog .atlas-community-roster-row small{display:block;color:#9299a7;font-size:10px}
+#atlasCommunityStatus{color:#ce5055;min-height:24px;white-space:pre-wrap}
+#atlas-app .atlas-note-privacy{display:flex;align-items:center;gap:9px;font-size:12px;margin:12px 0}
+#atlas-app .atlas-note-privacy input{width:auto;min-width:auto}
+#atlas-app .atlas-chat-shortcut svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* Один экран: список чатов или переписка. Дополнительной боковой панели нет. */
+#atlas-app #atlas-page-direct .atlas-direct-layout{display:block;max-width:940px;height:min(760px,calc(100dvh - 140px));min-height:460px;margin:0 auto;overflow:hidden}
+#atlas-app #atlas-page-direct .atlas-direct-channels{width:100%;height:100%;border-right:0}
+#atlas-app #atlas-page-direct .atlas-direct-chat{display:none;height:100%;min-height:0}
+#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:none}
+#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-chat{display:flex}
+#atlas-app #atlas-page-direct .atlas-direct-mobile-back{display:inline-flex}
+#atlas-app #atlas-page-direct .atlas-direct-messages{overscroll-behavior:contain}
+@media(max-width:600px){#atlasCommunityDialog{padding:16px;border-radius:18px}#atlasCommunityDialog .atlas-community-media-grid,#atlasCommunityDialog .atlas-community-relation-row{grid-template-columns:1fr}#atlasCommunityDialog input,#atlasCommunityDialog textarea,#atlasCommunityDialog select{font-size:16px!important}#atlasCommunityDialog .atlas-community-roster-row{flex-wrap:wrap}#atlasCommunityDialog .atlas-community-roster-row>span{flex-basis:100%}#atlas-app #atlas-page-direct .atlas-direct-layout{height:calc(100dvh - 110px);min-height:360px}#atlas-app .atlas-profile-hero>.atlas-community-edit{font-size:10px;padding:9px;top:14px;right:12px}}
