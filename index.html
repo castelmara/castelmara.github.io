@@ -2643,6 +2643,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 #atlas-app[data-theme="dark"] #atlas-page-inicio #inicio-schedule .atlas-weekend-next-row {
   border-color: rgba(255,255,255,.10) !important;
 }
+#atlas-app #atlas-page-inicio .atlas-news-card-static{cursor:default!important}
+#atlas-app #atlas-page-inicio .atlas-rollcall-row{cursor:pointer;border-radius:12px}
+#atlas-app #atlas-page-inicio .atlas-rollcall-row:hover{background:rgba(226,71,71,.045)}
 </style>
 
 <template data-atlas-page-template="inicio">
@@ -2656,19 +2659,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
                    data-search-title="home welcome atlas"
                    data-search-keywords="главная атлас кастельмара welcome">
             <div class="atlas-hero-content">
-<p class="atlas-hero-kicker" data-home-kicker>ATLAS всегда держит для тебя что-то новое.</p>
-              <h1 data-home-greeting>добро пожаловать в <span>castelmara.</span></h1>
-<p class="atlas-hero-text" data-home-intro>исследуй академию, её истории и жизнь на кампусе.</p>
-              <button class="atlas-hero-btn" type="button" data-open-page="foro" data-home-cta>смотреть объявления</button>
+<p class="atlas-hero-kicker" data-home-kicker>ATLAS siempre tiene algo nuevo para ti.</p>
+              <h1 data-home-greeting>bienvenido a <span>castelmara.</span></h1>
+<p class="atlas-hero-text" data-home-intro>Explora la academia, sus historias y la vida en el campus.</p>
+              <button class="atlas-hero-btn" type="button" data-open-page="foro" data-home-cta>explorar los anuncios</button>
             </div>
           </section>
 
           <section class="atlas-card atlas-home-personal" id="atlas-home-personal" hidden>
             <div class="atlas-card-head">
-              <h3>твоё пространство в ATLAS</h3>
-              <button type="button" data-open-page="mi-atlas">мой профиль</button>
+              <h3>кто сегодня твоя главная личность?</h3>
+              <button type="button" data-open-page="mi-atlas">mi atlas</button>
             </div>
-            <p class="atlas-home-personal-copy" id="atlasHomePersonalCopy"></p>
+            <p class="atlas-home-personal-copy" id="atlasHomePersonalCopy" hidden></p>
             <div class="atlas-home-personas" id="atlasHomePersonas" aria-live="polite"></div>
           </section>
 
@@ -2695,17 +2698,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
               <a class="atlas-digest-row" href="https://vk.com/@casadelartepp-kak-zhe-polzovatsya-saitom" target="_blank" rel="noopener">
                 <span class="atlas-digest-icon">?</span>
                 <span class="atlas-row-main">
-                  <strong>guía del portal ATLAS</strong>
-                  <span>guía de navegación · cómo usar el portal</span>
+                  <strong>гайд по порталу ATLAS</strong>
+                  <span>навигация по сайту · как пользоваться порталом</span>
                 </span>
-                <span class="atlas-badge blue">guía</span>
+                <span class="atlas-badge blue">гайд</span>
               </a>
 
               <a class="atlas-digest-row" href="javascript:void(0)">
                 <span class="atlas-digest-icon orange">!</span>
                 <span class="atlas-row-main">
-                  <strong>resúmenes de quests</strong>
-                  <span>resúmenes breves · quests activos y completados</span>
+                  <strong>сводки квестов</strong>
+                  <span>короткие сводки · активные и завершённые квесты</span>
                 </span>
                 <span class="atlas-badge">quests</span>
               </a>
@@ -2713,8 +2716,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
               <a class="atlas-digest-row" href="javascript:void(0)">
                 <span class="atlas-digest-icon red">⚡</span>
                 <span class="atlas-row-main">
-                  <strong>episodios de trama</strong>
-                  <span>episodios de trama · escenas públicas · capítulos</span>
+                  <strong>сюжетные эпизоды</strong>
+                  <span>сюжетные эпизоды · публичные сцены · главы</span>
                 </span>
                 <span class="atlas-badge green">trama</span>
               </a>
@@ -2722,43 +2725,40 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
               <a class="atlas-digest-row" href="javascript:void(0)">
                 <span class="atlas-digest-icon green">+</span>
                 <span class="atlas-row-main">
-                  <strong>últimas actualizaciones</strong>
-                  <span>nuevos contenidos · cambios · avisos importantes</span>
+                  <strong>последние обновления</strong>
+                  <span>новый контент · изменения · важные объявления</span>
                 </span>
-                <span class="atlas-badge blue">actualización</span>
+                <span class="atlas-badge blue">обновление</span>
               </a>
             </section>
           </div>
 
           <div class="atlas-campus-strip">
 <section class="atlas-mini-panel atlas-search-target"
-         id="inicio-orientation"
-         data-search-title="orientation access castelmara atlas"
-         data-search-keywords="ориентация доступ кастельмара атлас город академия архив">
-  <span class="atlas-card-kicker">orientación</span>
-  <h3>tu punto de partida.</h3>
-  <p>La ciudad, la academia, los eventos y los archivos están conectados. ATLAS te ayuda a orientarte y descubrir qué secciones están disponibles.</p>
-  <button type="button" data-open-page="ciudad">explorar la ciudad →</button>
+         id="inicio-players-note"
+         data-search-title="jugadores perfiles cuentas"
+         data-search-keywords="игроки аккаунты профили jugadores">
+  <h3>perfiles de jugadores.</h3>
+  <p>аккаунты участников, их персонажи, серии входа и достижения собраны в одном месте.</p>
+  <button type="button" data-open-page="jugadores">abrir jugadores →</button>
 </section>
 
 <section class="atlas-mini-panel atlas-search-target"
-         id="inicio-registry-note"
-         data-search-title="registry access atlas records"
-         data-search-keywords="реестр доступ записи факультеты команды академия">
-  <span class="atlas-card-kicker">registro</span>
-  <h3>antes de entrar al registro.</h3>
-  <p>Consulta las facultades, los equipos y las normas de la academia. Los archivos de ATLAS siguen la estructura oficial de Castelmara.</p>
-  <button type="button" data-open-page="facultades">ver las facultades →</button>
+         id="inicio-direct-note"
+         data-search-title="direct chats mensajes"
+         data-search-keywords="direct чаты переписки персонажи сообщения">
+  <h3>atlas direct.</h3>
+  <p>личные и публичные ролевые переписки персонажей — читать можно всем, писать участникам чата.</p>
+  <button type="button" data-open-page="direct">abrir direct →</button>
 </section>
 
 <section class="atlas-mini-panel atlas-search-target"
-         id="inicio-expediente-note"
-         data-search-title="expediente miguel case archive"
-         data-search-keywords="экспедиенте мигель расследование дело архив хронология">
-  <span class="atlas-card-kicker">expediente</span>
-  <h3>el expediente de Miguel sigue abierto.</h3>
-  <p>документы, письма и хронология собраны в архиве ATLAS.</p>
-  <button type="button" data-open-page="expediente">открыть архив →</button>
+         id="inicio-notes-note"
+         data-search-title="mi atlas notas notes"
+         data-search-keywords="заметки notas mi atlas личные записи">
+  <h3>tus notas.</h3>
+  <p>личные и публичные заметки, которые привязаны к твоему аккаунту и персонажам.</p>
+  <button type="button" data-open-home-notes>abrir notas →</button>
 </section>
           </div>
 
@@ -2771,9 +2771,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
               <button type="button" data-open-page="foro">ver todos</button>
             </div>
 
-            <div class="atlas-event-row">
-              <span class="atlas-event-date"><small>ATLAS</small><b>↗</b></span>
-              <span class="atlas-row-main"><strong>anuncios y eventos</strong><span>consulta el foro para conocer las novedades de la academia</span></span>
+            <div class="atlas-event-row atlas-rollcall-row" data-open-page="foro" role="button" tabindex="0">
+              <span class="atlas-event-date"><small id="atlasRollCallMonth">SEP</small><b id="atlasRollCallDay">24</b></span>
+              <span class="atlas-row-main"><strong>перекличка</strong><span>отметься в актуальной перекличке и проверь статус своих персонажей</span></span>
+              <span class="atlas-badge red">активность</span>
             </div>
           </section>
 
@@ -2798,11 +2799,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
           <section class="atlas-card atlas-mood-check atlas-search-target" id="inicio-mood-check" data-search-title="atlas mood check кто я сегодня" data-search-keywords="кто я сегодня ежедневный рандом статус настроение">
             <div class="atlas-mood-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="atlas-card-head">
-              <h3>настроение дня</h3>
-              <span class="atlas-mood-date" id="atlasMoodDate">сегодня</span>
+              <h3>estado de ánimo</h3>
+              <span class="atlas-mood-date" id="atlasMoodDate">hoy</span>
             </div>
             <div class="atlas-mood-result" id="atlasMoodResult">
-              <span>сегодня ты…</span>
+              <span>кто ты сегодня…</span>
               <strong>считываем твоё настроение…</strong>
             </div>
             <button class="atlas-mood-explain-toggle" id="atlasMoodExplainToggle" type="button" aria-expanded="false">что это значит?</button>
@@ -2820,16 +2821,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
           </section>
 
-          <section class="atlas-card atlas-search-target" id="inicio-campus-news" data-search-title="campus news funeral miguel garcia jr" data-search-keywords="новости кампуса похороны мигель гарсия младший funeral">
+          <section class="atlas-card atlas-search-target" id="inicio-campus-news" data-search-title="campus news halloween" data-search-keywords="новости кампуса хэллоуин halloween подготовка академия">
             <div class="atlas-card-head">
               <h3>новости кампуса</h3>
-              <button type="button" data-open-page="expediente">смотреть всё</button>
+              <button type="button" data-open-page="foro">смотреть всё</button>
             </div>
 
-            <button class="atlas-news-card" type="button" data-modal-target="miguel-funeral-article">
-              <strong>despedida de Miguel García Jr.</strong>
-              <span>leer más →</span>
-            </button>
+            <div class="atlas-news-card atlas-news-card-static" aria-label="подготовка к хэллоуину">
+              <strong>подготовка к хэллоуину</strong>
+              <span>академия готовится к празднику · подробности скоро</span>
+            </div>
           </section>
         </aside>
       </div>
@@ -2890,41 +2891,41 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 <script>
 (function() {
   var NEXT_WEEK_PREVIEW = [
-    { time: "08:30", title: "psicología deportiva", place: "aula 2A", badge: "clase", badgeClass: "blue" },
-    { time: "10:30", title: "fuerza y acondicionamiento", place: "centro de rendimiento", badge: "entrenamiento", badgeClass: "green" },
-    { time: "13:40", title: "español para estudiantes internacionales", place: "aula 1C", badge: "clase", badgeClass: "blue" }
+    { time: "08:30", title: "спортивная психология", place: "аудитория 2A", badge: "clase", badgeClass: "blue" },
+    { time: "10:30", title: "силовая подготовка", place: "центр подготовки", badge: "entrenamiento", badgeClass: "green" },
+    { time: "13:40", title: "испанский для иностранных студентов", place: "аудитория 1C", badge: "clase", badgeClass: "blue" }
   ];
 
   var ATLAS_WEEKDAY_SCHEDULE = {
     1: [
-      { time: "08:30", title: "psicología deportiva", place: "aula 2A", badge: "clase", badgeClass: "blue" },
-      { time: "10:30", title: "fuerza y acondicionamiento", place: "centro de rendimiento", badge: "entrenamiento", badgeClass: "green" },
-      { time: "13:40", title: "español para estudiantes internacionales", place: "aula 1C", badge: "clase", badgeClass: "blue" },
-      { time: "17:00", title: "entrenamiento del equipo", place: "campo de entrenamiento", badge: "práctica", badgeClass: "" }
+      { time: "08:30", title: "спортивная психология", place: "аудитория 2A", badge: "clase", badgeClass: "blue" },
+      { time: "10:30", title: "силовая подготовка", place: "центр подготовки", badge: "entrenamiento", badgeClass: "green" },
+      { time: "13:40", title: "испанский для иностранных студентов", place: "аудитория 1C", badge: "clase", badgeClass: "blue" },
+      { time: "17:00", title: "командная тренировка", place: "тренировочное поле", badge: "práctica", badgeClass: "" }
     ],
     2: [
-      { time: "09:00", title: "fundamentos de anatomía", place: "ala médica", badge: "clase", badgeClass: "blue" },
-      { time: "11:20", title: "análisis táctico", place: "sala táctica", badge: "análisis", badgeClass: "orange" },
-      { time: "14:10", title: "formación en medios", place: "sala de prensa", badge: "medios", badgeClass: "blue" },
-      { time: "18:00", title: "sesión de gimnasio abierta", place: "arena de Castelmara", badge: "abierto", badgeClass: "green" }
+      { time: "09:00", title: "основы анатомии", place: "медицинский корпус", badge: "clase", badgeClass: "blue" },
+      { time: "11:20", title: "тактический анализ", place: "тактический зал", badge: "análisis", badgeClass: "orange" },
+      { time: "14:10", title: "работа с медиа", place: "пресс-центр", badge: "medios", badgeClass: "blue" },
+      { time: "18:00", title: "открытая тренировка в зале", place: "арена Castelmara", badge: "abierto", badgeClass: "green" }
     ],
     3: [
-      { time: "08:45", title: "nutrición deportiva", place: "aula 3B", badge: "clase", badgeClass: "blue" },
-      { time: "10:50", title: "sesión de recuperación", place: "centro de rehabilitación", badge: "médico", badgeClass: "green" },
-      { time: "13:30", title: "derecho deportivo", place: "aula 2C", badge: "clase", badgeClass: "blue" },
-      { time: "16:30", title: "análisis de vídeo", place: "sala táctica", badge: "análisis", badgeClass: "orange" }
+      { time: "08:45", title: "спортивное питание", place: "аудитория 3B", badge: "clase", badgeClass: "blue" },
+      { time: "10:50", title: "восстановительная сессия", place: "центр реабилитации", badge: "médico", badgeClass: "green" },
+      { time: "13:30", title: "спортивное право", place: "аудитория 2C", badge: "clase", badgeClass: "blue" },
+      { time: "16:30", title: "видеоанализ", place: "тактический зал", badge: "análisis", badgeClass: "orange" }
     ],
     4: [
-      { time: "08:30", title: "estadísticas de rendimiento", place: "laboratorio de datos", badge: "datos", badgeClass: "blue" },
-      { time: "11:00", title: "reunión del equipo", place: "sala de conferencias", badge: "equipo", badgeClass: "orange" },
-      { time: "14:20", title: "psicología clínica del deporte", place: "aula 4A", badge: "clase", badgeClass: "blue" },
-      { time: "17:30", title: "entrenamiento a puerta cerrada", place: "campo principal", badge: "cerrado", badgeClass: "" }
+      { time: "08:30", title: "статистика эффективности", place: "лаборатория данных", badge: "datos", badgeClass: "blue" },
+      { time: "11:00", title: "командная встреча", place: "конференц-зал", badge: "equipo", badgeClass: "orange" },
+      { time: "14:20", title: "клиническая спортивная психология", place: "аудитория 4A", badge: "clase", badgeClass: "blue" },
+      { time: "17:30", title: "закрытая тренировка", place: "главное поле", badge: "cerrado", badgeClass: "" }
     ],
     5: [
-      { time: "09:15", title: "preparación para el partido", place: "sala táctica", badge: "análisis", badgeClass: "orange" },
-      { time: "11:30", title: "revisión médica", place: "ala médica", badge: "médico", badgeClass: "green" },
-      { time: "14:00", title: "tutoría académica", place: "aula 1B", badge: "clase", badgeClass: "blue" },
-      { time: "16:40", title: "reunión de capitanes", place: "oficina de administración", badge: "equipo", badgeClass: "" }
+      { time: "09:15", title: "подготовка к матчу", place: "тактический зал", badge: "análisis", badgeClass: "orange" },
+      { time: "11:30", title: "медицинский осмотр", place: "медицинский корпус", badge: "médico", badgeClass: "green" },
+      { time: "14:00", title: "академическая консультация", place: "аудитория 1B", badge: "clase", badgeClass: "blue" },
+      { time: "16:40", title: "встреча капитанов", place: "административный корпус", badge: "equipo", badgeClass: "" }
     ],
     6: [],
     0: []
@@ -2992,8 +2993,16 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
     });
   }
 
-  document.addEventListener("DOMContentLoaded", renderInicioSchedule);
-  window.addEventListener("load", renderInicioSchedule);
+  function renderRollCallDate(){
+    var day=document.getElementById("atlasRollCallDay"),month=document.getElementById("atlasRollCallMonth");
+    if(!day||!month)return;
+    var now=new Date();
+    day.textContent=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'2-digit'}).format(now);
+    month.textContent=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',month:'short'}).format(now).replace('.','').toUpperCase();
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){renderInicioSchedule();renderRollCallDate();});
+  window.addEventListener("load", function(){renderInicioSchedule();renderRollCallDate();});
   setTimeout(renderInicioSchedule, 250);
   setTimeout(renderInicioSchedule, 900);
 
@@ -3013,10 +3022,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 <script id="atlas-home-personalization">
 (function(){
   function el(id){return document.getElementById(id)}
-  function renderCopy(root,profile){var greeting=root.querySelector('[data-home-greeting]'),kicker=root.querySelector('[data-home-kicker]'),intro=root.querySelector('[data-home-intro]'),cta=root.querySelector('[data-home-cta]');if(!greeting||!kicker||!intro||!cta)return;if(!profile){kicker.textContent='ATLAS всегда держит для тебя что-то новое.';greeting.replaceChildren(document.createTextNode('добро пожаловать в '),Object.assign(document.createElement('span'),{textContent:'castelmara.'}));greeting.setAttribute('data-atlas-tip','добро пожаловать в castelmara.');intro.textContent='исследуй академию, её истории и жизнь на кампусе.';cta.textContent='смотреть объявления';cta.dataset.openPage='foro';cta.setAttribute('data-atlas-tip','перейти к объявлениям');return}var name=profile.display_name||profile.nickname||'игрок';kicker.textContent='твой личный портал';greeting.replaceChildren(document.createTextNode('привет, '),Object.assign(document.createElement('span'),{textContent:name+'.'}));greeting.setAttribute('data-atlas-tip','добро пожаловать, '+name);intro.textContent='твоё пространство в Castelmara уже готово. продолжай работать с персонажами и следить за активностью академии.';cta.textContent='мои переписки';cta.dataset.openPage='direct'}
+  function renderCopy(root,profile){var greeting=root.querySelector('[data-home-greeting]'),kicker=root.querySelector('[data-home-kicker]'),intro=root.querySelector('[data-home-intro]'),cta=root.querySelector('[data-home-cta]');if(!greeting||!kicker||!intro||!cta)return;if(!profile){kicker.textContent='ATLAS siempre tiene algo nuevo para ti.';greeting.replaceChildren(document.createTextNode('bienvenido a '),Object.assign(document.createElement('span'),{textContent:'castelmara.'}));greeting.setAttribute('data-atlas-tip','bienvenido a castelmara.');intro.textContent='Explora la academia, sus historias y la vida en el campus.';cta.textContent='explorar los anuncios';cta.dataset.openPage='foro';cta.setAttribute('data-atlas-tip','ver los anuncios');return}var name=profile.nickname||'jugador';kicker.textContent='tu portal personal';greeting.replaceChildren(document.createTextNode('hola, '),Object.assign(document.createElement('span'),{textContent:name+'.'}));greeting.setAttribute('data-atlas-tip','bienvenido/a, '+name);intro.textContent='Tu espacio en Castelmara está listo. Continúa con tus personajes y la actividad de la academia.';cta.textContent='ver mis conversaciones';cta.dataset.openPage='direct'}
   function personaButton(persona){var button=document.createElement('button');button.type='button';button.className='atlas-home-persona';button.dataset.homePersona=persona.character_id||'';if(persona.avatar_url){var img=document.createElement('img');img.src=persona.avatar_url;img.alt='';img.loading='lazy';button.appendChild(img)}else{var avatar=document.createElement('span');avatar.className='atlas-home-persona-avatar';avatar.textContent=(persona.display_name||persona.nickname||'?').trim().charAt(0).toUpperCase();button.appendChild(avatar)}var title=document.createElement('span');title.textContent=persona.display_name||persona.nickname||'personaje';button.appendChild(title);return button}
-  async function render(){var root=el('atlas-page-inicio');if(!root)return;var session=window.ATLAS_CURRENT_SESSION||null,profile=window.ATLAS_CURRENT_PROFILE||null,card=el('atlas-home-personal');renderCopy(root,session&&session.user?(profile||{}):null);if(!card)return;if(!session||!session.user){card.hidden=true;return}card.hidden=false;var copy=el('atlasHomePersonalCopy'),list=el('atlasHomePersonas');if(copy)copy.textContent='добро пожаловать в твой ATLAS, '+(profile&&(profile.display_name||profile.nickname)||'игрок')+'. здесь собраны персонажи, привязанные к аккаунту.';if(!list)return;list.replaceChildren();var client=window.ATLAS_SUPABASE;if(!client){list.textContent='No se pudo conectar con ATLAS.';return}var userId=session.user.id;try{var response=await client.from('atlas_personas').select('character_id,display_name,nickname,avatar_url').eq('owner_user_id',userId).eq('is_archived',false).order('display_name',{ascending:true}).limit(12);if((window.ATLAS_CURRENT_SESSION||{}).user?.id!==userId||!el('atlasHomePersonas'))return;if(response.error)throw response.error;var personas=response.data||[];if(!personas.length){var empty=document.createElement('span');empty.textContent='Aún no has vinculado personajes a tu cuenta.';list.appendChild(empty);var link=document.createElement('button');link.type='button';link.className='atlas-home-persona';link.dataset.openPage='mi-atlas';link.textContent='gestionar mis perfiles';list.appendChild(link);return}personas.forEach(function(persona){list.appendChild(personaButton(persona))})}catch(error){console.warn('[ATLAS home personas]',error);if(list)list.textContent='No se pudieron cargar tus personajes.'}}
-  document.addEventListener('click',function(event){var button=event.target.closest('[data-home-persona]');if(button&&button.dataset.homePersona&&typeof window.atlasOpenCharacter==='function')window.atlasOpenCharacter(button.dataset.homePersona)});window.addEventListener('atlasPlayerAuthReady',render);document.addEventListener('DOMContentLoaded',render);document.addEventListener('click',function(event){if(event.target.closest('[data-page="inicio"],[data-open-page="inicio"]'))setTimeout(render,120)});window.atlasRenderHomePersonalization=render;
+  async function render(){var root=el('atlas-page-inicio');if(!root)return;var session=window.ATLAS_CURRENT_SESSION||null,profile=window.ATLAS_CURRENT_PROFILE||null,card=el('atlas-home-personal');renderCopy(root,session&&session.user?(profile||{}):null);if(!card)return;if(!session||!session.user){card.hidden=true;return}card.hidden=false;var copy=el('atlasHomePersonalCopy'),list=el('atlasHomePersonas');if(copy){copy.textContent='';copy.hidden=true;}if(!list)return;list.replaceChildren();var client=window.ATLAS_SUPABASE;if(!client){list.textContent='No se pudo conectar con ATLAS.';return}var userId=session.user.id;try{var response=await client.from('atlas_personas').select('character_id,display_name,nickname,avatar_url').eq('owner_user_id',userId).eq('is_archived',false).order('display_name',{ascending:true}).limit(12);if((window.ATLAS_CURRENT_SESSION||{}).user?.id!==userId||!el('atlasHomePersonas'))return;if(response.error)throw response.error;var personas=response.data||[];if(!personas.length){var empty=document.createElement('span');empty.textContent='Aún no has vinculado personajes a tu cuenta.';list.appendChild(empty);var link=document.createElement('button');link.type='button';link.className='atlas-home-persona';link.dataset.openPage='mi-atlas';link.textContent='gestionar mis perfiles';list.appendChild(link);return}personas.forEach(function(persona){list.appendChild(personaButton(persona))})}catch(error){console.warn('[ATLAS home personas]',error);if(list)list.textContent='No se pudieron cargar tus personajes.'}}
+  document.addEventListener('click',function(event){var button=event.target.closest('[data-home-persona]');if(button&&button.dataset.homePersona&&typeof window.atlasOpenCharacter==='function')window.atlasOpenCharacter(button.dataset.homePersona);var notes=event.target.closest('[data-open-home-notes]');if(notes){window.atlasOpenPage?.('mi-atlas');setTimeout(function(){document.querySelector('[data-personal-tab="notas"]')?.click();},180);}});window.addEventListener('atlasPlayerAuthReady',render);document.addEventListener('DOMContentLoaded',render);document.addEventListener('click',function(event){if(event.target.closest('[data-page="inicio"],[data-open-page="inicio"]'))setTimeout(render,120)});window.atlasRenderHomePersonalization=render;
 })();
 </script>
 
@@ -3085,7 +3094,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 }
 
 #atlas-app #atlas-page-ciudad .ciudad-card-kicker {
-  display: block;
+  display: inline-flex;
   margin-bottom: 12px;
   color: var(--accent);
   font-size: 10px;
@@ -3368,7 +3377,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
   background: #11151b !important;
 }
 
-#atlas-app[data-theme="dark"] #atlas-page-ciudad .ciudad-card-kicker,
+#atlas-app[data-theme="dark"] #atlas-page-ciudad .ciudad-card-kicker {
+  background: transparent !important;
+  color: #ff6b6b !important;
+}
 #atlas-app[data-theme="dark"] #atlas-page-ciudad .ciudad-location-body small {
   background: rgba(226,71,71,.16) !important;
   color: #ff6b6b !important;
@@ -7181,7 +7193,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-modal-window::-webkit
                 data-search-title="facultad de psicologia deportiva"
                 data-search-keywords="психология спортивная клиническая психология давление травмы команда">
           <span class="atlas-card-kicker">FACULTAD</span>
-          <h3>psicología deportiva</h3>
+          <h3>спортивная психология</h3>
           <p>факультет спортивной психологии.</p>
           <small>abrir expediente →</small>
         </button>
@@ -8102,7 +8114,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-modal-window::-webkit
 
 <template data-atlas-modal="faculty-psico-modal">
   <div class="atlas-faculty-full">
-    <h3>Facultad de psicología deportiva</h3>
+    <h3>Facultad de спортивная психология</h3>
     <p class="faculty-modal-intro">Факультет спортивной психологии.</p>
     <div class="faculty-modal-sections">
 <details class="atlas-doc-accordion">
@@ -10300,7 +10312,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     `;
   }
 
-  function renderSlots(position) {
+  function renderSlots(position, team) {
     const occupied = Array.isArray(position.occupied) ? position.occupied.filter(Boolean) : [];
     const total = Number(position.total) || 0;
     const emptyCount = Math.max(total - occupied.length, 0);
@@ -10326,13 +10338,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     });
 
     for (let i = 0; i < emptyCount; i++) {
-      html += '<span class="atlas-player-slot is-empty">свободно</span>';
+      html += '<span class="atlas-player-slot is-empty" data-community-roster-empty="1" data-roster-team="' + escapeHtml(team && team.name || '') + '" data-roster-position="' + escapeHtml(position.key || '') + '">свободно</span>';
     }
 
     return html;
   }
 
-  function renderPosition(position) {
+  function renderPosition(position, team) {
     const occupied = Array.isArray(position.occupied) ? position.occupied.filter(Boolean).length : 0;
     const total = Number(position.total) || 0;
 
@@ -10346,7 +10358,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
           <span class="atlas-position-count">${occupied}/${total}</span>
         </div>
         <div class="atlas-player-slots">
-          ${renderSlots(position)}
+          ${renderSlots(position, team)}
         </div>
       </div>
     `;
@@ -10388,7 +10400,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         </div>
 
         <div class="atlas-team-roster-body">
-          ${team.positions.map(renderPosition).join("")}
+          ${team.positions.map(function(position){return renderPosition(position, team);}).join("")}
         </div>
       </article>
     `;
@@ -14364,7 +14376,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   var TYPE_LABELS = {
     student_sport: "студент-спортсмен",
     student_academic: "студент",
-    adult: "взрослый персонаж",
+    adult: "академи",
     lyceum: "лицеист"
   };
 
@@ -15221,11 +15233,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 </script>
 
 <!-- CASTELMARA: modular character data -->
-<script src="data/students.js?v=20260923-1"></script>
-<script src="data/staff.js?v=20260923-1"></script>
-<script src="data/coaches.js?v=20260923-1"></script>
-<script src="data/leon.js?v=20260923-1"></script>
-<script src="data/character-directory.js?v=20260923-2"></script>
+<script src="data/students.js?v=20260924-1"></script>
+<script src="data/staff.js?v=20260924-1"></script>
+<script src="data/coaches.js?v=20260924-1"></script>
+<script src="data/leon.js?v=20260924-1"></script>
+<script src="data/character-directory.js?v=20260924-1"></script>
 <!-- SOURCE: \Вставлений text(20260912-144950).txt -->
 <!--
 =========================================================
@@ -17043,72 +17055,65 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
 
       <div class="foro-help-grid foro-photo-help-grid">
         <a class="foro-help-card foro-photo-card atlas-search-target"
-           href="https://vk.ru/appleboms"
+           href="https://vk.ru/notunsx"
            target="_blank"
            rel="noopener"
-           data-search-title="site broken access technical problem referee"
-           data-search-keywords="сайт не работает ошибка доступ техническая проблема referee">
+           data-search-title="фел notunsx сайт профиль пароль"
+           data-search-keywords="сайт проблема профиль пароль доступ техническая помощь">
           <div class="foro-card-photo">
-            <img src="assets/foro/site-admin.webp?v=20260923-2" alt="администратор сайта" width="735" height="919" loading="eager" decoding="async">
+            <img src="assets/foro/site-admin.webp?v=20260924-1" alt="фел" width="735" height="919" loading="eager" decoding="async">
           </div>
           <div class="foro-card-body">
-            <span class="foro-help-tag">сайт / доступ</span>
-            <h3>если сайт не работает</h3>
-            <p>ошибка на странице, не открывается вкладка, сломалась анкета, пропал блок или нужен доступ.</p>
-            <strong>написать администратору сайта</strong>
+            <h3>ФЕЛ · @notunsx</h3>
+            <p>САЙТ<br>ПРОБЛЕМА С ПРОФИЛЕМ<br>ЗАБЫЛИ ПАРОЛЬ</p>
+            <strong>писать сюда</strong>
           </div>
         </a>
 
         <a class="foro-help-card foro-photo-card atlas-search-target"
-           href="https://vk.ru/passtion"
+           href="https://vk.ru/passion"
            target="_blank"
            rel="noopener"
-           data-search-title="plot quest character application playmaker"
-           data-search-keywords="сюжет квест анкета персонаж вопросы по канону playmaker">
+           data-search-title="пасс passion анкеты квесты сюжетные эпизоды"
+           data-search-keywords="анкеты квесты сюжет сюжетные эпизоды пасс passion">
           <div class="foro-card-photo">
-            <img src="assets/foro/plot-admin.webp?v=20260923-2" alt="администратор сюжета" width="736" height="892" loading="eager" decoding="async">
+            <img src="assets/foro/plot-admin.webp?v=20260924-1" alt="пасс" width="736" height="892" loading="eager" decoding="async">
           </div>
           <div class="foro-card-body">
-            <span class="foro-help-tag">сюжет / анкеты</span>
-            <h3>если вопрос по сюжету и анкетам</h3>
-            <p>квесты, сюжетные линии, анкеты, каноны, связи персонажей и логика событий.</p>
-            <strong>написать администратору сюжета</strong>
+            <h3>ПАСС · @passion</h3>
+            <p>АНКЕТЫ<br>КВЕСТЫ<br>СЮЖЕТНЫЕ ЭПИЗОДЫ</p>
+            <strong>писать сюда</strong>
           </div>
         </a>
 
         <a class="foro-help-card foro-photo-card atlas-search-target"
-           href="https://vk.ru/forkyou69"
+           href="https://vk.ru/strelly"
            target="_blank"
            rel="noopener"
-           data-search-title="episodes episode opening transfer goalkeeper"
-           data-search-keywords="эпизоды открытие перенос продление оформление игровые ветки goalkeeper">
+           data-search-title="ната strelly перекличка отсутствие таблицы"
+           data-search-keywords="перекличка отсутствие таблицы активность ната strelly">
           <div class="foro-card-photo">
-            <img src="assets/foro/episodes-admin.webp?v=20260923-2" alt="администратор эпизодов" width="618" height="828" loading="eager" decoding="async">
+            <img src="assets/foro/activity-admin.webp?v=20260924-1" alt="ната" width="736" height="933" loading="eager" decoding="async">
           </div>
           <div class="foro-card-body">
-            <span class="foro-help-tag">эпизоды / оформление</span>
-            <h3>если вопрос по эпизодам</h3>
-            <p>открытие эпизодов, перенос, продление, оформление игровых веток и организационные вопросы по игре.</p>
-            <strong>написать администратору эпизодов</strong>
+            <h3>НАТА · @strelly</h3>
+            <p>ПЕРЕКЛИЧКА<br>ОТСУТСТВИЕ<br>ТАБЛИЦЫ</p>
+            <strong>писать сюда</strong>
           </div>
         </a>
 
-        <a class="foro-help-card foro-photo-card atlas-search-target"
-           href="https://vk.com/xiaoxiuminie"
-           target="_blank"
-           rel="noopener"
-           data-search-title="absence roll call activity accounting defender"
-           data-search-keywords="перекличка отсутствие активность учет отсутствия defender">
+        <article class="foro-help-card foro-photo-card atlas-search-target"
+           data-search-title="даду эпизоды брони продления"
+           data-search-keywords="эпизоды брони продления даду">
           <div class="foro-card-photo">
-            <img src="assets/foro/activity-admin.webp?v=20260923-2" alt="администратор активности" width="736" height="933" loading="eager" decoding="async">
+            <img src="assets/foro/episodes-admin.webp?v=20260924-1" alt="даду" width="618" height="828" loading="eager" decoding="async">
           </div>
           <div class="foro-card-body">
-            <span class="foro-help-tag">активность / учёт</span>
-            <h3>если пропадаешь</h3>
-            <p>перекличка, отсутствие, учёт активности, предупреждения и возвращение после паузы.</p>
-            <strong>написать администратору активности</strong>
+            <h3>ДАДУ</h3>
+            <p>ЭПИЗОДЫ<br>БРОНИ<br>ПРОДЛЕНИЯ</p>
+            <strong>не писать</strong>
           </div>
-        </a>
+        </article>
       </div>
 
       <section class="foro-section-head">
@@ -19524,9 +19529,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     "view full schedule": "посмотреть полное расписание",
 
     "guía del portal atlas": "гайд по порталу ATLAS",
-    "resúmenes de quests": "сводки квестов",
-    "episodios de trama": "сюжетные эпизоды",
-    "últimas actualizaciones": "последние обновления",
+    "сводки квестов": "сводки квестов",
+    "сюжетные эпизоды": "сюжетные эпизоды",
+    "последние обновления": "последние обновления",
 
     "orientation": "ориентация",
     "registry": "реестр",
@@ -20700,10 +20705,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app #atlas-page-player-profile,
 #atlas-app #atlas-page-jugadores *,
 #atlas-app #atlas-page-player-profile *{font-family:"Montserrat",Arial,sans-serif!important;box-sizing:border-box}
-#atlas-app .atlas-player-catalog-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px;padding:24px 28px;min-height:220px;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,rgba(6,10,18,.82),rgba(9,13,22,.55)),url("assets/page-headers/jugadores-hero.webp") center 42%/cover no-repeat;box-shadow:0 18px 42px rgba(16,19,26,.14)}
+#atlas-app .atlas-player-catalog-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:24px;padding:38px 42px;min-height:320px;border-radius:28px;overflow:hidden;background:linear-gradient(90deg,rgba(7,10,14,.90),rgba(7,10,14,.34)),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.54)),url("assets/page-headers/jugadores-hero.webp") center center/cover no-repeat;box-shadow:0 18px 40px rgba(23,23,31,.08)}
 #atlas-app .atlas-player-catalog-head>*{position:relative;z-index:1}
-#atlas-app .atlas-player-catalog-head h2{margin:0;font-size:clamp(36px,5vw,64px);line-height:.92;font-weight:950;letter-spacing:-.055em;text-transform:lowercase;color:#f8f3ef}
-#atlas-app .atlas-player-catalog-head p{margin:10px 0 0;color:rgba(248,243,239,.86);font-size:14px;line-height:1.55;max-width:680px}
+#atlas-app .atlas-player-catalog-head h2{margin:0 0 14px;color:#fff;font-size:clamp(58px,6vw,84px);line-height:.92;font-weight:900;letter-spacing:-.06em;text-transform:lowercase}
+#atlas-app .atlas-player-catalog-head p{margin:0;max-width:780px;color:rgba(255,255,255,.92);font-size:18px;line-height:1.5;font-weight:600}
+
+#atlas-app .atlas-section-hero-kicker{display:inline-flex;align-items:center;margin:0 0 16px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(13,17,24,.36);backdrop-filter:blur(8px);color:#fff;font-size:11px;line-height:1;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head h2,#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head p,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-head h2,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-head p{color:#fff!important}
 #atlas-app .atlas-player-count{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(10,12,18,.34);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:950;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.12)}
 #atlas-app .atlas-player-grid{display:grid;grid-template-columns:repeat(auto-fill,230px);gap:22px;align-items:start;justify-content:start;margin-top:24px}
 #atlas-app .atlas-player-card{width:230px;height:315px;border:0;border-radius:28px;padding:0;overflow:hidden;position:relative;display:block;background:#111;color:#fff;cursor:pointer;text-align:left;box-shadow:0 18px 42px rgba(23,23,31,.12);transition:transform .24s ease,box-shadow .24s ease}
@@ -20989,10 +20997,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
 /* ===== mi atlas / guardados / favoritos / notas / historial ===== */
 #atlas-app .atlas-personal-shell{padding:4px 0 34px}
-#atlas-app .atlas-personal-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px;padding:24px 28px;min-height:220px;border-radius:30px;overflow:hidden;background:linear-gradient(135deg,rgba(17,24,46,.46),rgba(11,16,38,.22)),url("assets/page-headers/mi-atlas-hero.png") center 38%/cover no-repeat;box-shadow:0 18px 42px rgba(16,19,26,.10)}
+#atlas-app .atlas-personal-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 24px;padding:38px 42px;min-height:320px;border-radius:28px;overflow:hidden;background:linear-gradient(90deg,rgba(7,10,14,.86),rgba(7,10,14,.28)),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.50)),url("assets/page-headers/mi-atlas-hero.png") center center/cover no-repeat;box-shadow:0 18px 40px rgba(23,23,31,.08)}
 #atlas-app .atlas-personal-head>*{position:relative;z-index:1}
-#atlas-app .atlas-personal-head h2{margin:0;font-size:42px;line-height:.95;letter-spacing:-.055em;text-transform:lowercase;color:#f8f3ef}
-#atlas-app .atlas-personal-head p{max-width:760px;margin:10px 0 0;color:rgba(248,243,239,.9);font-size:14px;line-height:1.65}
+#atlas-app .atlas-personal-head h2{margin:0 0 14px;color:#fff;font-size:clamp(58px,6vw,84px);line-height:.92;font-weight:900;letter-spacing:-.06em;text-transform:lowercase}
+#atlas-app .atlas-personal-head p{max-width:780px;margin:0;color:rgba(255,255,255,.92);font-size:18px;line-height:1.5;font-weight:600}
 #atlas-app .atlas-personal-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:0 0 14px;border-bottom:1px solid #e5e7ea}
 #atlas-app .atlas-personal-tab{appearance:none;border:1px solid #dfe2e6;background:#fff;color:#5f6670;border-radius:999px;padding:10px 15px;font:700 12px/1 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
 #atlas-app .atlas-personal-tab.is-active{background:#11151b;border-color:#11151b;color:#fff}
@@ -21065,6 +21073,12 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 @media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
 @media(max-width:560px){#atlasPlayerEditModal .atlas-relation-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-relation-grid .is-full{grid-column:auto}}
 @media(max-width:560px){#atlas-app .atlas-player-edit-profile{top:14px;right:14px;padding:9px 12px;font-size:10px}#atlas-app .atlas-player-profile-page .atlas-player-heart{width:100%;padding:11px 12px;gap:11px}#atlas-app .atlas-player-profile-page .atlas-player-heart-icon{width:42px;height:42px;border-radius:14px;font-size:25px}#atlas-app .atlas-player-catalog-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}#atlasPlayerEditModal{padding:10px}#atlasPlayerEditModal .atlas-player-edit-window{padding:23px 17px;border-radius:20px}#atlasPlayerEditModal .atlas-player-edit-title{font-size:29px}#atlasPlayerEditModal .atlas-player-edit-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-edit-field.is-full,#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:auto}}
+
+@media(max-width:780px){
+  #atlas-app .atlas-player-catalog-head,#atlas-app .atlas-personal-head{min-height:270px!important;padding:30px 24px!important;border-radius:22px!important;background-position:center center!important}
+  #atlas-app .atlas-player-catalog-head h2,#atlas-app .atlas-personal-head h2{font-size:clamp(44px,14vw,64px)!important}
+  #atlas-app .atlas-player-catalog-head p,#atlas-app .atlas-personal-head p{font-size:14px!important}
+}
 </style>
 
 <template data-atlas-page-template="jugadores">
@@ -21072,6 +21086,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     <div class="atlas-page-shell">
       <div class="atlas-player-catalog-head">
         <div>
+          <span class="atlas-section-hero-kicker">perfiles / comunidad</span>
           <h2>jugadores</h2>
           <p>профили зарегистрированных участников кастельмары. никнеймы, персонажи, серия входа и достижения живут здесь.</p>
         </div>
@@ -21089,7 +21104,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     <div class="atlas-page-shell">
       <div class="atlas-personal-shell" id="atlasPersonalRoot">
         <div class="atlas-personal-head">
-          <div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров. другие игроки видят только те заметки, которые ты отмечаешь публичными.</p></div>
+          <div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров. другие игроки видят только те заметки, которые ты отмечаешь публичными.</p></div>
         </div>
         <div class="atlas-personal-empty">загружаем личный ATLAS…</div>
       </div>
@@ -22427,11 +22442,11 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   async function render(){
     var root=document.getElementById('atlasPersonalRoot'); if(!root)return;
     if(!signedIn()){
-      root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>закладки, избранное, заметки и история привязаны к аккаунту.</p></div></div><div class="atlas-personal-login"><strong>личный ATLAS закрыт</strong><p>войдите в аккаунт, чтобы открыть свои сохранённые данные.</p><button type="button" data-personal-login>войти</button></div>';
+      root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>закладки, избранное, заметки и история привязаны к аккаунту.</p></div></div><div class="atlas-personal-login"><strong>личный ATLAS закрыт</strong><p>войдите в аккаунт, чтобы открыть свои сохранённые данные.</p><button type="button" data-personal-login>войти</button></div>';
       return;
     }
     var client=c(), user=uid();
-    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><div class="atlas-personal-empty">загружаем личный ATLAS…</div>';
+    root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><div class="atlas-personal-empty">загружаем личный ATLAS…</div>';
     var res=await Promise.all([
       client.from('atlas_bookmarks').select('*').eq('user_id',user).order('created_at',{ascending:false}),
       client.from('atlas_favorites').select('*').eq('user_id',user).order('created_at',{ascending:false}),
@@ -22443,7 +22458,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     function tab(id,label,count){return '<button class="atlas-personal-tab'+(activeTab===id?' is-active':'')+'" type="button" data-personal-tab="'+id+'">'+label+(typeof count==='number'?' · '+count:'')+'</button>'}
     function panel(id,html){return '<section class="atlas-personal-panel'+(activeTab===id?' is-active':'')+'" data-personal-panel="'+id+'">'+html+'</section>'}
     var noteComposer='<form class="atlas-note-composer" id="atlasQuickNoteForm"><input name="title" type="text" maxlength="120" placeholder="заголовок"><textarea name="body" maxlength="6000" placeholder="быстрая заметка…" required></textarea><button class="atlas-note-add" type="submit">добавить</button></form>';
-    root.innerHTML='<div class="atlas-personal-head"><div><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','закладки',bookmarks.length)+tab('favoritos','избранное',favorites.length)+tab('notas','заметки',notes.length)+tab('historial','история',history.length)+'</nav>'+
+    root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','закладки',bookmarks.length)+tab('favoritos','избранное',favorites.length)+tab('notas','заметки',notes.length)+tab('historial','история',history.length)+'</nav>'+
       panel('guardados',bookmarks.length?'<div class="atlas-personal-grid">'+bookmarks.map(function(x){return itemCard(x,'bookmark')}).join('')+'</div>':'<div class="atlas-personal-empty">здесь появятся сохранённые профили и другие материалы.</div>')+
       panel('favoritos',favorites.length?'<div class="atlas-personal-grid">'+favorites.map(function(x){return itemCard(x,'favorite')}).join('')+'</div>':'<div class="atlas-personal-empty">избранное пока пустое.</div>')+
       panel('notas',noteComposer+(notes.length?'<div class="atlas-note-list">'+notes.map(noteCard).join('')+'</div>':'<div class="atlas-personal-empty">заметок пока нет.</div>'))+
@@ -24112,7 +24127,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 @media(max-width:860px){#atlas-app #atlas-page-inicio #inicio-mood-check .atlas-mood-result strong{font-size:27px}}
 </style>
 
-<script src="assets/atlas-mood.js?v=20260923-2"></script>
+<script src="assets/atlas-mood.js?v=20260924-1"></script>
 
 
 <!-- ATLAS PERSONAS — character social identity -->
@@ -24366,7 +24381,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 })();
 </script>
 
-<link rel="stylesheet" href="assets/atlas-community.css?v=20260923-2">
-<script src="assets/atlas-community.js?v=20260923-2"></script>
+<link rel="stylesheet" href="assets/atlas-community.css?v=20260924-1">
+<script src="assets/atlas-community.js?v=20260924-1"></script>
 </body>
 </html>
