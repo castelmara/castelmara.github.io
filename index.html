@@ -14696,92 +14696,13 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     };
   }
 
-  function getDefaultIndicators(character) {
-    var type = character && character.type ? character.type : "";
-
-    if (type === "student_academic") {
-      return {
-        title: "успеваемость",
-        display: "bars",
-        items: [
-          { label: "успеваемость", value: "" },
-          { label: "дисциплина", value: "" },
-          { label: "социальность", value: "" },
-          { label: "репутация", value: "" },
-          { label: "амбиции", value: "" }
-        ]
-      };
-    }
-
-    if (type === "lyceum") {
-      return {
-        title: "успеваемость",
-        display: "bars",
-        items: [
-          { label: "успеваемость", value: "" },
-          { label: "дисциплина", value: "" },
-          { label: "социальность", value: "" },
-          { label: "интерес скаутов", value: "" },
-          { label: "потенциал", value: "" }
-        ]
-      };
-    }
-
-    if (type === "adult") {
-      return {
-        title: "профессиональный профиль",
-        display: "bars",
-        items: [
-          { label: "профессионализм", value: "" },
-          { label: "дисциплина", value: "" },
-          { label: "авторитет", value: "" },
-          { label: "репутация", value: "" },
-          { label: "вовлечённость", value: "" }
-        ]
-      };
-    }
-
-    return {
-      title: "показатели",
-      display: "bars",
-      items: [
-        { label: "харизма", value: "" },
-        { label: "дисциплина", value: "" },
-        { label: "социальность", value: "" },
-        { label: "агрессия", value: "" },
-        { label: "амбиции", value: "" }
-      ]
-    };
-  }
-
   function normalizeIndicators(character, indicators) {
-    var fallback = getDefaultIndicators(character);
-
-    if (!indicators || !indicators.items || !indicators.items.length) {
-      return fallback;
-    }
-
-    var hasAnyScore = indicators.items.some(function(item) {
-      return parseIndicatorScore(item.value);
+    if (!indicators || !Array.isArray(indicators.items)) return null;
+    return Object.assign({}, indicators, {
+      items: indicators.items.filter(function(item) {
+        return item && item.label && item.value != null && String(item.value).trim() !== '';
+      })
     });
-
-    var shouldUseTypeDefault =
-      (character.type === "student_sport" || character.type === "student_academic" || character.type === "lyceum" || character.type === "adult") &&
-      !hasAnyScore;
-
-    if (shouldUseTypeDefault) {
-      return fallback;
-    }
-
-    if (!indicators.title) {
-      indicators.title = fallback.title;
-    }
-
-    if (!indicators.display && hasAnyScore) {
-      indicators.display = "bars";
-    }
-
-    return indicators;
   }
 
   function renderIndicators(indicators) {
@@ -14863,50 +14784,28 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       return [];
     }
 
-    return window.ATLAS_CHARACTERS.filter(function(item) {
+    return (window.ATLAS_CHARACTERS || []).concat(window.ATLAS_CARD_ONLY || []).filter(function(item) {
       if (!item || item.id === character.id) return false;
       return getCharacterPlayerKey(item) === currentKey;
     });
   }
 
+  function renderCharacterChip(item) {
+    var label = esc(item.cardName || item.name || item.id);
+    var full = (window.ATLAS_CHARACTERS || []).some(function(c) { return c.id === item.id && c.profile; });
+    return full
+      ? '<button class="atlas-player-character-link" type="button" data-atlas-profile-id="' + esc(item.id) + '">' + label + '</button>'
+      : '<span class="atlas-player-character-link is-static">' + label + '</span>';
+  }
+  window.atlasRenderCharacterChip = renderCharacterChip;
+
   function renderPlayerMetaCard(character) {
     var meta = getPlayerMeta(character);
-    var otherCharacters = getPlayerCharacters(character);
-    var hasPlayer = Boolean(meta.name || meta.id || meta.url);
-
-    var playerNameHtml = "";
-
-    if (meta.url && meta.name) {
-      playerNameHtml = '<a href="' + esc(meta.url) + '" target="_blank" rel="noopener">' + esc(meta.name) + '</a>';
-    } else if (meta.name) {
-      playerNameHtml = '<strong>' + esc(meta.name) + '</strong>';
-    } else {
-      playerNameHtml = '<strong>не указан</strong>';
-    }
-
-    var otherHtml = otherCharacters.length
-      ? '<div class="atlas-player-character-list">' + otherCharacters.map(function(item) {
-          return '<button class="atlas-player-character-link" type="button" data-atlas-profile-id="' + esc(item.id) + '">' + esc(item.cardName || item.name || item.id) + '</button>';
-        }).join("") + '</div>'
-      : '<p class="atlas-player-meta-empty">другие персонажи этого игрока пока не добавлены.</p>';
-
-    return '<div class="atlas-profile-card atlas-player-meta-card">' +
-      '<h3>игрок</h3>' +
-      '<div class="atlas-player-meta-box">' +
-        '<div class="atlas-player-meta-row">' +
-          '<span>имя игрока</span>' +
-          playerNameHtml +
-        '</div>' +
-        '<div class="atlas-player-meta-row">' +
-          '<span>айди игрока</span>' +
-          '<strong>' + esc(meta.id || "не указан") + '</strong>' +
-        '</div>' +
-        '<div class="atlas-player-meta-row">' +
-          '<span>персонажи игрока</span>' +
-          otherHtml +
-        '</div>' +
-      '</div>' +
-    '</div>';
+    var others = getPlayerCharacters(character);
+    var label = esc(meta.name || meta.id || 'не указан');
+    var player = meta.url ? '<a class="atlas-community-link" href="' + esc(meta.url) + '" target="_blank" rel="noopener">' + label + '</a>' : '<strong>' + label + '</strong>';
+    return '<div class="atlas-profile-card atlas-player-meta-card"><h3>игрок</h3>' + player +
+      (others.length ? '<div class="atlas-player-character-list">' + others.map(renderCharacterChip).join('') + '</div>' : '') + '</div>';
   }
 
   function renderTextCard(section, exactTitle) {
@@ -15011,16 +14910,22 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   function renderOverview(character) {
     var profile = character.profile || {};
     var overview = profile.overview || {};
-    var mainInfo = overview.mainInfo || {};
+    var mainInfo = Object.assign({}, overview.mainInfo || {});
 
     if (!mainInfo.fullName && character.fullName) mainInfo.fullName = character.fullName;
     if (!mainInfo.originalName && character.originalName) mainInfo.originalName = character.originalName;
-    if (!mainInfo.status) mainInfo.status = getStatusLabel(character);
+
 
     var indicators = normalizeIndicators(character, overview.indicators || null);
 
+    var portrait = character.avatar || profile.avatar || character.cardImage || (character.card && character.card.image) || '';
     return '<div class="atlas-profile-overview-grid">' +
-      '<div class="atlas-profile-card">' +
+      '<div class="atlas-profile-overview-left">' +
+        '<figure class="atlas-community-portrait"' + (portrait ? '' : ' hidden') + '>' +
+          (portrait ? '<img src="' + esc(portrait) + '" alt="' + esc(character.fullName || character.name || '') + '">' : '') +
+        '</figure>' +
+      '</div>' +
+      '<div class="atlas-profile-card atlas-profile-main-info">' +
         '<h3>основная информация</h3>' +
         createInfoRowsFromObject(mainInfo) +
       '</div>' +
@@ -15037,11 +14942,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
   function renderCharacterProfile(character) {
     var root = document.getElementById("atlasCharacterProfileRoot");
-    if (!root) return;
+    if (!root || !character || !character.profile) return;
 
     var nameParts = splitName(character);
     var heroImage = getImage(character, "hero");
-    var statusLabel = getStatusLabel(character);
+    var statusLabel = character.status ? getStatusLabel(character) : '';
     var statusClass = character.status === "reserved" ? " is-reserved" : "";
     statusClass = character.status === "taken" ? " is-taken" : statusClass;
 
@@ -15145,7 +15050,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       return ch.id === characterId;
     });
 
-    if (!character) return;
+    if (!character || !character.profile) return;
 
     var current = getActiveAtlasPageName();
 
@@ -15239,10 +15144,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 <script src="data/character-directory.js?v=20260924-1"></script>
 <!-- SOURCE: \Вставлений text(20260912-144950).txt -->
 <!--
-=========================================================
+----------------------------------------
 ATLAS — CARD ONLY CHARACTERS
 персонажи без внутренней анкеты
-=========================================================
+----------------------------------------
 
 ПОРЯДОК T123-БЛОКОВ:
 
@@ -15257,7 +15162,7 @@ ATLAS — CARD ONLY CHARACTERS
 
 Карточка автоматически исчезнет отсюда и станет обычной
 кликабельной карточкой из CHARACTER DATA.
-=========================================================
+----------------------------------------
 -->
 
 <style>

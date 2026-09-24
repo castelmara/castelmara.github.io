@@ -105,8 +105,8 @@ test('Sport badges replace only their matching department display line without c
 });
 test('Profile hydration inserts one portrait into the existing overview and reuses it',async()=>{
  const e=env(),photos=[],social={dataset:{},innerHTML:'',isConnected:true};
- const side={prepend:node=>photos.unshift(node)};
- const overview={querySelector:selector=>selector==='.atlas-community-portrait'?photos[0]||null:selector==='.atlas-profile-overview-side'?side:selector==='.atlas-community-social'?social:null};
+ const side={prepend:node=>photos.unshift(node),querySelector:selector=>selector==='.atlas-community-social'?social:null};
+ const overview={querySelector:selector=>selector==='.atlas-community-portrait'?photos[0]||null:selector==='.atlas-profile-overview-left'?side:null};
  const root={dataset:{},querySelector:selector=>selector==='[data-character-tab-panel="overview"]'?overview:null};
  e.nodes.atlasCharacterProfileRoot=root;
  e.doc.createElement=()=>({innerHTML:'',hidden:false});

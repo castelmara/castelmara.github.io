@@ -249,9 +249,9 @@
   function originalBanner(c) { return c?.banner || c?.heroImage || c?.profile?.heroImage || originalPhoto(c); }
   function ownerCard(c) {
     const p = owner(c.id), box = document.querySelector('#atlasCharacterProfileRoot .atlas-player-meta-card');
-    if (!box) return;
+    if (!box || !p) return;
     const others = p ? owners.filter(o => o.user_id === p.id && o.character_id !== c.id).map(o => allCharacters().find(x => x.id === o.character_id)).filter(Boolean) : [];
-    box.innerHTML = '<h3>игрок</h3>'+link(p)+(others.length ? '<div class="atlas-player-character-list">'+others.map(x => '<button type="button" class="atlas-player-character-link" data-community-character-open="'+esc(x.id)+'">'+esc(name(x))+'</button>').join('')+'</div>' : '');
+    box.innerHTML = '<h3>игрок</h3>'+link(p)+(others.length ? '<div class="atlas-player-character-list">'+others.map(x => window.atlasRenderCharacterChip(x)).join('')+'</div>' : '');
   }
   window.atlasHydrateCommunityCharacter = async function (id) {
     const root = document.getElementById('atlasCharacterProfileRoot'), c = character(id);
@@ -269,7 +269,7 @@
     if (!photo) {
       photo = document.createElement('figure');
       photo.className = 'atlas-community-portrait';
-      overview?.querySelector('.atlas-profile-overview-side')?.prepend(photo);
+      overview?.querySelector('.atlas-profile-overview-left')?.prepend(photo);
     }
     const photoUrl = data?.photo_url || originalPhoto(c);
     photo.innerHTML = photoUrl ? '<img src="'+esc(photoUrl)+'" alt="'+esc(name(c))+'" loading="lazy">' : '';
@@ -279,7 +279,7 @@
     if (results[2].status === 'fulfilled' && results[2].value === true) {
       const button = document.createElement('button'); button.type = 'button'; button.className = 'atlas-community-edit'; button.dataset.communityEdit = id; button.textContent = 'редактировать анкету'; hero?.appendChild(button);
     }
-    hydrateSocial(overview,'character',id);
+    hydrateSocial(overview?.querySelector('.atlas-profile-overview-left'),'character',id);
   };
 
   async function hydrateSocial(container,type,id) {

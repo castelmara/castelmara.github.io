@@ -1155,14 +1155,10 @@
     "category": "castelmara",
     "existing": "cards",
     "image": "assets/characters/mariella-alcaraz.jpg",
-<<<<<<< HEAD
     "nameRu": "мариэлла алькарас",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра спортивной журналистики",
     "activity": "преподаватель журналистики"
-=======
-    "nameRu": "мариэлла алькарас"
->>>>>>> a38daa8 (fix character image paths)
   },
   {
     "id": "diego-caceres",
