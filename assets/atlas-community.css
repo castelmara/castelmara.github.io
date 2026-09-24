@@ -87,3 +87,58 @@ html.atlas-cursor-enabled #atlasCommunityDialog :disabled{cursor:wait!important}
 #atlas-app :where(button,a,label,select,option){text-transform:inherit}
 #atlas-app .atlas-direct-kicker{text-transform:uppercase}
 #atlasCommunityDialog input:not([type="file"]),#atlasCommunityDialog textarea,#atlasPersonalNoteModal input,#atlasPersonalNoteModal textarea{text-transform:none}
+
+
+/* 2026-09-24 card, roster and direct refinements */
+#atlas-app .atlas-character-card-details{gap:14px}
+#atlas-app .atlas-character-card-badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%}
+#atlas-app .atlas-character-card-badges.is-inline{margin:0 0 9px}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge{display:inline-flex;align-items:center;max-width:100%;padding:6px 9px;border-radius:999px;border:1px solid #ffffff4a;background:#111a;color:#fff;font:900 9px/1 Montserrat,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;overflow-wrap:anywhere}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.academy{background:rgba(198,56,65,.35);border-color:rgba(255,112,118,.38);color:#ff858a}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-football{background:rgba(45,151,82,.72);border-color:rgba(117,224,145,.42)}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-basketball{background:rgba(210,113,32,.78);border-color:rgba(255,176,90,.48)}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-hockey{background:rgba(50,108,191,.78);border-color:rgba(119,169,239,.48)}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-volleyball{background:rgba(135,73,179,.78);border-color:rgba(192,133,233,.48)}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-tennis{background:rgba(183,163,34,.80);border-color:rgba(232,219,96,.50);color:#fff}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-skating{background:rgba(83,151,179,.80);border-color:rgba(153,216,239,.48)}
+#atlas-app .atlas-character-card-details .atlas-character-card-badge.sport-swimming{background:rgba(31,144,156,.80);border-color:rgba(113,221,226,.48)}
+#atlas-app .atlas-character-card-details .atlas-character-card-text{margin-top:auto}
+#atlas-app .atlas-character-card-details .atlas-character-card-text p{font-size:11px;line-height:1.35;font-weight:650}
+
+#atlas-app .atlas-community-cheer{padding:18px;border-top:1px solid #858b9840}
+#atlas-app .atlas-community-cheer h6{font:900 13px/1.4 Montserrat,Arial,sans-serif;margin:0 0 12px}
+#atlas-app .atlas-community-cheer-list{display:flex;flex-wrap:wrap;gap:8px}
+#atlas-app .atlas-community-cheer-item{display:inline-flex;align-items:center;gap:5px}
+#atlas-app .atlas-community-cheer-chip{display:inline-flex;align-items:center;min-height:30px;padding:7px 11px;border:1px solid rgba(206,80,85,.55);border-radius:999px;background:rgba(182,56,62,.08);color:#d85b61;font:800 11px/1.15 Montserrat,Arial,sans-serif;text-decoration:none}
+#atlas-app button.atlas-community-cheer-chip{cursor:pointer}
+#atlas-app button.atlas-community-cheer-chip:hover{background:rgba(182,56,62,.18);transform:translateY(-1px)}
+#atlas-app .atlas-community-captain{background:#b6383e22;color:#ce5055;padding:4px 7px;border-radius:9px;font-size:9px}
+#atlas-app .atlas-community-captain.is-vice{background:#858b9820;color:#8e96a3}
+
+#atlas-app .atlas-player-slot.is-empty.is-editable{cursor:pointer;border-color:rgba(215,66,72,.44);color:#d75a61;background:rgba(182,56,62,.07)}
+#atlas-app .atlas-player-slot.is-empty.is-editable:hover{background:rgba(182,56,62,.16);transform:translateY(-1px)}
+#atlasCommunityDialog .atlas-community-slot-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0;padding:12px 14px;border:1px solid #9299a744;border-radius:12px;background:#858b9810}
+#atlasCommunityDialog .atlas-community-slot-meta span{color:#9299a7;font-size:11px}
+
+#atlas-app #atlas-page-character-profile .atlas-profile-overview-grid{grid-template-columns:minmax(0,1.45fr) minmax(300px,420px)}
+#atlas-app #atlas-page-character-profile .atlas-profile-overview-side{min-width:0}
+#atlas-app #atlas-page-character-profile .atlas-community-portrait{width:min(100%,360px);max-height:450px;margin:0 auto 18px;aspect-ratio:4/5;border-radius:22px}
+#atlas-app #atlas-page-character-profile .atlas-community-portrait img{width:100%;height:100%;object-fit:cover}
+
+/* Direct: desktop keeps chat list + conversation side by side; mobile still switches one screen at a time. */
+#atlas-app #atlas-page-direct .atlas-direct-shell{max-width:1120px!important;width:100%;margin:0 auto;padding-top:12px}
+#atlas-app #atlas-page-direct .atlas-direct-layout{display:grid!important;grid-template-columns:minmax(250px,300px) minmax(0,1fr)!important;max-width:1120px!important;width:100%;height:min(700px,calc(100dvh - 245px));min-height:500px;margin:0 auto;overflow:hidden}
+#atlas-app #atlas-page-direct .atlas-direct-channels{display:block!important;width:100%;height:100%;max-height:none;border-right:1px solid #858b9830;border-bottom:0}
+#atlas-app #atlas-page-direct .atlas-direct-chat{display:flex!important;height:100%;min-height:0}
+#atlas-app #atlas-page-direct .atlas-direct-mobile-back{display:none!important}
+#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:block!important}
+#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-chat{display:flex!important}
+@media(max-width:900px){
+  #atlas-app #atlas-page-direct .atlas-direct-layout{display:block!important;height:calc(100dvh - 110px);min-height:360px}
+  #atlas-app #atlas-page-direct .atlas-direct-channels{display:block!important;border-right:0;border-bottom:1px solid #eceef1}
+  #atlas-app #atlas-page-direct .atlas-direct-chat{display:none!important}
+  #atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:none!important}
+  #atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-chat{display:flex!important}
+  #atlas-app #atlas-page-direct .atlas-direct-mobile-back{display:inline-flex!important}
+  #atlas-app #atlas-page-character-profile .atlas-profile-overview-grid{grid-template-columns:1fr}
+}

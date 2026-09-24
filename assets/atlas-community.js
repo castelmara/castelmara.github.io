@@ -88,27 +88,94 @@
     if (safeNick) bits.push('<span class="atlas-card-player-nick">@'+esc(safeNick)+'</span>');
     return bits.join('');
   }
+  function compactFaculty(value) {
+    const raw = String(value || '').trim();
+    const key = raw.toLowerCase();
+    const map = [
+      [/спортивной аналитики, управления, права и агентской деятельности/i,'аналитика и менеджмент'],
+      [/спортивной аналитики и менеджмента/i,'аналитика и менеджмент'],
+      [/спортивной аналитики$/i,'спортивная аналитика'],
+      [/спортивной журналистики и медиа/i,'журналистика и медиа'],
+      [/спортивной медицины и реабилитации/i,'медицина и реабилитация'],
+      [/спортивной психологии/i,'спортивная психология'],
+      [/индивидуальных видов спорта/i,'индивидуальные виды спорта'],
+      [/(?:тактики и )?игровых видов спорта/i,'игровые виды спорта'],
+      [/(?:тактики и )?командных видов спорта/i,'командные виды спорта']
+    ];
+    for (const [rx,label] of map) if (rx.test(key)) return label;
+    return raw.replace(/^факультет\s+/i,'');
+  }
+  function compactDepartment(value) {
+    const raw = String(value || '').trim();
+    const key = raw.toLowerCase();
+    const map = [
+      [/спортивного права и агентской деятельности/i,'спортправо и агентство'],
+      [/спортивной аналитики и статистики/i,'аналитика и статистика'],
+      [/спортивной журналистики/i,'спортивная журналистика'],
+      [/цифровых медиа и\s*smm/i,'digital / SMM'],
+      [/физиотерапии и реабилитации/i,'физиотерапия и реабилитация'],
+      [/спортивной травматологии и ортопедии/i,'травматология и ортопедия'],
+      [/клинической спортивной психологии/i,'клиническая спортпсихология'],
+      [/гимнастики и акробатики/i,'гимнастика и акробатика'],
+      [/легкой атлетики|лёгкой атлетики/i,'лёгкая атлетика']
+    ];
+    for (const [rx,label] of map) if (rx.test(key)) return label;
+    return raw.replace(/^кафедра\s+/i,'');
+  }
+  function sportMeta(value) {
+    const key = String(value || '').toLowerCase();
+    if (/футбол/.test(key)) return {label:'футбол',cls:'football'};
+    if (/баскетбол/.test(key)) return {label:'баскетбол',cls:'basketball'};
+    if (/хокке/.test(key)) return {label:'хоккей',cls:'hockey'};
+    if (/волейбол/.test(key)) return {label:'волейбол',cls:'volleyball'};
+    if (/теннис/.test(key)) return {label:'теннис',cls:'tennis'};
+    if (/зимн/.test(key)) return {label:'фигурное катание',cls:'skating'};
+    if (/водн/.test(key)) return {label:'плавание',cls:'swimming'};
+    return null;
+  }
   function cardDetails(c) {
     const info = c.profile?.overview?.mainInfo || {};
     const student = c.category === 'estudiantes' || /^student_/.test(c.type || '');
-    let faculty = String(info.faculty || '').trim();
-    let department = String(info.department || '').trim();
+    let faculty = String(info.faculty || c.faculty || '').trim();
+    let department = String(info.department || c.department || '').trim();
     const split = faculty.match(/^(.*?)[,;]\s*(кафедра(?:\s|$).*)$/i);
     if (split) { faculty = split[1].trim(); department = department || split[2].trim(); }
     const course = String(info.course || info.year || c.course || c.year || '').trim();
     const numbered = course.match(/^([1-4])(?:\s*курс)?$/i);
+    const sport = student ? sportMeta(department || c.specialization || info.specialization || '') : null;
     const badge = student ? (numbered ? numbered[1]+' КУРС' : course) :
       (c.card?.tag || (c.category === 'entrenadores' ? 'тренер' : c.role || ''));
+    const badges = [];
+    if (student && course) badges.push({label:badge, cls:'course'});
+    if (sport) badges.push({label:sport.label, cls:'sport-'+sport.cls});
+    if (!student && c.category === 'castelmara') badges.push({label:'академи',cls:'academy'});
     const subtitle = String(c.cardSubtitle || c.subtitle || c.role || '').trim();
     const lines = student ? [faculty, department].filter(Boolean) :
       [subtitle.startsWith('/') ? (c.subtitle || c.role || '') : subtitle].filter(Boolean);
-    return {badge, lines};
+    let displayLines;
+    if (student) {
+      displayLines = [compactFaculty(faculty)];
+      if (!sport && department) displayLines.push(compactDepartment(department));
+    } else if (c.category === 'castelmara') {
+      displayLines = [c.activity || '', c.secondaryActivity || '', department ? compactDepartment(department) : ''].filter(Boolean);
+      if (!displayLines.length && subtitle) displayLines = [subtitle.startsWith('/') ? (c.subtitle || c.role || '') : subtitle];
+    } else {
+      displayLines = lines.slice();
+    }
+    return {student, badge, badges, lines, displayLines:displayLines.filter(Boolean)};
+  }
+  function badgesHtml(items, insideText) {
+    if (!items || !items.length) return '';
+    return '<span class="atlas-character-card-badges'+(insideText?' is-inline':'')+'">'+items.map(item =>
+      '<span class="atlas-character-card-badge '+esc(item.cls || '')+'">'+esc(item.label)+'</span>'
+    ).join('')+'</span>';
   }
   function cardDetailsHtml(c) {
     const details = cardDetails(c);
-    return (details.badge ? '<span class="atlas-character-card-badge">'+esc(details.badge)+'</span>' : '')+
-      '<span class="atlas-character-card-text"><h3>'+esc(c.cardName || c.name || c.fullName || c.id)+'</h3>'+
-      details.lines.map(line => '<p>'+esc(line)+'</p>').join('')+'</span>';
+    const topBadges = details.student ? badgesHtml(details.badges,false) : '';
+    const inlineBadges = details.student ? '' : badgesHtml(details.badges,true);
+    return topBadges+'<span class="atlas-character-card-text">'+inlineBadges+'<h3>'+esc(c.cardName || c.name || c.fullName || c.id)+'</h3>'+
+      details.displayLines.map(line => '<p>'+esc(line)+'</p>').join('')+'</span>';
   }
   window.atlasCardDetailsHtml = cardDetailsHtml;
   function cardPlayerHtml(c) {
@@ -325,6 +392,7 @@
       if (allowed && !toolbar.querySelector('[data-community-roster-edit]')) toolbar.innerHTML = '<button type="button" class="atlas-community-edit" data-community-roster-edit>редактировать составы и группы поддержки</button>';
       if (!allowed) toolbar.innerHTML = '';
     });
+    if (typeof markEditableRosterSlots === 'function') markEditableRosterSlots();
   }
   async function refreshRosterAccess() {
     const startedFor = uid(), version = ++rosterAccessVersion;
@@ -359,8 +427,8 @@
     });
   };
   function characterLink(c) {
-    const hasCard = character(c?.id) || (window.ATLAS_CARD_ONLY || []).some(x => x.id === c?.id);
-    return hasCard ? '<button class="atlas-community-link" type="button" data-community-character-open="'+esc(c?.id || '')+'">'+esc(rosterName(c))+'</button>' : '<span>'+esc(rosterName(c))+'</span>';
+    const full = character(c?.id);
+    return full ? '<button class="atlas-community-cheer-chip is-clickable" type="button" data-community-character-open="'+esc(c?.id || '')+'">'+esc(rosterName(c))+'</button>' : '<span class="atlas-community-cheer-chip">'+esc(rosterName(c))+'</span>';
   }
   window.atlasDecorateRosters = function () {
     renderRosterActions();
@@ -374,15 +442,46 @@
       const team = teams.find(t => t.name.toLowerCase() === title); if (!team) return;
       const cheer = members.filter(m => m.team_id === team.id && m.kind === 'cheer' && m.visible);
       const section = document.createElement('section'); section.className = 'atlas-community-cheer';
-      section.innerHTML = '<h6>группа поддержки</h6>'+(cheer.length ? cheer.map(m => {
+      section.innerHTML = '<h6>группа поддержки</h6>'+(cheer.length ? '<div class="atlas-community-cheer-list">'+cheer.map(m => {
         const c = allCharacters().find(x => x.id === m.character_id);
-        return '<div>'+characterLink(c)+(m.captaincy==='captain'?'<span class="atlas-community-captain">капитан</span>':m.captaincy==='vice-captain'?'<span>заместитель капитана</span>':'')+'</div>';
-      }).join('') : '<small>состав не указан</small>');
+        const role = m.captaincy==='captain'?'<span class="atlas-community-captain">капитан</span>':m.captaincy==='vice-captain'?'<span class="atlas-community-captain is-vice">заместитель</span>':'';
+        return '<span class="atlas-community-cheer-item">'+characterLink(c)+role+'</span>';
+      }).join('')+'</div>' : '<small>состав не указан</small>');
       card.appendChild(section);
     });
   };
+  function rosterCanManage() {
+    const profile = window.ATLAS_CURRENT_PROFILE;
+    return !!uid() && (rosterAllowedFor === uid() ? rosterAllowed : profile?.id === uid() && profile.role === 'superadmin');
+  }
+  function markEditableRosterSlots() {
+    document.querySelectorAll('[data-community-roster-empty]').forEach(slot => {
+      const allowed = rosterCanManage();
+      slot.classList.toggle('is-editable', allowed);
+      slot.title = allowed ? 'назначить персонажа' : '';
+    });
+  }
+  async function openRosterSlotPicker(teamName, position) {
+    if (!rosterCanManage()) return;
+    const team = teams.find(t => String(t.name).toLowerCase() === String(teamName || '').toLowerCase());
+    if (!team) return;
+    const occupiedIds = new Set(members.filter(m => m.kind === 'athlete').map(m => m.character_id));
+    const choices = allCharacters().filter(c => c?.id && !occupiedIds.has(c.id)).sort((a,b) => rosterName(a).localeCompare(rosterName(b),'ru'));
+    dialog('назначить на позицию','<form id="atlasRosterSlotForm"><label>персонаж<select name="character_id" required><option value="">выбери персонажа</option>'+choices.map(c => '<option value="'+esc(c.id)+'">'+esc(rosterName(c))+'</option>').join('')+'</select></label><div class="atlas-community-slot-meta"><strong>'+esc(team.name)+'</strong><span>'+esc(position)+'</span></div><div class="atlas-community-form-actions"><button type="submit">назначить</button></div></form>');
+    editor = {kind:'roster-slot',user:uid(),saving:false,teamId:team.id,position};
+  }
+  async function saveRosterSlot(form) {
+    const state = editor; if (!state || state.kind !== 'roster-slot' || state.saving) return;
+    const characterId = form.elements.character_id.value;
+    if (!characterId) return;
+    try {
+      lock(true); status('сохраняем…');
+      await checked(client().from('atlas_team_members').insert({character_id:characterId,kind:'athlete',team_id:state.teamId,position:state.position,captaincy:'none',visible:true}).select('*'));
+      await reloadRoster(); lock(false); closeModal();
+    } catch (err) { if (editor === state) { lock(false); status(errorText(err)); } }
+  }
   async function reloadRoster() {
-    const rows = await window.atlasLoadRoster(); window.atlasApplyRoster?.(rows); window.atlasDecorateRosters();
+    const rows = await window.atlasLoadRoster(); window.atlasApplyRoster?.(rows); window.atlasDecorateRosters(); markEditableRosterSlots();
   }
   const positions = {
     football:[['goalkeeper','вратарь'],['centre-back','центральный защитник'],['right-back','правый защитник'],['left-back','левый защитник'],['defensive midfielder','опорный полузащитник'],['central midfielder','центральный полузащитник'],['attacking midfielder','атакующий полузащитник'],['forward','центральный нападающий'],['winger','крайний нападающий'],['striker','нападающий']],
@@ -467,6 +566,12 @@
   }
 
   document.addEventListener('click',e => {
+    const emptySlot = e.target.closest('[data-community-roster-empty]');
+    if (emptySlot && rosterCanManage()) {
+      e.preventDefault(); e.stopPropagation();
+      openRosterSlotPicker(emptySlot.dataset.rosterTeam || '', emptySlot.dataset.rosterPosition || '');
+      return;
+    }
     const b = e.target.closest('button'); if (!b) return;
     if (b.hasAttribute('data-community-player')) window.atlasOpenPlayerProfile?.(b.dataset.communityPlayer);
     if (b.hasAttribute('data-community-character-open')) {
@@ -499,6 +604,7 @@
   document.addEventListener('submit',e => {
     if (e.target.id === 'atlasCharacterCustomizeForm') { e.preventDefault(); saveCharacter(e.target); }
     if (e.target.id === 'atlasRosterEditorForm') { e.preventDefault(); saveRoster(e.target); }
+    if (e.target.id === 'atlasRosterSlotForm') { e.preventDefault(); saveRosterSlot(e.target); }
   });
   window.addEventListener('atlasPlayerAuthReady',() => {
     ownerEpoch++; ownersAt = 0; custom.clear();
