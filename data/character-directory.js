@@ -19,7 +19,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6261-6339-4234-a231-303564363433/alessandra_manrique.jpg",
-    "nameRu": "алессандра манрике"
+    "nameRu": "алессандра манрике",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "dolly-eigner",
@@ -59,7 +61,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3937-3431-4665-a436-323033346561/morena_salazar.jpg",
-    "nameRu": "морена салазар"
+    "nameRu": "морена салазар",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной журналистики"
   },
   {
     "id": "melody-stoker",
@@ -79,7 +83,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6463-6232-4933-a231-306661626332/michaela_portado.jpg",
-    "nameRu": "микаэла портадо"
+    "nameRu": "микаэла портадо",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "sebastian-ward",
@@ -89,7 +95,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6632-3665-4839-a333-643562343864/noroot.png",
-    "nameRu": "себастьян уорд"
+    "nameRu": "себастьян уорд",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "ramona-martina-suarez",
@@ -109,7 +117,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6332-6231-4261-a234-363337653266/noroot.png",
-    "nameRu": "энтони руквуд"
+    "nameRu": "энтони руквуд",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра волейбола"
   },
   {
     "id": "martina-chavez-romero",
@@ -119,7 +129,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3437-3236-4033-b832-643665323766/martina_chvez__romer.jpg",
-    "nameRu": "мартина ромеро"
+    "nameRu": "мартина ромеро",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "nico-guerriero",
@@ -129,7 +141,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3931-3462-4339-a663-653062393530/nico_guerriero.jpg",
-    "nameRu": "нико геррьеро"
+    "nameRu": "нико геррьеро",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "rodrigo-morales",
@@ -139,7 +153,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6530-3230-4236-b466-613662353462/rodrigo_ferro_morale.jpg",
-    "nameRu": "родриго моралес"
+    "nameRu": "родриго моралес",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "miles-turner",
@@ -149,7 +165,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6365-3065-4464-b730-623465316138/miles_turner.jpg",
-    "nameRu": "майлз тёрнер"
+    "nameRu": "майлз тёрнер",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "federico-herrera",
@@ -159,7 +177,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6363-6561-4835-b333-313964623035/federico_pablo_herre.jpg",
-    "nameRu": "федерико эррера"
+    "nameRu": "федерико эррера",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "elarian-casterly",
@@ -169,7 +189,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3731-6535-4461-b565-653463656432/elarian_casterly.jpg",
-    "nameRu": "элариан кастерли"
+    "nameRu": "элариан кастерли",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "elias-azarolla",
@@ -179,7 +201,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6666-6334-4139-b131-396266633134/elias_azarolla.jpg",
-    "nameRu": "элиас асаролла"
+    "nameRu": "элиас асаролла",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "charles-berg",
@@ -189,7 +213,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3762-3564-4133-a665-613536636333/charles_berg.jpg",
-    "nameRu": "чарльз берг"
+    "nameRu": "чарльз берг",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной документалистики"
   },
   {
     "id": "pedro-martinez",
@@ -199,7 +225,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6136-3462-4734-b066-306261653433/pedro_ismael_martine.jpg",
-    "nameRu": "педро мартинес"
+    "nameRu": "педро мартинес",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "zoe-baudelaire",
@@ -209,7 +237,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3733-6332-4362-b662-633235366536/noroot.png",
-    "nameRu": "зоэ бодлер"
+    "nameRu": "зоэ бодлер",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "roberto-castillo",
@@ -219,7 +249,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3966-3661-4361-a232-613432313130/noroot.png",
-    "nameRu": "роберто кастильо"
+    "nameRu": "роберто кастильо",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "jose-blanco",
@@ -229,7 +261,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6361-6536-4531-b038-613531323638/jos_manuel_ortiz_bla.jpg",
-    "nameRu": "хосе бланко"
+    "nameRu": "хосе бланко",
+    "faculty": "факультет спортивной аналитики и менеджмента",
+    "department": "кафедра спортивного права и агентской деятельности"
   },
   {
     "id": "eli-stone",
@@ -239,7 +273,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6363-3861-4533-a437-313538613066/eli_stone.jpg",
-    "nameRu": "эли стоун"
+    "nameRu": "эли стоун",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "flores-del-campo",
@@ -249,7 +285,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3833-3963-4464-b435-303133643165/flores_del_campo.jpg",
-    "nameRu": "флорес дель кампо"
+    "nameRu": "флорес дель кампо",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра лёгкой атлетики"
   },
   {
     "id": "ava-leone",
@@ -259,7 +297,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3861-3739-4337-a534-353464626539/ava_leone.jpg",
-    "nameRu": "ава леоне"
+    "nameRu": "ава леоне",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "juniper-viscarra",
@@ -269,7 +309,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6463-6564-4535-b266-663936626539/noroot.png",
-    "nameRu": "джунипер вискарра"
+    "nameRu": "джунипер вискарра",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра водных видов спорта"
   },
   {
     "id": "esteban-furtado",
@@ -279,7 +321,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3732-3564-4130-b463-386130663262/esteban_iglesias_fur.jpg",
-    "nameRu": "эстебан фуртадо"
+    "nameRu": "эстебан фуртадо",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "alexa-soriano",
@@ -300,7 +344,9 @@
     "existing": "new",
     "image": "assets/characters/vanessa-moreno.jpg",
     "nameRu": "ванесса морено",
-    "photoCredit": "assets/characters/credits.html#vanessa-moreno"
+    "photoCredit": "assets/characters/credits.html#vanessa-moreno",
+    "faculty": "факультет спортивной аналитики и менеджмента",
+    "department": "кафедра спортивной аналитики и статистики"
   },
   {
     "id": "milagros-paz-bonachera",
@@ -310,7 +356,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3939-3532-4134-b336-343965653964/milagros_paz_bonache.jpg",
-    "nameRu": "милагрос боначера"
+    "nameRu": "милагрос боначера",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "cedric-joy",
@@ -330,7 +378,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3638-3637-4232-b732-663139666630/joaquin_morales.jpg",
-    "nameRu": "хоакин моралес"
+    "nameRu": "хоакин моралес",
+    "faculty": "факультет спортивной аналитики, управления, права и агентской деятельности",
+    "department": "кафедра спортивной аналитики и статистики"
   },
   {
     "id": "catalina-nunez-duarte",
@@ -340,7 +390,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3036-3162-4733-b363-383664626565/catalina_nez_duarte.jpg",
-    "nameRu": "каталина дуарте"
+    "nameRu": "каталина дуарте",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "rene-gott",
@@ -350,7 +402,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6235-3061-4830-b362-303937336231/ren_gott.jpg",
-    "nameRu": "рене готт"
+    "nameRu": "рене готт",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "tatiana-herrera",
@@ -360,7 +414,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6565-3031-4964-b030-623537613235/tatiana_tati_amber_h.jpg",
-    "nameRu": "татьяна эмбер эррера"
+    "nameRu": "татьяна эмбер эррера",
+    "faculty": "факультет спортивной аналитики и менеджмента",
+    "department": "кафедра спортивного права и агентской деятельности"
   },
   {
     "id": "pieter-vermeer",
@@ -370,7 +426,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6661-3335-4135-b536-636261653539/noroot.png",
-    "nameRu": "питер вермеер"
+    "nameRu": "питер вермеер",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "bruna-valentina-morales",
@@ -380,7 +438,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6232-3834-4432-b230-643439633837/image.png",
-    "nameRu": "бруна моралес"
+    "nameRu": "бруна моралес",
+    "faculty": "факультет спортивной аналитики и менеджмента",
+    "department": "кафедра спортивного менеджмента"
   },
   {
     "id": "camilo-avanzini",
@@ -390,7 +450,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3163-3361-4331-a238-343738613436/camilo_avanzini.jpg",
-    "nameRu": "камило аванцини"
+    "nameRu": "камило аванцини",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра волейбола"
   },
   {
     "id": "amalia-reinhart",
@@ -400,7 +462,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6464-6164-4135-b335-343162306366/amalia_reinhart.jpg",
-    "nameRu": "амалия рейнхарт"
+    "nameRu": "амалия рейнхарт",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра зимних видов спорта"
   },
   {
     "id": "javier-gonzalez",
@@ -410,7 +474,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3135-3236-4164-a630-353432333438/javier_gonzalez.jpg",
-    "nameRu": "хавьер гонсалес"
+    "nameRu": "хавьер гонсалес",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "axel-beltran",
@@ -420,7 +486,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3839-3661-4433-b363-623866633864/axel_renato_beltrn.jpg",
-    "nameRu": "аксель бельтран"
+    "nameRu": "аксель бельтран",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра баскетбола"
   },
   {
     "id": "satoru-saitou",
@@ -430,7 +498,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6163-3062-4435-b139-656239613966/satoru_saitou.jpg",
-    "nameRu": "сатору сайто"
+    "nameRu": "сатору сайто",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра зимних индивидуальных видов спорта"
   },
   {
     "id": "gabriel-marquez",
@@ -440,7 +510,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6261-6331-4463-b736-323364633834/gabriel_marquez.jpg",
-    "nameRu": "габриэль маркес"
+    "nameRu": "габриэль маркес",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра водных видов спорта"
   },
   {
     "id": "marcel-gavira",
@@ -450,7 +522,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3631-3831-4435-b139-613530363366/marcel_paulo_santiag.jpg",
-    "nameRu": "марсель гавира"
+    "nameRu": "марсель гавира",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "dahlia-vale",
@@ -460,7 +534,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3265-3430-4630-b535-653131313134/dahlia_vale.jpg",
-    "nameRu": "далия вейл"
+    "nameRu": "далия вейл",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной журналистики"
   },
   {
     "id": "aiden-nolan",
@@ -470,7 +546,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6530-3562-4135-b130-343339613432/aiden_nolan.jpg",
-    "nameRu": "эйден нолан"
+    "nameRu": "эйден нолан",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра баскетбола"
   },
   {
     "id": "ilias-markou",
@@ -480,7 +558,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3335-3766-4431-b130-663933643462/ilias_markou.jpg",
-    "nameRu": "илиас марку"
+    "nameRu": "илиас марку",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "dani-rojas",
@@ -490,7 +570,9 @@
     "category": "estudiantes",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild6634-3961-4338-b333-386233663662/image.png",
-    "nameRu": "дани рохас"
+    "nameRu": "дани рохас",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "alicia-rivera",
@@ -501,7 +583,9 @@
     "existing": "new",
     "image": "assets/characters/alicia-rivera.jpg",
     "nameRu": "алисия ривера",
-    "photoCredit": "assets/characters/credits.html#alicia-rivera"
+    "photoCredit": "assets/characters/credits.html#alicia-rivera",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной журналистики"
   },
   {
     "id": "francesca-romero",
@@ -512,7 +596,9 @@
     "existing": "new",
     "image": "assets/characters/francesca-romero.jpg",
     "nameRu": "франческа ромеро",
-    "photoCredit": "assets/characters/credits.html#francesca-romero"
+    "photoCredit": "assets/characters/credits.html#francesca-romero",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "kira-denali",
@@ -523,7 +609,9 @@
     "existing": "new",
     "image": "assets/characters/kira-denali.jpg",
     "nameRu": "кира денали",
-    "photoCredit": "assets/characters/credits.html#kira-denali"
+    "photoCredit": "assets/characters/credits.html#kira-denali",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "alejandro-hernandez",
@@ -534,7 +622,9 @@
     "existing": "new",
     "image": "assets/characters/alejandro-hernandez.jpg",
     "nameRu": "алехандро эрнандес",
-    "photoCredit": "assets/characters/credits.html#alejandro-hernandez"
+    "photoCredit": "assets/characters/credits.html#alejandro-hernandez",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "josuke-higashikata",
@@ -545,7 +635,9 @@
     "existing": "new",
     "image": "assets/characters/josuke-higashikata.jpg",
     "nameRu": "джоске хигашиката",
-    "photoCredit": "assets/characters/credits.html#josuke-higashikata"
+    "photoCredit": "assets/characters/credits.html#josuke-higashikata",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра водных видов спорта"
   },
   {
     "id": "scarlett-vega",
@@ -556,7 +648,9 @@
     "existing": "new",
     "image": "assets/characters/scarlett-vega.jpg",
     "nameRu": "скарлетт вега",
-    "photoCredit": "assets/characters/credits.html#scarlett-vega"
+    "photoCredit": "assets/characters/credits.html#scarlett-vega",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра гимнастики и акробатики"
   },
   {
     "id": "shawn-oconnor",
@@ -567,7 +661,9 @@
     "existing": "new",
     "image": "assets/characters/shawn-oconnor.jpg",
     "nameRu": "шон о'коннор",
-    "photoCredit": "assets/characters/credits.html#shawn-oconnor"
+    "photoCredit": "assets/characters/credits.html#shawn-oconnor",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра зимних индивидуальных видов спорта"
   },
   {
     "id": "erasmo-de-verastegui",
@@ -578,7 +674,9 @@
     "existing": "new",
     "image": "assets/characters/erasmo-de-verastegui.jpg",
     "nameRu": "эрасмо де верастеги",
-    "photoCredit": "assets/characters/credits.html#erasmo-de-verastegui"
+    "photoCredit": "assets/characters/credits.html#erasmo-de-verastegui",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра баскетбола"
   },
   {
     "id": "amaya-ruiz",
@@ -589,7 +687,9 @@
     "existing": "new",
     "image": "assets/characters/amaya-ruiz.jpg",
     "nameRu": "амайя руис",
-    "photoCredit": "assets/characters/credits.html#amaya-ruiz"
+    "photoCredit": "assets/characters/credits.html#amaya-ruiz",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра зимних индивидуальных видов спорта"
   },
   {
     "id": "mikhail-vilmos",
@@ -600,7 +700,9 @@
     "existing": "new",
     "image": "assets/characters/mikhail-vilmos.png",
     "nameRu": "михаил вилмош",
-    "photoCredit": "assets/characters/credits.html#mikhail-vilmos"
+    "photoCredit": "assets/characters/credits.html#mikhail-vilmos",
+    "faculty": "факультет спортивной медицины и реабилитации",
+    "department": "кафедра спортивной травматологии и ортопедии"
   },
   {
     "id": "remi-de-smet",
@@ -611,7 +713,9 @@
     "existing": "new",
     "image": "assets/characters/remi-de-smet.jpg",
     "nameRu": "реми де смет",
-    "photoCredit": "assets/characters/credits.html#remi-de-smet"
+    "photoCredit": "assets/characters/credits.html#remi-de-smet",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра водных видов спорта"
   },
   {
     "id": "jacqueline-kelsada",
@@ -622,7 +726,9 @@
     "existing": "new",
     "image": "assets/characters/jacqueline-kelsada.jpg",
     "nameRu": "жаклин келсада",
-    "photoCredit": "assets/characters/credits.html#jacqueline-kelsada"
+    "photoCredit": "assets/characters/credits.html#jacqueline-kelsada",
+    "faculty": "факультет спортивной аналитики, управления, права и агентской деятельности",
+    "department": "кафедра спортивного права и агентской деятельности"
   },
   {
     "id": "santiago-de-bianco",
@@ -633,7 +739,9 @@
     "existing": "new",
     "image": "assets/characters/santiago-de-bianco.jpg",
     "nameRu": "сантьяго де бьянко",
-    "photoCredit": "assets/characters/credits.html#santiago-de-bianco"
+    "photoCredit": "assets/characters/credits.html#santiago-de-bianco",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра баскетбола"
   },
   {
     "id": "philip-novoselic",
@@ -644,7 +752,9 @@
     "existing": "new",
     "image": "assets/characters/philip-novoselic.jpg",
     "nameRu": "филип новоселич",
-    "photoCredit": "assets/characters/credits.html#philip-novoselic"
+    "photoCredit": "assets/characters/credits.html#philip-novoselic",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра волейбола"
   },
   {
     "id": "leandros-asteriadis",
@@ -655,7 +765,9 @@
     "existing": "new",
     "image": "assets/characters/leandros-asteriadis.jpg",
     "nameRu": "леандрос астериадис",
-    "photoCredit": "assets/characters/credits.html#leandros-asteriadis"
+    "photoCredit": "assets/characters/credits.html#leandros-asteriadis",
+    "faculty": "факультет спортивной аналитики, управления, права и агентской деятельности",
+    "department": "кафедра спортивной аналитики и статистики"
   },
   {
     "id": "estelle-de-paris",
@@ -666,7 +778,9 @@
     "existing": "new",
     "image": "assets/characters/estelle-de-paris.jpg",
     "nameRu": "эстель де пари",
-    "photoCredit": "assets/characters/credits.html#estelle-de-paris"
+    "photoCredit": "assets/characters/credits.html#estelle-de-paris",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "armando-cardona",
@@ -677,7 +791,9 @@
     "existing": "new",
     "image": "assets/characters/armando-cardona.jpg",
     "nameRu": "армандо кардона",
-    "photoCredit": "assets/characters/credits.html#armando-cardona"
+    "photoCredit": "assets/characters/credits.html#armando-cardona",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "gwendoline-gallagher",
@@ -688,7 +804,9 @@
     "existing": "new",
     "image": "assets/characters/gwendoline-gallagher.jpg",
     "nameRu": "гвендолин галлахер",
-    "photoCredit": "assets/characters/credits.html#gwendoline-gallagher"
+    "photoCredit": "assets/characters/credits.html#gwendoline-gallagher",
+    "faculty": "факультет спортивной аналитики, управления, права и агентской деятельности",
+    "department": "кафедра спортивного права и агентской деятельности"
   },
   {
     "id": "tamires-moreira",
@@ -699,7 +817,9 @@
     "existing": "new",
     "image": "assets/characters/tamires-moreira.jpg",
     "nameRu": "тамирес морейра",
-    "photoCredit": "assets/characters/credits.html#tamires-moreira"
+    "photoCredit": "assets/characters/credits.html#tamires-moreira",
+    "faculty": "факультет спортивной медицины и реабилитации",
+    "department": "кафедра спортивной травматологии и ортопедии"
   },
   {
     "id": "taejoon-soh",
@@ -710,7 +830,9 @@
     "existing": "new",
     "image": "assets/characters/taejoon-soh.png",
     "nameRu": "тэджун со",
-    "photoCredit": "assets/characters/credits.html#taejoon-soh"
+    "photoCredit": "assets/characters/credits.html#taejoon-soh",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "nicole-ledger",
@@ -721,7 +843,9 @@
     "existing": "new",
     "image": "assets/characters/nicole-ledger.webp",
     "nameRu": "николь леджер",
-    "photoCredit": "assets/characters/credits.html#nicole-ledger"
+    "photoCredit": "assets/characters/credits.html#nicole-ledger",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "noah-foster",
@@ -732,7 +856,9 @@
     "existing": "new",
     "image": "assets/characters/noah-foster.png",
     "nameRu": "ноа фостер",
-    "photoCredit": "assets/characters/credits.html#noah-foster"
+    "photoCredit": "assets/characters/credits.html#noah-foster",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра баскетбола"
   },
   {
     "id": "katarina-ward",
@@ -743,7 +869,9 @@
     "existing": "new",
     "image": "assets/characters/katarina-ward.jpg",
     "nameRu": "катарина уорд",
-    "photoCredit": "assets/characters/credits.html#katarina-ward"
+    "photoCredit": "assets/characters/credits.html#katarina-ward",
+    "faculty": "факультет спортивной психологии",
+    "department": "кафедра клинической спортивной психологии"
   },
   {
     "id": "enrique-cruz",
@@ -754,7 +882,9 @@
     "existing": "new",
     "image": "assets/characters/enrique-cruz.jpg",
     "nameRu": "энрике крус",
-    "photoCredit": "assets/characters/credits.html#enrique-cruz"
+    "photoCredit": "assets/characters/credits.html#enrique-cruz",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "letitia-esteban",
@@ -765,7 +895,9 @@
     "existing": "new",
     "image": "assets/characters/letitia-esteban.jpg",
     "nameRu": "летисия эстебан",
-    "photoCredit": "assets/characters/credits.html#letitia-esteban"
+    "photoCredit": "assets/characters/credits.html#letitia-esteban",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра зимних индивидуальных видов спорта"
   },
   {
     "id": "bosco-salviati",
@@ -776,7 +908,9 @@
     "existing": "new",
     "image": "assets/characters/bosco-salviati.jpg",
     "nameRu": "боско сальвиати",
-    "photoCredit": "assets/characters/credits.html#bosco-salviati"
+    "photoCredit": "assets/characters/credits.html#bosco-salviati",
+    "faculty": "факультет тактики и игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "chiara-de-luca",
@@ -787,7 +921,9 @@
     "existing": "new",
     "image": "assets/characters/chiara-de-luca.jpg",
     "nameRu": "кьяра де лука",
-    "photoCredit": "assets/characters/credits.html#chiara-de-luca"
+    "photoCredit": "assets/characters/credits.html#chiara-de-luca",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "silvia-ramos",
@@ -798,7 +934,9 @@
     "existing": "new",
     "image": "assets/characters/silvia-ramos.jpg",
     "nameRu": "сильвия рамос",
-    "photoCredit": "assets/characters/credits.html#silvia-ramos"
+    "photoCredit": "assets/characters/credits.html#silvia-ramos",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "leonard-carnegie",
@@ -809,7 +947,9 @@
     "existing": "new",
     "image": "assets/characters/leonard-carnegie.jpg",
     "nameRu": "леонард карнеги",
-    "photoCredit": "assets/characters/credits.html#leonard-carnegie"
+    "photoCredit": "assets/characters/credits.html#leonard-carnegie",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "max-bauer",
@@ -820,7 +960,9 @@
     "existing": "new",
     "image": "assets/characters/max-bauer.jpg",
     "nameRu": "макс бауэр",
-    "photoCredit": "assets/characters/credits.html#max-bauer"
+    "photoCredit": "assets/characters/credits.html#max-bauer",
+    "faculty": "факультет командных видов спорта",
+    "department": "кафедра футбола"
   },
   {
     "id": "camilla-ortiz",
@@ -831,7 +973,9 @@
     "existing": "new",
     "image": "assets/characters/camilla-ortiz.jpg",
     "nameRu": "камилла ортис",
-    "photoCredit": "assets/characters/credits.html#camilla-ortiz"
+    "photoCredit": "assets/characters/credits.html#camilla-ortiz",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "perry-gallagher",
@@ -842,7 +986,9 @@
     "existing": "new",
     "image": "assets/characters/perry-gallagher.jpg",
     "nameRu": "перри галлахер",
-    "photoCredit": "assets/characters/credits.html#perry-gallagher"
+    "photoCredit": "assets/characters/credits.html#perry-gallagher",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной журналистики"
   },
   {
     "id": "lorenzo-maldonado",
@@ -853,7 +999,9 @@
     "existing": "new",
     "image": "assets/characters/lorenzo-maldonado.jpg",
     "nameRu": "лоренсо мальдонадо",
-    "photoCredit": "assets/characters/credits.html#lorenzo-maldonado"
+    "photoCredit": "assets/characters/credits.html#lorenzo-maldonado",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "jaehyun-lim",
@@ -864,7 +1012,9 @@
     "existing": "new",
     "image": "assets/characters/jaehyun-lim.jpg",
     "nameRu": "джэхён лим",
-    "photoCredit": "assets/characters/credits.html#jaehyun-lim"
+    "photoCredit": "assets/characters/credits.html#jaehyun-lim",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "maelys-mallarme",
@@ -875,7 +1025,9 @@
     "existing": "new",
     "image": "assets/characters/maelys-mallarme.png",
     "nameRu": "маэлис малларме",
-    "photoCredit": "assets/characters/credits.html#maelys-mallarme"
+    "photoCredit": "assets/characters/credits.html#maelys-mallarme",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "mauro-caliente",
@@ -886,7 +1038,9 @@
     "existing": "new",
     "image": "assets/characters/mauro-caliente.jpg",
     "nameRu": "мауро кальенте",
-    "photoCredit": "assets/characters/credits.html#mauro-caliente"
+    "photoCredit": "assets/characters/credits.html#mauro-caliente",
+    "faculty": "факультет игровых видов спорта",
+    "department": "кафедра хоккея"
   },
   {
     "id": "yuri-choi",
@@ -897,7 +1051,9 @@
     "existing": "new",
     "image": "assets/characters/yuri-choi.jpg",
     "nameRu": "юри чхве",
-    "photoCredit": "assets/characters/credits.html#yuri-choi"
+    "photoCredit": "assets/characters/credits.html#yuri-choi",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра тенниса"
   },
   {
     "id": "cristina-vargas",
@@ -908,7 +1064,9 @@
     "existing": "new",
     "image": "assets/characters/cristina-vargas.jpg",
     "nameRu": "кристина варгас",
-    "photoCredit": "assets/characters/credits.html#cristina-vargas"
+    "photoCredit": "assets/characters/credits.html#cristina-vargas",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра цифровых медиа и SMM"
   },
   {
     "id": "hikaru-haitani",
@@ -919,7 +1077,9 @@
     "existing": "new",
     "image": "assets/characters/hikaru-haitani.jpg",
     "nameRu": "хикару хайтани",
-    "photoCredit": "assets/characters/credits.html#hikaru-haitani"
+    "photoCredit": "assets/characters/credits.html#hikaru-haitani",
+    "faculty": "факультет тактики и командных видов спорта",
+    "department": "кафедра волейбола"
   },
   {
     "id": "ariella-de-ville",
@@ -983,7 +1143,9 @@
     "category": "entrenadores",
     "existing": "cards",
     "image": "https://static.tildacdn.com/tild3964-3638-4166-b930-363562343734/marcus_perez.png",
-    "nameRu": "маркус перес"
+    "nameRu": "маркус перес",
+    "faculty": "факультет индивидуальных видов спорта",
+    "department": "кафедра лёгкой атлетики"
   },
   {
     "id": "mariella-alcaraz",
@@ -993,7 +1155,10 @@
     "category": "castelmara",
     "existing": "cards",
     "image": "assets/characters/mariella-alcaraz.jpg",
-    "nameRu": "мариэлла алькарас"
+    "nameRu": "мариэлла алькарас",
+    "faculty": "факультет спортивной журналистики и медиа",
+    "department": "кафедра спортивной журналистики",
+    "activity": "преподаватель журналистики"
   },
   {
     "id": "diego-caceres",
@@ -1025,7 +1190,10 @@
     "existing": "new",
     "image": "assets/characters/bianca-solis.jpg",
     "nameRu": "бьянка солис",
-    "photoCredit": "assets/characters/credits.html#bianca-solis"
+    "photoCredit": "assets/characters/credits.html#bianca-solis",
+    "faculty": "директор по трансферам футбольного департамента",
+    "activity": "директор по трансферам футбольного департамента",
+    "secondaryActivity": "менеджер футбольной команды castelmara hellhounds"
   },
   {
     "id": "siena-sinclair",
@@ -1222,6 +1390,8 @@
     if (!card) { card = {id:record.id}; window.ATLAS_CARD_ONLY.push(card); }
     Object.assign(card, {name:record.name, nameRu:record.nameRu, player:record.player,
       category:record.category, image:record.image, face:record.face, closed:true,
+      faculty:record.faculty || card.faculty || '', department:record.department || card.department || '',
+      activity:record.activity || card.activity || '', secondaryActivity:record.secondaryActivity || card.secondaryActivity || '',
       photoCredit:record.photoCredit || ''});
   });
   if (window.atlasRenderCharacters) window.atlasRenderCharacters();
