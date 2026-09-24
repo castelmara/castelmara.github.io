@@ -129,8 +129,9 @@
     if (/хокке/.test(key)) return {label:'хоккей',cls:'hockey'};
     if (/волейбол/.test(key)) return {label:'волейбол',cls:'volleyball'};
     if (/теннис/.test(key)) return {label:'теннис',cls:'tennis'};
-    if (/зимн/.test(key)) return {label:'фигурное катание',cls:'skating'};
-    if (/водн/.test(key)) return {label:'плавание',cls:'swimming'};
+    if (/фигурн|figure skating/.test(key)) return {label:'фигурное катание',cls:'skating'};
+    if (/плаван/.test(key)) return {label:'плавание',cls:'swimming'};
+    if (/водн/.test(key)) return {label:'водные виды спорта',cls:'swimming'};
     return null;
   }
   function cardDetails(c) {
@@ -142,12 +143,15 @@
     if (split) { faculty = split[1].trim(); department = department || split[2].trim(); }
     const course = String(info.course || info.year || c.course || c.year || '').trim();
     const numbered = course.match(/^([1-4])(?:\s*курс)?$/i);
-    const sport = student ? sportMeta(department || c.specialization || info.specialization || '') : null;
+    const coach = c.category === 'entrenadores';
+    const explicitSports = [info.sport, info.specialization, c.sport, c.specialization, ...(c.tags || [])];
+    const sport = student ? (sportMeta(department) || (!department || /зимних индивидуальных видов спорта/i.test(department) ? explicitSports.map(sportMeta).find(Boolean) : null) || null) : null;
     const badge = student ? (numbered ? numbered[1]+' КУРС' : course) :
-      (c.card?.tag || (c.category === 'entrenadores' ? 'тренер' : c.role || ''));
+      (coach ? 'тренер' : (c.card?.tag || c.role || ''));
     const badges = [];
     if (student && course) badges.push({label:badge, cls:'course'});
     if (sport) badges.push({label:sport.label, cls:'sport-'+sport.cls});
+    if (coach) badges.push({label:badge,cls:'staff'});
     if (!student && c.category === 'castelmara') badges.push({label:'академи',cls:'academy'});
     const subtitle = String(c.cardSubtitle || c.subtitle || c.role || '').trim();
     const lines = student ? [faculty, department].filter(Boolean) :
@@ -160,9 +164,9 @@
       displayLines = [c.activity || '', c.secondaryActivity || '', department ? compactDepartment(department) : ''].filter(Boolean);
       if (!displayLines.length && subtitle) displayLines = [subtitle.startsWith('/') ? (c.subtitle || c.role || '') : subtitle];
     } else {
-      displayLines = lines.slice();
+      displayLines = coach ? [] : lines.slice();
     }
-    return {student, badge, badges, lines, displayLines:displayLines.filter(Boolean)};
+    return {student, badge, badges, sportBadge:sport?.label || '', lines:displayLines.filter(Boolean), displayLines:displayLines.filter(Boolean)};
   }
   function badgesHtml(items, insideText) {
     if (!items || !items.length) return '';
@@ -260,8 +264,13 @@
     const data = results[1].status === 'fulfilled' ? results[1].value : null;
     const hero = root.querySelector('.atlas-profile-hero');
     if (hero && data?.banner_url) hero.style.setProperty('--character-banner','url('+JSON.stringify(data.banner_url)+')');
-    let photo = root.querySelector('.atlas-community-portrait');
-    if (!photo) { photo = document.createElement('figure'); photo.className = 'atlas-community-portrait'; root.querySelector('.atlas-profile-overview-side')?.prepend(photo); }
+    const overview = root.querySelector('[data-character-tab-panel="overview"]');
+    let photo = overview?.querySelector('.atlas-community-portrait');
+    if (!photo) {
+      photo = document.createElement('figure');
+      photo.className = 'atlas-community-portrait';
+      overview?.querySelector('.atlas-profile-overview-side')?.prepend(photo);
+    }
     const photoUrl = data?.photo_url || originalPhoto(c);
     photo.innerHTML = photoUrl ? '<img src="'+esc(photoUrl)+'" alt="'+esc(name(c))+'" loading="lazy">' : '';
     photo.hidden = !photoUrl;
@@ -270,7 +279,6 @@
     if (results[2].status === 'fulfilled' && results[2].value === true) {
       const button = document.createElement('button'); button.type = 'button'; button.className = 'atlas-community-edit'; button.dataset.communityEdit = id; button.textContent = 'редактировать анкету'; hero?.appendChild(button);
     }
-    const overview = root.querySelector('[data-character-tab-panel="overview"]');
     hydrateSocial(overview,'character',id);
   };
 

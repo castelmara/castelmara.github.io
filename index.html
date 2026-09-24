@@ -12688,8 +12688,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
             '<h3>' + esc(name) + '</h3>' +
             '<p>' + esc(short) + '</p>' +
           '</span>' +
-        '</'+element+'>' +
-        (character.photoCredit ? '<a class="atlas-character-photo-credit" href="'+esc(character.photoCredit)+'" target="_blank" rel="noopener" aria-label="источник фотографии">фото</a>' : '') + '</div>';
+        '</'+element+'></div>';
     }).join("");
     if (window.atlasCommunityCards) window.atlasCommunityCards();
   }
@@ -15407,15 +15406,6 @@ ATLAS — CARD ONLY CHARACTERS
 
 
     article.appendChild(card);
-
-    if (character.photoCredit) {
-      var credit = document.createElement('a');
-      credit.className = 'atlas-character-photo-credit';
-      credit.href = character.photoCredit;
-      credit.target = '_blank'; credit.rel = 'noopener';
-      credit.textContent = 'фото'; credit.setAttribute('aria-label','источник фотографии');
-      article.appendChild(credit);
-    }
 
     return article;
   }
