@@ -2772,8 +2772,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
 
             <div class="atlas-event-row atlas-rollcall-row" data-open-page="foro" role="button" tabindex="0">
-              <span class="atlas-event-date"><small id="atlasRollCallMonth">SEP</small><b id="atlasRollCallDay">24</b></span>
-              <span class="atlas-row-main"><strong>перекличка</strong><span>отметься в актуальной перекличке и проверь статус своих персонажей</span></span>
+              <span class="atlas-event-date"><small id="atlasRollCallMonth">SEPT</small><b id="atlasRollCallDay">28</b></span>
+              <span class="atlas-row-main"><strong>перекличка</strong><span>проверка активности с 28.09 по 03.10</span></span>
               <span class="atlas-badge red">активность</span>
             </div>
           </section>
@@ -2996,9 +2996,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
   function renderRollCallDate(){
     var day=document.getElementById("atlasRollCallDay"),month=document.getElementById("atlasRollCallMonth");
     if(!day||!month)return;
-    var now=new Date();
-    day.textContent=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'2-digit'}).format(now);
-    month.textContent=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',month:'short'}).format(now).replace('.','').toUpperCase();
+    day.textContent='28';
+    month.textContent='SEPT';
   }
 
   document.addEventListener("DOMContentLoaded", function(){renderInicioSchedule();renderRollCallDate();});
