@@ -224,21 +224,21 @@ team: "Castelmara Hawks",
       role: "студентка",
 
       cardImage: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
-      avatar: "PASTE_AVATAR_URL",
+      avatar: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
       banner: "https://static.tildacdn.com/tild3663-6231-4430-a538-383834633832/0c12dbd94e003c17a148.jpg",
 
       tags: ["estudiantes", "sports medicine", "rehabilitation"],
 
       card: {
-        image: "PASTE_CARD_IMAGE_URL",
+        image: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
         tag: "студентка",
         statusLabel: "активный",
         short: "/ PASTE_PLAYER_NAME"
       },
 
       profile: {
-        heroImage: "PASTE_HERO_IMAGE_URL",
-        avatar: "PASTE_AVATAR_URL",
+        heroImage: "https://static.tildacdn.com/tild3663-6231-4430-a538-383834633832/0c12dbd94e003c17a148.jpg",
+        avatar: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
 
         overview: {
           mainInfo: {
@@ -407,21 +407,21 @@ level: "профессионал",
       role: "студент-спортсмен",
 
       cardImage: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
-      avatar: "PASTE_AVATAR_URL",
-      banner: "PASTE_BANNER_URL",
+      avatar: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+      banner: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
 
       tags: ["estudiantes", "football", "castelmara foxes"],
 
       card: {
-        image: "PASTE_CARD_IMAGE_URL",
+        image: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
         tag: "студент-спортсмен",
         statusLabel: "активный",
         short: "/ PASTE_PLAYER_NAME"
       },
 
       profile: {
-        heroImage: "PASTE_HERO_IMAGE_URL",
-        avatar: "PASTE_AVATAR_URL",
+        heroImage: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+        avatar: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
 
         overview: {
           mainInfo: {
@@ -601,21 +601,21 @@ team: "Castelmara Foxes",
       role: "студентка-спортсменка",
 
       cardImage: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
-      avatar: "PASTE_AVATAR_URL",
-      banner: "PASTE_BANNER_URL",
+      avatar: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+      banner: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
 
       tags: ["estudiantes", "swimming"],
 
       card: {
-        image: "PASTE_CARD_IMAGE_URL",
+        image: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
         tag: "студентка-спортсменка",
         statusLabel: "активный",
         short: "/ PASTE_PLAYER_NAME"
       },
 
       profile: {
-        heroImage: "PASTE_HERO_IMAGE_URL",
-        avatar: "PASTE_AVATAR_URL",
+        heroImage: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+        avatar: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
 
         overview: {
           mainInfo: {
