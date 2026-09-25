@@ -20616,7 +20616,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero) p{margin:0;max-width:780px;color:rgba(255,255,255,.92);font-size:18px;line-height:1.5;font-weight:600}
 
 #atlas-app .atlas-section-hero-kicker{display:inline-flex;align-items:center;margin:0 0 16px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(13,17,24,.36);backdrop-filter:blur(8px);color:#fff;font-size:11px;line-height:1;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
-#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head h2,#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head p,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-head h2,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-head p{color:#fff!important}
 #atlas-app .atlas-player-count{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(10,12,18,.34);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:950;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.12)}
 #atlas-app .atlas-player-grid{display:grid;grid-template-columns:repeat(auto-fill,230px);gap:22px;align-items:start;justify-content:start;margin-top:24px}
 #atlas-app .atlas-player-card{width:230px;height:315px;border:0;border-radius:28px;padding:0;overflow:hidden;position:relative;display:block;background:#111;color:#fff;cursor:pointer;text-align:left;box-shadow:0 18px 42px rgba(23,23,31,.12);transition:transform .24s ease,box-shadow .24s ease}
@@ -20884,9 +20883,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-cancel{background:#151b22;border-color:#303844;color:#f5f3f0}
 #atlas-app[data-theme="dark"] #atlasPlayerEditModal .atlas-player-edit-media-note{background:#171d25;color:#9ba1aa}
 
-#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head h2,
 #atlas-app[data-theme="dark"] .atlas-player-profile-page{color:#f5f2ef}
-#atlas-app[data-theme="dark"] #atlas-page-jugadores .atlas-player-catalog-head p{color:#9ba1aa}
 #atlas-app[data-theme="dark"] .atlas-player-empty{background:#11161d;border-color:#29313b;color:#9ba1aa}
 #atlas-app[data-theme="dark"] .atlas-player-empty strong{color:#f5f2ef}
 #atlas-app[data-theme="dark"] .atlas-player-info-row{border-color:rgba(255,255,255,.08)}
@@ -20902,10 +20899,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
 /* ===== mi atlas / guardados / favoritos / notas / historial ===== */
 #atlas-app .atlas-personal-shell{padding:4px 0 34px}
-#atlas-app .atlas-personal-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 24px;padding:38px 42px;min-height:320px;border-radius:28px;overflow:hidden;background:linear-gradient(90deg,rgba(7,10,14,.86),rgba(7,10,14,.28)),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.50)),url("assets/page-headers/mi-atlas-hero.png") center center/cover no-repeat;box-shadow:0 18px 40px rgba(23,23,31,.08)}
-#atlas-app .atlas-personal-head>*{position:relative;z-index:1}
-#atlas-app .atlas-personal-head h2{margin:0 0 14px;color:#fff;font-size:clamp(58px,6vw,84px);line-height:.92;font-weight:900;letter-spacing:-.06em;text-transform:lowercase}
-#atlas-app .atlas-personal-head p{max-width:780px;margin:0;color:rgba(255,255,255,.92);font-size:18px;line-height:1.5;font-weight:600}
+#atlas-app .atlas-player-catalog-head{--section-hero-image:url("assets/page-headers/jugadores-hero.webp")}
+#atlas-app .atlas-personal-head{--section-hero-image:url("assets/page-headers/mi-atlas-hero.png")}
 #atlas-app .atlas-personal-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:0 0 14px;border-bottom:1px solid #e5e7ea}
 #atlas-app .atlas-personal-tab{appearance:none;border:1px solid #dfe2e6;background:#fff;color:#5f6670;border-radius:999px;padding:10px 15px;font:700 12px/1 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
 #atlas-app .atlas-personal-tab.is-active{background:#11151b;border-color:#11151b;color:#fff}
@@ -20973,27 +20968,27 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 #atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-card,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-card,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-login{background:#11161d;border-color:#2a323d;color:#f4f2ef}
 #atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer input,#atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-note-composer textarea{background:#171d25;border-color:#303844;color:#fff}
 #atlas-app[data-theme="dark"] #atlas-page-mi-atlas .atlas-personal-tabs{border-color:#2a323d}
-@media(max-width:700px){#atlas-app .atlas-note-composer{grid-template-columns:1fr}#atlas-app .atlas-personal-head{align-items:flex-start;flex-direction:column}#atlas-app .atlas-personal-head h2{font-size:34px}}
+@media(max-width:700px){#atlas-app .atlas-note-composer{grid-template-columns:1fr}}
 
 @media(max-width:900px){#atlas-app .atlas-player-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}#atlas-app .atlas-player-card{width:100%}#atlas-app .atlas-player-info-row{grid-template-columns:110px minmax(0,1fr)}}
 @media(max-width:560px){#atlasPlayerEditModal .atlas-relation-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-relation-grid .is-full{grid-column:auto}}
 @media(max-width:560px){#atlas-app .atlas-player-edit-profile{top:14px;right:14px;padding:9px 12px;font-size:10px}#atlas-app .atlas-player-profile-page .atlas-player-heart{width:100%;padding:11px 12px;gap:11px}#atlas-app .atlas-player-profile-page .atlas-player-heart-icon{width:42px;height:42px;border-radius:14px;font-size:25px}#atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero){align-items:flex-start;flex-direction:column}#atlas-app .atlas-player-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#atlas-app .atlas-player-card{height:255px;border-radius:20px}#atlas-app .atlas-player-card-copy h3{font-size:16px}#atlas-app .atlas-player-profile-page .atlas-player-avatar{width:84px;height:84px;font-size:32px}#atlas-app .atlas-player-metric-grid{grid-template-columns:1fr 1fr}#atlas-app .atlas-player-info-row{grid-template-columns:1fr;gap:5px}#atlasPlayerEditModal{padding:10px}#atlasPlayerEditModal .atlas-player-edit-window{padding:23px 17px;border-radius:20px}#atlasPlayerEditModal .atlas-player-edit-title{font-size:29px}#atlasPlayerEditModal .atlas-player-edit-grid{grid-template-columns:1fr}#atlasPlayerEditModal .atlas-player-edit-field.is-full,#atlasPlayerEditModal .atlas-player-edit-media-note{grid-column:auto}}
 
 @media(max-width:780px){
-  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero),#atlas-app .atlas-personal-head{min-height:270px!important;padding:30px 24px!important;border-radius:22px!important;background-position:center center!important}
-  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero) h2,#atlas-app .atlas-personal-head h2{font-size:clamp(44px,14vw,64px)!important}
-  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero) p,#atlas-app .atlas-personal-head p{font-size:14px!important}
+  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero){min-height:270px!important;padding:30px 24px!important;border-radius:22px!important;background-position:center center!important}
+  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero) h2{font-size:clamp(44px,14vw,64px)!important}
+  #atlas-app :is(.atlas-player-catalog-head,.atlas-section-hero) p{font-size:14px!important}
 }
 </style>
 
 <template data-atlas-page-template="jugadores">
   <section class="atlas-page" id="atlas-page-jugadores">
     <div class="atlas-page-shell">
-      <div class="atlas-player-catalog-head">
+      <div class="atlas-player-catalog-head atlas-section-hero">
         <div>
           <span class="atlas-section-hero-kicker">perfiles / comunidad</span>
           <h2>jugadores</h2>
-          <p>профили зарегистрированных участников кастельмары. никнеймы, персонажи, серия входа и достижения живут здесь.</p>
+          <p>профили игроков</p>
         </div>
         <span class="atlas-player-count" id="atlasPlayerCount">0 игроков</span>
       </div>
@@ -21008,7 +21003,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   <section class="atlas-page" id="atlas-page-mi-atlas">
     <div class="atlas-page-shell">
       <div class="atlas-personal-shell" id="atlasPersonalRoot">
-        <div class="atlas-personal-head">
+        <div class="atlas-personal-head atlas-section-hero">
           <div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров. другие игроки видят только те заметки, которые ты отмечаешь публичными.</p></div>
         </div>
         <div class="atlas-personal-empty">загружаем личный ATLAS…</div>
@@ -22347,11 +22342,11 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   async function render(){
     var root=document.getElementById('atlasPersonalRoot'); if(!root)return;
     if(!signedIn()){
-      root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>закладки, избранное, заметки и история привязаны к аккаунту.</p></div></div><div class="atlas-personal-login"><strong>личный ATLAS закрыт</strong><p>войдите в аккаунт, чтобы открыть свои сохранённые данные.</p><button type="button" data-personal-login>войти</button></div>';
+      root.innerHTML='<div class="atlas-personal-head atlas-section-hero"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>закладки, избранное, заметки и история привязаны к аккаунту.</p></div></div><div class="atlas-personal-login"><strong>личный ATLAS закрыт</strong><p>войдите в аккаунт, чтобы открыть свои сохранённые данные.</p><button type="button" data-personal-login>войти</button></div>';
       return;
     }
     var client=c(), user=uid();
-    root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><div class="atlas-personal-empty">загружаем личный ATLAS…</div>';
+    root.innerHTML='<div class="atlas-personal-head atlas-section-hero"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><div class="atlas-personal-empty">загружаем личный ATLAS…</div>';
     var res=await Promise.all([
       client.from('atlas_bookmarks').select('*').eq('user_id',user).order('created_at',{ascending:false}),
       client.from('atlas_favorites').select('*').eq('user_id',user).order('created_at',{ascending:false}),
@@ -22363,7 +22358,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     function tab(id,label,count){return '<button class="atlas-personal-tab'+(activeTab===id?' is-active':'')+'" type="button" data-personal-tab="'+id+'">'+label+(typeof count==='number'?' · '+count:'')+'</button>'}
     function panel(id,html){return '<section class="atlas-personal-panel'+(activeTab===id?' is-active':'')+'" data-personal-panel="'+id+'">'+html+'</section>'}
     var noteComposer='<form class="atlas-note-composer" id="atlasQuickNoteForm"><input name="title" type="text" maxlength="120" placeholder="заголовок"><textarea name="body" maxlength="6000" placeholder="быстрая заметка…" required></textarea><button class="atlas-note-add" type="submit">добавить</button></form>';
-    root.innerHTML='<div class="atlas-personal-head"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','закладки',bookmarks.length)+tab('favoritos','избранное',favorites.length)+tab('notas','заметки',notes.length)+tab('historial','история',history.length)+'</nav>'+
+    root.innerHTML='<div class="atlas-personal-head atlas-section-hero"><div><span class="atlas-section-hero-kicker">archivo personal / atlas</span><h2>mi atlas</h2><p>личное пространство: закладки, избранное, заметки и история просмотров.</p></div></div><nav class="atlas-personal-tabs">'+tab('guardados','закладки',bookmarks.length)+tab('favoritos','избранное',favorites.length)+tab('notas','заметки',notes.length)+tab('historial','история',history.length)+'</nav>'+
       panel('guardados',bookmarks.length?'<div class="atlas-personal-grid">'+bookmarks.map(function(x){return itemCard(x,'bookmark')}).join('')+'</div>':'<div class="atlas-personal-empty">здесь появятся сохранённые профили и другие материалы.</div>')+
       panel('favoritos',favorites.length?'<div class="atlas-personal-grid">'+favorites.map(function(x){return itemCard(x,'favorite')}).join('')+'</div>':'<div class="atlas-personal-empty">избранное пока пустое.</div>')+
       panel('notas',noteComposer+(notes.length?'<div class="atlas-note-list">'+notes.map(noteCard).join('')+'</div>':'<div class="atlas-personal-empty">заметок пока нет.</div>'))+
