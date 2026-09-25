@@ -13,6 +13,7 @@
   },
   {
     "id": "alessandra-manrique",
+    "course": "3 курс",
     "name": "alessandra manrique",
     "player": "sofia shtangey",
     "face": "camila mendes",
@@ -55,6 +56,7 @@
   },
   {
     "id": "morena-salazar",
+    "course": "3 курс",
     "name": "morena salazar",
     "player": "daddy issues",
     "face": "lizzy greene",
@@ -77,6 +79,7 @@
   },
   {
     "id": "michaela-portado",
+    "course": "2 курс",
     "name": "michaela portado",
     "player": "daddy issues",
     "face": "inde navarrette",
@@ -89,6 +92,7 @@
   },
   {
     "id": "sebastian-ward",
+    "course": "3 курс",
     "name": "sebastian ward",
     "player": "nata niel",
     "face": "belmont cameli",
@@ -111,6 +115,7 @@
   },
   {
     "id": "anthony-rookwood",
+    "course": "2 курс",
     "name": "anthony rookwood",
     "player": "passion ambitions",
     "face": "joshua weyerhaeuser",
@@ -123,6 +128,7 @@
   },
   {
     "id": "martina-chavez-romero",
+    "course": "2 курс",
     "name": "martina romero",
     "player": "skye caffrey",
     "face": "laetitia",
@@ -135,6 +141,7 @@
   },
   {
     "id": "nico-guerriero",
+    "course": "2 курс",
     "name": "nico guerriero",
     "player": "れん 村山",
     "face": "milo manheim",
@@ -147,6 +154,7 @@
   },
   {
     "id": "rodrigo-morales",
+    "course": "4 курс",
     "name": "rodrigo morales",
     "player": "passion ambitions",
     "face": "ferran torres",
@@ -159,6 +167,7 @@
   },
   {
     "id": "miles-turner",
+    "course": "3 курс",
     "name": "miles turner",
     "player": "appealing antagonist",
     "face": "corrado martini",
@@ -171,6 +180,7 @@
   },
   {
     "id": "federico-herrera",
+    "course": "4 курс",
     "name": "federico herrera",
     "player": "passion ambitions",
     "face": "paulo dybala",
@@ -183,6 +193,7 @@
   },
   {
     "id": "elarian-casterly",
+    "course": "3 курс",
     "name": "elarian casterly",
     "player": "kseniya darkwood",
     "face": "dove cameron",
@@ -195,6 +206,7 @@
   },
   {
     "id": "elias-azarolla",
+    "course": "2 курс",
     "name": "elias azarolla",
     "player": "noah arden",
     "face": "kaden hammond",
@@ -207,6 +219,7 @@
   },
   {
     "id": "charles-berg",
+    "course": "4 курс",
     "name": "charles berg",
     "player": "appealing antagonist",
     "face": "tyler lawrence gray",
@@ -219,6 +232,7 @@
   },
   {
     "id": "pedro-martinez",
+    "course": "2 курс",
     "name": "pedro martinez",
     "player": "passion ambitions",
     "face": "pau cubarsi",
@@ -231,6 +245,7 @@
   },
   {
     "id": "zoe-baudelaire",
+    "course": "3 курс",
     "name": "zoé baudelaire",
     "player": "れん 村山",
     "face": "lily rose depp",
@@ -243,6 +258,7 @@
   },
   {
     "id": "roberto-castillo",
+    "course": "3 курс",
     "name": "roberto castillo",
     "player": "passion ambitions",
     "face": "santiago giménez",
@@ -255,6 +271,7 @@
   },
   {
     "id": "jose-blanco",
+    "course": "3 курс",
     "name": "josé blanco",
     "player": "unbridled passion",
     "face": "daniel vegas",
@@ -267,6 +284,7 @@
   },
   {
     "id": "eli-stone",
+    "course": "3 курс",
     "name": "eli stone",
     "player": "'giselle 'salgàri",
     "face": "intak hwang [p1harmony]",
@@ -279,6 +297,7 @@
   },
   {
     "id": "flores-del-campo",
+    "course": "2 курс",
     "name": "flores del campo",
     "player": "noah's ark",
     "face": "seonghyeon eom [cortis]",
@@ -291,6 +310,7 @@
   },
   {
     "id": "ava-leone",
+    "course": "2 курс",
     "name": "ava leone",
     "player": "nemopilema nomuraı",
     "face": "minjeong kim [aespa]",
@@ -303,6 +323,7 @@
   },
   {
     "id": "juniper-viscarra",
+    "course": "4 курс",
     "name": "juniper viscarra",
     "player": "daddy issues",
     "face": "odessa a'zion",
@@ -315,6 +336,7 @@
   },
   {
     "id": "esteban-furtado",
+    "course": "2 курс",
     "name": "esteban furtado",
     "player": "'mille 'tendresse",
     "face": "héctor fort",
@@ -337,6 +359,7 @@
   },
   {
     "id": "vanessa-moreno",
+    "course": "2 курс",
     "name": "vanessa moreno",
     "player": "nata niel",
     "face": "ariana greenblatt",
@@ -350,6 +373,7 @@
   },
   {
     "id": "milagros-paz-bonachera",
+    "course": "1 курс",
     "name": "milagros bonachera",
     "player": "sofia shtangey",
     "face": "nailea devora",
@@ -372,6 +396,7 @@
   },
   {
     "id": "joaquin-morales",
+    "course": "2 курс",
     "name": "joaquin morales",
     "player": "sofia shtangey",
     "face": "khobe clarke",
@@ -384,6 +409,7 @@
   },
   {
     "id": "catalina-nunez-duarte",
+    "course": "4 курс",
     "name": "catalina duarte",
     "player": "skye caffrey",
     "face": "daiane meneghel",
@@ -396,6 +422,7 @@
   },
   {
     "id": "rene-gott",
+    "course": "2 курс",
     "name": "rené gott",
     "player": "れん 村山",
     "face": "herman tømmeraas",
@@ -408,6 +435,7 @@
   },
   {
     "id": "tatiana-herrera",
+    "course": "2 курс",
     "name": "tatiana amber herrera",
     "player": "'mille 'tendresse",
     "face": "tate mcrae",
@@ -420,6 +448,7 @@
   },
   {
     "id": "pieter-vermeer",
+    "course": "2 курс",
     "name": "pieter vermeer",
     "player": "sofia shtangey",
     "face": "archie gray",
@@ -432,6 +461,7 @@
   },
   {
     "id": "bruna-valentina-morales",
+    "course": "1 курс",
     "name": "bruna morales",
     "player": "appealing antagonist",
     "face": "daniela cláudio",
@@ -444,6 +474,7 @@
   },
   {
     "id": "camilo-avanzini",
+    "course": "3 курс",
     "name": "camilo avanzini",
     "player": "kseniya darkwood",
     "face": "maxence danet-fauvel",
@@ -456,6 +487,7 @@
   },
   {
     "id": "amalia-reinhart",
+    "course": "1 курс",
     "name": "amalia reinhart",
     "player": "anastasia lushina",
     "face": "tatiana kaer",
@@ -468,6 +500,7 @@
   },
   {
     "id": "javier-gonzalez",
+    "course": "2 курс",
     "name": "javier gonzalez",
     "player": "anastasia lushina",
     "face": "fermín lópez",
@@ -480,6 +513,7 @@
   },
   {
     "id": "axel-beltran",
+    "course": "2 курс",
     "name": "axel beltrán",
     "player": "つき あかい",
     "face": "martin jonathan edwards [cortis]",
@@ -492,6 +526,7 @@
   },
   {
     "id": "satoru-saitou",
+    "course": "2 курс",
     "name": "satoru saitou",
     "player": "れん 村山",
     "face": "sunghoon park [enhypen]",
@@ -504,6 +539,7 @@
   },
   {
     "id": "gabriel-marquez",
+    "course": "4 курс",
     "name": "gabriel marquez",
     "player": "anastasia lushina",
     "face": "juan perales",
@@ -516,6 +552,7 @@
   },
   {
     "id": "marcel-gavira",
+    "course": "3 курс",
     "name": "marcel gavira",
     "player": "'mille 'tendresse",
     "face": "pablo martín páez gavira (gavi)",
@@ -528,6 +565,7 @@
   },
   {
     "id": "dahlia-vale",
+    "course": "2 курс",
     "name": "dahlia vale",
     "player": "'giselle 'salgàri",
     "face": "ceren ayruk",
@@ -540,6 +578,7 @@
   },
   {
     "id": "aiden-nolan",
+    "course": "3 курс",
     "name": "aiden nolan",
     "player": "nemopilema nomuraı",
     "face": "cagan efe ak",
@@ -552,6 +591,7 @@
   },
   {
     "id": "ilias-markou",
+    "course": "3 курс",
     "name": "ilias markou",
     "player": "ワン チャン",
     "face": "soobin choi [txt]",
@@ -564,6 +604,7 @@
   },
   {
     "id": "dani-rojas",
+    "course": "3 курс",
     "name": "dani rojas",
     "player": "nata niel",
     "face": "pedro gonzález lópez (pedri)",
@@ -576,6 +617,7 @@
   },
   {
     "id": "alicia-rivera",
+    "course": "4 курс",
     "name": "alicia rivera",
     "player": "noah's ark",
     "face": "emily rudd",
@@ -589,6 +631,7 @@
   },
   {
     "id": "francesca-romero",
+    "course": "2 курс",
     "name": "francesca romero",
     "player": "appealing antagonist",
     "face": "madalena aragão",
@@ -602,6 +645,7 @@
   },
   {
     "id": "kira-denali",
+    "course": "2 курс",
     "name": "kira denali",
     "player": "anastasia lushina",
     "face": "petek alemdar",
@@ -615,6 +659,7 @@
   },
   {
     "id": "alejandro-hernandez",
+    "course": "3 курс",
     "name": "alejandro hernandez",
     "player": "passion ambitions",
     "face": "julián alvarez",
@@ -628,6 +673,7 @@
   },
   {
     "id": "josuke-higashikata",
+    "course": "3 курс",
     "name": "josuke higashikata",
     "player": "appealing antagonist",
     "face": "david gimeno",
@@ -641,6 +687,7 @@
   },
   {
     "id": "scarlett-vega",
+    "course": "2 курс",
     "name": "scarlett vega",
     "player": "manya ellis",
     "face": "madelaine petsch",
@@ -654,6 +701,7 @@
   },
   {
     "id": "shawn-oconnor",
+    "course": "2 курс",
     "name": "shawn o’connor",
     "player": "anastasia lushina",
     "face": "salvador couto",
@@ -667,6 +715,7 @@
   },
   {
     "id": "erasmo-de-verastegui",
+    "course": "2 курс",
     "name": "erasmo de verástegui",
     "player": "unbridled passion",
     "face": "iñaki godoy",
@@ -680,6 +729,7 @@
   },
   {
     "id": "amaya-ruiz",
+    "course": "2 курс",
     "name": "amaya ruiz",
     "player": "manya ellis",
     "face": "dina denoire",
@@ -693,6 +743,7 @@
   },
   {
     "id": "mikhail-vilmos",
+    "course": "3 курс",
     "name": "mikhail vilmos",
     "player": "ワン チャン",
     "face": "minho lee [stray kids]",
@@ -706,6 +757,7 @@
   },
   {
     "id": "remi-de-smet",
+    "course": "4 курс",
     "name": "remi de smet",
     "player": "ワン チャン",
     "face": "seonghwa park [ateez]",
@@ -719,6 +771,7 @@
   },
   {
     "id": "jacqueline-kelsada",
+    "course": "2 курс",
     "name": "jacqueline kelsada",
     "player": "appealing antagonist",
     "face": "olivia rodrigo",
@@ -732,6 +785,7 @@
   },
   {
     "id": "santiago-de-bianco",
+    "course": "3 курс",
     "name": "santiago de bianco",
     "player": "anastasia lushina",
     "face": "fernando lindez",
@@ -745,6 +799,7 @@
   },
   {
     "id": "philip-novoselic",
+    "course": "3 курс",
     "name": "philip novoselic",
     "player": "sofia shtangey",
     "face": "johnny orlando",
@@ -758,6 +813,7 @@
   },
   {
     "id": "leandros-asteriadis",
+    "course": "2 курс",
     "name": "leandros asteriadis",
     "player": "kseniya darkwood",
     "face": "oliver brynnum",
@@ -771,6 +827,7 @@
   },
   {
     "id": "estelle-de-paris",
+    "course": "3 курс",
     "name": "estelle de paris",
     "player": "anastasia lushina",
     "face": "blanca soler",
@@ -797,6 +854,7 @@
   },
   {
     "id": "gwendoline-gallagher",
+    "course": "3 курс",
     "name": "gwendoline gallagher",
     "player": "nora zetterstrom",
     "face": "madelyn cline",
@@ -810,6 +868,7 @@
   },
   {
     "id": "tamires-moreira",
+    "course": "3 курс",
     "name": "tamires moreira",
     "player": "moon swallow",
     "face": "livia nunes",
@@ -823,6 +882,7 @@
   },
   {
     "id": "taejoon-soh",
+    "course": "1 курс",
     "name": "taejoon soh",
     "player": "moon swallow",
     "face": "christopher chahn bahng [stray kids]",
@@ -849,6 +909,7 @@
   },
   {
     "id": "noah-foster",
+    "course": "3 курс",
     "name": "noah foster",
     "player": "'mille 'tendresse",
     "face": "noah beck",
@@ -862,6 +923,7 @@
   },
   {
     "id": "katarina-ward",
+    "course": "1 курс",
     "name": "katarina ward",
     "player": "'mille 'tendresse",
     "face": "ella rubin",
@@ -875,6 +937,7 @@
   },
   {
     "id": "enrique-cruz",
+    "course": "2 курс",
     "name": "enrique cruz",
     "player": "nain rouge",
     "face": "antonio cipriano",
@@ -888,6 +951,7 @@
   },
   {
     "id": "letitia-esteban",
+    "course": "2 курс",
     "name": "letitia esteban",
     "player": "skye caffrey",
     "face": "lea meniel",
@@ -901,6 +965,7 @@
   },
   {
     "id": "bosco-salviati",
+    "course": "2 курс",
     "name": "bosco salviati",
     "player": "appealing antagonist",
     "face": "braden schneider",
@@ -914,6 +979,7 @@
   },
   {
     "id": "chiara-de-luca",
+    "course": "1 курс",
     "name": "chiara de luca",
     "player": "appealing antagonist",
     "face": "lucia ferrato",
@@ -927,6 +993,7 @@
   },
   {
     "id": "silvia-ramos",
+    "course": "2 курс",
     "name": "silvia ramos",
     "player": "passion ambitions",
     "face": "madeline argy",
@@ -940,6 +1007,7 @@
   },
   {
     "id": "leonard-carnegie",
+    "course": "3 курс",
     "name": "leonard carnegie",
     "player": "'mille 'tendresse",
     "face": "oscar piastri",
@@ -953,6 +1021,7 @@
   },
   {
     "id": "max-bauer",
+    "course": "3 курс",
     "name": "max bauer",
     "player": "anastasia lushina",
     "face": "joaquin correa",
@@ -966,6 +1035,7 @@
   },
   {
     "id": "camilla-ortiz",
+    "course": "3 курс",
     "name": "camilla ortiz",
     "player": "manya ellis",
     "face": "yael shelbia",
@@ -979,6 +1049,7 @@
   },
   {
     "id": "perry-gallagher",
+    "course": "2 курс",
     "name": "perry gallagher",
     "player": "nigma kwon",
     "face": "cailee spaeny",
@@ -992,6 +1063,7 @@
   },
   {
     "id": "lorenzo-maldonado",
+    "course": "4 курс",
     "name": "lorenzo maldonado",
     "player": "manya ellis",
     "face": "xavier cerrano",
@@ -1005,6 +1077,7 @@
   },
   {
     "id": "jaehyun-lim",
+    "course": "4 курс",
     "name": "jaehyun lim",
     "player": "'giselle 'salgàri",
     "face": "hyunjae lee [the boys]",
@@ -1018,6 +1091,7 @@
   },
   {
     "id": "maelys-mallarme",
+    "course": "3 курс",
     "name": "maëlys mallarme",
     "player": "nemopilema nomuraı",
     "face": "jimin yu [aespa]",
@@ -1031,6 +1105,7 @@
   },
   {
     "id": "mauro-caliente",
+    "course": "3 курс",
     "name": "mauro caliente",
     "player": "m' o'",
     "face": "vinnie hacker",
@@ -1044,6 +1119,7 @@
   },
   {
     "id": "yuri-choi",
+    "course": "3 курс",
     "name": "yuri choi",
     "player": "m' o'",
     "face": "minkyeung kim [pristin]",
@@ -1057,6 +1133,7 @@
   },
   {
     "id": "cristina-vargas",
+    "course": "3 курс",
     "name": "cristina vargas",
     "player": "'mille 'tendresse",
     "face": "martina stoessel",
@@ -1070,6 +1147,7 @@
   },
   {
     "id": "hikaru-haitani",
+    "course": "2 курс",
     "name": "hikaru haitani",
     "player": "'pinky 'nox",
     "face": "hyunjin hwang [stray kids]",
@@ -1388,6 +1466,7 @@
     }
     let card = window.ATLAS_CARD_ONLY.find(c => c.id === record.id);
     if (!card) { card = {id:record.id}; window.ATLAS_CARD_ONLY.push(card); }
+    if (record.course) card.course = record.course;
     Object.assign(card, {name:record.name, nameRu:record.nameRu, player:record.player,
       category:record.category, image:record.image, face:record.face, closed:true,
       faculty:record.faculty || card.faculty || '', department:record.department || card.department || '',
