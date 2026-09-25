@@ -14649,7 +14649,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     order.forEach(function(key) {
       if (hiddenKeys[key]) return;
 
-      if (obj[key]) {
+      if (obj[key] != null && String(obj[key]).trim() !== '') {
         rows.push({
           label: labels[key] || key,
           value: obj[key]
@@ -14660,7 +14660,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     Object.keys(obj).forEach(function(key) {
       if (hiddenKeys[key]) return;
 
-      if (order.indexOf(key) === -1 && obj[key]) {
+      if (order.indexOf(key) === -1 && obj[key] != null && String(obj[key]).trim() !== '') {
         rows.push({
           label: labels[key] || key,
           value: obj[key]
@@ -14717,9 +14717,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     return '<div class="atlas-indicator-list' + (hasBars ? ' is-bars' : '') + '">' + indicators.items.map(function(item) {
       var parsed = parseIndicatorScore(item.value);
 
-      if (hasBars) {
-        var percent = parsed ? parsed.percent : 0;
-        var label = parsed ? parsed.label : (item.value ? item.value : "—/10");
+      if (hasBars && parsed) {
+        var percent = parsed.percent;
+        var label = parsed.label;
 
         return '<div class="atlas-indicator-row">' +
           '<strong>' + esc(item.label || "") + '</strong>' +
@@ -14728,9 +14728,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         '</div>';
       }
 
-      return '<div class="atlas-indicator-row">' +
+      return '<div class="atlas-indicator-row is-text">' +
         '<strong>' + esc(item.label || "") + '</strong>' +
-        '<span>' + esc(item.value || "") + '</span>' +
+        '<span>' + esc(item.value == null ? "" : item.value) + '</span>' +
       '</div>';
     }).join("") + '</div>';
   }
@@ -14802,7 +14802,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   function renderPlayerMetaCard(character) {
     var meta = getPlayerMeta(character);
     var others = getPlayerCharacters(character);
-    var label = esc(meta.name || meta.id || 'не указан');
+    var source = character.player || (character.profile && character.profile.player) || character.owner || (character.profile && character.profile.owner) || {};
+    var nickname = typeof source === 'object' ? String(source.nickname || '').replace(/^@+/, '') : '';
+    var label = esc((meta.name || (nickname ? '' : meta.id) || '') + (nickname ? (meta.name ? ' · ' : '') + '@' + nickname : '') || 'не указан');
     var player = meta.url ? '<a class="atlas-community-link" href="' + esc(meta.url) + '" target="_blank" rel="noopener">' + label + '</a>' : '<strong>' + label + '</strong>';
     return '<div class="atlas-profile-card atlas-player-meta-card"><h3>игрок</h3>' + player +
       (others.length ? '<div class="atlas-player-character-list">' + others.map(renderCharacterChip).join('') + '</div>' : '') + '</div>';
@@ -14927,7 +14929,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       '</div>' +
       '<div class="atlas-profile-card atlas-profile-main-info">' +
         '<h3>основная информация</h3>' +
-        createInfoRowsFromObject(mainInfo) +
+        (createInfoRowsFromObject(mainInfo) || '<p class="atlas-profile-info-empty">информация пока не добавлена</p>') +
       '</div>' +
       '<div class="atlas-profile-overview-side">' +
         '<div class="atlas-profile-card">' +
@@ -14943,6 +14945,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   function renderCharacterProfile(character) {
     var root = document.getElementById("atlasCharacterProfileRoot");
     if (!root || !character || !character.profile) return;
+    root.dataset.communityId = character.id;
 
     var nameParts = splitName(character);
     var heroImage = getImage(character, "hero");
@@ -15029,7 +15032,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
             '</div>' +
             '<div class="atlas-character-persona-slot" data-character-persona-slot="' + esc(character.id) + '"></div>' +
           '</div>' +
-          '<aside class="atlas-profile-status-card">' + statusRowsHtml + '</aside>' +
+          '<aside class="atlas-profile-status-card"' + (statusRows.length ? '' : ' hidden') + '>' + statusRowsHtml + '</aside>' +
         '</div>' +
       '</section>' +
 
@@ -24276,7 +24279,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 })();
 </script>
 
-<link rel="stylesheet" href="assets/atlas-community.css?v=20260924-1">
+<link rel="stylesheet" href="assets/atlas-community.css?v=20260925-profile">
 <script src="assets/atlas-community.js?v=20260924-1"></script>
 </body>
 </html>
