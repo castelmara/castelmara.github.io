@@ -35,7 +35,8 @@ function withoutCourses(c) {
   return copy;
 }
 if(require.main===module) {
-  const current=load(), prior=load(process.argv[2] || 'e6c010ccda2834ba71a7aa164b8709fc6f7904c8');
+  // Approved Russian-copy localization; course expectations remain the original 92 IDs.
+  const current=load(), prior=load(process.argv[2] || 'c83dacb9e7a47406a4f6342501a7c5f3ed860c51');
   let correct=0,changed=0;
   for(const [id,course] of Object.entries(expected)) {
     const matches=current.all.filter(c=>c.id===id);assert.equal(matches.length,1,id+': exactly one existing character');

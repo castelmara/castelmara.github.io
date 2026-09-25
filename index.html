@@ -2740,7 +2740,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
          data-search-title="jugadores perfiles cuentas"
          data-search-keywords="игроки аккаунты профили jugadores">
   <h3>perfiles de jugadores.</h3>
-  <p>аккаунты участников, их персонажи, серии входа и достижения собраны в одном месте.</p>
+  <p>все игроки и их персонажи.</p>
   <button type="button" data-open-page="jugadores">abrir jugadores →</button>
 </section>
 
@@ -2749,7 +2749,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
          data-search-title="direct chats mensajes"
          data-search-keywords="direct чаты переписки персонажи сообщения">
   <h3>atlas direct.</h3>
-  <p>личные и публичные ролевые переписки персонажей — читать можно всем, писать участникам чата.</p>
+  <p>все переписки персонажей в одном месте.</p>
   <button type="button" data-open-page="direct">abrir direct →</button>
 </section>
 
@@ -2758,7 +2758,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
          data-search-title="mi atlas notas notes"
          data-search-keywords="заметки notas mi atlas личные записи">
   <h3>tus notas.</h3>
-  <p>личные и публичные заметки, которые привязаны к твоему аккаунту и персонажам.</p>
+  <p>твои заметки и сохранённое.</p>
   <button type="button" data-open-home-notes>abrir notas →</button>
 </section>
           </div>
@@ -2804,7 +2804,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
               <span class="atlas-mood-date" id="atlasMoodDate">hoy</span>
             </div>
             <div class="atlas-mood-result" id="atlasMoodResult">
-              <span>кто ты сегодня…</span>
+              <span>кто ты сегодня</span>
               <strong>считываем твоё настроение…</strong>
             </div>
             <button class="atlas-mood-explain-toggle" id="atlasMoodExplainToggle" type="button" aria-expanded="false">что это значит?</button>
@@ -2829,8 +2829,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
 
             <div class="atlas-news-card atlas-news-card-static" aria-label="подготовка к хэллоуину">
-              <strong>подготовка к хэллоуину</strong>
-              <span>академия готовится к празднику · подробности скоро</span>
+              <strong>halloween в Кастельмаре</strong>
+              <span>академия готовится к хэллоуину.</span>
             </div>
           </section>
         </aside>
@@ -2848,46 +2848,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 #atlas-app #atlas-page-inicio .atlas-home-persona:hover{border-color:rgba(226,71,71,.5);transform:translateY(-1px)}
 #atlas-app #atlas-page-inicio .atlas-home-persona img,#atlas-app #atlas-page-inicio .atlas-home-persona-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff}
 </style>
-
-<template data-atlas-modal="miguel-funeral-article">
-  <article class="atlas-official-article">
-    <div class="atlas-official-kicker">comunicado oficial</div>
-    <p class="atlas-official-source">Academia de Alto Rendimiento Castelmara // fuente oficial</p>
-    <h2>despedida de Miguel García Jr.: ceremonia oficial y acceso</h2>
-
-    <div class="atlas-official-meta">
-      <span>publicado: 2 de septiembre de 2024</span>
-      <span>actualizado: 3 de septiembre de 2024</span>
-      <span>archivo: ATLAS / noticias del campus</span>
-    </div>
-
-    <div class="atlas-official-hero">
-      <strong>La academia Castelmara comunica la celebración de la ceremonia de despedida de Miguel García Jr.</strong>
-    </div>
-
-    <div class="atlas-official-body">
-      <div class="atlas-official-text">
-        <p>La administración de Academia de Alto Rendimiento Castelmara informa de que la ceremonia oficial de despedida de Miguel García Jr. tendrá lugar el 6 de septiembre de 2024. La ceremonia cuenta con el consentimiento de la familia y la participación de representantes de la academia.</p>
-        <p>Podrán asistir estudiantes, personal, entrenadores, representantes de los equipos deportivos y quienes confirmen su presencia con antelación a través del sistema interno de ATLAS.</p>
-        <p>La administración pide a los asistentes que mantengan una actitud respetuosa y no difundan fotografías, vídeos ni detalles personales sin permiso de la familia. Ese día habrá normas de acceso adicionales en el campus.</p>
-        <p>Miguel formaba parte de la comunidad de Castelmara, y su muerte ha sido una pérdida muy dolorosa para estudiantes, docentes, entrenadores y todas las personas que lo conocieron. En los próximos días, la academia ofrecerá espacios de apoyo a quienes necesiten ayuda o quieran hablar.</p>
-        <p>La familia pide que se respete su privacidad. Cualquier novedad se publicará únicamente en ATLAS y en los canales oficiales de la academia.</p>
-
-        <div class="atlas-official-note">
-          Para asistir, los estudiantes deben confirmar su presencia antes del 5 de septiembre a las 18:00. El punto de encuentro, el acceso y las instrucciones adicionales se enviarán individualmente a las personas inscritas.
-        </div>
-      </div>
-
-      <aside class="atlas-official-side">
-        <h3>detalles</h3>
-        <div><b>fecha</b><span>6 de septiembre de 2024</span></div>
-        <div><b>hora</b><span>18:30</span></div>
-        <div><b>lugar</b><span>capilla municipal de Castelmara</span></div>
-        <div><b>acceso</b><span>inscripción previa mediante ATLAS</span></div>
-      </aside>
-    </div>
-  </article>
-</template>
 
 <script>
 (function() {
@@ -3029,7 +2989,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 <script id="atlas-home-personalization">
 (function(){
   function el(id){return document.getElementById(id)}
-  function renderCopy(root,profile){var greeting=root.querySelector('[data-home-greeting]'),kicker=root.querySelector('[data-home-kicker]'),intro=root.querySelector('[data-home-intro]'),cta=root.querySelector('[data-home-cta]');if(!greeting||!kicker||!intro||!cta)return;if(!profile){kicker.textContent='ATLAS siempre tiene algo nuevo para ti.';greeting.replaceChildren(document.createTextNode('bienvenido a '),Object.assign(document.createElement('span'),{textContent:'castelmara.'}));greeting.setAttribute('data-atlas-tip','bienvenido a castelmara.');intro.textContent='Explora la academia, sus historias y la vida en el campus.';cta.textContent='explorar los anuncios';cta.dataset.openPage='foro';cta.setAttribute('data-atlas-tip','ver los anuncios');return}var name=profile.nickname||'jugador';kicker.textContent='tu portal personal';greeting.replaceChildren(document.createTextNode('hola, '),Object.assign(document.createElement('span'),{textContent:name+'.'}));greeting.setAttribute('data-atlas-tip','bienvenido/a, '+name);intro.textContent='Tu espacio en Castelmara está listo. Continúa con tus personajes y la actividad de la academia.';cta.textContent='ver mis conversaciones';cta.dataset.openPage='direct'}
+  function renderCopy(root,profile){var greeting=root.querySelector('[data-home-greeting]'),kicker=root.querySelector('[data-home-kicker]'),intro=root.querySelector('[data-home-intro]'),cta=root.querySelector('[data-home-cta]');if(!greeting||!kicker||!intro||!cta)return;if(!profile){kicker.textContent='ATLAS siempre tiene algo nuevo para ti.';greeting.replaceChildren(document.createTextNode('bienvenido a '),Object.assign(document.createElement('span'),{textContent:'castelmara.'}));greeting.setAttribute('data-atlas-tip','bienvenido a castelmara.');intro.textContent='Explora la academia, sus historias y la vida en el campus.';cta.textContent='explorar los anuncios';cta.dataset.openPage='foro';cta.setAttribute('data-atlas-tip','ver los anuncios');return}var name=profile.nickname||profile.username||'jugador';kicker.textContent='tu portal personal';greeting.replaceChildren(document.createTextNode('hola, '),Object.assign(document.createElement('span'),{textContent:name+'.'}));greeting.setAttribute('data-atlas-tip','bienvenido/a, '+name);intro.textContent='Tu espacio en Castelmara está listo. Continúa con tus personajes y la actividad de la academia.';cta.textContent='ver mis conversaciones';cta.dataset.openPage='direct'}
   function personaButton(persona){var button=document.createElement('button');button.type='button';button.className='atlas-home-persona';button.dataset.homePersona=persona.character_id||'';if(persona.avatar_url){var img=document.createElement('img');img.src=persona.avatar_url;img.alt='';img.loading='lazy';button.appendChild(img)}else{var avatar=document.createElement('span');avatar.className='atlas-home-persona-avatar';avatar.textContent=(persona.display_name||persona.nickname||'?').trim().charAt(0).toUpperCase();button.appendChild(avatar)}var title=document.createElement('span');title.textContent=persona.display_name||persona.nickname||'personaje';button.appendChild(title);return button}
   async function render(){var root=el('atlas-page-inicio');if(!root)return;var session=window.ATLAS_CURRENT_SESSION||null,profile=window.ATLAS_CURRENT_PROFILE||null,card=el('atlas-home-personal');renderCopy(root,session&&session.user?(profile||{}):null);if(!card)return;if(!session||!session.user){card.hidden=true;return}card.hidden=false;var copy=el('atlasHomePersonalCopy'),list=el('atlasHomePersonas');if(copy){copy.textContent='';copy.hidden=true;}if(!list)return;list.replaceChildren();var client=window.ATLAS_SUPABASE;if(!client){list.textContent='No se pudo conectar con ATLAS.';return}var userId=session.user.id;try{var response=await client.from('atlas_personas').select('character_id,display_name,nickname,avatar_url').eq('owner_user_id',userId).eq('is_archived',false).order('display_name',{ascending:true}).limit(12);if((window.ATLAS_CURRENT_SESSION||{}).user?.id!==userId||!el('atlasHomePersonas'))return;if(response.error)throw response.error;var personas=response.data||[];if(!personas.length){var empty=document.createElement('span');empty.textContent='Aún no has vinculado personajes a tu cuenta.';list.appendChild(empty);var link=document.createElement('button');link.type='button';link.className='atlas-home-persona';link.dataset.openPage='mi-atlas';link.textContent='gestionar mis perfiles';list.appendChild(link);return}personas.forEach(function(persona){list.appendChild(personaButton(persona))})}catch(error){console.warn('[ATLAS home personas]',error);if(list)list.textContent='No se pudieron cargar tus personajes.'}}
   document.addEventListener('click',function(event){var button=event.target.closest('[data-home-persona]');if(button&&button.dataset.homePersona&&typeof window.atlasOpenCharacter==='function')window.atlasOpenCharacter(button.dataset.homePersona);var notes=event.target.closest('[data-open-home-notes]');if(notes){window.atlasOpenPage?.('mi-atlas');setTimeout(function(){document.querySelector('[data-personal-tab="notas"]')?.click();},180);}});window.addEventListener('atlasPlayerAuthReady',render);document.addEventListener('DOMContentLoaded',render);document.addEventListener('click',function(event){if(event.target.closest('[data-page="inicio"],[data-open-page="inicio"]'))setTimeout(render,120)});window.atlasRenderHomePersonalization=render;
@@ -3385,7 +3345,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
 }
 
 #atlas-app[data-theme="dark"] #atlas-page-ciudad .ciudad-card-kicker {
-  background: transparent !important;
   color: #ff6b6b !important;
 }
 #atlas-app[data-theme="dark"] #atlas-page-ciudad .ciudad-location-body small {
@@ -24023,7 +23982,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 @media(max-width:860px){#atlas-app #atlas-page-inicio #inicio-mood-check .atlas-mood-result strong{font-size:27px}}
 </style>
 
-<script src="assets/atlas-mood.js?v=20260924-1"></script>
+<script src="assets/atlas-mood.js?v=20260925-home"></script>
 
 
 <!-- ATLAS PERSONAS — character social identity -->

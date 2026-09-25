@@ -76,7 +76,7 @@
   const uid=()=>window.ATLAS_CURRENT_SESSION?.user?.id||'';
   let cached=null,pending=null,generation=0;
   function dateKey(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
-  function put(text){const root=document.getElementById('atlasMoodResult');if(!root)return;root.replaceChildren();const prefix=document.createElement('span');prefix.textContent='кто ты сегодня…';const value=document.createElement('strong');value.textContent=text;root.append(prefix,value)}
+  function put(text){const root=document.getElementById('atlasMoodResult');if(!root)return;root.replaceChildren();const prefix=document.createElement('span');prefix.textContent='кто ты сегодня';const value=document.createElement('strong');value.textContent=text;root.append(prefix,value)}
   async function render(){
     const date=document.getElementById('atlasMoodDate'),result=document.getElementById('atlasMoodResult'),explain=document.getElementById('atlasMoodExplain');if(!date||!result)return;
     date.textContent=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'numeric',month:'long'}).format(new Date());
