@@ -10271,8 +10271,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         <div class="atlas-team-coach-links">
           ${list.map(function(coach) {
             const id = (coach.url || "").replace("#", "");
-            const russianName = (window.ATLAS_CHARACTER_NAMES_RU || {})[id] || coach.name;
-            return `<a href="#" class="atlas-team-coach-link" data-atlas-roster-profile="${escapeHtml(id)}">${escapeHtml(russianName)}</a>`;
+            const displayName = typeof window.atlasCharacterDisplayName === "function"
+              ? window.atlasCharacterDisplayName(id, coach.name)
+              : coach.name;
+            return `<a href="#" class="atlas-team-coach-link" data-atlas-roster-profile="${escapeHtml(id)}">${escapeHtml(displayName)}</a>`;
           }).join("")}
         </div>
       </div>

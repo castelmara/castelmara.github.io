@@ -12,7 +12,7 @@ function env(){
  const win={ATLAS_CHARACTERS:chars,ATLAS_CARD_ONLY:[],ATLAS_SUPABASE:client,ATLAS_CURRENT_SESSION:{user:{id:'u1'}},addEventListener:(n,f)=>(winEvents[n]||=[]).push(f)};
  class FormData {constructor(form){this.f=form.fields}get(k){return this.f[k]??null}has(k){return Object.hasOwn(this.f,k)}}
  const ctx={window:win,document:doc,console,URL,TextEncoder,crypto:{randomUUID:()=> 'file-id'},FormData,Map,Set,Promise,setTimeout,clearTimeout,confirm:()=>true};
- const exports=`window.test={run:s=>eval(s),save:saveCharacter,relations:relationsHtml,social:hydrateSocial,validate:validateImage};`;
+ const exports=`window.test={run:s=>eval(s),save:saveCharacter,relations:relationsHtml,social:hydrateSocial,validate:validateImage,characterDisplayName};`;
  vm.runInNewContext(source.replace(/\}\)\(\);\s*$/,exports+'})();'),ctx);
  return {win,doc,data,calls,hooks,nodes,api:win.test,chars};
 }
@@ -38,6 +38,17 @@ test('Relations render user text as text, not markup',()=>{
 });
 test('Roster authority and source come from the server',async()=>{
  const e=env();e.hooks.rpc=()=>({data:false});const rows=await e.win.atlasLoadRoster();assert.equal(rows[0].team,'foxes');assert.equal(e.api.run('rosterAllowed'),false);assert(e.calls.some(c=>c.rpc==='atlas_can_manage_rosters'));assert(!e.calls.some(c=>c.table==='profiles'&&c.action!=='select'));
+});
+test('Team rosters use the catalog Russian name priority and original-name fallback',()=>{
+ const e=env();
+ const nested={id:'nested',profile:{overview:{mainInfo:{fullName:'Педро Исмаэль Мартинес'}}},fullName:'Другое имя',cardName:'Pedro Martinez',originalName:'Pedro Ismael Martinez'};
+ const top={id:'top',fullName:'Сильвия Руис Рамос',cardName:'Silvia Ruiz Ramos',originalName:'Silvia Ruiz Ramos'};
+ const card={id:'card',cardName:'Федерико Эррера',originalName:'Federico Herrera'};
+ const fallback={id:'fallback',cardName:'Federico Herrera',originalName:'Federico Pablo Herrera'};
+ assert.equal(e.api.characterDisplayName(nested),'Педро Исмаэль Мартинес');
+ assert.equal(e.api.characterDisplayName(top),'Сильвия Руис Рамос');
+ assert.equal(e.api.characterDisplayName(card),'Федерико Эррера');
+ assert.equal(e.api.characterDisplayName(fallback),'Federico Pablo Herrera');
 });
 test('A late roster response cannot restore permissions after account change',async()=>{
  const e=env();let resolve;e.hooks.rpc=()=>new Promise(r=>resolve=r);const pending=e.win.atlasLoadRoster();e.win.ATLAS_CURRENT_SESSION.user.id='u2';resolve({data:true});await assert.rejects(pending,/Аккаунт изменился/);assert.equal(e.api.run('rosterAllowed'),false);

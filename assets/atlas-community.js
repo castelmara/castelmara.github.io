@@ -10,8 +10,18 @@
     const seen = new Set(base.map(c => c.id));
     return base.concat(rosterCatalog.filter(c => !seen.has(c.id)));
   };
-  const name = c => c?.fullName || c?.name || c?.cardName || c?.id || '';
-  const rosterName = c => window.ATLAS_CHARACTER_NAMES_RU?.[c?.id] || c?.nameRu || name(c);
+  function characterDisplayName(characterOrId, fallback = '') {
+    const id = typeof characterOrId === 'string' ? characterOrId : characterOrId?.id;
+    const character = typeof characterOrId === 'object' && characterOrId
+      ? characterOrId
+      : allCharacters().find(c => c?.id === id);
+    const mainInfo = character?.profile?.overview?.mainInfo || {};
+    const russianCardName = [character?.displayName, character?.cardName, character?.nameRu, character?.name]
+      .find(value => /[\u0400-\u04ff]/u.test(String(value || '')));
+    return mainInfo.fullName || character?.fullName || russianCardName || character?.originalName || fallback || id || '';
+  }
+  window.atlasCharacterDisplayName = characterDisplayName;
+  const rosterName = c => characterDisplayName(c);
   const groups = {family:'семья',friends:'друзья',love:'любовь',tension:'сложные отношения',plot:'сюжетные связи',colleagues:'коллеги',students:'студенты'};
   const link = p => p ? '<button type="button" class="atlas-community-link" data-community-player="'+esc(p.id)+'">'+esc(p.display_name || p.nickname)+' · @'+esc(p.nickname)+'</button>' : '<span>игрок не привязан</span>';
   let owners = [], profiles = [], ownersAt = 0, ownersPending = null, ownerEpoch = 0;
