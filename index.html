@@ -20603,11 +20603,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-personality-card{
   --player-personality-accent:var(--accent);
   position:relative;
-  overflow:hidden;
-  min-height:132px;
-  margin-top:-20px;
+  margin-top:18px;
   padding-top:18px;
-  padding-bottom:18px;
+  border-top:1px solid var(--line);
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -20615,7 +20613,9 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-personality-card::before{
   content:"";
   position:absolute;
-  inset:0 auto 0 0;
+  left:-1px;
+  top:18px;
+  bottom:0;
   width:3px;
   background:var(--player-personality-accent);
 }
@@ -20702,7 +20702,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
   color:var(--muted);
 }
 @media(max-width:560px){
-  #atlas-app .atlas-player-personality-card{min-height:165px}
+  #atlas-app .atlas-player-personality-card{}
   #atlas-app .atlas-player-personality-bottom{align-items:flex-start;flex-direction:column}
   #atlas-app .atlas-player-personality-retake{align-self:flex-end}
 }
@@ -22020,7 +22020,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 
     if(result){
       var type=atlasPlayerPersonalityTypes[result.primary_type];
-      return '<div class="atlas-profile-card atlas-player-personality-card" style="--player-personality-accent:'+esc(type.accent)+'">'+
+      return '<div class="atlas-player-personality-card" style="--player-personality-accent:'+esc(type.accent)+'">'+
         '<div><p class="atlas-player-personality-kicker">твой архетип</p>'+
         '<h3 class="atlas-player-personality-title">'+esc(type.title)+'</h3>'+
         '<p class="atlas-player-personality-quote">'+esc(type.quote)+'</p></div>'+
@@ -22029,14 +22029,14 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     }
 
     if(!isOwnProfile){
-      return '<div class="atlas-profile-card atlas-player-personality-card">'+
+      return '<div class="atlas-player-personality-card">'+
         '<div><p class="atlas-player-personality-kicker">архетип</p>'+
         '<h3 class="atlas-player-personality-title atlas-player-personality-empty">ЕЩЁ НЕ ОПРЕДЕЛЁН</h3>'+
         '<p class="atlas-player-personality-copy">игрок пока не проходил тест личности ATLAS.</p></div>'+
       '</div>';
     }
 
-    return '<div class="atlas-profile-card atlas-player-personality-card">'+
+    return '<div class="atlas-player-personality-card">'+
       '<div><p class="atlas-player-personality-kicker">твой архетип</p>'+
       '<h3 class="atlas-player-personality-title">УЗНАЙ СВОЙ ТИП</h3>'+
       '<p class="atlas-player-personality-copy">пройди тест и узнай, какой архетип Кастельмары тебе ближе.</p></div>'+
@@ -22093,7 +22093,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         ['VK',p.vk_url,vk],
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
-      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div>'+atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id))+'</div></div>';
+      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div>'+atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id))+'</div></div></div>';
       var mayManageChars=canManageCharacterOwners(viewer,p);
       var charManage=mayManageChars?'<div class="atlas-player-character-manage"><button type="button" data-character-owner-open="'+esc(p.id)+'">управлять персонажами</button></div>':'';
       var charPanel=charManage+(chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи.</div>');
