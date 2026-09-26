@@ -14964,8 +14964,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     if (!character || !character.id) return;
 
     var client = atlasIndicatorsClient();
+    if (!client) return;
     var card = document.querySelector('[data-character-indicators-card="' + CSS.escape(character.id) + '"]');
-    if (!client || !card) return;
+    if (!card) return;
+    var viewerId = atlasIndicatorsViewerId();
+    var edit = card.querySelector("[data-character-indicators-edit]");
+    if (edit) edit.hidden = true;
 
     try {
       var result = await client
@@ -14988,8 +14992,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       }
 
       var canEdit = await atlasCanEditCharacterIndicators(character.id);
-      var edit = card.querySelector("[data-character-indicators-edit]");
-      if (edit) edit.hidden = !canEdit;
+      if (edit && viewerId === atlasIndicatorsViewerId()) edit.hidden = !canEdit;
     } catch (err) {
       console.warn("[ATLAS indicators]", err);
     }
@@ -15001,6 +15004,12 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       .concat(window.ATLAS_CARD_ONLY || []);
     return all.find(function(item) { return item && item.id === id; }) || null;
   }
+
+  window.addEventListener("atlasPlayerAuthReady", function() {
+    var root = document.getElementById("atlasCharacterProfileRoot");
+    var character = root && atlasFindCharacterById(root.dataset.communityId);
+    if (character) atlasHydrateCharacterIndicators(character);
+  });
 
   function atlasEnsureIndicatorsModal() {
     var modal = document.getElementById("atlasIndicatorsModal");
@@ -15220,10 +15229,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         (createInfoRowsFromObject(mainInfo) || '<p class="atlas-profile-info-empty">информация пока не добавлена</p>') +
       '</div>' +
       '<div class="atlas-profile-overview-side">' +
-        '<div class="atlas-profile-card">' +
-          '<h3>' + esc(indicators && indicators.title ? indicators.title : "показатели") + '</h3>' +
-          renderIndicators(indicators) +
-        '</div>' +
+        atlasIndicatorsCardHtml(character, indicators) +
         renderPlayerMetaCard(character) +
         renderExternalLinks(character) +
       '</div>' +
@@ -15234,7 +15240,6 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     var root = document.getElementById("atlasCharacterProfileRoot");
     if (!root || !character || !character.profile) return;
     root.dataset.communityId = character.id;
-    setTimeout(function(){ atlasHydrateCharacterIndicators(character); }, 0);
 
     var nameParts = splitName(character);
     var heroImage = getImage(character, "hero");
@@ -15334,6 +15339,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       tabPanel("overview", renderOverview(character), true) +
       tabPanel("dossier", renderDossier(character), false) +
       tabPanel("relations", renderRelations(character), false);
+    atlasHydrateCharacterIndicators(character);
     if (window.atlasHydrateCommunityCharacter) window.atlasHydrateCommunityCharacter(character.id);
   }
 
