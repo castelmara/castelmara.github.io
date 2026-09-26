@@ -15243,6 +15243,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     var overview = profile.overview || {};
     var mainInfo = Object.assign({}, overview.mainInfo || {});
 
+    if (character.type === "student_sport" && mainInfo.position) {
+      delete mainInfo.position;
+    }
+
     if (!mainInfo.fullName && character.fullName) mainInfo.fullName = character.fullName;
     if (!mainInfo.originalName && character.originalName) mainInfo.originalName = character.originalName;
 
