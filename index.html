@@ -20599,6 +20599,111 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 @keyframes atlasPlayerSpin{to{transform:rotate(360deg)}}
 
 #atlas-app .atlas-player-profile-page{color:#111}
+/* atlas player personality card */
+#atlas-app .atlas-player-personality-card{
+  --player-personality-accent:var(--accent);
+  position:relative;
+  overflow:hidden;
+  min-height:176px;
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+#atlas-app .atlas-player-personality-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:3px;
+  background:var(--player-personality-accent);
+}
+#atlas-app .atlas-player-personality-kicker{
+  margin:0 0 12px;
+  color:var(--player-personality-accent);
+  font-size:10px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+#atlas-app .atlas-player-personality-title{
+  margin:0;
+  color:var(--player-personality-accent);
+  font-size:clamp(25px,2.2vw,38px);
+  line-height:.98;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+#atlas-app .atlas-player-personality-copy{
+  max-width:560px;
+  margin:12px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  font-weight:650;
+}
+#atlas-app .atlas-player-personality-quote{
+  max-width:620px;
+  margin:13px 0 0;
+  color:var(--ink);
+  font:italic 17px/1.45 Georgia,"Times New Roman",serif;
+}
+#atlas-app .atlas-player-personality-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:19px;
+}
+#atlas-app .atlas-player-personality-meta{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+#atlas-app .atlas-player-personality-pill{
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1;
+  font-weight:750;
+}
+#atlas-app .atlas-player-personality-main,
+#atlas-app .atlas-player-personality-retake{
+  border:0;
+  cursor:pointer;
+  font:inherit;
+}
+#atlas-app .atlas-player-personality-main{
+  padding:10px 14px;
+  border-radius:10px;
+  background:var(--player-personality-accent);
+  color:#0c0f12;
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+#atlas-app .atlas-player-personality-retake{
+  padding:3px 0;
+  background:transparent;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.2;
+  font-weight:750;
+  white-space:nowrap;
+}
+#atlas-app .atlas-player-personality-retake:hover{
+  color:var(--player-personality-accent);
+}
+#atlas-app .atlas-player-personality-empty{
+  color:var(--muted);
+}
+@media(max-width:560px){
+  #atlas-app .atlas-player-personality-card{min-height:165px}
+  #atlas-app .atlas-player-personality-bottom{align-items:flex-start;flex-direction:column}
+  #atlas-app .atlas-player-personality-retake{align-self:flex-end}
+}
 #atlas-app .atlas-player-profile-page .atlas-profile-hero::before{background-image:var(--character-banner);background-position:center;background-size:cover;filter:none}
 #atlas-app .atlas-player-profile-page .atlas-profile-hero.is-placeholder::before{background-image:radial-gradient(circle at 72% 24%,rgba(199,61,61,.34),transparent 24%),radial-gradient(circle at 28% 78%,rgba(255,255,255,.10),transparent 30%),linear-gradient(135deg,#121317,#030304)}
 #atlas-app .atlas-player-profile-page .atlas-profile-title h2{text-transform:none;overflow-wrap:anywhere}
@@ -21888,6 +21993,66 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   function tabButton(id,label,active){return '<button class="atlas-profile-tab-btn'+(active?' is-active':'')+'" type="button" data-player-tab="'+esc(id)+'">'+esc(label)+'</button>'}
   function tabPanel(id,content,active){return '<section class="atlas-profile-tab-panel'+(active?' is-active':'')+'" data-player-tab-panel="'+esc(id)+'">'+content+'</section>'}
 
+
+  var atlasPlayerPersonalityTypes={
+    captain:{title:'THE CAPTAIN',quote:'кто-то должен был взять ответственность на себя.',accent:'#e8ac6b'},
+    wildcard:{title:'THE WILDCARD',quote:'тогда это казалось хорошей идеей.',accent:'#b7d776'},
+    anchor:{title:'THE ANCHOR',quote:'каждому нужно место, куда можно вернуться.',accent:'#69c8b5'},
+    prodigy:{title:'THE PRODIGY',quote:'хорошо — не значит достаточно хорошо.',accent:'#90bafa'},
+    ghost:{title:'THE GHOST',quote:'ты меня знаешь. просто не всего.',accent:'#b6a0dd'},
+    spark:{title:'THE SPARK',quote:'достаточно одного импульса.',accent:'#ef897d'}
+  };
+
+  function atlasPlayerPersonalityResult(playerId){
+    try{
+      var raw=localStorage.getItem('atlas:personality_test_v1:result:'+String(playerId||''));
+      if(!raw)return null;
+      var value=JSON.parse(raw);
+      if(!value||value.version!=='personality_test_v1'||!atlasPlayerPersonalityTypes[value.primary_type])return null;
+      return value;
+    }catch(_e){return null}
+  }
+
+  function atlasPlayerPersonalityCard(playerId,isOwnProfile){
+    var result=atlasPlayerPersonalityResult(playerId);
+
+    if(result){
+      var type=atlasPlayerPersonalityTypes[result.primary_type];
+      return '<div class="atlas-profile-card atlas-player-personality-card" style="--player-personality-accent:'+esc(type.accent)+'">'+
+        '<div><p class="atlas-player-personality-kicker">твой архетип</p>'+
+        '<h3 class="atlas-player-personality-title">'+esc(type.title)+'</h3>'+
+        '<p class="atlas-player-personality-quote">'+esc(type.quote)+'</p></div>'+
+        (isOwnProfile?'<div class="atlas-player-personality-bottom"><span></span><button type="button" class="atlas-player-personality-retake" data-player-personality-open="'+esc(playerId)+'">пройти тест заново ↗</button></div>':'')+
+      '</div>';
+    }
+
+    if(!isOwnProfile){
+      return '<div class="atlas-profile-card atlas-player-personality-card">'+
+        '<div><p class="atlas-player-personality-kicker">архетип</p>'+
+        '<h3 class="atlas-player-personality-title atlas-player-personality-empty">ЕЩЁ НЕ ОПРЕДЕЛЁН</h3>'+
+        '<p class="atlas-player-personality-copy">игрок пока не проходил тест личности ATLAS.</p></div>'+
+      '</div>';
+    }
+
+    return '<div class="atlas-profile-card atlas-player-personality-card">'+
+      '<div><p class="atlas-player-personality-kicker">твой архетип</p>'+
+      '<h3 class="atlas-player-personality-title">УЗНАЙ СВОЙ ТИП</h3>'+
+      '<p class="atlas-player-personality-copy">пройди тест и узнай, какой архетип Кастельмары тебе ближе.</p></div>'+
+      '<div class="atlas-player-personality-bottom"><div class="atlas-player-personality-meta">'+
+        '<span class="atlas-player-personality-pill">24 вопроса</span>'+
+        '<span class="atlas-player-personality-pill">~20 минут</span>'+
+      '</div><button type="button" class="atlas-player-personality-main" data-player-personality-open="'+esc(playerId)+'">пройти тест →</button></div>'+
+    '</div>';
+  }
+
+  document.addEventListener('click',function(event){
+    var button=event.target.closest('[data-player-personality-open]');
+    if(!button)return;
+    var playerId=button.getAttribute('data-player-personality-open')||'';
+    try{sessionStorage.setItem('atlasPersonalityPlayerId',playerId)}catch(_e){}
+    if(typeof window.atlasOpenPage==='function')window.atlasOpenPage('personality-test');
+    else location.hash='personality-test';
+  });
   async function renderPlayerProfile(id){
     var root=document.getElementById('atlasPlayerProfileRoot'); if(!root)return;
     root.innerHTML='<div class="atlas-player-loading">загружаем профиль игрока…</div>';
@@ -21926,7 +22091,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         ['VK',p.vk_url,vk],
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
-      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div></div></div>';
+      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div></div>'+atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id))+'</div></div>';
       var mayManageChars=canManageCharacterOwners(viewer,p);
       var charManage=mayManageChars?'<div class="atlas-player-character-manage"><button type="button" data-character-owner-open="'+esc(p.id)+'">управлять персонажами</button></div>':'';
       var charPanel=charManage+(chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи.</div>');
@@ -24245,6 +24410,5 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 </template>
 <link rel="stylesheet" href="assets/atlas-personality-route.css?v=1">
 <script src="assets/atlas-personality-route.js?v=1"></script>
-  <script src="assets/atlas-player-personality.js"></script>
 </body>
 </html>
