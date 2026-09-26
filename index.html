@@ -22324,19 +22324,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     spark:{title:'THE SPARK',quote:'достаточно одного импульса.',accent:'#ef897d'}
   };
 
-  function atlasPlayerPersonalityResult(playerId){
-    try{
-      var raw=localStorage.getItem('atlas:personality_test_v1:result:'+String(playerId||''));
-      if(!raw)return null;
-      var value=JSON.parse(raw);
-      if(!value||value.version!=='personality_test_v1'||!atlasPlayerPersonalityTypes[value.primary_type])return null;
-      return value;
-    }catch(_e){return null}
-  }
-
-  function atlasPlayerPersonalityCard(playerId,isOwnProfile){
-    var result=atlasPlayerPersonalityResult(playerId);
-
+  function atlasPlayerPersonalityCard(playerId,isOwnProfile,result){
     if(result){
       var type=atlasPlayerPersonalityTypes[result.primary_type];
       return '<div class="atlas-player-personality-card" style="--player-personality-accent:'+esc(type.accent)+'">'+
@@ -22370,15 +22358,22 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var button=event.target.closest('[data-player-personality-open]');
     if(!button)return;
     var playerId=button.getAttribute('data-player-personality-open')||'';
-    try{sessionStorage.setItem('atlasPersonalityPlayerId',playerId)}catch(_e){}
+    if(!playerId || playerId!==window.AtlasPersonalityStore?.viewerId())return;
     if(typeof window.atlasOpenPage==='function')window.atlasOpenPage('personality-test');
     else location.hash='personality-test';
+  });
+  window.addEventListener('atlasPersonalitySaved',function(event){
+    if(currentPlayerId!==event.detail.userId)return;
+    var card=document.querySelector('#atlasPlayerProfileRoot .atlas-player-personality-card');
+    if(card)card.outerHTML=atlasPlayerPersonalityCard(event.detail.userId,window.AtlasPersonalityStore.viewerId()===event.detail.userId,event.detail.result);
   });
   async function renderPlayerProfile(id){
     var root=document.getElementById('atlasPlayerProfileRoot'); if(!root)return;
     root.innerHTML='<div class="atlas-player-loading">загружаем профиль игрока…</div>';
     try{
       var bundle=await fetchPlayerBundle(id), p=bundle.profile;
+      var personalityResult=null, personalityError=false;
+      try{personalityResult=await window.AtlasPersonalityStore.load(id)}catch(error){personalityError=true;console.warn('[ATLAS personality]',error)}
       if(!p){root.innerHTML='<div class="atlas-player-empty"><strong>профиль не найден</strong></div>';return}
       currentPlayerId=p.id; try{sessionStorage.setItem('atlasPlayerProfileId',p.id)}catch(_e){}
       if(typeof window.atlasPersonalTrackView==='function') window.atlasPersonalTrackView({target_type:'player',target_id:p.id,title:displayName(p),subtitle:'@'+(p.nickname||'игрок'),image_url:p.avatar_url||p.banner_url||''});
@@ -22412,7 +22407,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         ['VK',p.vk_url,vk],
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
-      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div>'+atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id))+'</div></div></div>';
+      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div>'+(personalityError?'<div class="atlas-player-personality-card"><p>не удалось загрузить архетип. попробуй открыть профиль ещё раз.</p></div>':atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id),personalityResult))+'</div></div></div>';
       var mayManageChars=canManageCharacterOwners(viewer,p);
       var charManage=mayManageChars?'<div class="atlas-player-character-manage"><button type="button" data-character-owner-open="'+esc(p.id)+'">управлять персонажами</button></div>':'';
       var charPanel=charManage+(chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи.</div>');
@@ -24730,6 +24725,9 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
   <section class="atlas-page" id="atlas-page-personality-test"><div id="atlasPersonalityMount"></div></section>
 </template>
 <link rel="stylesheet" href="assets/atlas-personality-route.css?v=1">
+<script src="personality-test/questions.js"></script>
+<script src="personality-test/engine.js"></script>
+<script src="assets/atlas-personality-store.js?v=1"></script>
 <script src="assets/atlas-personality-route.js?v=1"></script>
 </body>
 </html>

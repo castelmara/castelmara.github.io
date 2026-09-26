@@ -17,6 +17,14 @@
     if(!frame||event.source!==frame.contentWindow||event.origin!==window.location.origin||event.data?.type!=='atlas-personality-return')return;
     window.atlasOpenPage('inicio');
   });
+  // Bind drafts and completion to the authenticated account, including delayed session restore.
+  let viewerId=window.AtlasPersonalityStore?.viewerId() || '';
+  window.addEventListener('atlasPlayerAuthReady',()=>{
+    const next=window.AtlasPersonalityStore?.viewerId() || '';
+    if(next===viewerId)return;
+    viewerId=next;
+    if(frame){frame.remove();frame=null;window.atlasRenderPersonalityTest('personality-test')}
+  });
   // Also unmount when an existing auxiliary page renderer changes the active page directly.
   document.addEventListener('DOMContentLoaded',()=>{
     const holder=document.getElementById('atlas-pages-holder');if(!holder)return;

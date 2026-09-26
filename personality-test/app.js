@@ -2,7 +2,17 @@
   'use strict';
   const bank=window.AtlasPersonalityQuestions, content=window.AtlasPersonalityResults, engine=window.AtlasPersonalityEngine;
   const view=document.getElementById('test-view'), app=document.getElementById('test-app');
-  const key='atlas:personality_test_v1:draft', themeKey='atlas:personality_test_v1:theme', resultKey='atlas:personality_test_v1:result';
+  let store=null;
+  try{store=window.parent.AtlasPersonalityStore || null}catch(_error){}
+  const ownerId=store?.viewerId() || '';
+  const key='atlas:personality_test_v1:draft:'+ownerId, themeKey='atlas:personality_test_v1:theme';
+  let saving=false;
+  function accountReady(){return ownerId && store?.viewerId()===ownerId}
+  function showError(message){
+    let node=view.querySelector('[data-save-status]');
+    if(!node){node=document.createElement('p');node.dataset.saveStatus='true';node.setAttribute('role','alert');view.appendChild(node)}
+    node.textContent=message;
+  }
   let answers=Array(24).fill(null), index=0, screen='landing', result=null;
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const paragraphs=items=>items.map(text=>'<p>'+esc(text)+'</p>').join('');
@@ -51,13 +61,13 @@
   if(savedTheme==='light') document.documentElement.dataset.theme='light';
   try {
     const draft=JSON.parse(storage('getItem',key));
-    if(draft?.version===bank.version && engine.validateAnswers(draft.answers,false) && Number.isInteger(draft.index) && draft.index>=0 && draft.index<24) {
+    if(ownerId && draft?.user_id===ownerId && draft?.version===bank.version && engine.validateAnswers(draft.answers,false) && Number.isInteger(draft.index) && draft.index>=0 && draft.index<24) {
       answers=draft.answers.slice();index=draft.index;screen='questions';
       // Do not allow a corrupt/stale draft to skip an unanswered question.
       const firstMissing=answers.indexOf(null);if(firstMissing>=0) index=Math.min(index,firstMissing);
     }
   } catch(_error) {storage('removeItem',key)}
-  function save() {storage('setItem',key,JSON.stringify({version:bank.version,answers,index}))}
+  function save() {storage('setItem',key,JSON.stringify({user_id:ownerId,version:bank.version,answers,index}))}
   function motif() {return '<div class="identity-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><span class="art-coordinate">CM / 06</span><span class="art-star">✳</span><span class="art-label">a different side<br>of the same you.</span><span class="art-index">01—24</span></div>'}
   function landing() {
     app.removeAttribute('data-type');
@@ -84,21 +94,33 @@
       const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;storage('setItem',themeKey,theme);return;
     }
     const action=event.target.closest('[data-action]')?.dataset.action;
-    if(action==='start'){screen='questions';save();render(true)}
+    if(saving)return;
+    if(action==='start'){if(!accountReady()){showError('Войди в свой аккаунт ATLAS и открой тест из своего профиля.');return}screen='questions';save();render(true)}
     if(action==='back' && screen==='questions'){if(index>0)index--;else screen='landing';save();render(true)}
   });
   view.addEventListener('change',event=>{
-    if(screen!=='questions'||event.target.name!=='answer')return;
+    if(saving||screen!=='questions'||event.target.name!=='answer')return;
     if(!bank.questions[index].answers.some(a=>a.id===event.target.value))return;
     answers[index]=event.target.value;save();
     view.querySelector('[type="submit"]').disabled=index===23?!engine.validateAnswers(answers):false;
     const progress=view.querySelector('[role="progressbar"]');progress.setAttribute('aria-valuenow',answers.filter(Boolean).length);progress.firstElementChild.style.width=answers.filter(Boolean).length/24*100+'%';
   });
-  view.addEventListener('submit',event=>{
-    event.preventDefault();if(screen!=='questions'||!answers[index])return;
+  view.addEventListener('submit',async event=>{
+    event.preventDefault();if(saving||screen!=='questions'||!answers[index])return;
     if(index<23){index++;save();render(true);return}
     if(!engine.validateAnswers(answers))return;
-    result=engine.scoreAnswers(answers);try{const playerId=sessionStorage.getItem('atlasPersonalityPlayerId')||'';localStorage.setItem(resultKey+(playerId?':'+playerId:''),JSON.stringify({version:bank.version,primary_type:result.primary_type,secondary_type:result.secondary_type||null,completed_at:new Date().toISOString()}))}catch(_error){}if(window.parent!==window)window.parent.postMessage({type:'atlas-personality-complete',result:{primary_type:result.primary_type,secondary_type:result.secondary_type||null}},window.location.origin);screen='result';storage('removeItem',key);render(true);
+    if(!accountReady()){showError('Аккаунт изменился. Открой тест из своего профиля.');return}
+    saving=true;
+    const form=event.target;
+    Array.from(form.elements).forEach(control=>control.disabled=true);
+    try{
+      result=await store.complete(ownerId,answers.slice(),bank.version);
+      screen='result';storage('removeItem',key);render(true);
+    }catch(error){
+      Array.from(form.elements).forEach(control=>control.disabled=false);
+      showError('Результат не сохранён. '+(error.message||'Попробуй ещё раз.'));
+    }finally{saving=false}
+
   });
   render();
 })();
