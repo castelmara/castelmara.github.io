@@ -1091,6 +1091,7 @@ body.atlas-modal-open {
     }
 
     rememberAtlasPage(pageName);
+    if (window.atlasRenderPersonalityTest) window.atlasRenderPersonalityTest(pageName);
 
     document.querySelectorAll('#atlas-app .atlas-page').forEach(function(item) {
       item.classList.toggle('active', item.id === 'atlas-page-' + pageName);
@@ -24239,5 +24240,10 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 
 <link rel="stylesheet" href="assets/atlas-community.css?v=20260925-profile">
 <script src="assets/atlas-community.js?v=20260924-1"></script>
+<template data-atlas-page-template="personality-test">
+  <section class="atlas-page" id="atlas-page-personality-test"><div id="atlasPersonalityMount"></div></section>
+</template>
+<link rel="stylesheet" href="assets/atlas-personality-route.css?v=1">
+<script src="assets/atlas-personality-route.js?v=1"></script>
 </body>
 </html>
