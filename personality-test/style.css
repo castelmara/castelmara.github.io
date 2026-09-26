@@ -106,3 +106,18 @@ legend{display:block;width:100%;padding:0;margin:0 0 32px;font:500 clamp(21px,2.
 @media(max-width:1000px){.landing{grid-template-columns:1.3fr 1fr;gap:26px}.landing h1{font-size:clamp(48px,7.7vw,76px)}.art-label{font-size:18px}.answer-card{padding:22px 18px;gap:12px}.choice-hint{display:none}}
 @media(max-width:700px){.topbar{min-height:88px}.top-actions{gap:16px}.return-link{font-size:0}.return-link span{font-size:25px;margin:0}.brand{font-size:27px}.brand span{font-size:7px}.landing{grid-template-columns:1fr;padding:45px 0;gap:48px}.landing h1{font-size:clamp(43px,11vw,76px)}.landing .eyebrow{margin-bottom:26px}.intro{font-size:14px}.identity-art{width:66%;margin:0 auto}.art-star{font-size:37vw}.art-label{font-size:19px}.landing-meta{margin-top:30px;gap:15px}.landing-meta span+span::before{margin-right:15px}.question-view{padding-top:30px}.progress{margin-bottom:32px}.answer-grid{grid-template-columns:1fr}.answer-card{padding:20px 16px}.answer-text{font-size:15px}.question-nav{gap:16px}.question-nav .primary-button{gap:18px;padding:14px 18px}.footer{font-size:8px;letter-spacing:.6px}.result-header{align-items:start}.result-header .eyebrow{font-size:9px}.result-stamp{font-size:10px;white-space:nowrap}.result-copy{font-size:15px}.result-title h1{font-size:clamp(34px,8.5vw,56px);padding-right:0;padding-top:45px}.result-symbol{left:0;right:auto;top:-18px;font-size:42px}.motto{font-size:21px}.result-bottom{flex-direction:column;align-items:stretch}.result-bottom .primary-button{justify-content:center}.secondary-block{padding-left:17px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+
+/* personality test refinements */
+@media (min-width:701px){
+  .identity-art{
+    position:sticky;
+    top:42px;
+    align-self:center;
+  }
+}
+@media (max-width:700px){
+  .identity-art{
+    position:relative;
+    top:auto;
+  }
+}
