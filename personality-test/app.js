@@ -2,7 +2,7 @@
   'use strict';
   const bank=window.AtlasPersonalityQuestions, content=window.AtlasPersonalityResults, engine=window.AtlasPersonalityEngine;
   const view=document.getElementById('test-view'), app=document.getElementById('test-app');
-  const key='atlas:personality_test_v1:draft', themeKey='atlas:personality_test_v1:theme';
+  const key='atlas:personality_test_v1:draft', themeKey='atlas:personality_test_v1:theme', resultKey='atlas:personality_test_v1:result';
   let answers=Array(24).fill(null), index=0, screen='landing', result=null;
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const paragraphs=items=>items.map(text=>'<p>'+esc(text)+'</p>').join('');
@@ -98,7 +98,7 @@
     event.preventDefault();if(screen!=='questions'||!answers[index])return;
     if(index<23){index++;save();render(true);return}
     if(!engine.validateAnswers(answers))return;
-    result=engine.scoreAnswers(answers);screen='result';storage('removeItem',key);render(true);
+    result=engine.scoreAnswers(answers);try{localStorage.setItem(resultKey,JSON.stringify({version:bank.version,primary_type:result.primary_type,secondary_type:result.secondary_type||null,completed_at:new Date().toISOString()}))}catch(_error){}if(window.parent!==window)window.parent.postMessage({type:'atlas-personality-complete',result:{primary_type:result.primary_type,secondary_type:result.secondary_type||null}},window.location.origin);screen='result';storage('removeItem',key);render(true);
   });
   render();
 })();
