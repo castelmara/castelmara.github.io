@@ -14930,33 +14930,23 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   async function atlasCanEditCharacterIndicators(characterId) {
     var client = atlasIndicatorsClient();
     var me = atlasIndicatorsViewerId();
-    if (!client || !me) return false;
+    if (!client || !me || !characterId) return false;
 
-    var role = window.ATLAS_CURRENT_PROFILE && window.ATLAS_CURRENT_PROFILE.role || "";
-    if (role === "superadmin") return true;
+    try {
+      var result = await client.rpc("atlas_can_edit_character", {
+        p_character: characterId
+      });
 
-    var ownerRes = await client
-      .from("character_owners")
-      .select("user_id")
-      .eq("character_id", characterId)
-      .maybeSingle();
+      if (result.error) {
+        console.warn("[ATLAS indicators permission]", result.error);
+        return false;
+      }
 
-    if (ownerRes.error) return false;
-    var ownerId = ownerRes.data && ownerRes.data.user_id || "";
-
-    if (ownerId && ownerId === me) return true;
-
-    if (role === "admin" && ownerId) {
-      var ownerProfile = await client
-        .from("profiles")
-        .select("role")
-        .eq("id", ownerId)
-        .maybeSingle();
-
-      return !ownerProfile.error && ownerProfile.data && ownerProfile.data.role === "player";
+      return result.data === true;
+    } catch (err) {
+      console.warn("[ATLAS indicators permission]", err);
+      return false;
     }
-
-    return false;
   }
 
   function atlasIndicatorsCardHtml(character, indicators) {
