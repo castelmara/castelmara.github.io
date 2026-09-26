@@ -571,7 +571,7 @@
                                                       "socialNickname":  "silvia.rr",
                                                       "faceclaim":  "madeline argy",
                                                       "level":  "профессионал",
-                                                      "position":  "студентка 2-го курса факультета индивидуальных видов спорта"
+                                                      "position":  "большой теннис"
                                                   }
                                  },
                     "dossier":  {
@@ -614,7 +614,7 @@
                                                       "socialNickname":  "el.errera",
                                                       "faceclaim":  "paulo dybala",
                                                       "level":  "профессионал",
-                                                      "position":  "факультет тактики и игровых видов спорта"
+                                                      "position":  "крайний нападающий"
                                                   }
                                  },
                     "dossier":  {
@@ -656,7 +656,7 @@
                                                       "atlasNickname":  "genmahoraga",
                                                       "faceclaim":  "joshua weyerhaeuser",
                                                       "level":  "профессионал",
-                                                      "position":  "студент 2-го курса факультета тактики и игровых видов спорта"
+                                                      "position":  "связующий"
                                                   }
                                  },
                     "dossier":  {
@@ -699,7 +699,7 @@
                                                       "socialNickname":  "a.hernandez.bcn",
                                                       "faceclaim":  "julián alvarez",
                                                       "level":  "профессионал",
-                                                      "position":  "студент 3-го курса факультета тактики и игровых видов спорта"
+                                                      "position":  "центральный нападающий"
                                                   }
                                  },
                     "dossier":  {
@@ -783,7 +783,7 @@
                                                       "socialNickname":  "tio.pedro",
                                                       "faceclaim":  "pau cubarsi",
                                                       "level":  "профессионал",
-                                                      "position":  "факультет тактики и игровых видов спорта"
+                                                      "position":  "атакующий полузащитник"
                                                   }
                                  },
                     "dossier":  {
