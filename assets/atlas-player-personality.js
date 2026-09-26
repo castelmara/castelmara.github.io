@@ -177,18 +177,41 @@
     });
     if (!heading) return null;
 
-    let card = heading;
-    for (let i = 0; i < 8 && card && card.parentElement; i++, card = card.parentElement) {
-      const text = (card.textContent || '').toUpperCase();
-      const rect = card.getBoundingClientRect();
+    const headingRect = heading.getBoundingClientRect();
+    const candidates = [];
+    let node = heading.parentElement;
+
+    for (let i = 0; i < 9 && node; i++, node = node.parentElement) {
+      const rect = node.getBoundingClientRect();
+      const text = (node.textContent || '').toUpperCase();
+
       if (
+        rect.width > 300 &&
+        rect.height > 110 &&
         text.includes('АКТИВНОСТЬ') &&
-        (text.includes('ДНЕЙ ПОДРЯД') || text.includes('ЛУЧШАЯ СЕРИЯ')) &&
-        rect.width > 250 &&
-        rect.height > 100
-      ) return card;
+        rect.left <= headingRect.left + 40 &&
+        rect.right >= headingRect.right - 40
+      ) {
+        candidates.push({node, rect, area:rect.width * rect.height});
+      }
     }
-    return null;
+
+    if (!candidates.length) return null;
+
+    /*
+      Не берём общий двухколоночный контейнер профиля.
+      Нужна именно правая карточка/колонка, поэтому предпочитаем
+      самый маленький подходящий ancestor, который начинается
+      примерно там же, где заголовок "АКТИВНОСТЬ".
+    */
+    const sameColumn = candidates.filter(({rect}) =>
+      Math.abs(rect.left - headingRect.left) < 80
+    );
+
+    const pool = sameColumn.length ? sameColumn : candidates;
+    pool.sort((a,b) => a.area - b.area);
+
+    return pool[0].node;
   }
 
   function renderCard(card) {
@@ -247,8 +270,16 @@
       card.id = CARD_ID;
       card.setAttribute('aria-label', 'Архетип игрока');
 
-      // Place directly under the activity card in the same right column.
+      // Place directly under the activity card inside the same right column.
+      const column = activity.parentElement;
+      if (!column) return;
+      if (getComputedStyle(column).display !== 'flex') {
+        column.style.display = 'flex';
+        column.style.flexDirection = 'column';
+      }
       activity.insertAdjacentElement('afterend', card);
+      card.style.width = '100%';
+      card.style.marginTop = '14px';
     } else if (card.previousElementSibling !== activity) {
       activity.insertAdjacentElement('afterend', card);
     }
