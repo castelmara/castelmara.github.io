@@ -15,11 +15,12 @@ const expected = Object.fromEntries(Object.entries(groups).flatMap(([year, ids])
 assert.deepEqual(Object.values(groups).map(ids => ids.split(' ').length), [6,38,35,13]);
 assert.equal(Object.keys(expected).length, 92);
 function load(ref) {
-  const read = file => ref ? execFileSync('git', ['show', ref+':'+file], {cwd:base,encoding:'utf8'}) : fs.readFileSync(path.join(base,file),'utf8');
+  const read = file => ref ? execFileSync('git', ['show', ref+':'+file], {cwd:base,encoding:'utf8',maxBuffer:8*1024*1024}) : fs.readFileSync(path.join(base,file),'utf8');
   const window = {dispatchEvent(){},addEventListener(){}};
   const document = {getElementById(){},head:{appendChild(){}},body:{appendChild(){}},createElement(){return{}},addEventListener(){},querySelectorAll(){return[]},querySelector(){}};
   const ctx = vm.createContext({window,document,CustomEvent:class{},setTimeout(){},clearTimeout(){},setInterval(){},clearInterval(){},console});
-  for(const file of ['students','coaches','staff','leon','character-directory']) vm.runInContext(read('data/'+file+'.js'),ctx);
+  const dataFiles=[...read('index.html').matchAll(/<script\s+src="(data\/[^"?]+\.js)(?:\?[^\"]*)?"/g)].map(m=>m[1]);
+  for(const file of dataFiles) vm.runInContext(read(file),ctx);
   const all = JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
   return {all, records:JSON.parse(JSON.stringify(window.ATLAS_CHARACTER_DIRECTORY)),ctx,read};
 }
@@ -35,7 +36,7 @@ function withoutCourses(c) {
   return copy;
 }
 if(require.main===module) {
-  // Approved Russian-copy localization; course expectations remain the original 92 IDs.
+  // Course expectations remain the original 92 IDs. Profile content now has its own import checks.
   const current=load(), prior=load(process.argv[2] || 'c83dacb9e7a47406a4f6342501a7c5f3ed860c51');
   let correct=0,changed=0;
   for(const [id,course] of Object.entries(expected)) {
@@ -46,13 +47,16 @@ if(require.main===module) {
     const old=prior.all.find(c=>c.id===id);assert(old,id+': existed before');
     if(courseFields(old).length && courseFields(old).every(v=>v===course)) correct++;else changed++;
   }
-  assert.deepEqual(current.all.map(withoutCourses),prior.all.map(withoutCourses),'Only requested course/year fields may change; profiles and other characters remain intact');
+  for(const c of current.all.filter(c=>!expected[c.id])) {
+    const old=prior.all.find(p=>p.id===c.id);assert(old,c.id+': no unexpected new character');
+    assert.deepEqual(courseFields(c),courseFields(old),c.id+': courses outside the approved list unchanged');
+  }
   assert.deepEqual(current.records.map(withoutCourses),prior.records.map(withoutCourses),'Directory changes limited to requested course/year fields');
   vm.runInContext(current.read('assets/atlas-community.js'),current.ctx);
   for(const [id,course] of Object.entries(expected)) {
     const c=current.all.find(c=>c.id===id),markup=current.ctx.window.atlasCardDetailsHtml(c);
     assert(markup.includes('>'+course.toUpperCase()+'</span>'),id+': visible card course');
   }
-  console.log(`PASS courses: 92 unique students (6/38/35/13); ${changed} changed, ${correct} already correct; card/full-profile consistency; all other data unchanged.`);
+  console.log(`PASS courses: 92 unique students (6/38/35/13); ${changed} changed, ${correct} already correct; card/full-profile consistency; other courses and directory unchanged.`);
 }
 module.exports={expected,load,courseFields};
