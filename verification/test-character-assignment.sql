@@ -1,0 +1,46 @@
+-- Run as database owner; all test assignments are rolled back.
+begin;
+select set_config('atlas.actor',(select id::text from public.profiles where role='superadmin' limit 1),true);
+select set_config('atlas.target',(select p.id::text from public.profiles p join public.character_owners o on o.user_id=p.id where p.role='player' group by p.id having count(*)>=2 limit 1),true);
+select set_config('atlas.admin',(select id::text from public.profiles where role='admin' limit 1),true);
+select set_config('atlas.original',(select coalesce(jsonb_agg(character_id order by display_order,character_id),'[]'::jsonb)::text from public.character_owners where user_id=current_setting('atlas.target')::uuid),true);
+select set_config('atlas.custom_before',(select md5(coalesce(jsonb_agg(to_jsonb(c) order by character_id)::text,'')) from public.atlas_character_customizations c),true);
+select set_config('atlas.full',(select c.id from public.atlas_character_catalog c where c.active and c.id in ('hudson-hummond','melody-stoker','manuel-moretti','dolly-eigner','oliver-brown','ramona-martina-suarez','evelina-de-la-rosa','alexa-soriano','blaise-lancer','pablo-de-longa','david-capurro','cedric-joy','ariella-de-ville','nicolas-serrano','william-de-bianco','francisco-ramos','siena-sinclair','tello-de-giron','amelia-castro','sofia-alvarez','rafael-santos','mikel-vila-rodriguez','lars-bergstrom','marko-broz','diego-caceres','tiago-silveira','emmanuel-okafor','jonas-eriksson','libor-moravec','holger-leon-abel','michael-heinonen','valdis-ronis','kevin-odonnell','pavol-kovac','felipe-costa','rin-tanaka','dragan-stojanovic','marek-kowalczyk','alessandro-russo','lucas-cabrera','oscar-mendez','jay-williams','boris-lukic','danijel-novak','andrea-sartori','matteo-garcia','juan-diallo','elena-kovalyova','ines-navarro','claudia-torres','adriana-fuentes','rebeca-ochoa','marta-solano','anna-berglund','daria-volkova','elise-gautier','carmen-valdes','lin-zhao','alina-zakharova','carina-escobar','leon-scott-redfield','alessandra-manrique','bianca-solis','josuke-higashikata','jacqueline-kelsada','miles-turner','francesca-romero','charles-berg','roberto-castillo','rodrigo-morales','silvia-ramos','federico-herrera','anthony-rookwood','alejandro-hernandez','pedro-martinez') and not exists(select 1 from public.character_owners o where o.character_id=c.id) limit 1),true);
+select set_config('atlas.card',(select c.id from public.atlas_character_catalog c where c.active and c.id in ('bruna-valentina-morales','morena-salazar','michaela-portado','sebastian-ward','martina-chavez-romero','nico-guerriero','elarian-casterly','mariella-alcaraz','elias-azarolla','zoe-baudelaire','jose-blanco','eli-stone','flores-del-campo','ava-leone','juniper-viscarra','esteban-furtado','milagros-paz-bonachera','joaquin-morales','pieter-vermeer','catalina-nunez-duarte','rene-gott','tatiana-herrera','camilo-avanzini','amalia-reinhart','javier-gonzalez','axel-beltran','satoru-saitou','gabriel-marquez','marcel-gavira','veronica-andrade','dahlia-vale','aiden-nolan','ilias-markou','dani-rojas','marcus-perez','vanessa-moreno','alicia-rivera','kira-denali','scarlett-vega','shawn-oconnor','erasmo-de-verastegui','amaya-ruiz','mikhail-vilmos','remi-de-smet','santiago-de-bianco','philip-novoselic','leandros-asteriadis','estelle-de-paris','armando-cardona','gwendoline-gallagher','tamires-moreira','taejoon-soh','nicole-ledger','noah-foster','katarina-ward','enrique-cruz','letitia-esteban','bosco-salviati','chiara-de-luca','leonard-carnegie','max-bauer','camilla-ortiz','perry-gallagher','lorenzo-maldonado','jaehyun-lim','maelys-mallarme','mauro-caliente','yuri-choi','cristina-vargas','hikaru-haitani') and not exists(select 1 from public.character_owners o where o.character_id=c.id) limit 1),true);
+select set_config('atlas.foreign',(select character_id from public.character_owners where user_id<>current_setting('atlas.target')::uuid limit 1),true);
+select set_config('request.jwt.claims',jsonb_build_object('sub',current_setting('atlas.actor'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$ declare original_ids text[]; selected_ids text[]; actual_ids text[]; failed boolean; begin
+  select array_agg(x) into original_ids from jsonb_array_elements_text(current_setting('atlas.original')::jsonb) x;
+  selected_ids:=original_ids||array[current_setting('atlas.full'),current_setting('atlas.card')];
+  perform public.atlas_save_character_owners(current_setting('atlas.target')::uuid,selected_ids,original_ids);
+  select array_agg(character_id order by display_order) into actual_ids from public.character_owners where user_id=current_setting('atlas.target')::uuid;
+  if actual_ids<>selected_ids then raise exception 'Existing/full/card-only links not preserved'; end if;
+  failed:=false;
+  begin perform public.atlas_save_character_owners(current_setting('atlas.target')::uuid,original_ids,original_ids);
+  exception when raise_exception then failed:=true; end;
+  if not failed then raise exception 'Stale editor accepted'; end if;
+  failed:=false;
+  begin perform public.atlas_save_character_owners(current_setting('atlas.target')::uuid,array[current_setting('atlas.foreign')],selected_ids);
+  exception when raise_exception then failed:=true; end;
+  if not failed then raise exception 'Foreign character reassigned'; end if;
+  select array_agg(character_id order by display_order) into actual_ids from public.character_owners where user_id=current_setting('atlas.target')::uuid;
+  if actual_ids<>selected_ids then raise exception 'Failed save removed existing links'; end if;
+  perform set_config('request.jwt.claims',jsonb_build_object('sub',current_setting('atlas.target'),'role','authenticated')::text,true);
+  failed:=false;
+  begin perform public.atlas_save_character_owners(current_setting('atlas.target')::uuid,selected_ids,selected_ids);
+  exception when insufficient_privilege then failed:=true; end;
+  if not failed then raise exception 'Regular player can assign'; end if;
+  perform set_config('request.jwt.claims',jsonb_build_object('sub',current_setting('atlas.admin'),'role','authenticated')::text,true);
+  perform public.atlas_save_character_owners(current_setting('atlas.target')::uuid,selected_ids,selected_ids);
+  failed:=false;
+  begin perform public.atlas_save_character_owners(current_setting('atlas.actor')::uuid,array[]::text[],array[]::text[]);
+  exception when insufficient_privilege then failed:=true; end;
+  if not failed then raise exception 'Admin can manage superadmin'; end if;
+end $$;
+reset role;
+do $$ begin
+ if current_setting('atlas.custom_before')<>(select md5(coalesce(jsonb_agg(to_jsonb(c) order by character_id)::text,'')) from public.atlas_character_customizations c) then raise exception 'Customizations changed'; end if;
+end $$;
+rollback;
+select 'PASS atomic assignment: existing/full/card-only, stale editor, foreign ownership, failure rollback, staff permissions, customizations untouched; fixture writes rolled back' as result;

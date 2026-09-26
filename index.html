@@ -21577,6 +21577,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   var profilesLoadedAt = 0;
   var playersRenderToken = 0;
   var currentPlayerId = '';
+  var characterCatalogCache = [];
 
   function esc(value){
     return String(value == null ? '' : value).replace(/[&<>'"]/g,function(ch){
@@ -21649,36 +21650,31 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     return viewer.role==='admin'&&target.role==='player';
   }
 
-  function allAssignableCharacters(){
-    var out=[],seen={};
-    (window.ATLAS_CHARACTERS||[]).forEach(function(ch){
-      if(!ch||!ch.id||seen[ch.id])return;
-      var type=String(ch.type||'').toLowerCase();
-      var category=String(ch.category||'').toLowerCase();
-      if(type==='lyceum'||category==='lyceum'||category==='liceo'||category==='liceistas')return;
-      seen[ch.id]=true;
-      out.push(ch);
-    });
-    (window.ATLAS_CARD_ONLY||[]).forEach(function(ch){
-      if(!ch||!ch.id||seen[ch.id])return;
-      var category=String(ch.category||'').toLowerCase();
-      if(category==='lyceum'||category==='liceo'||category==='liceistas')return;
-      seen[ch.id]=true;
-      out.push({
-        id:ch.id,
-        name:ch.name,
-        cardName:ch.name,
-        cardImage:ch.image||'',
-        category:ch.category||'',
-        subtitle:ch.player?'/ '+ch.player:'',
-        _atlasCardOnly:true
+  function allAssignableCharacters(catalog, owners){
+    var byId=new Map();
+    // One union: directory entries, full profiles and card-only records share their technical ID.
+    [characterCatalogCache,window.ATLAS_CHARACTER_DIRECTORY,window.ATLAS_CARD_ONLY,window.ATLAS_CHARACTERS].forEach(function(source){
+      (source||[]).forEach(function(ch){
+        if(ch&&ch.id)byId.set(ch.id,Object.assign({},byId.get(ch.id)||{},ch));
       });
     });
-    return out.sort(function(a,b){
-      var an=String(a.cardName||a.name||a.fullName||a.id).toLowerCase();
-      var bn=String(b.cardName||b.name||b.fullName||b.id).toLowerCase();
-      return an.localeCompare(bn,'ru');
-    });
+    if(catalog){
+      var available=new Set();
+      catalog.forEach(function(entry){
+        if(!entry.active)return;
+        available.add(entry.id);
+        if(!byId.has(entry.id))byId.set(entry.id,{id:entry.id,name:entry.name});
+      });
+      // Existing links remain visible, even if a record was archived or removed from local data.
+      (owners||[]).forEach(function(row){
+        available.add(row.character_id);
+        if(!byId.has(row.character_id))byId.set(row.character_id,{id:row.character_id,name:row.character_id});
+      });
+      byId.forEach(function(_ch,id){if(!available.has(id))byId.delete(id)});
+    }
+    return Array.from(byId.values()).map(function(ch){
+      return Object.assign({},ch,{_atlasCardOnly:!ch.profile});
+    }).sort(function(a,b){return characterOwnerName(a).localeCompare(characterOwnerName(b),'ru')});
   }
 
   function findAssignableCharacter(id){
@@ -21734,7 +21730,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       var badge=checked?'привязан':taken?'у @'+esc(ownerProfile&&ownerProfile.nickname||'другого игрока'):(ch._atlasCardOnly?'без анкеты':'свободен');
       var img=characterOwnerImage(ch);
       return '<label class="atlas-character-owner-item'+(checked?' is-selected':'')+(taken?' is-taken':'')+'" data-character-owner-row="'+esc(ch.id)+'">'+
-        '<input type="checkbox" data-character-owner-choice="'+esc(ch.id)+'"'+(checked?' checked':'')+(taken?' disabled':'')+'>'+
+        '<input type="checkbox" data-character-owner-choice="'+esc(ch.id)+'"'+(checked?' checked':'')+(taken||state.saving?' disabled':'')+'>'+
         '<span class="atlas-character-owner-thumb">'+(img?'<img src="'+esc(img)+'" alt="">':esc(characterOwnerName(ch).charAt(0).toUpperCase()))+'</span>'+
         '<span class="atlas-character-owner-copy"><strong>'+esc(characterOwnerName(ch))+'</strong><span>'+esc(ch.subtitle||ch.category||ch.id)+'</span></span>'+
         '<span class="atlas-character-owner-badge">'+badge+'</span>'+
@@ -21745,12 +21741,17 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   async function loadCharacterOwnerEditor(targetId){
     var c=client();
     if(!c)throw new Error('supabase ещё загружается.');
+    var viewerId=currentUserId();
     setCharacterOwnerStatus('загружаем привязки…','ok');
     var results=await Promise.all([
       c.from('character_owners').select('character_id,user_id,display_order').order('display_order',{ascending:true}),
-      getProfiles(false)
+      getProfiles(false),
+      c.from('atlas_character_catalog').select('id,name,active')
     ]);
     if(results[0].error)throw results[0].error;
+    if(results[2].error)throw results[2].error;
+    if(viewerId!==currentUserId()||document.getElementById('atlasPlayerEditForm')?.dataset.playerId!==targetId)return;
+    characterCatalogCache=results[2].data||[];
     var rows=results[0].data||[];
     var profiles=results[1]||[];
     var ownerByCharacter={},profileById={};
@@ -21758,7 +21759,9 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     profiles.forEach(function(p){profileById[p.id]=p});
     characterOwnerEditorState={
       targetId:targetId,
-      characters:allAssignableCharacters(),
+      characters:allAssignableCharacters(results[2].data||[],rows),
+      viewerId:currentUserId(),
+      original:rows.filter(function(row){return row.user_id===targetId}).map(function(row){return row.character_id}),
       ownerByCharacter:ownerByCharacter,
       profileById:profileById,
       selected:new Set(rows.filter(function(row){return row.user_id===targetId}).sort(function(a,b){return (a.display_order||0)-(b.display_order||0)}).map(function(row){return row.character_id}))
@@ -21772,61 +21775,32 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   async function saveCharacterOwners(){
     var form=document.getElementById('atlasPlayerEditForm');
     var button=document.getElementById('atlasCharacterOwnerSave');
-    if(!form||!characterOwnerEditorState)return;
-    var targetId=form.dataset.playerId||'';
     var state=characterOwnerEditorState;
+    if(!form||!state||state.saving||form.dataset.saving==='1')return;
+    var targetId=form.dataset.playerId||'';
     if(!targetId||state.targetId!==targetId)return;
-    var permission;
-    try{permission=await getEditPermission(targetId)}catch(err){setCharacterOwnerStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
-    if(!canManageCharacterOwners(permission.viewer,permission.target)){
-      setCharacterOwnerStatus('у тебя нет прав менять персонажей этого аккаунта.','error');
-      return;
-    }
     var selected=Array.from(state.selected);
-    var c=client();if(!c)return;
+    state.saving=true;
     if(button){button.disabled=true;button.textContent='сохраняем…'}
+    renderCharacterOwnerChoices();
     setCharacterOwnerStatus('сохраняем привязки…','ok');
     try{
-      var fresh=await c.from('character_owners').select('character_id,user_id,display_order');
-      if(fresh.error)throw fresh.error;
-      var rows=fresh.data||[];
-      var occupied={};
-      rows.forEach(function(row){occupied[row.character_id]=row.user_id});
-      selected.forEach(function(characterId){
-        if(occupied[characterId]&&occupied[characterId]!==targetId){
-          var owner=state.profileById[occupied[characterId]];
-          throw new Error(characterOwnerName(findAssignableCharacter(characterId))+' уже привязан к @'+(owner&&owner.nickname||'другому игроку')+'.');
-        }
-      });
-
-      var current=rows.filter(function(row){return row.user_id===targetId}).map(function(row){return row.character_id});
-      var remove=current.filter(function(id){return selected.indexOf(id)<0});
-      var add=selected.filter(function(id){return current.indexOf(id)<0});
-
-      if(remove.length){
-        var del=await c.from('character_owners').delete().eq('user_id',targetId).in('character_id',remove);
-        if(del.error)throw del.error;
-      }
-      if(add.length){
-        var newRows=add.map(function(characterId){
-          return {character_id:characterId,user_id:targetId,display_order:selected.indexOf(characterId)+1};
-        });
-        var ins=await c.from('character_owners').insert(newRows);
-        if(ins.error)throw ins.error;
-      }
-      for(var i=0;i<selected.length;i++){
-        if(add.indexOf(selected[i])>=0)continue;
-        var upd=await c.from('character_owners').update({display_order:i+1}).eq('character_id',selected[i]).eq('user_id',targetId);
-        if(upd.error)throw upd.error;
-      }
-
+      var permission=await getEditPermission(targetId);
+      if(state!==characterOwnerEditorState||state.viewerId!==currentUserId())throw new Error('Аккаунт или редактор изменился. Откройте его заново.');
+      if(!canManageCharacterOwners(permission.viewer,permission.target))throw new Error('у тебя нет прав менять персонажей этого аккаунта.');
+      var c=client();if(!c)throw new Error('supabase ещё загружается.');
+      var saved=await c.rpc('atlas_save_character_owners',{p_user:targetId,p_characters:selected,p_expected:state.original});
+      if(saved.error)throw saved.error;
+      if(state!==characterOwnerEditorState||state.viewerId!==currentUserId())return;
       await loadCharacterOwnerEditor(targetId);
       setCharacterOwnerStatus('готово. персонажи привязаны к аккаунту.','ok');
       window.dispatchEvent(new CustomEvent('atlasCharacterOwnersChanged'));
       if(currentPlayerId===targetId)await renderPlayerProfile(targetId);
     }catch(err){
-      setCharacterOwnerStatus(err&&err.message?err.message:'не удалось сохранить персонажей.','error');
+      if(state===characterOwnerEditorState)setCharacterOwnerStatus(err&&err.message?err.message:'не удалось сохранить персонажей.','error');
     }finally{
+      state.saving=false;
+      renderCharacterOwnerChoices();
       if(button){button.disabled=false;button.textContent='сохранить персонажей'}
     }
   }
@@ -22018,7 +21992,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   function closePlayerEdit(){
     var modal=document.getElementById('atlasPlayerEditModal');
     var form=document.getElementById('atlasPlayerEditForm');
-    if(!modal)return;
+    if(!modal || form?.dataset.saving==='1' || characterOwnerEditorState?.saving)return;
     if(form&&form.dataset.editMode==='self'&&form.dataset.originalCursor&&typeof window.atlasApplyCursorStyle==='function'){
       window.atlasApplyCursorStyle(form.dataset.originalCursor);
       syncCursorChoices(form.dataset.originalCursor);
@@ -22032,11 +22006,13 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var c=client(); if(!c)return;
     var modal=document.getElementById('atlasPlayerEditModal');
     var form=document.getElementById('atlasPlayerEditForm');
-    if(!modal||!form)return;
+    if(!modal||!form||form.dataset.saving==='1'||characterOwnerEditorState?.saving)return;
     var permission;
     try{permission=await getEditPermission(id)}catch(err){setEditStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
     if(!permission.allowed)return;
     var own=isOwnProfile(id);
+    form.dataset.playerId='';
+    characterOwnerEditorState=null;
     setEditStatus('загружаем данные…','ok');
     modal.hidden=false;
     modal.setAttribute('aria-hidden','false');
@@ -22277,10 +22253,12 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       c.from('profiles').select('id,nickname,display_name,avatar_url,banner_url,status_text,vk_url,current_streak,best_streak,created_at,role,birthday_month,birthday_day').eq('id',id).maybeSingle(),
       c.from('character_owners').select('character_id,display_order').eq('user_id',id).order('display_order',{ascending:true}),
       c.from('user_achievements').select('earned_at,earned_year,achievements(code,title,description,requirement,icon,category,is_secret,personal_user_id)').eq('user_id',id).order('earned_at',{ascending:false}),
-      c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1)
+      c.from('relationships').select('id,requester_id,partner_id,relationship_type,status,started_on').eq('status','active').or('requester_id.eq.'+id+',partner_id.eq.'+id).limit(1),
+      c.from('atlas_character_catalog').select('id,name,active')
     ]);
     for(var i=0;i<results.length;i++){ if(results[i].error) throw results[i].error; }
     var publicProfile=results[0].data;
+    characterCatalogCache=results[4].data||[];
     /* Если RLS скрывает секретное определение ачивки от текущего зрителя,
        Supabase может вернуть связь achievements=null. Такие строки не рисуем. */
     var publicAchievements=(results[2].data||[]).filter(function(row){
@@ -22522,10 +22500,16 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   },true);
 
   async function savePlayerEditForm(editForm){
-    if(!editForm || editForm.dataset.saving==='1')return;
+    if(!editForm || editForm.dataset.saving==='1' || characterOwnerEditorState?.saving || !editForm.reportValidity())return;
+    var viewerId=currentUserId();
+    editForm.dataset.saving='1';
+    var saveButton=editForm.querySelector('.atlas-player-edit-save');
+    if(saveButton){saveButton.disabled=true;saveButton.textContent='сохраняем…'}
+    try{
     var id=editForm.dataset.playerId||'';
     var permission;
     try{permission=await getEditPermission(id)}catch(err){setEditStatus(err&&err.message?err.message:'не удалось проверить права.','error');return}
+    if(viewerId!==currentUserId())throw new Error('Аккаунт изменился. Откройте редактор заново.');
     if(!permission.allowed){setEditStatus('у тебя нет прав редактировать этот профиль.','error');return}
     var c=client(); if(!c){setEditStatus('supabase ещё загружается.','error');return}
 
@@ -22547,11 +22531,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var avatarFile=avatarInput&&avatarInput.files?avatarInput.files[0]:null;
     var bannerFile=bannerInput&&bannerInput.files?bannerInput.files[0]:null;
 
-    editForm.dataset.saving='1';
-    var saveButton=editForm.querySelector('.atlas-player-edit-save');
-    if(saveButton){saveButton.disabled=true;saveButton.textContent='сохраняем…'}
 
-    try{
       validateMedia(avatarFile);
       validateMedia(bannerFile);
       setEditStatus('сохраняем профиль…','ok');
@@ -22581,6 +22561,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       if(avatarUrl)publicUpdate.avatar_url=avatarUrl;
       if(bannerUrl)publicUpdate.banner_url=bannerUrl;
 
+      if(viewerId!==currentUserId())throw new Error('Аккаунт изменился. Изменения не сохранены.');
       var publicResult=await c
         .from('profiles')
         .update(publicUpdate)
@@ -22596,6 +22577,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       };
       if(isOwnProfile(id))privateUpdate.cursor_style=cursorStyle;
 
+      if(viewerId!==currentUserId())throw new Error('Аккаунт изменился. Личные настройки не сохранены.');
       var privateResult=await c
         .from('profile_private')
         .update(privateUpdate)
