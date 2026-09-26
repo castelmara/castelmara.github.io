@@ -14917,6 +14917,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     '</div>';
   }
 
+  var atlasSavedCharacterIndicators = new WeakSet();
+
   function atlasIndicatorsClient() {
     return window.ATLAS_SUPABASE || null;
   }
@@ -14982,6 +14984,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         character.profile = character.profile || {};
         character.profile.overview = character.profile.overview || {};
         character.profile.overview.indicators = result.data.indicators;
+        atlasSavedCharacterIndicators.add(character);
 
         var normalized = normalizeIndicators(character, result.data.indicators);
         var titleNode = card.querySelector("[data-character-indicators-title]");
@@ -15051,12 +15054,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     var modal = atlasEnsureIndicatorsModal();
     var body = document.getElementById("atlasIndicatorsModalBody");
-    var indicators = normalizeIndicators(
-      character,
+    var indicators = (
       character.profile && character.profile.overview
         ? character.profile.overview.indicators || null
         : null
     ) || { title: "показатели", display: "bars", items: [] };
+
+    var editorItems = Array.isArray(indicators.items) ? indicators.items : [];
+    if (!atlasSavedCharacterIndicators.has(character) && !editorItems.length) {
+      editorItems = ["харизма", "авторитет", "дисциплина", "амбициозность", "стрессоустойчивость", "командная работа"].map(function(label) {
+        return { label: label, value: "" };
+      });
+    }
 
     body.innerHTML =
       '<form id="atlasIndicatorsForm" data-character-id="' + esc(characterId) + '">' +
@@ -15065,7 +15074,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         '</label>' +
         '<div class="atlas-indicators-field"><span>показатели · значение от 0 до 10</span>' +
           '<div class="atlas-indicators-rows" id="atlasIndicatorsRows">' +
-            ((indicators.items || []).map(atlasIndicatorRowHtml).join("") || atlasIndicatorRowHtml({})) +
+            (editorItems.map(atlasIndicatorRowHtml).join("") || atlasIndicatorRowHtml({})) +
           '</div>' +
         '</div>' +
         '<div class="atlas-indicators-toolbar">' +
@@ -15122,7 +15131,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       }
 
       var score = Number(raw);
-      if (!Number.isFinite(score) || score < 0 || score > 10) {
+      if (!raw || !Number.isFinite(score) || score < 0 || score > 10) {
         atlasIndicatorsStatus("значение каждого показателя должно быть от 0 до 10.", "error");
         return;
       }
@@ -15152,6 +15161,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       character.profile = character.profile || {};
       character.profile.overview = character.profile.overview || {};
       character.profile.overview.indicators = res.data.indicators || indicators;
+      atlasSavedCharacterIndicators.add(character);
 
       atlasIndicatorsStatus("готово.", "ok");
       renderCharacterProfile(character);
