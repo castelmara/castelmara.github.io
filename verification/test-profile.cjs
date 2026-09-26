@@ -40,15 +40,22 @@ assert.equal(JSON.stringify(chars),before,'Rendering must not mutate profile dat
 // Import scope and media protection use the last pre-import commit, not a snapshot of this implementation.
 const prior=require('./test-courses.cjs').load('af8ef81c8984c461f8e98094aeba706a6121e878').all;
 const imported='alessandra-manrique bianca-solis josuke-higashikata jacqueline-kelsada miles-turner manuel-moretti melody-stoker oliver-brown ramona-martina-suarez cedric-joy francesca-romero hudson-hummond charles-berg roberto-castillo rodrigo-morales'.split(' ');
+// The last batch adds five profiles. Leon/Diego already exist; the importer skips them.
+const latestImported='silvia-ramos federico-herrera anthony-rookwood alejandro-hernandez pedro-martinez'.split(' ');
+const allImported=imported.concat(latestImported);
 const all=JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
-assert.equal(chars.length,70);assert.equal(all.length,prior.length);
+const expectedProfileIds=new Set(prior.filter(c=>c.profile).map(c=>c.id).concat(allImported));
+assert.deepEqual(Array.from(chars,c=>c.id).sort(),[...expectedProfileIds].sort(),'Full-profile IDs match baseline plus both approved imports');
+assert.equal(all.length,prior.length);
 assert.equal(new Set(all.map(c=>c.id)).size,all.length);
 assert.equal(imported.filter(id=>!prior.find(c=>c.id===id).profile).length,9);
+assert.equal(latestImported.filter(id=>!prior.find(c=>c.id===id).profile).length,5);
 const media=c=>[c.image,c.avatar,c.cardImage,c.banner,c.heroImage,c.card?.image,c.profile?.avatar,c.profile?.heroImage];
 for(const old of prior) {
  const c=all.find(c=>c.id===old.id);assert(c,old.id);
- if(!imported.includes(c.id)) {assert.deepEqual(c,old,c.id+': outside import unchanged');continue;}
- assert(c.profile?.sourceQuestionnaire,c.id+': source provenance');assert(!c.closed,c.id+': opens as full profile');
+ if(!allImported.includes(c.id)) {assert.deepEqual(c,old,c.id+': outside import unchanged');continue;}
+ if(imported.includes(c.id)) assert(c.profile?.sourceQuestionnaire,c.id+': source provenance');
+ assert(!c.closed,c.id+': opens as full profile');
  assert.deepEqual(c.player,old.player,c.id+': player preserved');
  if(old.profile) assert.deepEqual(media(c),media(old),c.id+': all existing media preserved');
  else assert(media(c).filter(Boolean).every(url=>url===old.image),c.id+': use existing image only');
@@ -85,7 +92,7 @@ const normalized=window.profileTest.indicators(sparse,values);assert.equal(norma
 const mixed=window.profileTest.renderIndicators({display:'bars',items:[{label:'балл',value:'0/10'},{label:'счёт',value:0},{label:'репутация',value:'хорошая'}]});
 assert(mixed.includes('>0</span>'));assert(mixed.includes('>хорошая</span>'));assert(!mixed.includes('—/10'));assert.equal(mixed.split('class="atlas-indicator-bar"').length-1,1);
 const player=window.profileTest.player({id:'fixture',profile:{},player:{name:'<Player>',nickname:'@handle'}});assert(player.includes('&lt;Player&gt; · @handle'));
-console.log('PASS '+chars.length+' full profiles: opening, tab switching, valid fields, no placeholders/duplicates; 15 imports, 9 conversions, preserved media/players/authored prose; all other characters unchanged.');
+console.log('PASS '+chars.length+' full profiles: opening, tab switching, valid fields, no placeholders/duplicates; 20 applied questionnaire profiles, 14 conversions, preserved media/players/authored prose; all other characters unchanged.');
 if(process.argv.includes('--preview')){
  const out=process.env.PROFILE_PREVIEW_DIR;assert(out);
  fs.mkdirSync(out,{recursive:true});
