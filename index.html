@@ -15079,7 +15079,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         '</div>' +
         '<div class="atlas-indicators-toolbar">' +
           '<button class="atlas-indicators-add" type="button" data-indicator-add="true">＋ добавить показатель</button>' +
-          '<button class="atlas-indicators-save" id="atlasIndicatorsSave" type="submit">сохранить</button>' +
+          '<button class="atlas-indicators-save" id="atlasIndicatorsSave" type="button">сохранить</button>' +
         '</div>' +
         '<div class="atlas-indicators-status" id="atlasIndicatorsStatus"></div>' +
       '</form>';
@@ -15106,15 +15106,15 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   }
 
   async function atlasSaveIndicators(form) {
+    if (!form || form.dataset.saving === "true" || !form.reportValidity()) return;
     var characterId = form.getAttribute("data-character-id") || "";
     var character = atlasFindCharacterById(characterId);
     var client = atlasIndicatorsClient();
-    if (!character || !client) return;
-
-    if (!(await atlasCanEditCharacterIndicators(characterId))) {
-      atlasIndicatorsStatus("нет доступа к редактированию этого персонажа.", "error");
+    if (!character || !client) {
+      atlasIndicatorsStatus("не удалось загрузить персонажа или подключиться к Supabase. попробуй ещё раз.", "error");
       return;
     }
+    var viewerId = atlasIndicatorsViewerId();
 
     var title = String(document.getElementById("atlasIndicatorsTitle").value || "").trim() || "показатели";
     var rows = Array.from(form.querySelectorAll("[data-indicators-row]"));
@@ -15141,11 +15141,17 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     var indicators = { title: title, display: "bars", items: items };
     var saveButton = document.getElementById("atlasIndicatorsSave");
-    saveButton.disabled = true;
+    form.dataset.saving = "true";
+    var controls = Array.from(form.querySelectorAll("input, button"));
+    controls.forEach(function(control) { control.disabled = true; });
     saveButton.textContent = "сохраняем…";
     atlasIndicatorsStatus("сохраняем…");
 
     try {
+      if (!(await atlasCanEditCharacterIndicators(characterId))) {
+        throw new Error("нет доступа к редактированию этого персонажа.");
+      }
+      if (viewerId !== atlasIndicatorsViewerId()) throw new Error("аккаунт изменился. открой редактор заново.");
       var res = await client
         .from("atlas_character_customizations")
         .upsert({
@@ -15157,6 +15163,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
         .single();
 
       if (res.error) throw res.error;
+      if (!res.data || !res.data.indicators) throw new Error("Supabase не вернул сохранённые показатели. попробуй ещё раз.");
 
       character.profile = character.profile || {};
       character.profile.overview = character.profile.overview || {};
@@ -15164,17 +15171,31 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       atlasSavedCharacterIndicators.add(character);
 
       atlasIndicatorsStatus("готово.", "ok");
-      renderCharacterProfile(character);
-      setTimeout(atlasCloseIndicatorsEditor, 220);
+      var card = document.querySelector('[data-character-indicators-card="' + CSS.escape(characterId) + '"]');
+      if (card) {
+        card.querySelector("[data-character-indicators-title]").textContent = character.profile.overview.indicators.title || "показатели";
+        card.querySelector("[data-character-indicators-body]").innerHTML = renderIndicators(normalizeIndicators(character, character.profile.overview.indicators));
+      }
+      await atlasHydrateCharacterIndicators(character);
+      if (document.getElementById("atlasIndicatorsForm") === form) atlasCloseIndicatorsEditor();
     } catch (err) {
+      console.warn("[ATLAS indicators save]", err);
       atlasIndicatorsStatus(err && err.message ? err.message : "не удалось сохранить показатели.", "error");
     } finally {
-      saveButton.disabled = false;
+      form.dataset.saving = "false";
+      controls.forEach(function(control) { control.disabled = false; });
       saveButton.textContent = "сохранить";
     }
   }
 
   document.addEventListener("click", function(event) {
+    var save = event.target.closest && event.target.closest("#atlasIndicatorsSave");
+    if (save) {
+      event.preventDefault();
+      event.stopPropagation();
+      atlasSaveIndicators(save.closest("#atlasIndicatorsForm"));
+      return;
+    }
     var edit = event.target.closest && event.target.closest("[data-character-indicators-edit]");
     if (edit) {
       event.preventDefault();
@@ -15206,6 +15227,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   document.addEventListener("submit", function(event) {
     if (event.target && event.target.id === "atlasIndicatorsForm") {
       event.preventDefault();
+      event.stopPropagation();
       atlasSaveIndicators(event.target);
     }
   }, true);
