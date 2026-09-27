@@ -10,6 +10,7 @@
     const seen = new Set(base.map(c => c.id));
     return base.concat(rosterCatalog.filter(c => !seen.has(c.id)));
   };
+  const name = c => c?.fullName || c?.name || c?.cardName || c?.id || '';
   function characterDisplayName(characterOrId, fallback = '') {
     const id = typeof characterOrId === 'string' ? characterOrId : characterOrId?.id;
     const character = typeof characterOrId === 'object' && characterOrId

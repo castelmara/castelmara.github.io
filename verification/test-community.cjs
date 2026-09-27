@@ -118,14 +118,18 @@ test('Profile hydration inserts one portrait into the existing overview and reus
  const e=env(),photos=[],social={dataset:{},innerHTML:'',isConnected:true};
  const side={prepend:node=>photos.unshift(node),querySelector:selector=>selector==='.atlas-community-social'?social:null};
  const overview={querySelector:selector=>selector==='.atlas-community-portrait'?photos[0]||null:selector==='.atlas-profile-overview-left'?side:null};
- const root={dataset:{},querySelector:selector=>selector==='[data-character-tab-panel="overview"]'?overview:null};
+ let editButton=null,allowed=true;
+ const hero={appendChild:node=>{editButton=node;node.remove=()=>{editButton=null}}};
+ const root={dataset:{},querySelector:selector=>selector==='[data-character-tab-panel="overview"]'?overview:selector==='.atlas-profile-hero'?hero:selector==='[data-community-edit]'?editButton:null};
  e.nodes.atlasCharacterProfileRoot=root;
- e.doc.createElement=()=>({innerHTML:'',hidden:false});
- e.hooks.rpc=name=>({data:name==='atlas_favorite_count'?3:false});
+ e.doc.createElement=()=>({dataset:{},innerHTML:'',hidden:false});
+ e.hooks.rpc=name=>({data:name==='atlas_favorite_count'?3:name==='atlas_can_edit_character'?allowed:false});
  await e.win.atlasHydrateCommunityCharacter('a');
  await e.win.atlasHydrateCommunityCharacter('a');
  assert.equal(photos.length,1);assert.equal(photos[0].className,'atlas-community-portrait');
  assert(photos[0].innerHTML.includes('https://original/photo.jpg'));assert.equal(photos[0].hidden,false);
+ assert.equal(editButton.textContent,'редактировать анкету');assert.equal(editButton.dataset.communityEdit,'a');
+ allowed=false;await e.win.atlasHydrateCommunityCharacter('a');assert.equal(editButton,null,'No edit button without RPC permission');
 });
 test('Registered account wins over static labels and never uses a persona nickname',async()=>{
  const e=env();e.chars[0].player={name:'Old Player',id:'not-an-account'};
