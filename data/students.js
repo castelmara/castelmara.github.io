@@ -1825,7 +1825,9 @@ level: "профессионал",
     if (!heroTitle) return;
 
     var profileId = getCurrentProfileIdFromTitle();
-    var caseId = LETTER_CASES[profileId];
+    var profileDisabled = typeof window.atlasIsCharacterProfileDisabled === "function" &&
+      window.atlasIsCharacterProfileDisabled(profileId);
+    var caseId = profileDisabled ? "" : LETTER_CASES[profileId];
 
     var oldButton = heroTitle.querySelector("[data-atlas-letter-link]");
 

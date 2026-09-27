@@ -251,7 +251,8 @@
       if (!Array.isArray(items) || !items.length) return '';
       return '<section class="atlas-profile-card"><h3>'+esc(title)+'</h3>'+items.map(item => {
         const target = character(item.targetId);
-        return '<div class="atlas-community-relation">'+(target ? '<button type="button" class="atlas-community-link" data-atlas-profile-id="'+esc(target.id)+'">'+esc(name(target))+'</button>' : '<strong>'+esc(item.name || '')+'</strong>')+'<small>'+esc(item.relation || '')+'</small><p>'+esc(item.text || '')+'</p></div>';
+        const targetDisabled = target && typeof window.atlasIsCharacterProfileDisabled === 'function' && window.atlasIsCharacterProfileDisabled(target.id);
+        return '<div class="atlas-community-relation">'+(target && !targetDisabled ? '<button type="button" class="atlas-community-link" data-atlas-profile-id="'+esc(target.id)+'">'+esc(name(target))+'</button>' : '<strong>'+esc(target ? name(target) : (item.name || ''))+'</strong>')+'<small>'+esc(item.relation || '')+'</small><p>'+esc(item.text || '')+'</p></div>';
       }).join('')+'</section>';
     }).join('') || '<div class="atlas-profile-empty">связи пока не добавлены.</div>';
   }

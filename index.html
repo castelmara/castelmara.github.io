@@ -15381,7 +15381,19 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     if (window.atlasHydrateCommunityCharacter) window.atlasHydrateCommunityCharacter(character.id);
   }
 
+  window.ATLAS_DISABLED_CHARACTER_PROFILES = window.ATLAS_DISABLED_CHARACTER_PROFILES || new Set([
+    "evelina-de-la-rosa"
+  ]);
+
+  window.atlasIsCharacterProfileDisabled = window.atlasIsCharacterProfileDisabled || function(characterId) {
+    return window.ATLAS_DISABLED_CHARACTER_PROFILES.has(characterId);
+  };
+
   function openCharacterProfile(characterId) {
+    if (window.atlasIsCharacterProfileDisabled(characterId)) {
+      openAtlasPage("personajes");
+      return;
+   }
     var character = (window.ATLAS_CHARACTERS || []).find(function(ch) {
       return ch.id === characterId;
     });
