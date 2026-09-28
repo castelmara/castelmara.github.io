@@ -1,0 +1,248 @@
+/* ATLAS COMPANION */
+#atlasCompanion {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 92px;
+  height: 92px;
+  z-index: 8500;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: left, top;
+}
+
+#atlasCompanion[hidden] { display: none !important; }
+
+#atlasCompanion .atlas-companion-pet {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  filter: drop-shadow(0 8px 8px rgba(0,0,0,.22));
+}
+
+#atlasCompanion .atlas-companion-pet:active,
+#atlasCompanion.is-dragging .atlas-companion-pet { cursor: grabbing; }
+
+#atlasCompanion .atlas-companion-pet:focus-visible {
+  outline: 2px solid rgba(226,71,71,.72);
+  outline-offset: 3px;
+  border-radius: 20px;
+}
+
+#atlasCompanion .atlas-companion-img {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  transform-origin: 50% 80%;
+}
+
+#atlasCompanion.is-walking .atlas-companion-img {
+  animation: atlasCompanionWalk .22s steps(2,end) infinite;
+}
+
+#atlasCompanion.is-dragging .atlas-companion-img {
+  animation: atlasCompanionHeld .32s ease-in-out infinite alternate;
+}
+
+#atlasCompanion.is-petted .atlas-companion-img {
+  animation: atlasCompanionHappy .62s cubic-bezier(.2,.9,.2,1);
+}
+
+.atlas-companion-heart {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  z-index: 2;
+  color: #e24747;
+  font: 900 15px/1 Arial,sans-serif;
+  text-shadow: 0 2px 5px rgba(0,0,0,.18);
+  pointer-events: none;
+  animation: atlasCompanionHeart .86s ease-out forwards;
+}
+
+@keyframes atlasCompanionWalk {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-3px) rotate(1deg); }
+}
+@keyframes atlasCompanionHeld {
+  from { transform: rotate(-4deg) translateY(-1px); }
+  to { transform: rotate(4deg) translateY(2px); }
+}
+@keyframes atlasCompanionHappy {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-12px) scale(1.05); }
+  62% { transform: translateY(0) scale(.98); }
+  82% { transform: translateY(-4px) scale(1.02); }
+  100% { transform: none; }
+}
+@keyframes atlasCompanionHeart {
+  0% { opacity: 0; transform: translate(-50%,5px) scale(.55); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)),-42px) scale(1.05); }
+}
+
+/* mi atlas companion settings */
+#atlas-app .atlas-companion-settings {
+  border: 1px solid var(--line, #e4e6e9);
+  border-radius: 22px;
+  background: var(--panel, #fff);
+  padding: 20px;
+}
+
+#atlas-app .atlas-companion-settings-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+#atlas-app .atlas-companion-settings-head h3 {
+  margin: 0 0 7px;
+  color: var(--ink, #11151b);
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: lowercase;
+}
+
+#atlas-app .atlas-companion-settings-head p {
+  margin: 0;
+  max-width: 700px;
+  color: var(--muted, #747b85);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+#atlas-app .atlas-companion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#atlas-app .atlas-companion-action {
+  appearance: none;
+  border: 1px solid var(--line, #dfe2e6);
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: var(--panel-soft, #f7f8fa);
+  color: var(--ink, #11151b);
+  font: 800 10px/1 "Montserrat",Arial,sans-serif;
+  cursor: pointer;
+}
+
+#atlas-app .atlas-companion-action:hover {
+  border-color: rgba(226,71,71,.45);
+  color: #e24747;
+}
+
+#atlas-app .atlas-companion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px,1fr));
+  gap: 10px;
+}
+
+#atlas-app .atlas-companion-choice {
+  appearance: none;
+  position: relative;
+  min-height: 142px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 7px;
+  padding: 12px 10px;
+  border: 1px solid var(--line, #e4e6e9);
+  border-radius: 18px;
+  background: var(--panel-soft, #fbfaf9);
+  color: var(--ink, #11151b);
+  cursor: pointer;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+#atlas-app .atlas-companion-choice:hover {
+  transform: translateY(-2px);
+  border-color: rgba(226,71,71,.40);
+  box-shadow: 0 10px 24px rgba(10,16,22,.08);
+}
+
+#atlas-app .atlas-companion-choice.is-selected {
+  border-color: rgba(226,71,71,.68);
+  box-shadow: inset 0 0 0 1px rgba(226,71,71,.22);
+}
+
+#atlas-app .atlas-companion-choice img {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+#atlas-app .atlas-companion-choice strong {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: lowercase;
+}
+
+#atlas-app .atlas-companion-choice small {
+  color: var(--muted, #8a9098);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+#atlas-app[data-theme="dark"] .atlas-companion-settings,
+#atlas-app[data-theme="dark"] .atlas-companion-choice {
+  background: #11151b;
+  border-color: rgba(255,255,255,.12);
+}
+
+#atlas-app[data-theme="dark"] .atlas-companion-choice {
+  background: #151a21;
+}
+
+#atlas-app[data-theme="dark"] .atlas-companion-choice:hover {
+  box-shadow: 0 12px 28px rgba(0,0,0,.28);
+}
+
+@media (max-width: 700px) {
+  #atlasCompanion,
+  #atlasCompanion .atlas-companion-pet {
+    width: 78px;
+    height: 78px;
+  }
+  #atlasCompanion .atlas-companion-img {
+    width: 78px;
+    height: 78px;
+  }
+  #atlas-app .atlas-companion-settings-head {
+    display: grid;
+  }
+  #atlas-app .atlas-companion-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #atlasCompanion,
+  #atlasCompanion .atlas-companion-img,
+  .atlas-companion-heart {
+    animation: none !important;
+    transition: none !important;
+  }
+}
