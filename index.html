@@ -15381,9 +15381,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     if (window.atlasHydrateCommunityCharacter) window.atlasHydrateCommunityCharacter(character.id);
   }
 
-  window.ATLAS_DISABLED_CHARACTER_PROFILES = window.ATLAS_DISABLED_CHARACTER_PROFILES || new Set([
-    "evelina-de-la-rosa"
-  ]);
+  window.ATLAS_DISABLED_CHARACTER_PROFILES = window.ATLAS_DISABLED_CHARACTER_PROFILES || new Set();
 
   window.atlasIsCharacterProfileDisabled = window.atlasIsCharacterProfileDisabled || function(characterId) {
     return window.ATLAS_DISABLED_CHARACTER_PROFILES.has(characterId);

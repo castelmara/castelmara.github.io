@@ -53,6 +53,17 @@ assert.equal(latestImported.filter(id=>!prior.find(c=>c.id===id).profile).length
 const media=c=>[c.image,c.avatar,c.cardImage,c.banner,c.heroImage,c.card?.image,c.profile?.avatar,c.profile?.heroImage];
 for(const old of prior) {
  const c=all.find(c=>c.id===old.id);assert(c,old.id);
+ if(c.id==='evelina-de-la-rosa') {
+  const expected=JSON.parse(JSON.stringify(old));
+  expected.profile.overview.mainInfo.age='20 лет';
+  expected.profile.overview.mainInfo.atlasNickname='';
+  expected.profile.dossier.motivation.text='';
+  assert.deepEqual(c,expected,'Evelina: only approved age and Cedric cleanup; all prose, relations, media and player preserved');
+  assert(!/cedjoy|седрик|кендрик|марчелл/i.test(JSON.stringify(c.profile)),'Evelina has no Cedric content');
+  assert.equal(c.profile.relations.plot.items.length,6);
+  assert(!window.atlasIsCharacterProfileDisabled(c.id),'Corrected Evelina profile is accessible');
+  continue;
+ }
  if(!allImported.includes(c.id)) {assert.deepEqual(c,old,c.id+': outside import unchanged');continue;}
  if(imported.includes(c.id)) assert(c.profile?.sourceQuestionnaire,c.id+': source provenance');
  assert(!c.closed,c.id+': opens as full profile');
