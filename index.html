@@ -20957,6 +20957,14 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-grid{display:grid;grid-template-columns:repeat(auto-fill,230px);gap:22px;align-items:start;justify-content:start;margin-top:24px}
 #atlas-app .atlas-player-card{width:230px;height:315px;border:0;border-radius:28px;padding:0;overflow:hidden;position:relative;display:block;background:#111;color:#fff;cursor:pointer;text-align:left;box-shadow:0 18px 42px rgba(23,23,31,.12);transition:transform .24s ease,box-shadow .24s ease}
 #atlas-app .atlas-player-card:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(23,23,31,.18)}
+#atlas-app .atlas-player-card.is-passion{overflow:visible}
+#atlas-app .atlas-player-card.is-passion .atlas-player-card-media{border-radius:inherit;overflow:hidden}
+#atlas-app .atlas-player-card.is-passion::after{border-radius:inherit}
+#atlas-app .atlas-passion-sparkles{position:absolute;z-index:3;width:44px;height:52px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
+#atlas-app .atlas-passion-sparkles.is-top{top:-16px;right:-10px}
+#atlas-app .atlas-passion-sparkles.is-bottom{bottom:-16px;left:-10px;transform:rotate(180deg)}
+@media(hover:hover) and (pointer:fine){#atlas-app .atlas-player-card.is-passion:hover{transform:translateY(-4px);box-shadow:-9px 10px 25px rgba(0,77,152,.28),9px 10px 25px rgba(165,0,68,.25)}}
+@media(hover:none),(pointer:coarse){#atlas-app .atlas-player-card.is-passion:hover{transform:none;box-shadow:0 18px 42px rgba(23,23,31,.12)}}
 #atlas-app .atlas-player-card-media{position:absolute;inset:0;background:linear-gradient(145deg,#191919,#050505);display:grid;place-items:center}
 #atlas-app .atlas-player-card-media img{width:100%;height:100%;object-fit:cover;display:block;filter:none}
 #atlas-app .atlas-player-card-letter{font-size:86px;font-weight:950;line-height:1;color:rgba(255,255,255,.88);text-transform:uppercase}
@@ -21100,6 +21108,11 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 #atlas-app .atlas-player-achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 #atlas-app .atlas-player-achievement{border:1px solid rgba(20,24,30,.08);border-radius:18px;background:#fff;padding:18px;min-height:140px}
 #atlas-app .atlas-player-achievement-icon{font-size:28px;line-height:1;margin-bottom:16px}
+#atlas-app article.atlas-player-achievement.is-passion-mythic{background:linear-gradient(125deg,#092d51,#490c2c);border:1px solid #c8a453;box-shadow:0 0 18px rgba(200,164,83,.12);display:grid;grid-template-columns:54px minmax(0,1fr);gap:8px 14px;align-content:start}
+#atlas-app .atlas-player-achievement.is-passion-mythic .atlas-player-achievement-icon{grid-column:1;grid-row:1 / span 4;margin:0;align-self:center}
+#atlas-app .atlas-player-achievement.is-passion-mythic img{display:block;width:54px;height:54px;object-fit:contain}
+#atlas-app .atlas-player-achievement.is-passion-mythic :is(strong,p,small,.atlas-passion-mythic-label){grid-column:2;margin:0;color:#f5ead4}
+#atlas-app .atlas-player-achievement.is-passion-mythic .atlas-passion-mythic-label{color:#e4c16c;font-size:9px;font-weight:900;letter-spacing:.08em}
 #atlas-app .atlas-player-achievement.is-streak{position:relative;overflow:hidden}
 #atlas-app .atlas-achievement-shield{width:58px;height:66px;margin:0 0 14px;display:grid;place-items:center;position:relative;isolation:isolate;filter:drop-shadow(0 8px 14px rgba(0,0,0,.16))}
 #atlas-app .atlas-achievement-shield::before{content:"";position:absolute;inset:0;background:linear-gradient(145deg,#3d4653 0%,#171b21 58%,#0c0f13 100%);clip-path:polygon(50% 0,91% 13%,84% 69%,50% 100%,16% 69%,9% 13%);z-index:-2}
@@ -22195,13 +22208,17 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     profilesLoadedAt=Date.now(); return profilesCache;
   }
 
+  var passionPlayerId='c8e46ed6-7024-467e-914b-f74b57f20f9c';
   function playerCard(p){
     var media=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':'<span class="atlas-player-card-letter">'+esc(initial(p))+'</span>';
     var badges=['игрок'];
     if(p.current_streak>1) badges.push('🔥 '+p.current_streak);
     if(p.role==='superadmin') badges.push('суперадмин');
     else if(p.role==='admin') badges.push('админ');
-    return '<button class="atlas-player-card" type="button" data-player-id="'+esc(p.id)+'">'+
+    var passion=p.id===passionPlayerId;
+    var sparkleShape='<path fill="#004D98" d="M27 3C25 16 22 21 13 24C22 27 25 32 27 46C29 32 32 27 41 24C32 21 29 16 27 3Z"/><path fill="#A50044" d="M9 1C8 7 6 10 1 12C6 14 8 17 9 23C10 17 12 14 17 12C12 10 10 7 9 1ZM8 32C7 37 5 39 1 41C5 43 7 45 8 50C9 45 11 43 15 41C11 39 9 37 8 32Z"/>';
+    var sparkles=passion?['top','bottom'].map(function(corner){return '<svg class="atlas-passion-sparkles is-'+corner+'" viewBox="0 0 44 52" aria-hidden="true" focusable="false">'+sparkleShape+'</svg>'}).join(''):'';
+    return '<button class="atlas-player-card'+(passion?' is-passion':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+
       '<span class="atlas-player-card-media">'+media+'</span>'+
       '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'игрок')+'</p></span>'+
     '</button>';
@@ -22440,10 +22457,13 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       var achPanel=ach.length?'<div class="atlas-player-achievement-grid">'+ach.map(function(a){
         var x=a.achievements||{};
         var code=String(x.code||'');
+        var passionMythic=code==='personal_passion_visca_barca'&&p.id===passionPlayerId;
+        if(code==='personal_passion_visca_barca'&&!passionMythic)return '';
         var streakMatch=code.match(/^streak_(\d+)$/);
         var cls='atlas-player-achievement'+(streakMatch?' is-streak':'')+(x.category==='rare'?' is-rare':'')+(x.is_secret?' is-secret':'');
         var icon=streakMatch?'<div class="atlas-achievement-shield"><span>'+esc(streakMatch[1])+'</span></div>':'<div class="atlas-player-achievement-icon">'+esc(x.icon||'✦')+'</div>';
-        var secretBadge=x.is_secret?'<div class="atlas-achievement-secret-badge">секретная ачивка</div>':'';
+        if(passionMythic){cls+=' is-passion-mythic';icon='<div class="atlas-player-achievement-icon"><img src="assets/achievements/barcelona.png" width="54" height="54" alt="FC Barcelona"></div>';}
+        var secretBadge=passionMythic?'<span class="atlas-passion-mythic-label">МИФИЧЕСКАЯ</span>':x.is_secret?'<div class="atlas-achievement-secret-badge">секретная ачивка</div>':'';
         var requirement=x.requirement?'<div class="atlas-player-achievement-requirement"><span>условие:</span> '+esc(x.requirement)+'</div>':'';
         return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+secretBadge+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p>'+requirement+'<small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
       }).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
