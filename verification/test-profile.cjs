@@ -42,7 +42,8 @@ const prior=require('./test-courses.cjs').load('af8ef81c8984c461f8e98094aeba706a
 const imported='alessandra-manrique bianca-solis josuke-higashikata jacqueline-kelsada miles-turner manuel-moretti melody-stoker oliver-brown ramona-martina-suarez cedric-joy francesca-romero hudson-hummond charles-berg roberto-castillo rodrigo-morales'.split(' ');
 // The last batch adds five profiles. Leon/Diego already exist; the importer skips them.
 const latestImported='silvia-ramos federico-herrera anthony-rookwood alejandro-hernandez pedro-martinez'.split(' ');
-const allImported=imported.concat(latestImported);
+const currentImported='remi-de-smet mikhail-vilmos nico-guerriero zoe-baudelaire'.split(' ');
+const allImported=imported.concat(latestImported,currentImported);
 const all=JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
 const expectedProfileIds=new Set(prior.filter(c=>c.profile).map(c=>c.id).concat(allImported));
 assert.deepEqual(Array.from(chars,c=>c.id).sort(),[...expectedProfileIds].sort(),'Full-profile IDs match baseline plus both approved imports');
@@ -50,6 +51,7 @@ assert.equal(all.length,prior.length);
 assert.equal(new Set(all.map(c=>c.id)).size,all.length);
 assert.equal(imported.filter(id=>!prior.find(c=>c.id===id).profile).length,9);
 assert.equal(latestImported.filter(id=>!prior.find(c=>c.id===id).profile).length,5);
+assert.equal(currentImported.filter(id=>!prior.find(c=>c.id===id).profile).length,4);
 const media=c=>[c.image,c.avatar,c.cardImage,c.banner,c.heroImage,c.card?.image,c.profile?.avatar,c.profile?.heroImage];
 for(const old of prior) {
  const c=all.find(c=>c.id===old.id);assert(c,old.id);
