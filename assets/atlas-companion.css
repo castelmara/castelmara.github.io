@@ -1,277 +1,437 @@
-/* ATLAS COMPANION */
-#atlasCompanion {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 124px;
-  height: 124px;
-  z-index: 8500;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  will-change: left, top;
+/* ATLAS COMPANION v4 — pixel pets */
+#atlasCompanion{
+  position:fixed;
+  left:0;
+  top:0;
+  width:124px;
+  height:124px;
+  z-index:8500;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  will-change:left,top;
 }
+#atlasCompanion[hidden]{display:none!important}
 
-#atlasCompanion[hidden] { display: none !important; }
-
-#atlasCompanion .atlas-companion-pet {
-  position: relative;
-  width: 124px;
-  height: 124px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  cursor: grab;
-  pointer-events: auto;
-  touch-action: none;
-  filter: drop-shadow(0 8px 8px rgba(0,0,0,.22));
+#atlasCompanion .atlas-companion-pet{
+  position:relative;
+  width:124px;
+  height:124px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  cursor:grab;
+  pointer-events:auto;
+  touch-action:none;
 }
-
 #atlasCompanion .atlas-companion-pet:active,
-#atlasCompanion.is-dragging .atlas-companion-pet { cursor: grabbing; }
+#atlasCompanion.is-dragging .atlas-companion-pet{cursor:grabbing}
 
-#atlasCompanion .atlas-companion-pet:focus-visible {
-  outline: 2px solid rgba(226,71,71,.72);
-  outline-offset: 3px;
-  border-radius: 20px;
-}
-
-#atlasCompanion .atlas-companion-img {
-  width: 124px;
-  height: 124px;
-  object-fit: contain;
-  display: block;
-  pointer-events: none;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  transform-origin: 50% 80%;
+#atlasCompanion .atlas-companion-pet:focus-visible{
+  outline:2px solid rgba(226,71,71,.72);
+  outline-offset:4px;
+  border-radius:22px;
 }
 
-#atlasCompanion:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img {
-  animation: atlasCompanionIdle 1.55s steps(4,end) infinite;
+#atlasCompanion .atlas-companion-name-tag{
+  position:absolute;
+  left:50%;
+  bottom:112px;
+  transform:translateX(-50%);
+  max-width:160px;
+  padding:5px 8px 6px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  background:rgba(12,16,22,.86);
+  color:#fff;
+  box-shadow:0 7px 18px rgba(0,0,0,.22);
+  font:800 9px/1 "Montserrat",Arial,sans-serif;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  pointer-events:none;
+  backdrop-filter:blur(8px);
+}
+#atlasCompanion .atlas-companion-name-tag[hidden]{display:none!important}
+
+#atlasCompanion .atlas-companion-visual{
+  position:relative;
+  width:124px;
+  height:124px;
+  display:grid;
+  place-items:center;
+  transform-origin:50% 75%;
+  pointer-events:none;
+}
+#atlasCompanion[data-dir="left"] .atlas-companion-visual{transform:scaleX(-1)}
+
+#atlasCompanion .atlas-companion-img{
+  width:124px;
+  height:124px;
+  object-fit:contain;
+  display:block;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+  pointer-events:none;
+  transform-origin:50% 78%;
+  filter:drop-shadow(0 7px 5px rgba(0,0,0,.20));
 }
 
-#atlasCompanion[data-pet="sprout"] .atlas-companion-img {
-  width: 124px;
-  height: 124px;
+/* generic movement */
+#atlasCompanion.is-walking .atlas-companion-img{
+  animation:atlasCompanionWalk .24s steps(2,end) infinite;
+}
+#atlasCompanion.is-dragging .atlas-companion-img{
+  animation:atlasCompanionHeld .34s ease-in-out infinite alternate!important;
+}
+#atlasCompanion.is-petted .atlas-companion-img{
+  animation:atlasCompanionHappy .62s cubic-bezier(.2,.9,.2,1)!important;
 }
 
-#atlasCompanion[data-pet="sprout"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img {
-  animation: atlasSproutIdle 1.35s steps(4,end) infinite;
+/* per-pet idle animations */
+#atlasCompanion[data-pet="sprout"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasSproutIdle 1.35s steps(4,end) infinite;
 }
-#atlasCompanion.is-walking .atlas-companion-img {
-  animation: atlasCompanionWalk .22s steps(2,end) infinite;
+#atlasCompanion[data-pet="frog"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasFrogIdle 1.65s steps(4,end) infinite;
 }
-
-#atlasCompanion.is-dragging .atlas-companion-img {
-  animation: atlasCompanionHeld .32s ease-in-out infinite alternate;
+#atlasCompanion[data-pet="duck"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasDuckIdle 1.55s steps(4,end) infinite;
 }
-
-#atlasCompanion.is-petted .atlas-companion-img {
-  animation: atlasCompanionHappy .62s cubic-bezier(.2,.9,.2,1);
+#atlasCompanion[data-pet="catbox"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasCatBoxIdle 1.75s steps(4,end) infinite;
 }
-
-.atlas-companion-heart {
-  position: absolute;
-  left: 50%;
-  top: 12px;
-  z-index: 2;
-  color: #e24747;
-  font: 900 15px/1 Arial,sans-serif;
-  text-shadow: 0 2px 5px rgba(0,0,0,.18);
-  pointer-events: none;
-  animation: atlasCompanionHeart .86s ease-out forwards;
+#atlasCompanion[data-pet="book"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasBookIdle 1.9s steps(4,end) infinite;
 }
-
-@keyframes atlasCompanionIdle {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-2px) rotate(-1deg); }
-  50% { transform: translateY(-4px) rotate(0deg); }
-  75% { transform: translateY(-2px) rotate(1deg); }
+#atlasCompanion[data-pet="codercat"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasCoderCatIdle .62s steps(2,end) infinite;
 }
-
-@keyframes atlasSproutIdle {
-  0%,100% { transform: translateY(0) rotate(0deg) scale(1); }
-  25% { transform: translateY(-3px) rotate(-2deg) scale(1.01); }
-  50% { transform: translateY(-6px) rotate(0deg) scale(.99,1.02); }
-  75% { transform: translateY(-3px) rotate(2deg) scale(1.01); }
+#atlasCompanion[data-pet="axolotl"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasAxolotlIdle 1.35s steps(4,end) infinite;
 }
-@keyframes atlasCompanionWalk {
-  0%,100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-3px) rotate(1deg); }
+#atlasCompanion[data-pet="spider"]:not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasSpiderIdle .72s steps(3,end) infinite;
 }
-@keyframes atlasCompanionHeld {
-  from { transform: rotate(-4deg) translateY(-1px); }
-  to { transform: rotate(4deg) translateY(2px); }
+#atlasCompanion[data-pet="raven"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasRavenIdle 1.8s steps(4,end) infinite;
 }
-@keyframes atlasCompanionHappy {
-  0% { transform: translateY(0) scale(1); }
-  35% { transform: translateY(-12px) scale(1.05); }
-  62% { transform: translateY(0) scale(.98); }
-  82% { transform: translateY(-4px) scale(1.02); }
-  100% { transform: none; }
+#atlasCompanion[data-pet="dragon"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasDragonIdle 1.15s steps(4,end) infinite;
 }
-@keyframes atlasCompanionHeart {
-  0% { opacity: 0; transform: translate(-50%,5px) scale(.55); }
-  18% { opacity: 1; }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)),-42px) scale(1.05); }
+#atlasCompanion[data-pet="kitsune"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasKitsuneIdle 1.65s steps(4,end) infinite;
+}
+#atlasCompanion[data-pet="ghost"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
+  animation:atlasGhostIdle 1.8s steps(4,end) infinite;
 }
 
-/* mi atlas companion settings */
-#atlas-app .atlas-companion-settings {
-  border: 1px solid var(--line, #e4e6e9);
-  border-radius: 22px;
-  background: var(--panel, #fff);
-  padding: 20px;
+/* coder cat: keyboard lights + tapping */
+#atlasCompanion[data-pet="codercat"] .atlas-companion-visual::after{
+  content:"";
+  position:absolute;
+  left:41px;
+  top:76px;
+  width:4px;
+  height:4px;
+  background:#74f4cf;
+  box-shadow:8px 1px 0 #75d8ff,16px -1px 0 #8cf39d,24px 2px 0 #ef9278;
+  opacity:.35;
+  animation:atlasTypingPixels .48s steps(2,end) infinite;
+}
+#atlasCompanion[data-pet="codercat"].is-petted .atlas-companion-visual::after{
+  animation-duration:.18s;
+  opacity:.95;
 }
 
-#atlas-app .atlas-companion-settings-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 16px;
+/* kitsune: tails stay tucked until petting */
+#atlasCompanion[data-pet="kitsune"] .atlas-companion-visual{
+  clip-path:inset(0 22% 0 22%);
+  transition:clip-path .26s steps(4,end);
+}
+#atlasCompanion[data-pet="kitsune"].is-petted .atlas-companion-visual{
+  clip-path:inset(0 0 0 0);
 }
 
-#atlas-app .atlas-companion-settings-head h3 {
-  margin: 0 0 7px;
-  color: var(--ink, #11151b);
-  font-size: 16px;
-  font-weight: 900;
-  text-transform: lowercase;
+/* spider gets a slightly more grounded crawl */
+#atlasCompanion[data-pet="spider"].is-walking .atlas-companion-img{
+  animation:atlasSpiderCrawl .20s steps(2,end) infinite;
 }
 
-#atlas-app .atlas-companion-settings-head p {
-  margin: 0;
-  max-width: 700px;
-  color: var(--muted, #747b85);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.55;
+/* little interaction particles */
+.atlas-companion-heart{
+  position:absolute;
+  left:50%;
+  top:12px;
+  z-index:3;
+  color:#e24747;
+  font:900 15px/1 Arial,sans-serif;
+  text-shadow:0 2px 5px rgba(0,0,0,.18);
+  pointer-events:none;
+  animation:atlasCompanionHeart .86s ease-out forwards;
+}
+.atlas-companion-spark{
+  position:absolute;
+  left:50%;
+  top:24px;
+  z-index:3;
+  color:#f0c55a;
+  font:900 13px/1 Arial,sans-serif;
+  pointer-events:none;
+  animation:atlasCompanionSpark .72s ease-out forwards;
 }
 
-#atlas-app .atlas-companion-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+@keyframes atlasCompanionWalk{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-4px) rotate(1deg)}
+}
+@keyframes atlasCompanionHeld{
+  from{transform:rotate(-4deg) translateY(-1px)}
+  to{transform:rotate(4deg) translateY(2px)}
+}
+@keyframes atlasCompanionHappy{
+  0%{transform:translateY(0) scale(1)}
+  35%{transform:translateY(-13px) scale(1.06)}
+  62%{transform:translateY(0) scale(.98)}
+  82%{transform:translateY(-4px) scale(1.02)}
+  100%{transform:none}
+}
+@keyframes atlasSproutIdle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  25%{transform:translateY(-3px) rotate(-2deg)}
+  50%{transform:translateY(-6px) rotate(0) scale(.99,1.02)}
+  75%{transform:translateY(-3px) rotate(2deg)}
+}
+@keyframes atlasFrogIdle{
+  0%,100%{transform:translateY(0) scale(1)}
+  40%{transform:translateY(0) scale(1.02,.96)}
+  55%{transform:translateY(-8px) scale(.98,1.03)}
+  70%{transform:translateY(0) scale(1)}
+}
+@keyframes atlasDuckIdle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  25%{transform:translateY(-2px) rotate(-1deg)}
+  50%{transform:translateY(-4px) rotate(0)}
+  75%{transform:translateY(-2px) rotate(1deg)}
+}
+@keyframes atlasCatBoxIdle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  30%{transform:translateY(-3px) rotate(-1deg)}
+  55%{transform:translateY(-6px) rotate(1deg)}
+  72%{transform:translateY(-2px) rotate(0)}
+}
+@keyframes atlasBookIdle{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-8px) rotate(1deg)}
+}
+@keyframes atlasCoderCatIdle{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(1px) translateX(1px)}
+}
+@keyframes atlasTypingPixels{
+  0%{opacity:.25;transform:translateX(0)}
+  50%{opacity:1;transform:translateX(2px)}
+  100%{opacity:.25;transform:translateX(0)}
+}
+@keyframes atlasAxolotlIdle{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-5px) scale(1.015)}
+}
+@keyframes atlasSpiderIdle{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-1px) rotate(1deg)}
+}
+@keyframes atlasSpiderCrawl{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-2px) rotate(2deg)}
+}
+@keyframes atlasRavenIdle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  40%{transform:translateY(-2px) rotate(-1deg)}
+  55%{transform:translateY(-3px) rotate(2deg)}
+  70%{transform:translateY(-2px) rotate(0)}
+}
+@keyframes atlasDragonIdle{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-6px) scale(1.02,.98)}
+}
+@keyframes atlasKitsuneIdle{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-3px) rotate(1deg)}
+}
+@keyframes atlasGhostIdle{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-9px) rotate(1deg)}
+}
+@keyframes atlasCompanionHeart{
+  0%{opacity:0;transform:translate(-50%,5px) scale(.55)}
+  18%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-42px) scale(1.05)}
+}
+@keyframes atlasCompanionSpark{
+  0%{opacity:0;transform:translate(-50%,3px) scale(.5) rotate(0)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-34px) scale(1.1) rotate(90deg)}
 }
 
-#atlas-app .atlas-companion-action {
-  appearance: none;
-  border: 1px solid var(--line, #dfe2e6);
-  border-radius: 999px;
-  padding: 9px 12px;
-  background: var(--panel-soft, #f7f8fa);
-  color: var(--ink, #11151b);
-  font: 800 10px/1 "Montserrat",Arial,sans-serif;
-  cursor: pointer;
+/* Mi Atlas companion panel */
+#atlas-app .atlas-companion-settings{
+  border:1px solid var(--line,#e4e6e9);
+  border-radius:22px;
+  background:var(--panel,#fff);
+  padding:20px;
 }
-
-#atlas-app .atlas-companion-action:hover {
-  border-color: rgba(226,71,71,.45);
-  color: #e24747;
+#atlas-app .atlas-companion-settings-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:16px;
 }
-
-#atlas-app .atlas-companion-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(125px,1fr));
-  gap: 10px;
+#atlas-app .atlas-companion-settings-head h3{
+  margin:0 0 7px;
+  color:var(--ink,#11151b);
+  font-size:16px;
+  font-weight:900;
+  text-transform:lowercase;
 }
-
-#atlas-app .atlas-companion-choice {
-  appearance: none;
-  position: relative;
-  min-height: 142px;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  gap: 7px;
-  padding: 12px 10px;
-  border: 1px solid var(--line, #e4e6e9);
-  border-radius: 18px;
-  background: var(--panel-soft, #fbfaf9);
-  color: var(--ink, #11151b);
-  cursor: pointer;
-  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+#atlas-app .atlas-companion-settings-head p{
+  margin:0;
+  max-width:720px;
+  color:var(--muted,#747b85);
+  font-size:11px;
+  font-weight:600;
+  line-height:1.55;
 }
-
-#atlas-app .atlas-companion-choice:hover {
-  transform: translateY(-2px);
-  border-color: rgba(226,71,71,.40);
-  box-shadow: 0 10px 24px rgba(10,16,22,.08);
+#atlas-app .atlas-companion-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
 }
-
-#atlas-app .atlas-companion-choice.is-selected {
-  border-color: rgba(226,71,71,.68);
-  box-shadow: inset 0 0 0 1px rgba(226,71,71,.22);
+#atlas-app .atlas-companion-action{
+  appearance:none;
+  border:1px solid var(--line,#dfe2e6);
+  border-radius:999px;
+  padding:9px 12px;
+  background:var(--panel-soft,#f7f8fa);
+  color:var(--ink,#11151b);
+  font:800 10px/1 "Montserrat",Arial,sans-serif;
+  cursor:pointer;
 }
-
-#atlas-app .atlas-companion-choice img {
-  width: 82px;
-  height: 82px;
-  object-fit: contain;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+#atlas-app .atlas-companion-action:hover{
+  border-color:rgba(226,71,71,.45);
+  color:#e24747;
 }
-
-#atlas-app .atlas-companion-choice strong {
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: lowercase;
+#atlas-app .atlas-companion-name-editor{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:8px;
+  margin:0 0 16px;
 }
-
-#atlas-app .atlas-companion-choice small {
-  color: var(--muted, #8a9098);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+#atlas-app .atlas-companion-name-editor input{
+  width:100%;
+  min-width:0;
+  border:1px solid var(--line,#dfe2e6);
+  border-radius:14px;
+  background:var(--panel-soft,#fbfaf9);
+  color:var(--ink,#11151b);
+  padding:11px 13px;
+  font:700 11px/1.2 "Montserrat",Arial,sans-serif;
+  outline:none;
 }
-
+#atlas-app .atlas-companion-name-editor input:focus{
+  border-color:rgba(226,71,71,.5);
+  box-shadow:0 0 0 3px rgba(226,71,71,.10);
+}
+#atlas-app .atlas-companion-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(125px,1fr));
+  gap:10px;
+}
+#atlas-app .atlas-companion-choice{
+  appearance:none;
+  position:relative;
+  min-height:155px;
+  display:grid;
+  justify-items:center;
+  align-content:center;
+  gap:7px;
+  padding:12px 10px;
+  border:1px solid var(--line,#e4e6e9);
+  border-radius:18px;
+  background:var(--panel-soft,#fbfaf9);
+  color:var(--ink,#11151b);
+  cursor:pointer;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+#atlas-app .atlas-companion-choice:hover{
+  transform:translateY(-2px);
+  border-color:rgba(226,71,71,.40);
+  box-shadow:0 10px 24px rgba(10,16,22,.08);
+}
+#atlas-app .atlas-companion-choice.is-selected{
+  border-color:rgba(226,71,71,.68);
+  box-shadow:inset 0 0 0 1px rgba(226,71,71,.22);
+}
+#atlas-app .atlas-companion-choice img{
+  width:92px;
+  height:92px;
+  object-fit:contain;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
+#atlas-app .atlas-companion-choice strong{
+  font-size:10px;
+  font-weight:900;
+  text-transform:lowercase;
+}
+#atlas-app .atlas-companion-choice small{
+  color:var(--muted,#8a9098);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  text-align:center;
+}
 #atlas-app[data-theme="dark"] .atlas-companion-settings,
-#atlas-app[data-theme="dark"] .atlas-companion-choice {
-  background: #11151b;
-  border-color: rgba(255,255,255,.12);
+#atlas-app[data-theme="dark"] .atlas-companion-choice{
+  background:#11151b;
+  border-color:rgba(255,255,255,.12);
+}
+#atlas-app[data-theme="dark"] .atlas-companion-choice{background:#151a21}
+#atlas-app[data-theme="dark"] .atlas-companion-name-editor input{
+  background:#151a21;
+  border-color:rgba(255,255,255,.12);
+  color:#f5f2ef;
+}
+#atlas-app[data-theme="dark"] .atlas-companion-choice:hover{
+  box-shadow:0 12px 28px rgba(0,0,0,.28);
 }
 
-#atlas-app[data-theme="dark"] .atlas-companion-choice {
-  background: #151a21;
-}
-
-#atlas-app[data-theme="dark"] .atlas-companion-choice:hover {
-  box-shadow: 0 12px 28px rgba(0,0,0,.28);
-}
-
-@media (max-width: 700px) {
+@media(max-width:700px){
   #atlasCompanion,
-  #atlasCompanion .atlas-companion-pet {
-    width: 102px;
-    height: 102px;
+  #atlasCompanion .atlas-companion-pet,
+  #atlasCompanion .atlas-companion-visual,
+  #atlasCompanion .atlas-companion-img{
+    width:102px;
+    height:102px;
   }
-  #atlasCompanion .atlas-companion-img {
-    width: 92px;
-    height: 92px;
-  }
-  #atlasCompanion[data-pet="sprout"] .atlas-companion-img {
-    width: 102px;
-    height: 102px;
-  }
-  #atlas-app .atlas-companion-settings-head {
-    display: grid;
-  }
-  #atlas-app .atlas-companion-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
+  #atlasCompanion .atlas-companion-name-tag{bottom:91px;max-width:130px}
+  #atlas-app .atlas-companion-settings-head{display:grid}
+  #atlas-app .atlas-companion-name-editor{grid-template-columns:1fr}
+  #atlas-app .atlas-companion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce){
   #atlasCompanion,
   #atlasCompanion .atlas-companion-img,
-  .atlas-companion-heart {
-    animation: none !important;
-    transition: none !important;
+  #atlasCompanion .atlas-companion-visual,
+  .atlas-companion-heart,
+  .atlas-companion-spark{
+    animation:none!important;
+    transition:none!important;
   }
 }
