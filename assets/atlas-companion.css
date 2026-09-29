@@ -107,17 +107,11 @@
 #atlasCompanion[data-pet="book"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
   animation:atlasBookIdle 1.9s steps(4,end) infinite;
 }
-#atlasCompanion[data-pet="codercat"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
-  animation:atlasCoderCatIdle .62s steps(2,end) infinite;
-}
 #atlasCompanion[data-pet="axolotl"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
   animation:atlasAxolotlIdle 1.35s steps(4,end) infinite;
 }
 #atlasCompanion[data-pet="spider"]:not(.is-dragging):not(.is-petted) .atlas-companion-img{
   animation:atlasSpiderIdle .72s steps(3,end) infinite;
-}
-#atlasCompanion[data-pet="raven"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
-  animation:atlasRavenIdle 1.8s steps(4,end) infinite;
 }
 #atlasCompanion[data-pet="dragon"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img{
   animation:atlasDragonIdle 1.15s steps(4,end) infinite;
@@ -129,30 +123,20 @@
   animation:atlasGhostIdle 1.8s steps(4,end) infinite;
 }
 
-/* coder cat: keyboard lights + tapping */
-#atlasCompanion[data-pet="codercat"] .atlas-companion-visual::after{
-  content:"";
-  position:absolute;
-  left:41px;
-  top:76px;
-  width:4px;
-  height:4px;
-  background:#74f4cf;
-  box-shadow:8px 1px 0 #75d8ff,16px -1px 0 #8cf39d,24px 2px 0 #ef9278;
-  opacity:.35;
-  animation:atlasTypingPixels .48s steps(2,end) infinite;
-}
-#atlasCompanion[data-pet="codercat"].is-petted .atlas-companion-visual::after{
-  animation-duration:.18s;
-  opacity:.95;
-}
-
 /* kitsune uses separate idle / petted PNG states */
 
 /* spider gets a slightly more grounded crawl */
 #atlasCompanion[data-pet="spider"].is-walking .atlas-companion-img{
   animation:atlasSpiderCrawl .20s steps(2,end) infinite;
 }
+
+/* Calm reactions retain their own PNG poses instead of the generic bounce. */
+#atlasCompanion[data-pet="raven"].is-petted .atlas-companion-img,
+#atlasCompanion[data-pet="codercat"].is-petted .atlas-companion-img,
+#atlasCompanion[data-pet="book"].is-petted .atlas-companion-img{animation:none!important}
+#atlasCompanion[data-pet="spider"].is-petted .atlas-companion-img{animation:none!important;transform:translateY(3px)}
+#atlasCompanion.is-phasing .atlas-companion-img{opacity:.12}
+#atlasCompanion.is-paused .atlas-companion-img{animation-play-state:paused!important}
 
 /* little interaction particles */
 .atlas-companion-heart{
@@ -220,15 +204,6 @@
   0%,100%{transform:translateY(0) rotate(-1deg)}
   50%{transform:translateY(-8px) rotate(1deg)}
 }
-@keyframes atlasCoderCatIdle{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(1px) translateX(1px)}
-}
-@keyframes atlasTypingPixels{
-  0%{opacity:.25;transform:translateX(0)}
-  50%{opacity:1;transform:translateX(2px)}
-  100%{opacity:.25;transform:translateX(0)}
-}
 @keyframes atlasAxolotlIdle{
   0%,100%{transform:translateY(0) scale(1)}
   50%{transform:translateY(-5px) scale(1.015)}
@@ -238,14 +213,8 @@
   50%{transform:translateY(-1px) rotate(1deg)}
 }
 @keyframes atlasSpiderCrawl{
-  0%,100%{transform:translateY(0) rotate(-2deg)}
-  50%{transform:translateY(-2px) rotate(2deg)}
-}
-@keyframes atlasRavenIdle{
-  0%,100%{transform:translateY(0) rotate(0)}
-  40%{transform:translateY(-2px) rotate(-1deg)}
-  55%{transform:translateY(-3px) rotate(2deg)}
-  70%{transform:translateY(-2px) rotate(0)}
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-1px)}
 }
 @keyframes atlasDragonIdle{
   0%,100%{transform:translateY(0) scale(1)}

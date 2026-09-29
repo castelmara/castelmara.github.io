@@ -2,18 +2,18 @@
   'use strict';
 
   var PETS = {
-    sprout:  {name:'росточек', file:'assets/companions/sprout.png', happy:'assets/companions/sprout-happy.png', note:'любимчик'},
+    sprout:  {name:'росточек', file:'assets/companions/v2/sprout.png', happy:'assets/companions/v2/sprout-happy.png', note:'любимчик'},
     frog:    {name:'лягушка', file:'assets/companions/frog.png', happy:'assets/companions/frog-happy.png', note:'любит подпрыгивать'},
-    duck:    {name:'утёнок', file:'assets/companions/duck.png', happy:'assets/companions/duck-happy.png', note:'важно покачивается'},
-    catbox:  {name:'кот в коробке', file:'assets/companions/catbox.png', happy:'assets/companions/catbox-happy.png', note:'сидит в своей коробке'},
-    book:    {name:'книга', file:'assets/companions/book.png', happy:'assets/companions/book-happy.png', note:'немного волшебная'},
-    codercat:{name:'кот-кодер', file:'assets/companions/codercat.png', happy:'assets/companions/codercat-happy.png', note:'тапает по клавиатуре'},
+    duck:    {name:'утёнок', file:'assets/companions/v2/duck.png', happy:'assets/companions/v2/duck-happy.png', note:'важно покачивается'},
+    catbox:  {name:'кот в коробке', file:'assets/companions/v2/catbox.png', happy:'assets/companions/v2/catbox-happy.png', note:'сидит в своей коробке'},
+    book:    {name:'книга', file:'assets/companions/v2/book.png', happy:'assets/companions/v2/book-happy.png', note:'немного волшебная'},
+    codercat:{name:'кот-кодер', file:'assets/companions/v2/codercat.png', happy:'assets/companions/v2/codercat-happy.png', note:'тапает по клавиатуре'},
     axolotl: {name:'аксолотль', file:'assets/companions/axolotl.png', happy:'assets/companions/axolotl-happy.png', note:'очень доволен жизнью'},
-    spider:  {name:'паучок', file:'assets/companions/spider.png', happy:'assets/companions/spider-happy.png', note:'ползает рядом'},
-    raven:   {name:'ворон', file:'assets/companions/raven.png', happy:'assets/companions/raven-happy.png', note:'наблюдает'},
-    dragon:  {name:'дракон', file:'assets/companions/dragon.png', happy:'assets/companions/dragon-happy.png', note:'маленький, но дракон'},
-    kitsune: {name:'кицунэ', file:'assets/companions/kitsune.png', happy:'assets/companions/kitsune-happy.png', note:'показывает хвосты, когда гладят'},
-    ghost:   {name:'призрак', file:'assets/companions/ghost.png', happy:'assets/companions/ghost-happy.png', note:'просто тусуется'}
+    spider:  {name:'паучок', file:'assets/companions/v2/spider.png', happy:'assets/companions/v2/spider-happy.png', note:'ползает рядом'},
+    raven:   {name:'ворон', file:'assets/companions/v2/raven.png', happy:'assets/companions/v2/raven-happy.png', note:'наблюдает'},
+    dragon:  {name:'дракон', file:'assets/companions/v2/dragon.png', happy:'assets/companions/v2/dragon-happy.png', note:'маленький, но дракон'},
+    kitsune: {name:'кицунэ', file:'assets/companions/v2/kitsune.png', happy:'assets/companions/v2/kitsune-happy.png', note:'показывает хвосты, когда гладят'},
+    ghost:   {name:'призрак', file:'assets/companions/v2/ghost.png', happy:'assets/companions/v2/ghost-happy.png', note:'просто тусуется'}
   };
 
   var state = {
@@ -35,7 +35,98 @@
   var root = null;
   var img = null;
   var nameTag = null;
-  var petRestoreTimer = null;
+  var behaviorTimer = null;
+  var frameTimer = null;
+  var walkTimer = null;
+  var sequenceId = 0;
+  var hovered = false;
+  var petting = false;
+
+  function active(){
+    return !!uid() && canUseCompanion() && state.visible && !document.hidden && !state.dragging;
+  }
+
+  function frame(name){
+    if(!img) return;
+    img.src = name ? PETS[state.pet].file.replace(/\.png$/, '-'+name+'.png') : PETS[state.pet].file;
+    root.dataset.frame = name || 'idle';
+  }
+
+  function stopBehavior(){
+    clearTimeout(behaviorTimer);
+    clearTimeout(frameTimer);
+    clearTimeout(walkTimer);
+    behaviorTimer=frameTimer=walkTimer=null;
+    sequenceId++;
+    petting=false;
+    if(root){
+      root.classList.remove('is-petted','is-walking','is-phasing');
+      root.querySelectorAll('.atlas-companion-heart,.atlas-companion-spark').forEach(function(el){el.remove()});
+    }
+  }
+
+  // A single frame sequence belongs to the current pet; switching invalidates it.
+  function sequence(steps,done){
+    clearTimeout(frameTimer);
+    var token=++sequenceId;
+    function next(i){
+      if(token!==sequenceId || !active()) return;
+      if(i===steps.length){if(done) done();return}
+      frame(steps[i][0]);
+      frameTimer=setTimeout(function(){next(i+1)},steps[i][1]);
+    }
+    next(0);
+  }
+
+  function idle(){
+    petting=false;
+    root.classList.remove('is-petted','is-phasing');
+    frame(hovered && state.pet==='ghost' ? 'hover' : hovered && state.pet==='catbox' ? 'hide' : '');
+    scheduleBehavior();
+    if(!state.roamTimer && !root.classList.contains('is-walking')) scheduleRoam();
+  }
+
+  function scheduleBehavior(){
+    clearTimeout(behaviorTimer);
+    if(!active() || reduced || petting || hovered && state.pet==='catbox') return;
+    var wait=state.pet==='codercat' ? 650 : state.pet==='spider' ? 1600 : 4500+Math.random()*6500;
+    behaviorTimer=setTimeout(function(){
+      if(!active() || petting) return;
+      var steps;
+      switch(state.pet){
+        case 'codercat': steps=[['typing-left',130],['typing-right',130],['',400],['typing-left',130],['typing-right',130],['typing-left',130],['',350]];break;
+        case 'catbox': steps=[['hide',1000],['pop',180],['',600]];break;
+        case 'book': steps=[['closing',180],['closed',700],['opening',180],['',500]];break;
+        case 'spider': steps=[['front',260],['',350]];break;
+        case 'raven': steps=Math.random()<.5 ? [['blink',180],['',500]] : [['bow',650],['',500]];break;
+        case 'sprout': steps=Math.random()<.5 ? [['blink',180],['',400]] : [['sway',600],['',400]];break;
+        case 'duck':
+        case 'kitsune':
+        case 'dragon': steps=[['blink',180],['',500]];break;
+        case 'ghost':
+          root.classList.add('is-phasing');
+          steps=[['hover',550]];break;
+        default:return;
+      }
+      sequence(steps,function(){
+        if(state.pet==='ghost' && state.pos) setVisual(state.pos.x+(Math.random()<.5?-5:5),state.pos.y,0);
+        idle();
+      });
+    },wait);
+  }
+
+  function hoverPet(e,inside){
+    if(e.pointerType!=='mouse' || !active() || reduced) return;
+    hovered=inside;
+    if(petting) return;
+    if(state.pet==='catbox'){
+      clearTimeout(behaviorTimer);
+      clearTimeout(frameTimer);
+      sequenceId++;
+      if(inside) frame('hide');
+      else sequence([['hide',250],['pop',180]],idle);
+    }else if(state.pet==='ghost') frame(inside?'hover':'');
+  }
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   function uid(){
@@ -52,7 +143,7 @@
 
   function canUseCompanion(){
     var role=companionRole();
-    return role==='admin' || role==='superadmin';
+    return !!uid() && (role==='admin' || role==='superadmin');
   }
 
   function removeCompanionSettings(){
@@ -151,6 +242,8 @@
     nameTag=root.querySelector('.atlas-companion-name-tag');
 
     var btn=root.querySelector('.atlas-companion-pet');
+    btn.addEventListener('pointerenter',function(e){hoverPet(e,true)});
+    btn.addEventListener('pointerleave',function(e){hoverPet(e,false)});
     btn.addEventListener('pointerdown',onPointerDown);
     btn.addEventListener('pointermove',onPointerMove);
     btn.addEventListener('pointerup',onPointerUp);
@@ -199,6 +292,8 @@
   }
 
   function render(){
+    stopBehavior();
+    hovered=false;
     ensureRoot();
 
     if(!uid() || !canUseCompanion()){
@@ -215,7 +310,7 @@
     state.anchor=clamp(state.anchor.x,state.anchor.y);
     setVisual(state.anchor.x,state.anchor.y,0);
 
-    if(state.visible) scheduleRoam();
+    if(state.visible){ scheduleRoam(); scheduleBehavior(); }
     else clearRoam();
 
     waitForMiAtlas(0);
@@ -240,7 +335,7 @@
 
   function scheduleRoam(){
     clearRoam();
-    if(!state.visible || reduced || state.dragging || !uid()) return;
+    if(!active() || reduced || petting) return;
 
     var spider=state.pet==='spider';
     var wait=spider
@@ -251,6 +346,7 @@
   }
 
   function roam(){
+    state.roamTimer=null;
     if(!state.visible || reduced || state.dragging || document.hidden || !state.anchor){
       scheduleRoam();
       return;
@@ -279,16 +375,22 @@
 
     setVisual(target.x,target.y,duration,spider?'linear':'ease');
 
-    setTimeout(function(){
+    if(spider){
+      clearTimeout(behaviorTimer);
+      sequence([['crawl-left',180],['crawl-right',180],['crawl-left',180],['crawl-right',180],['crawl-left',180],['crawl-right',180]],function(){frame('');scheduleBehavior()});
+    }
+    walkTimer=setTimeout(function(){
       root.classList.remove('is-walking');
       scheduleRoam();
     },duration+70);
   }
 
   function onPointerDown(e){
-    if(e.pointerType==='mouse' && e.button!==0) return;
+    if(!active() || e.pointerType==='mouse' && e.button!==0) return;
 
     clearRoam();
+    stopBehavior();
+    frame('');
     state.interactionAt=Date.now();
     state.dragging=true;
     state.moved=false;
@@ -332,6 +434,7 @@
     }
 
     scheduleRoam();
+    if(!petting) scheduleBehavior();
   }
 
   function onPointerUp(e){finishPointer(e,false)}
@@ -347,46 +450,30 @@
       el.style.setProperty('--dx',dx+'px');
       el.style.animationDelay=(i*55)+'ms';
       root.appendChild(el);
-      setTimeout(function(){
-        if(el.parentNode) el.parentNode.removeChild(el);
-      },1000);
+      el.addEventListener('animationend',function(){el.remove()},{once:true});
     });
   }
 
   function pet(){
-    if(!canUseCompanion() || !state.visible || !root) return;
-
+    if(!active() || !root) return;
+    clearRoam();
+    stopBehavior();
     state.interactionAt=Date.now();
-
-    var activePet=state.pet;
-    var p=PETS[activePet];
-
-    if(p && p.happy){
-      img.src=p.happy;
-    }
-
-    if(petRestoreTimer){
-      clearTimeout(petRestoreTimer);
-      petRestoreTimer=null;
-    }
-
-    root.classList.remove('is-petted');
+    petting=true;
     void root.offsetWidth;
     root.classList.add('is-petted');
-
-    burst();
-
-    petRestoreTimer=setTimeout(function(){
-      if(root && state.pet===activePet && PETS[activePet]){
-        img.src=PETS[activePet].file;
-      }
-      if(root) root.classList.remove('is-petted');
-      petRestoreTimer=null;
-    },900);
+    if(!reduced) burst();
+    var steps=state.pet==='book' ? [['closing',150],['closed',450],['opening',150]]
+      : state.pet==='catbox' ? [['pop',160],['happy',900]]
+      : [['happy',1100]];
+    sequence(steps,idle);
   }
   function choosePet(id){
     if(!canUseCompanion() || !PETS[id]) return;
 
+    clearRoam();
+    stopBehavior();
+    hovered=false;
     state.pet=id;
     set('pet',id);
     applyPet();
@@ -625,8 +712,8 @@
   });
 
   document.addEventListener('visibilitychange',function(){
-    if(document.hidden) clearRoam();
-    else scheduleRoam();
+    if(document.hidden){clearRoam();stopBehavior();if(root){root.classList.add('is-paused');frame('')}}
+    else if(active()){root.classList.remove('is-paused');idle()}
   });
 
   window.addEventListener('atlasPlayerAuthReady',function(){
