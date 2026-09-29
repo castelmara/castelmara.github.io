@@ -50,6 +50,7 @@
   function frame(name){
     if(!img) return;
     img.src = name ? PETS[state.pet].file.replace(/\.png$/, '-'+name+'.png') : PETS[state.pet].file;
+    if(name) img.src += '?v=20260930-clean';
     root.dataset.frame = name || 'idle';
   }
 
