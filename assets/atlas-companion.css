@@ -3,8 +3,8 @@
   position: fixed;
   left: 0;
   top: 0;
-  width: 92px;
-  height: 92px;
+  width: 124px;
+  height: 124px;
   z-index: 8500;
   pointer-events: none;
   user-select: none;
@@ -16,8 +16,8 @@
 
 #atlasCompanion .atlas-companion-pet {
   position: relative;
-  width: 92px;
-  height: 92px;
+  width: 124px;
+  height: 124px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -40,8 +40,8 @@
 }
 
 #atlasCompanion .atlas-companion-img {
-  width: 92px;
-  height: 92px;
+  width: 124px;
+  height: 124px;
   object-fit: contain;
   display: block;
   pointer-events: none;
@@ -50,6 +50,18 @@
   transform-origin: 50% 80%;
 }
 
+#atlasCompanion:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img {
+  animation: atlasCompanionIdle 1.55s steps(4,end) infinite;
+}
+
+#atlasCompanion[data-pet="sprout"] .atlas-companion-img {
+  width: 124px;
+  height: 124px;
+}
+
+#atlasCompanion[data-pet="sprout"]:not(.is-walking):not(.is-dragging):not(.is-petted) .atlas-companion-img {
+  animation: atlasSproutIdle 1.35s steps(4,end) infinite;
+}
 #atlasCompanion.is-walking .atlas-companion-img {
   animation: atlasCompanionWalk .22s steps(2,end) infinite;
 }
@@ -74,6 +86,19 @@
   animation: atlasCompanionHeart .86s ease-out forwards;
 }
 
+@keyframes atlasCompanionIdle {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  75% { transform: translateY(-2px) rotate(1deg); }
+}
+
+@keyframes atlasSproutIdle {
+  0%,100% { transform: translateY(0) rotate(0deg) scale(1); }
+  25% { transform: translateY(-3px) rotate(-2deg) scale(1.01); }
+  50% { transform: translateY(-6px) rotate(0deg) scale(.99,1.02); }
+  75% { transform: translateY(-3px) rotate(2deg) scale(1.01); }
+}
 @keyframes atlasCompanionWalk {
   0%,100% { transform: translateY(0) rotate(-1deg); }
   50% { transform: translateY(-3px) rotate(1deg); }
@@ -223,12 +248,16 @@
 @media (max-width: 700px) {
   #atlasCompanion,
   #atlasCompanion .atlas-companion-pet {
-    width: 78px;
-    height: 78px;
+    width: 102px;
+    height: 102px;
   }
   #atlasCompanion .atlas-companion-img {
-    width: 78px;
-    height: 78px;
+    width: 92px;
+    height: 92px;
+  }
+  #atlasCompanion[data-pet="sprout"] .atlas-companion-img {
+    width: 102px;
+    height: 102px;
   }
   #atlas-app .atlas-companion-settings-head {
     display: grid;

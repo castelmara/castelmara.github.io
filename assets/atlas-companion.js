@@ -59,7 +59,7 @@
   }
 
   function petSize(){
-    return window.matchMedia && window.matchMedia('(max-width:700px)').matches ? 78 : 92;
+    return window.matchMedia && window.matchMedia('(max-width:700px)').matches ? 102 : 124;
   }
 
   function clamp(x,y){
@@ -130,6 +130,7 @@
     if (!PETS[state.pet]) state.pet = 'sprout';
     img.src = PETS[state.pet].file;
     img.alt = PETS[state.pet].name;
+    root.dataset.pet = state.pet;
     root.querySelector('.atlas-companion-pet').setAttribute('aria-label','погладить: '+PETS[state.pet].name);
   }
 
@@ -402,8 +403,26 @@
     setTimeout(injectSettings,120);
   });
 
+  var observerQueued = false;
   var observer = new MutationObserver(function(){
-    if (document.getElementById('atlas-page-mi-atlas')) injectSettings();
+    if (observerQueued) return;
+
+    var personal = document.getElementById('atlasPersonalRoot');
+    if (!personal) return;
+
+    var tabs = personal.querySelector('.atlas-personal-tabs');
+    if (!tabs) return;
+
+    var hasTab = !!tabs.querySelector('[data-personal-tab="companion"]');
+    var hasPanel = !!personal.querySelector('[data-personal-panel="companion"]');
+
+    if (hasTab && hasPanel) return;
+
+    observerQueued = true;
+    setTimeout(function(){
+      observerQueued = false;
+      injectSettings();
+    }, 0);
   });
   observer.observe(document.body,{childList:true,subtree:true});
 
