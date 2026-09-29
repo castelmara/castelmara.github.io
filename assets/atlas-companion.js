@@ -99,7 +99,7 @@
         case 'codercat': steps=[['typing-left',130],['typing-right',130],['',400],['typing-left',130],['typing-right',130],['typing-left',130],['',350]];break;
         case 'catbox': steps=[['hide',1000],['pop',180],['',600]];break;
         case 'book': steps=[['closing',180],['closed',700],['opening',180],['',500]];break;
-        case 'spider': steps=[['front',260],['',350]];break;
+        case 'spider': steps=[['crawl-left',140],['',100],['crawl-right',140],['',100],['crawl-left',140],['',100],['crawl-right',140],['',350]];break;
         case 'raven': steps=Math.random()<.5 ? [['blink',180],['',500]] : [['bow',650],['',500]];break;
         case 'sprout': steps=Math.random()<.5 ? [['blink',180],['',400]] : [['sway',600],['',400]];break;
         case 'frog': steps=[['blink',180],['crouch',250],['',500]];break;
@@ -383,7 +383,12 @@
 
     if(spider){
       clearTimeout(behaviorTimer);
-      sequence([['crawl-left',180],['crawl-right',180],['crawl-left',180],['crawl-right',180],['crawl-left',180],['crawl-right',180]],function(){frame('');scheduleBehavior()});
+      var crawlFrames=['crawl-left','','crawl-right',''];
+      var crawlSteps=[];
+      for(var elapsed=0,step=0;elapsed<duration;elapsed+=120,step++){
+        crawlSteps.push([crawlFrames[step%crawlFrames.length],Math.min(120,duration-elapsed)]);
+      }
+      sequence(crawlSteps,function(){frame('');scheduleBehavior()});
     }
     walkTimer=setTimeout(function(){
       root.classList.remove('is-walking');
