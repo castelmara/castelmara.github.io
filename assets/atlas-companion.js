@@ -140,15 +140,8 @@
       : '';
   }
 
-  function companionRole(){
-    return String(
-      window.ATLAS_CURRENT_PROFILE && window.ATLAS_CURRENT_PROFILE.role || ''
-    ).trim().toLowerCase();
-  }
-
   function canUseCompanion(){
-    var role=companionRole();
-    return !!uid() && (role==='admin' || role==='superadmin');
+    return !!uid();
   }
 
   function removeCompanionSettings(){
