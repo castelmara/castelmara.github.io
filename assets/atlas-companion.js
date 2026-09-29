@@ -49,8 +49,8 @@
 
   function frame(name){
     if(!img) return;
-    img.src = name ? PETS[state.pet].file.replace(/\.png$/, '-'+name+'.png') : PETS[state.pet].file;
-    if(name) img.src += '?v=20260930-clean';
+    var src = name ? PETS[state.pet].file.replace(/\.png$/, '-'+name+'.png') + '?v=20260930-clean' : PETS[state.pet].file;
+    img.src = src;
     root.dataset.frame = name || 'idle';
   }
 
@@ -309,6 +309,7 @@
     }
 
     root.hidden=!state.visible;
+    root.classList.toggle('is-paused',document.hidden);
     applyPet();
 
     if(!state.anchor) state.anchor=parsePos(get('position',''));
