@@ -3,16 +3,17 @@
 
   var PETS = {
     sprout:  {name:'росточек', file:'assets/companions/v2/sprout.png', happy:'assets/companions/v2/sprout-happy.png', note:'любимчик'},
-    frog:    {name:'лягушка', file:'assets/companions/frog.png', happy:'assets/companions/frog-happy.png', note:'любит подпрыгивать'},
+    frog:    {name:'лягушка', file:'assets/companions/v2/frog.png', happy:'assets/companions/v2/frog-happy.png', note:'любит подпрыгивать'},
     duck:    {name:'утёнок', file:'assets/companions/v2/duck.png', happy:'assets/companions/v2/duck-happy.png', note:'важно покачивается'},
     catbox:  {name:'кот в коробке', file:'assets/companions/v2/catbox.png', happy:'assets/companions/v2/catbox-happy.png', note:'сидит в своей коробке'},
     book:    {name:'книга', file:'assets/companions/v2/book.png', happy:'assets/companions/v2/book-happy.png', note:'немного волшебная'},
     codercat:{name:'кот-кодер', file:'assets/companions/v2/codercat.png', happy:'assets/companions/v2/codercat-happy.png', note:'тапает по клавиатуре'},
-    axolotl: {name:'аксолотль', file:'assets/companions/axolotl.png', happy:'assets/companions/axolotl-happy.png', note:'очень доволен жизнью'},
+    axolotl: {name:'аксолотль', file:'assets/companions/v2/axolotl.png', happy:'assets/companions/v2/axolotl-happy.png', note:'очень доволен жизнью'},
     spider:  {name:'паучок', file:'assets/companions/v2/spider.png', happy:'assets/companions/v2/spider-happy.png', note:'ползает рядом'},
     raven:   {name:'ворон', file:'assets/companions/v2/raven.png', happy:'assets/companions/v2/raven-happy.png', note:'наблюдает'},
     dragon:  {name:'дракон', file:'assets/companions/v2/dragon.png', happy:'assets/companions/v2/dragon-happy.png', note:'маленький, но дракон'},
     kitsune: {name:'кицунэ', file:'assets/companions/v2/kitsune.png', happy:'assets/companions/v2/kitsune-happy.png', note:'показывает хвосты, когда гладят'},
+    bat:     {name:'летучий мышонок', file:'assets/companions/v2/bat.png', happy:'assets/companions/v2/bat-happy.png', note:'обнимается крылышками'},
     ghost:   {name:'призрак', file:'assets/companions/v2/ghost.png', happy:'assets/companions/v2/ghost-happy.png', note:'просто тусуется'}
   };
 
@@ -100,6 +101,9 @@
         case 'spider': steps=[['front',260],['',350]];break;
         case 'raven': steps=Math.random()<.5 ? [['blink',180],['',500]] : [['bow',650],['',500]];break;
         case 'sprout': steps=Math.random()<.5 ? [['blink',180],['',400]] : [['sway',600],['',400]];break;
+        case 'frog': steps=[['blink',180],['crouch',250],['',500]];break;
+        case 'axolotl': steps=[['blink',180],['wave',550],['',400]];break;
+        case 'bat': steps=[['blink',180],['flap',220],['',220],['flap',220],['',400]];break;
         case 'duck':
         case 'kitsune':
         case 'dragon': steps=[['blink',180],['',500]];break;
