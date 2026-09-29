@@ -147,14 +147,7 @@
   opacity:.95;
 }
 
-/* kitsune: tails stay tucked until petting */
-#atlasCompanion[data-pet="kitsune"] .atlas-companion-visual{
-  clip-path:inset(0 22% 0 22%);
-  transition:clip-path .26s steps(4,end);
-}
-#atlasCompanion[data-pet="kitsune"].is-petted .atlas-companion-visual{
-  clip-path:inset(0 0 0 0);
-}
+/* kitsune uses separate idle / petted PNG states */
 
 /* spider gets a slightly more grounded crawl */
 #atlasCompanion[data-pet="spider"].is-walking .atlas-companion-img{

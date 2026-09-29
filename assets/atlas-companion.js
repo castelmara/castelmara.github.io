@@ -2,18 +2,18 @@
   'use strict';
 
   var PETS = {
-    sprout:  {name:'росточек', file:'assets/companions/sprout.png', note:'любимчик'},
-    frog:    {name:'лягушка', file:'assets/companions/frog.png', note:'любит подпрыгивать'},
-    duck:    {name:'утёнок', file:'assets/companions/duck.png', note:'важно покачивается'},
-    catbox:  {name:'кот в коробке', file:'assets/companions/catbox.png', note:'сидит в своей коробке'},
-    book:    {name:'книга', file:'assets/companions/book.png', note:'немного волшебная'},
-    codercat:{name:'кот-кодер', file:'assets/companions/codercat.png', note:'тапает по клавиатуре'},
-    axolotl: {name:'аксолотль', file:'assets/companions/axolotl.png', note:'очень доволен жизнью'},
-    spider:  {name:'паучок', file:'assets/companions/spider.png', note:'ползает рядом'},
-    raven:   {name:'ворон', file:'assets/companions/raven.png', note:'наблюдает'},
-    dragon:  {name:'дракон', file:'assets/companions/dragon.png', note:'маленький, но дракон'},
-    kitsune: {name:'кицунэ', file:'assets/companions/kitsune.png', note:'показывает хвосты, когда гладят'},
-    ghost:   {name:'призрак', file:'assets/companions/ghost.png', note:'просто тусуется'}
+    sprout:  {name:'росточек', file:'assets/companions/sprout.png', happy:'assets/companions/sprout-happy.png', note:'любимчик'},
+    frog:    {name:'лягушка', file:'assets/companions/frog.png', happy:'assets/companions/frog-happy.png', note:'любит подпрыгивать'},
+    duck:    {name:'утёнок', file:'assets/companions/duck.png', happy:'assets/companions/duck-happy.png', note:'важно покачивается'},
+    catbox:  {name:'кот в коробке', file:'assets/companions/catbox.png', happy:'assets/companions/catbox-happy.png', note:'сидит в своей коробке'},
+    book:    {name:'книга', file:'assets/companions/book.png', happy:'assets/companions/book-happy.png', note:'немного волшебная'},
+    codercat:{name:'кот-кодер', file:'assets/companions/codercat.png', happy:'assets/companions/codercat-happy.png', note:'тапает по клавиатуре'},
+    axolotl: {name:'аксолотль', file:'assets/companions/axolotl.png', happy:'assets/companions/axolotl-happy.png', note:'очень доволен жизнью'},
+    spider:  {name:'паучок', file:'assets/companions/spider.png', happy:'assets/companions/spider-happy.png', note:'ползает рядом'},
+    raven:   {name:'ворон', file:'assets/companions/raven.png', happy:'assets/companions/raven-happy.png', note:'наблюдает'},
+    dragon:  {name:'дракон', file:'assets/companions/dragon.png', happy:'assets/companions/dragon-happy.png', note:'маленький, но дракон'},
+    kitsune: {name:'кицунэ', file:'assets/companions/kitsune.png', happy:'assets/companions/kitsune-happy.png', note:'показывает хвосты, когда гладят'},
+    ghost:   {name:'призрак', file:'assets/companions/ghost.png', happy:'assets/companions/ghost-happy.png', note:'просто тусуется'}
   };
 
   var state = {
@@ -35,6 +35,7 @@
   var root = null;
   var img = null;
   var nameTag = null;
+  var petRestoreTimer = null;
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   function uid(){
@@ -335,17 +336,32 @@
 
     state.interactionAt=Date.now();
 
+    var activePet=state.pet;
+    var p=PETS[activePet];
+
+    if(p && p.happy){
+      img.src=p.happy;
+    }
+
+    if(petRestoreTimer){
+      clearTimeout(petRestoreTimer);
+      petRestoreTimer=null;
+    }
+
     root.classList.remove('is-petted');
     void root.offsetWidth;
     root.classList.add('is-petted');
 
     burst();
 
-    setTimeout(function(){
+    petRestoreTimer=setTimeout(function(){
+      if(root && state.pet===activePet && PETS[activePet]){
+        img.src=PETS[activePet].file;
+      }
       if(root) root.classList.remove('is-petted');
+      petRestoreTimer=null;
     },900);
   }
-
   function choosePet(id){
     if(!PETS[id]) return;
 
