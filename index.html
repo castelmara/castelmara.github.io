@@ -24590,9 +24590,22 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
   function c(){return window.ATLAS_SUPABASE||null}
   function uid(){return window.ATLAS_CURRENT_SESSION&&window.ATLAS_CURRENT_SESSION.user?window.ATLAS_CURRENT_SESSION.user.id:''}
   function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
-  function character(id){return (window.ATLAS_CHARACTERS||[]).find(function(x){return x&&x.id===id})||null}
-  function charName(ch){var m=ch&&ch.profile&&ch.profile.overview&&ch.profile.overview.mainInfo||{};return m.fullName||ch&&ch.fullName||ch&&ch.cardName||ch&&ch.name||ch&&ch.id||'персонаж'}
-  function charAvatar(ch){var p=ch&&ch.profile||{};return ch&&ch.avatar||ch&&ch.cardImage||p.avatar||p.heroImage||ch&&ch.banner||''}
+  function character(id){
+    var sources=[window.ATLAS_CHARACTERS,window.ATLAS_CHARACTER_DIRECTORY,window.ATLAS_CARD_ONLY];
+    for(var i=0;i<sources.length;i++){
+      var found=(sources[i]||[]).find(function(x){return x&&x.id===id});
+      if(found)return found;
+    }
+    return null;
+  }
+  function charName(ch){
+    var m=ch&&ch.profile&&ch.profile.overview&&ch.profile.overview.mainInfo||{};
+    return m.fullName||ch&&ch.fullName||ch&&ch.cardName||ch&&ch.name||ch&&ch.nameRu||ch&&ch.id||'персонаж';
+  }
+  function charAvatar(ch){
+    var p=ch&&ch.profile||{};
+    return ch&&ch.avatar||ch&&ch.cardImage||ch&&ch.image||p.avatar||p.heroImage||ch&&ch.banner||'';
+  }
   function viewerRole(){return window.ATLAS_CURRENT_PROFILE&&window.ATLAS_CURRENT_PROFILE.role||''}
 
   async function bundle(characterId){
