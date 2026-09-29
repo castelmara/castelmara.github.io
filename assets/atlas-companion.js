@@ -44,6 +44,28 @@
       : '';
   }
 
+  function companionRole(){
+    return String(
+      window.ATLAS_CURRENT_PROFILE && window.ATLAS_CURRENT_PROFILE.role || ''
+    ).trim().toLowerCase();
+  }
+
+  function canUseCompanion(){
+    var role=companionRole();
+    return role==='admin' || role==='superadmin';
+  }
+
+  function removeCompanionSettings(){
+    var personal=document.getElementById('atlasPersonalRoot');
+    if(!personal) return;
+
+    var tab=personal.querySelector('[data-personal-tab="companion"]');
+    var panel=personal.querySelector('[data-personal-panel="companion"]');
+
+    if(tab) tab.remove();
+    if(panel) panel.remove();
+  }
+
   function key(part){
     return 'atlasCompanion:' + (uid() || 'guest') + ':' + part;
   }
@@ -179,10 +201,10 @@
   function render(){
     ensureRoot();
 
-    if(!uid()){
+    if(!uid() || !canUseCompanion()){
       root.hidden=true;
       clearRoam();
-      waitForMiAtlas(0);
+      removeCompanionSettings();
       return;
     }
 
@@ -332,7 +354,7 @@
   }
 
   function pet(){
-    if(!state.visible || !root) return;
+    if(!canUseCompanion() || !state.visible || !root) return;
 
     state.interactionAt=Date.now();
 
@@ -363,7 +385,7 @@
     },900);
   }
   function choosePet(id){
-    if(!PETS[id]) return;
+    if(!canUseCompanion() || !PETS[id]) return;
 
     state.pet=id;
     set('pet',id);
@@ -382,12 +404,14 @@
   }
 
   function setVisible(value){
+    if(!canUseCompanion()) return;
     state.visible=!!value;
     set('visible',state.visible?'1':'0');
     render();
   }
 
   function resetPosition(){
+    if(!canUseCompanion()) return;
     state.anchor=defaultPos();
     state.pos={x:state.anchor.x,y:state.anchor.y};
     saveAnchor();
@@ -396,6 +420,7 @@
   }
 
   function renameCurrent(value){
+    if(!canUseCompanion()) return;
     var clean=String(value || '').trim().replace(/\s+/g,' ').slice(0,24);
 
     if(clean) state.names[state.pet]=clean;
@@ -465,6 +490,11 @@
     var personal=document.getElementById('atlasPersonalRoot');
     if(!personal) return false;
 
+    if(!canUseCompanion()){
+      removeCompanionSettings();
+      return true;
+    }
+
     var tabs=personal.querySelector('.atlas-personal-tabs');
     if(!tabs) return false;
 
@@ -505,6 +535,11 @@
 
   function waitForMiAtlas(attempt){
     attempt=attempt || 0;
+
+    if(!canUseCompanion()){
+      removeCompanionSettings();
+      return;
+    }
 
     if(ensureMiAtlas()) return;
     if(attempt>=30) return;
