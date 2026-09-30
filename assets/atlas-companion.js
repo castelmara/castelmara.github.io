@@ -609,7 +609,7 @@
         '</div>' +
       '</div>' +
       '<div class="atlas-companion-name-editor">' +
-        '<input id="atlasCompanionNameInput" maxlength="24" value="'+escapeHtml(currentName)+'" placeholder="назвать '+escapeHtml(PETS[state.pet].name)+'…">' +
+        '<input id="atlasCompanionNameInput" name="atlas_companion_label" autocomplete="off" data-lpignore="true" data-1p-ignore maxlength="24" value="'+escapeHtml(currentName)+'" placeholder="назвать '+escapeHtml(PETS[state.pet].name)+'…">' +
         '<button class="atlas-companion-action" type="button" data-atlas-companion-name-save>сохранить имя</button>' +
         '<button class="atlas-companion-action" type="button" data-atlas-companion-name-clear>сбросить</button>' +
       '</div>' +

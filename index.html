@@ -15070,7 +15070,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
     }
 
     body.innerHTML =
-      '<form id="atlasIndicatorsForm" data-character-id="' + esc(characterId) + '">' +
+      '<form id="atlasIndicatorsForm" autocomplete="off" data-character-id="' + esc(characterId) + '">' +
         '<label class="atlas-indicators-field"><span>заголовок</span>' +
           '<input id="atlasIndicatorsTitle" type="text" maxlength="50" value="' + esc(indicators.title || "показатели") + '">' +
         '</label>' +
@@ -21508,15 +21508,15 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     <span class="atlas-player-edit-kicker">ПРОФИЛЬ ATLAS</span>
     <h2 class="atlas-player-edit-title" id="atlasPlayerEditTitle">редактировать профиль</h2>
     <p class="atlas-player-edit-copy">эти данные будут отображаться в каталоге jugadores и в твоём публичном профиле.</p>
-    <form id="atlasPlayerEditForm">
+    <form id="atlasPlayerEditForm" autocomplete="off">
       <div class="atlas-player-edit-grid">
         <div class="atlas-player-edit-field">
           <label for="atlasPlayerEditName">имя</label>
-          <input id="atlasPlayerEditName" name="display_name" type="text" maxlength="60" autocomplete="off" required>
+          <input id="atlasPlayerEditName" data-lpignore="true" data-1p-ignore name="display_name" type="text" maxlength="60" autocomplete="off" required>
         </div>
         <div class="atlas-player-edit-field">
           <label for="atlasPlayerEditNickname">никнейм / логин</label>
-          <input id="atlasPlayerEditNickname" name="nickname" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9._-]{3,24}" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+          <input id="atlasPlayerEditNickname" data-lpignore="true" data-1p-ignore name="nickname" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9._-]{3,24}" autocomplete="off" autocapitalize="none" spellcheck="false" required>
           <p class="atlas-player-edit-hint">после смены никнейма входить нужно будет уже под новым логином.</p>
         </div>
         <div class="atlas-player-edit-field is-full">
@@ -24681,9 +24681,9 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
   function formHtml(ch,b){
     var p=b.persona||null,name=p&&p.display_name||charName(ch),nick=p&&p.nickname||'',fallback=charAvatar(ch),avatar=p&&p.avatar_url||fallback,status=p&&p.status_text||'';
     return '<div class="atlas-persona-intro"><div class="atlas-persona-avatar" id="atlasPersonaAvatarPreview">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'A')+'</div><div><h3>'+esc(name)+'</h3><p>'+esc(ch.id)+' · '+(p?'ATLAS-профиль уже создан':'новый профиль персонажа для переписок в ATLAS')+'</p></div></div>'+
-      '<form class="atlas-persona-form" id="atlasPersonaForm">'+
-        '<label class="atlas-persona-field"><span>имя в ATLAS</span><input id="atlasPersonaDisplayName" type="text" maxlength="80" value="'+esc(name)+'" autocomplete="off" required></label>'+
-        '<label class="atlas-persona-field"><span>@nickname</span><div class="atlas-persona-nick-wrap"><span>@</span><input id="atlasPersonaNickname" type="text" maxlength="32" value="'+esc(nick)+'" placeholder="nickname" autocomplete="off" required></div></label>'+
+      '<form class="atlas-persona-form" id="atlasPersonaForm" autocomplete="off">'+
+        '<label class="atlas-persona-field"><span>имя в ATLAS</span><input id="atlasPersonaDisplayName" data-lpignore="true" data-1p-ignore type="text" maxlength="80" value="'+esc(name)+'" autocomplete="off" required></label>'+
+        '<label class="atlas-persona-field"><span>@nickname</span><div class="atlas-persona-nick-wrap"><span>@</span><input id="atlasPersonaNickname" data-lpignore="true" data-1p-ignore type="text" maxlength="32" value="'+esc(nick)+'" placeholder="nickname" autocomplete="off" required></div></label>'+
         '<label class="atlas-persona-field"><span>статус</span><input id="atlasPersonaStatusText" type="text" maxlength="160" value="'+esc(status)+'" placeholder="необязательно" autocomplete="off"></label>'+
         '<div class="atlas-persona-field"><span>аватар</span><label class="atlas-persona-file-zone" data-persona-file-zone="true"><input id="atlasPersonaAvatarFile" type="file" accept="image/*"><span class="atlas-persona-file-preview" id="atlasPersonaFilePreview">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'A')+'</span><span class="atlas-persona-file-copy"><strong>выбрать фото</strong><span>на телефоне откроется галерея; на компьютере можно нажать или перетащить изображение сюда</span></span></label></div>'+
         '<div class="atlas-persona-actions">'+(p&&p.avatar_url?'<button class="atlas-persona-secondary" type="button" data-atlas-persona-reset-avatar="true">вернуть фото персонажа</button>':'')+'<button class="atlas-persona-save" id="atlasPersonaSave" type="submit">'+(p?'сохранить':'создать профиль')+'</button></div>'+
@@ -24799,7 +24799,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 </script>
 
 <link rel="stylesheet" href="assets/atlas-community.css?v=20260925-profile">
-<script src="assets/atlas-community.js?v=20260930-partner"></script>
+<script src="assets/atlas-community.js?v=20261001-autofill"></script>
 <template data-atlas-page-template="personality-test">
   <section class="atlas-page" id="atlas-page-personality-test"><div id="atlasPersonalityMount"></div></section>
 </template>
@@ -24810,6 +24810,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-personality-route.js?v=1"></script>
 <!-- ATLAS PIXEL COMPANION -->
 <link rel="stylesheet" href="assets/atlas-companion.css?v=20260929-v2">
-<script src="assets/atlas-companion.js?v=20260930-v8"></script>
+<script src="assets/atlas-companion.js?v=20261001-autofill"></script>
 </body>
 </html>
