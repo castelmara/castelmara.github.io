@@ -917,11 +917,11 @@ body.atlas-modal-open {
     <div class="atlas-topbar">
       <button class="atlas-menu-btn" type="button" aria-label="меню">≡</button>
 
-      <div class="atlas-search-wrap">
-        <input class="atlas-search" id="atlasSearch" type="search" placeholder="buscar en ATLAS..." autocomplete="off">
+      <form class="atlas-search-wrap" id="atlasSiteSearchForm" role="search" autocomplete="off">
+        <input class="atlas-search" id="atlasSearch" name="atlas_site_query" type="search" placeholder="buscar en ATLAS..." aria-label="поиск по ATLAS" autocomplete="off" data-lpignore="true" data-1p-ignore readonly>
         <span class="atlas-search-symbol">⌕</span>
         <div class="atlas-search-results" id="atlasSearchResults"></div>
-      </div>
+      </form>
 
       <div class="atlas-top-actions">
         <button class="atlas-top-icon atlas-chat-shortcut" type="button" data-open-page="direct" aria-label="сообщения" title="сообщения">
@@ -1638,6 +1638,16 @@ if (!matches.length) {
 
     var search = document.getElementById('atlasSearch');
     if (search) {
+      document.getElementById('atlasSiteSearchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        renderSearch(search.value);
+      });
+      search.addEventListener('focus', function() {
+        if (search.readOnly) {
+          search.value = '';
+          search.readOnly = false;
+        }
+      });
       search.addEventListener('input', function() {
         renderSearch(search.value);
       });
