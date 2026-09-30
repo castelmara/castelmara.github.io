@@ -22270,7 +22270,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var img=characterOwnerImage(ch);
     var copy='<span class="atlas-character-card-details"><span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3></span></span>';
     if(ch._atlasCardOnly){
-      return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><div class="atlas-character-card-btn atlas-card-only">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</div></article>';
+      return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn atlas-card-only" type="button" data-atlas-persona-open="'+esc(ch.id)+'">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
     }
     return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
       (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
