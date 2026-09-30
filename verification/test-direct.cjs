@@ -60,7 +60,7 @@ window.ATLAS_SUPABASE={from(table){return {select(){return this},eq(){return thi
  mobile=true;assert.equal(api.run('isMobile()'),true);
  const css=fs.readFileSync(path.join(base,'assets/atlas-community.css'),'utf8');
  const desktop=css.slice(css.indexOf('/* Direct:'),css.indexOf('@media(max-width:900px)',css.indexOf('/* Direct:')));
- assert(desktop.includes('.atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:block!important}'));
+ assert(desktop.includes('.atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:flex!important}'));
  assert(desktop.includes('.atlas-direct-mobile-back{display:none!important}'));
  assert(html.includes('class="atlas-direct-head atlas-section-hero"'));
  api.run("activeChatId='mine';broadcastDirectEvent=()=>{};loadInboxMessages=async()=>{};loadUnreadCounts=async()=>{};refreshActiveChat=async()=>{};renderChatListOnly=()=>{};trackTyping=()=>{}");

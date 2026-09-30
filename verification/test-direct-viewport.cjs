@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const styles={},app={dataset:{},style:{setProperty:(k,v)=>styles[k]=v}},events={};
+const viewport={height:844,scale:1,addEventListener:(name,fn)=>events[name]=fn};
+const window={visualViewport:viewport,innerHeight:844,addEventListener(){}};
+vm.runInNewContext(fs.readFileSync('assets/atlas-direct-viewport.js','utf8'),{window,document:{getElementById:()=>app}});
+assert.equal(styles['--direct-viewport-height'],'844px');
+viewport.height=390;events.resize();assert.equal(styles['--direct-viewport-height'],'390px');assert.equal(app.dataset.directKeyboard,'true');
+viewport.scale=2;viewport.height=200;events.resize();assert.equal(styles['--direct-viewport-height'],'390px');
+viewport.scale=1;viewport.height=844;events.resize();assert.equal(app.dataset.directKeyboard,'false');
+console.log('PASS Direct viewport: keyboard resize, restore, pinch zoom untouched');

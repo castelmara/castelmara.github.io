@@ -125,15 +125,15 @@ html.atlas-cursor-enabled #atlasCommunityDialog :disabled{cursor:wait!important}
 #atlas-app #atlas-page-character-profile .atlas-community-portrait img{width:100%;height:100%;object-fit:cover}
 
 /* Direct: desktop keeps chat list + conversation side by side; mobile still switches one screen at a time. */
-#atlas-app #atlas-page-direct .atlas-direct-shell{max-width:1120px!important;width:100%;margin:0 auto;padding-top:12px}
-#atlas-app #atlas-page-direct .atlas-direct-layout{display:grid!important;grid-template-columns:minmax(250px,300px) minmax(0,1fr)!important;max-width:1120px!important;width:100%;height:min(700px,calc(100dvh - 245px));min-height:500px;margin:0 auto;overflow:hidden}
-#atlas-app #atlas-page-direct .atlas-direct-channels{display:block!important;width:100%;height:100%;max-height:none;border-right:1px solid #858b9830;border-bottom:0}
+#atlas-app #atlas-page-direct .atlas-direct-shell{max-width:none!important;width:100%;margin:0 auto;padding-top:0}
+#atlas-app #atlas-page-direct .atlas-direct-layout{display:grid!important;grid-template-columns:minmax(250px,300px) minmax(0,1fr)!important;max-width:none!important;width:100%;height:100%;min-height:0;margin:0 auto;overflow:hidden}
+#atlas-app #atlas-page-direct .atlas-direct-channels{display:flex!important;flex-direction:column;width:100%;height:100%;max-height:none;border-right:1px solid #858b9830;border-bottom:0}
 #atlas-app #atlas-page-direct .atlas-direct-chat{display:flex!important;height:100%;min-height:0}
 #atlas-app #atlas-page-direct .atlas-direct-mobile-back{display:none!important}
-#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:block!important}
+#atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:flex!important}
 #atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-chat{display:flex!important}
 @media(max-width:900px){
-  #atlas-app #atlas-page-direct .atlas-direct-layout{display:block!important;height:calc(100dvh - 110px);min-height:360px}
+  #atlas-app #atlas-page-direct .atlas-direct-layout{display:block!important;height:100%;min-height:0}
   #atlas-app #atlas-page-direct .atlas-direct-channels{display:block!important;border-right:0;border-bottom:1px solid #eceef1}
   #atlas-app #atlas-page-direct .atlas-direct-chat{display:none!important}
   #atlas-app #atlas-page-direct .atlas-direct-layout.is-mobile-chat .atlas-direct-channels{display:none!important}

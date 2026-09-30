@@ -1,0 +1,33 @@
+/* Direct is a viewport-sized workspace. Only its content panes scroll. */
+html:has(#atlas-page-direct.active),body:has(#atlas-page-direct.active){overflow:hidden}
+#atlas-app:has(#atlas-page-direct.active){height:var(--direct-viewport-height,100dvh);min-height:0!important;overflow:hidden}
+#atlas-app:has(#atlas-page-direct.active) .atlas-main{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#atlas-app:has(#atlas-page-direct.active) .atlas-topbar{flex:none;position:relative;min-height:0;padding-top:12px;padding-bottom:12px}
+#atlas-app:has(#atlas-page-direct.active) .atlas-pages-holder{flex:1;min-height:0;overflow:hidden;padding:0 18px 12px}
+#atlas-app #atlas-page-direct.active{height:100%;min-height:0}
+#atlas-app #atlas-page-direct .atlas-direct-shell{height:100%;display:flex;flex-direction:column;min-height:0;gap:10px}
+#atlas-app #atlas-page-direct .atlas-direct-head{flex:0 0 auto;box-sizing:border-box;min-height:0!important;height:clamp(80px,15vh,150px);padding:16px 24px!important;margin:0;border-radius:24px;background-position:center}
+#atlas-app #atlas-page-direct .atlas-direct-head h2{font-size:clamp(36px,4vw,60px)!important;line-height:1;margin:0}
+#atlas-app #atlas-page-direct .atlas-direct-head p{display:none}
+#atlas-app #atlasDirectRoot{flex:1;min-height:0;overflow:hidden}
+#atlas-app #atlas-page-direct .atlas-direct-layout{box-sizing:border-box;height:100%;min-height:0}
+#atlas-app #atlas-page-direct .atlas-direct-channels{min-height:0;overflow:hidden}
+#atlas-app #atlas-page-direct .atlas-direct-channel-list{min-height:0;flex:1;scrollbar-gutter:auto}
+#atlas-app #atlas-page-direct :is(.atlas-direct-messages,.atlas-direct-channel-list,.atlas-direct-chat-body,.atlas-direct-participants-panel){scrollbar-width:none}
+#atlas-app #atlas-page-direct ::-webkit-scrollbar{width:0;height:0}
+#atlas-app:has(#atlas-page-direct.active) .atlas-sidebar{scrollbar-width:none}
+#atlas-app:has(#atlas-page-direct.active) .atlas-sidebar::-webkit-scrollbar{width:0}
+#atlas-app #atlas-page-direct .atlas-direct-composer{padding:8px 12px max(8px,env(safe-area-inset-bottom))}
+#atlas-app #atlas-page-direct .atlas-direct-composer textarea{resize:none;max-height:100px}
+@media(max-width:900px){
+  #atlas-app:has(#atlas-page-direct.active) .atlas-pages-holder{padding:0 8px 6px}
+  #atlas-app #atlas-page-direct .atlas-direct-head{height:68px;padding:10px 16px!important;border-radius:16px}
+  #atlas-app #atlas-page-direct .atlas-direct-head h2{font-size:32px!important}
+  #atlas-app #atlas-page-direct .atlas-section-hero-kicker{display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-shell{gap:6px}
+  #atlas-app #atlas-page-direct :is(input,textarea,select),.atlas-custom-personas :is(input,textarea,select){font-size:16px!important}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control:first-child{grid-column:1/-1}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control :is(input,select){min-width:0}
+  #atlas-app[data-direct-keyboard="true"] .atlas-topbar,#atlas-app[data-direct-keyboard="true"] #atlas-page-direct .atlas-direct-head{display:none}
+}
