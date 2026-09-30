@@ -159,4 +159,23 @@ test('Owner changes update one footer without touching academic copy or retainin
  e.chars[0].player={};e.api.run("decoratePlayerBlock(window.testCard,character('a'))");
  assert.equal(children[0].innerHTML,'');assert.equal(children[0].hidden,true);assert.equal(academic.innerHTML,'academic copy');
 });
+test('Login distinguishes transport failures from server credential errors',async()=>{
+ const authSource=html.slice(html.indexOf('  function atlasAuthErrorMessage('),html.indexOf('  async function invokeAtlasUser('));
+ let response,thrown;const client={functions:{async invoke(){if(thrown)throw thrown;return response}}};
+ const ctx=vm.createContext({client});vm.runInContext(authSource,ctx);
+ const network='Не удалось связаться с сервером ATLAS.';
+ for(const error of [{name:'FunctionsFetchError',message:'Failed to send a request to the Edge Function'},{name:'FunctionsRelayError',message:'Relay failed'},{name:'TypeError',message:'Failed to fetch'},{name:'TypeError',message:'Load failed'},{name:'AuthRetryableFetchError',message:'Network unavailable',status:0}]) {
+  response={error};await assert.rejects(ctx.invokeAtlasAuth({action:'login'}),e=>e.message.startsWith(network));
+ }
+ thrown={name:'TypeError',message:'Failed to fetch'};
+ await assert.rejects(ctx.invokeAtlasAuth({action:'login'}),e=>e.message.startsWith(network));thrown=null;
+ for(const message of ['неверный логин или пароль','слишком много попыток','ошибка сервера']) {
+  response={error:{name:'FunctionsHttpError',status:400,message:'non-2xx',context:{async json(){return {error:message}}}}};
+  await assert.rejects(ctx.invokeAtlasAuth({action:'login'}),e=>e.message===message);
+ }
+ response={data:{error:'неверный пароль'}};await assert.rejects(ctx.invokeAtlasAuth({}),e=>e.message==='неверный пароль');
+ response={data:{session:{access_token:'test-only'}}};assert.equal((await ctx.invokeAtlasAuth({})).session.access_token,'test-only');
+ assert.equal(ctx.atlasAuthErrorMessage({name:'TypeError',message:'Unexpected code failure'}),'Unexpected code failure');
+ assert.equal(ctx.atlasAuthErrorMessage({name:'AuthRetryableFetchError',status:503,message:'Service unavailable'}),'Service unavailable');
+});
 (async()=>{for(const [n,f] of tests){await f();console.log('PASS',n)}console.log(tests.length+' community checks passed; mocked APIs, no live database.');})().catch(e=>{console.error(e);process.exitCode=1});

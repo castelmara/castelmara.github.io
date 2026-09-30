@@ -20663,11 +20663,26 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(e.key === 'Escape' && !modal.hidden) closeModal();
   });
 
+  function atlasAuthErrorMessage(error){
+    var name = error && error.name || '';
+    var message = error && error.message || '';
+    var network = name === 'FunctionsFetchError' || name === 'FunctionsRelayError' ||
+      name === 'AuthRetryableFetchError' && !error.status ||
+      (!error?.status && name !== 'FunctionsHttpError' && /^(Failed to fetch|Failed to send a request to the Edge Function|Load failed|NetworkError when attempting to fetch resource\.?)$/i.test(message));
+    if(network) return 'Не удалось связаться с сервером ATLAS. Проверь интернет-соединение и попробуй снова. Если интернет работает, попробуй другую сеть или VPN.';
+    return message || 'не удалось войти.';
+  }
+
   async function invokeAtlasAuth(payload){
-    var result = await client.functions.invoke('atlas-auth', { body: payload });
+    var result;
+    try{
+      result = await client.functions.invoke('atlas-auth', { body: payload });
+    }catch(error){
+      throw new Error(atlasAuthErrorMessage(error));
+    }
 
     if(result.error){
-      var message = result.error.message || 'ошибка ATLAS';
+      var message = atlasAuthErrorMessage(result.error);
       try{
         if(result.error.context && typeof result.error.context.json === 'function'){
           var body = await result.error.context.json();
@@ -20743,7 +20758,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
       loginForm.reset();
       setTimeout(closeModal, 550);
     }catch(err){
-      setStatus(err && err.message ? err.message : 'не удалось войти.','error');
+      setStatus(atlasAuthErrorMessage(err),'error');
     }
   });
 
