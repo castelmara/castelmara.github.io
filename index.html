@@ -22870,6 +22870,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       panel('favoritos',favorites.length?'<div class="atlas-personal-grid">'+favorites.map(function(x){return itemCard(x,'favorite')}).join('')+'</div>':'<div class="atlas-personal-empty">избранное пока пустое.</div>')+
       panel('notas',noteComposer+(notes.length?'<div class="atlas-note-list">'+notes.map(noteCard).join('')+'</div>':'<div class="atlas-personal-empty">заметок пока нет.</div>'))+
       panel('historial',history.length?'<div>'+history.map(historyRow).join('')+'</div>':'<div class="atlas-personal-empty">история начнёт заполняться после просмотра профилей.</div>');
+    window.dispatchEvent(new CustomEvent('atlasPersonalRendered'));
   }
 
   document.addEventListener('click',async function(e){
@@ -24809,6 +24810,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-personality-route.js?v=1"></script>
 <!-- ATLAS PIXEL COMPANION -->
 <link rel="stylesheet" href="assets/atlas-companion.css?v=20260929-v2">
-<script src="assets/atlas-companion.js?v=20260930-v7"></script>
+<script src="assets/atlas-companion.js?v=20260930-v8"></script>
 </body>
 </html>

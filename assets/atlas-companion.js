@@ -42,6 +42,50 @@
   var sequenceId = 0;
   var hovered = false;
   var petting = false;
+  var syncToken = 0;
+  var syncQueue = Promise.resolve();
+  var syncError = '';
+
+  // Serialize reads/writes; an old account response must never change the current pet.
+  function syncCompanion(patch){
+    var account=uid(), client=window.ATLAS_SUPABASE, token=++syncToken;
+    if(!account || !client) return;
+    var initial={user_id:account,pet:state.pet,visible:state.visible,names:Object.assign({},state.names)};
+    syncQueue=syncQueue.then(async function(){
+      if(uid()!==account) return;
+      var table=client.from('atlas_player_companions');
+      var result;
+      if(patch){
+        result=await table.upsert(Object.assign({user_id:account},patch),{onConflict:'user_id'}).select('*').single();
+      }else{
+        result=await table.select('*').eq('user_id',account).maybeSingle();
+        if(result.error) throw result.error;
+        if(!result.data){
+          if(uid()!==account) return;
+          // Import only this account's local preferences, never overwrite another device.
+          var inserted=await client.from('atlas_player_companions').upsert(initial,{onConflict:'user_id',ignoreDuplicates:true});
+          if(inserted.error) throw inserted.error;
+          result=await client.from('atlas_player_companions').select('*').eq('user_id',account).single();
+        }
+      }
+      if(result.error) throw result.error;
+      if(uid()!==account || token!==syncToken) return;
+      var row=result.data;
+      state.pet=PETS[row.pet] ? row.pet : 'sprout';
+      state.visible=row.visible!==false;
+      state.names={};
+      Object.keys(PETS).forEach(function(id){
+        if(row.names && typeof row.names[id]==='string') state.names[id]=row.names[id].slice(0,24);
+      });
+      set('pet',state.pet);set('visible',state.visible?'1':'0');saveNames();
+      syncError='';render();
+    }).catch(function(error){
+      if(uid()!==account || token!==syncToken) return;
+      syncError='Не удалось синхронизировать питомца. Проверь соединение и повтори выбор.';
+      console.warn('ATLAS companion sync:',error);
+      refreshMiAtlasPanel();
+    });
+  }
 
   function active(){
     return !!uid() && canUseCompanion() && state.visible && !document.hidden && !state.dragging;
@@ -316,6 +360,7 @@
   }
 
   function load(){
+    syncError='';
     var savedPet=get('pet','sprout');
     state.pet=PETS[savedPet] ? savedPet : 'sprout';
     state.visible=get('visible','1')!=='0';
@@ -323,6 +368,7 @@
     state.anchor=parsePos(get('position',''));
     state.pos={x:state.anchor.x,y:state.anchor.y};
     render();
+    syncCompanion();
   }
 
   function clearRoam(){
@@ -480,6 +526,7 @@
     hovered=false;
     state.pet=id;
     set('pet',id);
+    syncCompanion({pet:id});
     applyPet();
 
     if(state.anchor){
@@ -498,6 +545,7 @@
     if(!canUseCompanion()) return;
     state.visible=!!value;
     set('visible',state.visible?'1':'0');
+    syncCompanion({visible:state.visible});
     render();
   }
 
@@ -518,6 +566,7 @@
     else delete state.names[state.pet];
 
     saveNames();
+    syncCompanion({names:Object.assign({},state.names)});
     applyPet();
     refreshMiAtlasPanel();
   }
@@ -547,6 +596,7 @@
     var currentName=String((state.names && state.names[state.pet]) || '').trim();
 
     return '<div class="atlas-companion-settings">' +
+      (syncError ? '<p role="alert">'+escapeHtml(syncError)+'</p>' : '') +
       '<div class="atlas-companion-settings-head">' +
         '<div>' +
           '<h3>пиксельный помощник</h3>' +
@@ -717,13 +767,14 @@
 
   document.addEventListener('visibilitychange',function(){
     if(document.hidden){clearRoam();stopBehavior();if(root){root.classList.add('is-paused');frame('')}}
-    else if(active()){root.classList.remove('is-paused');idle()}
+    else {if(active()){root.classList.remove('is-paused');idle()}syncCompanion()}
   });
 
   window.addEventListener('atlasPlayerAuthReady',function(){
     load();
     setTimeout(function(){waitForMiAtlas(0)},120);
   });
+  window.addEventListener('atlasPersonalRendered',ensureMiAtlas);
 
   document.addEventListener('DOMContentLoaded',function(){
     ensureRoot();
