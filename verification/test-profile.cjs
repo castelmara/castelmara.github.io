@@ -43,7 +43,8 @@ const imported='alessandra-manrique bianca-solis josuke-higashikata jacqueline-k
 // The last batch adds five profiles. Leon/Diego already exist; the importer skips them.
 const latestImported='silvia-ramos federico-herrera anthony-rookwood alejandro-hernandez pedro-martinez'.split(' ');
 const currentImported='remi-de-smet mikhail-vilmos nico-guerriero zoe-baudelaire'.split(' ');
-const allImported=imported.concat(latestImported,currentImported);
+const newImported='chiara-de-luca bruna-valentina-morales bosco-salviati'.split(' ');
+const allImported=imported.concat(latestImported,currentImported,newImported);
 const all=JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
 const expectedProfileIds=new Set(prior.filter(c=>c.profile).map(c=>c.id).concat(allImported));
 assert.deepEqual(Array.from(chars,c=>c.id).sort(),[...expectedProfileIds].sort(),'Full-profile IDs match baseline plus both approved imports');
@@ -91,6 +92,14 @@ assert.deepEqual(Object.keys(ramona.relations),['family'],'Ramona: use relations
 const charles=all.find(c=>c.id==='charles-berg').profile;
 assert(!/холихилл|геймдизайн/.test(JSON.stringify(charles)));
 assert(charles.dossier.motivation.text.startsWith("[для пасс: самая главная и очевидная мотивация чарли – возможность ебаться с холгером абелем]\n\n"),"Charles: retain the author note verbatim");
+for(const id of newImported) {
+ const c=all.find(c=>c.id===id);
+ assert.equal(window.ATLAS_CHARACTERS.filter(c=>c.id===id).length,1);
+ assert(!window.ATLAS_CARD_ONLY.some(c=>c.id===id),id+': no temporary card');
+ assert(window.atlasRenderCharacterChip(c).includes('data-atlas-profile-id="'+id+'"'));
+ window.atlasOpenCharacter(id);assert.equal(root.dataset.communityId,id);
+ assert(c.profile.sourceQuestionnaire.endsWith('.docx'));
+}
 const importedBefore=JSON.stringify(all);
 vm.runInContext(fs.readFileSync(path.join(base,'data/ankety-profiles.js'),'utf8'),context);
 assert.equal(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]),importedBefore,'Repeated import does not duplicate/reset profiles');
@@ -105,7 +114,7 @@ const normalized=window.profileTest.indicators(sparse,values);assert.equal(norma
 const mixed=window.profileTest.renderIndicators({display:'bars',items:[{label:'балл',value:'0/10'},{label:'счёт',value:0},{label:'репутация',value:'хорошая'}]});
 assert(mixed.includes('>0</span>'));assert(mixed.includes('>хорошая</span>'));assert(!mixed.includes('—/10'));assert.equal(mixed.split('class="atlas-indicator-bar"').length-1,1);
 const player=window.profileTest.player({id:'fixture',profile:{},player:{name:'<Player>',nickname:'@handle'}});assert(player.includes('&lt;Player&gt; · @handle'));
-console.log('PASS '+chars.length+' full profiles: opening, tab switching, valid fields, no placeholders/duplicates; 20 applied questionnaire profiles, 14 conversions, preserved media/players/authored prose; all other characters unchanged.');
+console.log('PASS '+chars.length+' full profiles: opening, tab switching, valid fields, no placeholders/duplicates; questionnaire imports verified, preserved media/players/authored prose; all other characters unchanged.');
 if(process.argv.includes('--preview')){
  const out=process.env.PROFILE_PREVIEW_DIR;assert(out);
  fs.mkdirSync(out,{recursive:true});
