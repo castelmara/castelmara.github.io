@@ -258,6 +258,12 @@
     }).join('') || '<div class="atlas-profile-empty">связи пока не добавлены.</div>';
   }
   function originalPhoto(c) { return c?.avatar || c?.profile?.avatar || c?.cardImage || c?.card?.image || ''; }
+  function partnerHtml(c,relations,canEdit) {
+    const love = relations?.love?.items || [];
+    return '<h3>партнёр / любовный интерес</h3>' +
+      (love.length ? relationsHtml({love:{items:love}}).replace('<section class="atlas-profile-card"><h3>любовь</h3>','<div>').replace(/<\/section>$/,'</div>') : '<p>пока не указан</p>') +
+      (canEdit ? '<button type="button" class="atlas-community-link" data-community-partner-edit="'+esc(c.id)+'">редактировать</button>' : '');
+  }
   function originalBanner(c) { return c?.banner || c?.heroImage || c?.profile?.heroImage || originalPhoto(c); }
   function ownerCard(c) {
     const p = owner(c.id), box = document.querySelector('#atlasCharacterProfileRoot .atlas-player-meta-card');
@@ -287,6 +293,16 @@
     photo.innerHTML = photoUrl ? '<img src="'+esc(photoUrl)+'" alt="'+esc(name(c))+'" loading="lazy">' : '';
     photo.hidden = !photoUrl;
     if (data?.relations) root.querySelector('[data-character-tab-panel="relations"]').innerHTML = relationsHtml(data.relations);
+    const canEdit = results[2].status === 'fulfilled' && results[2].value === true;
+    const playerBox = root.querySelector('.atlas-player-meta-card');
+    let partnerBox = root.querySelector('[data-community-partner]');
+    if (!partnerBox && playerBox) {
+      partnerBox = document.createElement('section');
+      partnerBox.className = 'atlas-profile-card';
+      partnerBox.setAttribute('data-community-partner','');
+      playerBox.insertAdjacentElement('afterend',partnerBox);
+    }
+    if (partnerBox) partnerBox.innerHTML = partnerHtml(c,data?.relations ?? c.profile?.relations ?? c.relations,canEdit);
     root.querySelector('[data-community-edit]')?.remove();
     if (results[2].status === 'fulfilled' && results[2].value === true) {
       const button = document.createElement('button'); button.type = 'button'; button.className = 'atlas-community-edit'; button.dataset.communityEdit = id; button.textContent = 'редактировать анкету'; hero?.appendChild(button);
@@ -334,23 +350,30 @@
   function status(message) { const el = document.getElementById('atlasCommunityStatus'); if (el) el.textContent = message; }
   function lock(on) { if (editor) editor.saving = on; document.querySelectorAll('#atlasCommunityDialog button, #atlasCommunityDialog input, #atlasCommunityDialog select, #atlasCommunityDialog textarea').forEach(x => x.disabled = on); }
   function relationRow(key,item = {}) {
-    return '<div class="atlas-community-relation-row"><label>раздел<select name="relation_group">'+Object.entries(groups).map(([k,t]) => '<option value="'+k+'"'+(k===key?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label><label>персонаж<select name="relation_target"><option value="">вписать имя вручную</option>'+(window.ATLAS_CHARACTERS || []).filter(c => c.id !== editor?.id).map(c => '<option value="'+esc(c.id)+'"'+(c.id===item.targetId?' selected':'')+'>'+esc(name(c))+'</option>').join('')+'</select></label><label>имя<input name="relation_name" maxlength="120" value="'+esc(item.name || '')+'"></label><label>связь<input name="relation_label" maxlength="240" value="'+esc(item.relation || '')+'" placeholder="друг, сестра, соперник…"></label><label class="atlas-community-wide">описание<textarea name="relation_text" maxlength="3000">'+esc(item.text || '')+'</textarea></label><button type="button" data-community-relation-remove>убрать связь</button></div>';
+    return '<div class="atlas-community-relation-row"><label>раздел<select name="relation_group">'+Object.entries(groups).map(([k,t]) => '<option value="'+k+'"'+(k===key?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label><label>персонаж<select name="relation_target"><option value="">вписать имя вручную</option>'+(editor?.loveOnly ? allCharacters() : (window.ATLAS_CHARACTERS || [])).filter(c => c.id !== editor?.id).map(c => '<option value="'+esc(c.id)+'"'+(c.id===item.targetId?' selected':'')+'>'+esc(name(c))+'</option>').join('')+'</select></label><label>имя<input name="relation_name" maxlength="120" value="'+esc(item.name || '')+'"></label><label>связь<input name="relation_label" maxlength="240" value="'+esc(item.relation || '')+'" placeholder="друг, сестра, соперник…"></label><label class="atlas-community-wide">описание<textarea name="relation_text" maxlength="3000">'+esc(item.text || '')+'</textarea></label><button type="button" data-community-relation-remove>убрать связь</button></div>';
   }
-  async function openCharacterEditor(id) {
+  async function openCharacterEditor(id,loveOnly = false) {
     const c = character(id); if (!c || !uid()) return;
-    const modal = dialog('редактировать анкету','<p>загружаем анкету…</p>');
+    const modal = dialog(loveOnly ? 'партнёр / любовный интерес' : 'редактировать анкету','<p>загружаем анкету…</p>');
     editor = {kind:'character',id,user:uid(),urls:[],saving:false}; const state = editor;
     try {
       const [data,canEdit] = await Promise.all([loadCustom(id,true),read(client().rpc('atlas_can_edit_character',{p_character:id}))]);
       if (editor !== state) return;
       if (!canEdit) throw new Error('Эта анкета не привязана к вашему аккаунту.');
       state.original = data;
+      state.loveOnly = loveOnly;
+      state.relations = data?.relations ?? c.profile?.relations ?? c.relations ?? {};
       modal.querySelector('p').remove();
       const form = document.createElement('form'); form.id = 'atlasCharacterCustomizeForm';
       form.innerHTML = '<p>Здесь меняются фото, баннер и связи внутри анкеты. Фото в каталоге выбирает администратор.</p><div class="atlas-community-media-grid">'+['photo','banner'].map(k => '<label>'+ (k==='photo'?'фотокарточка':'баннер')+'<img data-community-preview="'+k+'" src="'+esc(data?.[k+'_url'] || (k==='photo'?originalPhoto(c):originalBanner(c)))+'" alt="предпросмотр"><input type="file" name="'+k+'" accept="image/jpeg,image/png,image/webp,image/gif"><span><input type="checkbox" name="reset_'+k+'"> вернуть исходное изображение</span><small>JPG, PNG, WEBP или GIF, до 8 МБ.</small></label>').join('')+'</div><h3>связи</h3><div id="atlasCommunityRelations"></div><button type="button" data-community-relation-add>+ добавить связь</button><div class="atlas-community-form-actions"><button type="button" data-community-close>отмена</button><button type="submit">сохранить</button></div>';
       modal.insertBefore(form,modal.querySelector('#atlasCommunityStatus'));
       const relations = data?.relations ?? c.profile?.relations ?? c.relations ?? {};
+      if (loveOnly) form.innerHTML = '<p>Выбери персонажа или впиши имя. Укажи, кем он является: партнёр, влюблённость или любовный интерес.</p><div id="atlasCommunityRelations"></div><button type="button" data-community-relation-add>+ добавить</button><div class="atlas-community-form-actions"><button type="button" data-community-close>отмена</button><button type="submit">сохранить</button></div>';
       form.querySelector('#atlasCommunityRelations').innerHTML = Object.keys(groups).flatMap(k => (relations[k]?.items || []).map(x => relationRow(k,x))).join('');
+      if (loveOnly) {
+        form.querySelector('#atlasCommunityRelations').innerHTML = (relations.love?.items?.length ? relations.love.items : [{}]).map(x => relationRow('love',x)).join('');
+        form.querySelectorAll('[name="relation_group"]').forEach(x => { x.closest('label').hidden = true; });
+      }
     } catch (err) { status(errorText(err)); }
   }
   function validateImage(file) {
@@ -368,12 +391,13 @@
   }
   async function saveCharacter(form) {
     const state = editor; if (!state || state.saving) return;
-    const fields = new FormData(form), relations = {};
+    const fields = new FormData(form), relations = state.loveOnly ? JSON.parse(JSON.stringify(state.relations || {})) : {};
+    if (state.loveOnly) delete relations.love;
     try {
       if (uid() !== state.user) throw new Error('Аккаунт изменился. Откройте редактор заново.');
       form.querySelectorAll('.atlas-community-relation-row').forEach(row => {
         const value = n => row.querySelector('[name="'+n+'"]').value.trim();
-        const key = value('relation_group'), targetId = value('relation_target'), target = character(targetId);
+        const key = state.loveOnly ? 'love' : value('relation_group'), targetId = value('relation_target'), target = state.loveOnly ? cardCharacter(targetId) : character(targetId);
         const personName = target ? name(target) : value('relation_name');
         if (!personName) throw new Error('У каждой связи должно быть имя или выбранный персонаж.');
         (relations[key] ||= {title:groups[key],items:[]}).items.push({name:personName,targetId,relation:value('relation_label'),text:value('relation_text')});
@@ -383,7 +407,7 @@
       ['photo','banner'].forEach(k => { const f = fields.get(k); if (f?.size && !fields.has('reset_'+k)) validateImage(f); });
       lock(true); status('сохраняем…'); state.uploaded = [];
       const row = {character_id:state.id,relations};
-      for (const k of ['photo','banner']) {
+      for (const k of (state.loveOnly ? [] : ['photo','banner'])) {
         const f = fields.get(k);
         row[k+'_url'] = fields.has('reset_'+k) ? null : f?.size ? await uploadImage(f,state,k) : state.original?.[k+'_url'] || null;
       }
@@ -600,9 +624,14 @@
       else { const c = allCharacters().find(x => x.id===id); window.atlasOpenPage?.('personajes-'+(c?.category || 'estudiantes')); setTimeout(() => document.getElementById('card-only-'+id)?.scrollIntoView({block:'center'}),100); }
     }
     if (b.hasAttribute('data-community-edit')) openCharacterEditor(b.dataset.communityEdit);
+    if (b.hasAttribute('data-community-partner-edit')) openCharacterEditor(b.dataset.communityPartnerEdit,true);
     if (b.hasAttribute('data-community-close')) closeModal();
     if (b.hasAttribute('data-community-relation-remove')) b.closest('.atlas-community-relation-row').remove();
-    if (b.hasAttribute('data-community-relation-add')) document.getElementById('atlasCommunityRelations').insertAdjacentHTML('beforeend',relationRow('friends'));
+    if (b.hasAttribute('data-community-relation-add')) {
+      const list = document.getElementById('atlasCommunityRelations');
+      list.insertAdjacentHTML('beforeend',relationRow(editor?.loveOnly ? 'love' : 'friends'));
+      if (editor?.loveOnly) list.querySelectorAll('[name="relation_group"]').forEach(x => { x.closest('label').hidden = true; });
+    }
     if (b.hasAttribute('data-community-roster-edit')) openRosterEditor();
     if (b.hasAttribute('data-community-roster-row')) selectRoster(Number(b.dataset.communityRosterRow));
     if (b.hasAttribute('data-community-roster-new')) selectRoster(-1);
@@ -631,6 +660,7 @@
     rosterAccessVersion++; rosterAllowed = false; rosterAllowedFor = null;
     renderRosterActions();
     document.querySelector('[data-community-edit]')?.remove();
+    document.querySelector('[data-community-partner-edit]')?.remove();
     if (editor && editor.user !== uid()) { editor.saving = false; closeModal(); }
     loadOwners(true).then(() => { const id = document.getElementById('atlasCharacterProfileRoot')?.dataset.communityId; if (id) window.atlasHydrateCommunityCharacter(id); }).catch(() => {});
     reloadRoster().catch(() => {});

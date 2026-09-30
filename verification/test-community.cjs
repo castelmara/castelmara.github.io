@@ -21,6 +21,27 @@ test('Changing interior media keeps the catalog source unchanged',async()=>{
  await e.api.save({fields:{reset_photo:'on'},querySelectorAll:()=>[]});
  const write=e.calls.find(x=>x.action==='update');assert.equal(write.row.photo_url,null);assert.equal(write.row.banner_url,'https://old/banner.jpg');assert.equal(write.filters.updated_at,'old');assert.deepEqual(e.chars,before);assert(!Object.hasOwn(write.row,'cardImage'));
 });
+test('Partner editor saves love only, preserving other relations and customization fields',async()=>{
+ const e=env();e.api.run("editor={kind:'character',id:'a',user:'u1',urls:[],saving:false,loveOnly:true,relations:{friends:{items:[{name:'Friend'}]},love:{items:[{name:'Old'}]}},original:{updated_at:'old',photo_url:'photo',banner_url:'banner',indicators:{items:[]}}}");
+ const values={relation_group:'friends',relation_target:'',relation_name:'New partner',relation_label:'любовный интерес',relation_text:'описание'};
+ const row={querySelector:s=>({value:values[s.match(/name="([^"]+)"/)[1]]})};
+ await e.api.save({fields:{},querySelectorAll:()=>[row]});
+ const write=e.calls.find(x=>x.action==='update');
+ assert.equal(write.row.relations.love.items[0].name,'New partner');
+ assert.equal(write.row.relations.friends.items[0].name,'Friend');
+ for(const k of ['photo_url','banner_url','indicators']) assert(!Object.hasOwn(write.row,k));
+ assert.equal(write.filters.updated_at,'old');
+});
+test('Partner can be removed without deleting other relations',async()=>{
+ const e=env();e.api.run("editor={kind:'character',id:'a',user:'u1',urls:[],saving:false,loveOnly:true,relations:{family:{items:[{name:'Family'}]},love:{items:[{name:'Old'}]}},original:{updated_at:'old'}}");
+ await e.api.save({fields:{},querySelectorAll:()=>[]});
+ const write=e.calls.find(x=>x.action==='update');assert(!write.row.relations.love);assert.equal(write.row.relations.family.items[0].name,'Family');
+});
+test('Partner overview escapes copy and offers editing only when allowed',()=>{
+ const e=env();const out=e.api.run("partnerHtml({id:'a'},{love:{items:[{name:'<script>x</script>',relation:'партнёр'}]}},false)");
+ assert(out.includes('&lt;script&gt;'));assert(!out.includes('data-community-partner-edit'));
+ assert(e.api.run("partnerHtml({id:'a'},null,true)").includes('data-community-partner-edit="a"'));
+});
 test('Stale character edit is rejected without replacing the cached result',async()=>{
  const e=env();e.api.run("editor={kind:'character',id:'a',user:'u1',urls:[],saving:false,original:{updated_at:'old'}}");
  e.hooks.query=()=>({data:[]});await e.api.save({fields:{},querySelectorAll:()=>[]});assert.equal(e.api.run('custom.has("a")'),false);assert.equal(e.api.run('editor.saving'),false);
