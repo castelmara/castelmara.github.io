@@ -10,6 +10,12 @@ const document={getElementById:id=>nodes[id]||null,querySelector:()=>null,queryS
 const context=vm.createContext({window,document,console,Intl,Date,Set,Map,Promise,setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},sessionStorage:{setItem(){},getItem(){return null}},FormData:class{}});
 vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'window.directTest={run:s=>eval(s),openChat,loadMessages,sendMessage,shell};})();'),context);
 const api=window.directTest;
+for(const [id,role,allowed] of [['user','player',false],['another-admin','admin',false],['c8e46ed6-7024-467e-914b-f74b57f20f9c','admin',true],['c8e46ed6-7024-467e-914b-f74b57f20f9c','player',false],['super','superadmin',true]]){
+ window.ATLAS_CURRENT_SESSION.user.id=id;window.ATLAS_CURRENT_PROFILE={id,role};
+ assert.equal(api.run('customPersonaStaff()'),allowed);
+ assert.equal(api.run("usablePersona({character_id:null,owner_user_id:'other'})"),allowed);
+}
+window.ATLAS_CURRENT_SESSION.user.id='user';window.ATLAS_CURRENT_PROFILE={id:'user',role:'player'};
 api.run(`chats=[{id:'mine',title:'My conversation',rp_date:'2026-09-25',next_rp_time:'12:00'},{id:'other',title:'Other conversation',rp_date:'2026-09-25',next_rp_time:'12:00'},{id:'archive',title:'Archived conversation',is_archived:true}];personas=[{id:'p1',owner_user_id:'user',display_name:'Alice',nickname:'alice'},{id:'p2',owner_user_id:'someone',display_name:'Bob',nickname:'bob'}];memberRows=[{chat_id:'mine',persona_id:'p1'},{chat_id:'other',persona_id:'p2'},{chat_id:'archive',persona_id:'p2'}];`);
 function list(section,search='') {api.run('chatSection='+JSON.stringify(section)+';chatSearch='+JSON.stringify(search));return api.run('chatListHtml()');}
 assert(list('personal').includes('data-direct-chat="mine"'));
@@ -62,5 +68,12 @@ window.ATLAS_SUPABASE={from(table){return {select(){return this},eq(){return thi
  await api.sendMessage({elements:{persona:{value:'p1'},rp_date:{value:'2026-09-25'},rp_time:{value:'12:00'},body:{value:'Participant message'}},querySelector:()=>button});
  assert(calls.includes('send_direct_message_v3'),'Participant reaches the authorized send RPC');
  assert.equal(button.disabled,false);
+ api.run("personas.push({id:'service',character_id:null,owner_user_id:'another-staff',display_name:'Administration',nickname:'administration'});memberRows.push({chat_id:'mine',persona_id:'service'})");
+ assert(!api.run("writablePersonas(chats[0]).some(p=>p.id==='service')"));
+ window.ATLAS_CURRENT_SESSION.user.id='c8e46ed6-7024-467e-914b-f74b57f20f9c';
+ window.ATLAS_CURRENT_PROFILE={id:window.ATLAS_CURRENT_SESSION.user.id,role:'admin'};
+ assert(api.run("myPersonas().some(p=>p.id==='service')"));
+ assert(api.run("writablePersonas(chats[0]).some(p=>p.id==='service')"));
+ api.shell();assert(root.innerHTML.includes('data-direct-custom-personas'));
  console.log('PASS Direct: personal/public overlap, foreign reads, write restrictions, staff rights, archives/search, stable tab switching, desktop columns and shared hero.');
 })().catch(e=>{console.error(e);process.exitCode=1});
