@@ -45,7 +45,7 @@ const latestImported='silvia-ramos federico-herrera anthony-rookwood alejandro-h
 const currentImported='remi-de-smet mikhail-vilmos nico-guerriero zoe-baudelaire'.split(' ');
 const newImported='chiara-de-luca bruna-valentina-morales bosco-salviati'.split(' ');
 const questionnaireBatch='gwendoline-gallagher marcus-perez elarian-casterly rene-gott satoru-saitou ilias-markou axel-beltran'.split(' ');
-const allImported=imported.concat(latestImported,currentImported,newImported,questionnaireBatch);
+const allImported=imported.concat(latestImported,currentImported,newImported,questionnaireBatch,['diego-caceres']);
 const all=JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
 const expectedProfileIds=new Set(prior.filter(c=>c.profile).map(c=>c.id).concat(allImported));
 assert.deepEqual(Array.from(chars,c=>c.id).sort(),[...expectedProfileIds].sort(),'Full-profile IDs match baseline plus both approved imports');
@@ -102,6 +102,12 @@ for(const id of newImported) {
  assert(c.profile.sourceQuestionnaire.endsWith('.docx'));
 }
 const importedBefore=JSON.stringify(all);
+const diego=all.find(c=>c.id==='diego-caceres');
+assert.equal(diego.profile.sourceQuestionnaire,'диего касерес.docx');
+assert.equal(diego.profile.overview.mainInfo.age,'28 лет');
+assert.equal(diego.profile.overview.mainInfo.birthDate,'27 декабря 1996 года');
+assert.equal(diego.profile.overview.mainInfo.atlasNickname,'caceres.cinco');
+assert(diego.profile.dossier.biography.text.startsWith('буэнос-айрес, окраина.'));
 vm.runInContext(fs.readFileSync(path.join(base,'data/ankety-profiles.js'),'utf8'),context);
 assert.equal(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]),importedBefore,'Repeated import does not duplicate/reset profiles');
 const sparse={id:'sparse',name:'Sparse',profile:{}};

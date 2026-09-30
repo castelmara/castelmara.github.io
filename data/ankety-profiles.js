@@ -1715,6 +1715,18 @@
   const characters = window.ATLAS_CHARACTERS || (window.ATLAS_CHARACTERS = []);
   const cards = window.ATLAS_CARD_ONLY || [];
   imported.forEach(entry => {
+    const existing = characters.find(c => c.id === entry.id);
+    if (entry.id === 'diego-caceres' && existing && !existing.profile.sourceQuestionnaire) {
+      // Replace the old coach placeholder with the approved application, retaining media/player.
+      existing.fullName = entry.fullName;
+      existing.originalName = entry.originalName;
+      existing.name = entry.fullName;
+      existing.profileTitle = entry.originalName;
+      existing.profile.sourceQuestionnaire = entry.profile.sourceQuestionnaire;
+      Object.assign(existing.profile.overview.mainInfo, entry.profile.overview.mainInfo);
+      Object.assign(existing.profile.dossier, entry.profile.dossier);
+      if (entry.profile.relations) existing.profile.relations = entry.profile.relations;
+    }
     // Re-evaluation must not duplicate a profile or reset later edits.
     if (characters.some(c => c.id === entry.id)) return;
     const card = cards.find(c => c.id === entry.id);
