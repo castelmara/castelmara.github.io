@@ -44,7 +44,8 @@ const imported='alessandra-manrique bianca-solis josuke-higashikata jacqueline-k
 const latestImported='silvia-ramos federico-herrera anthony-rookwood alejandro-hernandez pedro-martinez'.split(' ');
 const currentImported='remi-de-smet mikhail-vilmos nico-guerriero zoe-baudelaire'.split(' ');
 const newImported='chiara-de-luca bruna-valentina-morales bosco-salviati'.split(' ');
-const allImported=imported.concat(latestImported,currentImported,newImported);
+const questionnaireBatch='gwendoline-gallagher marcus-perez elarian-casterly rene-gott satoru-saitou ilias-markou axel-beltran'.split(' ');
+const allImported=imported.concat(latestImported,currentImported,newImported,questionnaireBatch);
 const all=JSON.parse(JSON.stringify([...window.ATLAS_CHARACTERS,...window.ATLAS_CARD_ONLY]));
 const expectedProfileIds=new Set(prior.filter(c=>c.profile).map(c=>c.id).concat(allImported));
 assert.deepEqual(Array.from(chars,c=>c.id).sort(),[...expectedProfileIds].sort(),'Full-profile IDs match baseline plus both approved imports');

@@ -51,8 +51,8 @@ if(require.main===module) {
     const old=prior.all.find(p=>p.id===c.id);assert(old,c.id+': no unexpected new character');
     assert.deepEqual(courseFields(c),courseFields(old),c.id+': courses outside the approved list unchanged');
   }
-  // These five existing characters gained full profiles in the later approved import.
-  const converted=['anthony-rookwood','federico-herrera','pedro-martinez','alejandro-hernandez','silvia-ramos'];
+  // These existing characters gained full profiles in approved questionnaire imports.
+  const converted=['anthony-rookwood','federico-herrera','pedro-martinez','alejandro-hernandez','silvia-ramos','gwendoline-gallagher','marcus-perez','elarian-casterly','rene-gott','satoru-saitou','ilias-markou','axel-beltran'];
   const priorDirectory=prior.records.map(withoutCourses);
   for(const id of converted) {
     assert(current.all.find(c=>c.id===id)?.profile,id+': imported full profile exists');
@@ -65,6 +65,6 @@ if(require.main===module) {
     const c=current.all.find(c=>c.id===id),markup=current.ctx.window.atlasCardDetailsHtml(c);
     assert(markup.includes('>'+course.toUpperCase()+'</span>'),id+': visible card course');
   }
-  console.log(`PASS courses: 92 unique students (6/38/35/13); ${changed} changed, ${correct} already correct; card/full-profile consistency; other courses unchanged; five approved directory conversions verified.`);
+  console.log(`PASS courses: 92 unique students (6/38/35/13); ${changed} changed, ${correct} already correct; card/full-profile consistency; other courses unchanged; approved directory conversions verified.`);
 }
 module.exports={expected,load,courseFields};
