@@ -19,6 +19,7 @@ html:has(#atlas-page-direct.active),body:has(#atlas-page-direct.active){overflow
 #atlas-app:has(#atlas-page-direct.active) .atlas-sidebar::-webkit-scrollbar{width:0}
 #atlas-app #atlas-page-direct .atlas-direct-composer{padding:8px 12px max(8px,env(safe-area-inset-bottom))}
 #atlas-app #atlas-page-direct .atlas-direct-composer textarea{resize:none;max-height:100px}
+
 @media(max-width:900px){
   #atlas-app:has(#atlas-page-direct.active) .atlas-pages-holder{padding:0 8px 6px}
   #atlas-app #atlas-page-direct .atlas-direct-head{height:68px;padding:10px 16px!important;border-radius:16px}
@@ -26,8 +27,174 @@ html:has(#atlas-page-direct.active),body:has(#atlas-page-direct.active){overflow
   #atlas-app #atlas-page-direct .atlas-section-hero-kicker{display:none}
   #atlas-app #atlas-page-direct .atlas-direct-shell{gap:6px}
   #atlas-app #atlas-page-direct :is(input,textarea,select),.atlas-custom-personas :is(input,textarea,select){font-size:16px!important}
-  #atlas-app #atlas-page-direct .atlas-direct-composer-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px}
+
+  /* Open conversation = the mobile screen. Keep topbar/hero only in the chat list. */
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) .atlas-topbar,
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) #atlas-page-direct .atlas-direct-head{
+    display:none!important;
+  }
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) .atlas-pages-holder{
+    padding:4px 4px max(4px,env(safe-area-inset-bottom));
+  }
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) #atlas-page-direct .atlas-direct-shell{gap:0}
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) #atlas-page-direct .atlas-direct-layout{
+    border-radius:14px;
+  }
+
+  /* Compact conversation header. */
+  #atlas-app #atlas-page-direct .atlas-direct-chat-head{
+    min-height:52px;
+    padding:7px 8px;
+    gap:7px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-mobile-back{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+    border-radius:10px;
+    font-size:21px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-chat-mark{
+    width:34px;
+    height:34px;
+    flex-basis:34px;
+    border-radius:10px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-chat-title strong{font-size:12px;line-height:1.2}
+  #atlas-app #atlas-page-direct .atlas-direct-chat-title span{
+    margin-top:2px;
+    font-size:8px;
+    line-height:1.25;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-chat-actions{gap:4px}
+  #atlas-app #atlas-page-direct .atlas-direct-chat-actions .atlas-direct-manage-btn{
+    width:34px;
+    height:34px;
+    padding:0;
+    border-radius:10px;
+    font-size:0;
+    display:grid;
+    place-items:center;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-chat-actions [data-direct-members]::before{
+    content:"уч.";
+    font:900 8px/1 "Montserrat",Arial,sans-serif;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-chat-actions [data-direct-manage]::before{
+    content:"•••";
+    font:900 12px/1 "Montserrat",Arial,sans-serif;
+    letter-spacing:1px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-participants-panel{
+    top:56px;
+    right:6px;
+    width:calc(100% - 12px);
+    max-height:calc(100% - 64px);
+  }
+
+  /* More room for messages. */
+  #atlas-app #atlas-page-direct .atlas-direct-messages{
+    padding:10px 8px 8px;
+    gap:8px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-message{max-width:96%;gap:6px}
+  #atlas-app #atlas-page-direct .atlas-direct-message-avatar{
+    width:30px;
+    height:30px;
+    flex-basis:30px;
+    border-radius:9px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-message-bubble{
+    padding:9px 10px;
+    border-radius:14px 14px 14px 5px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-message.is-own .atlas-direct-message-bubble{
+    border-radius:14px 14px 5px 14px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-message-text{font-size:11px;line-height:1.48}
+  #atlas-app #atlas-page-direct .atlas-direct-message-actions{
+    opacity:.58;
+    margin-top:1px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-message-actions button{padding:3px;font-size:7.5px}
+
+  /* Hidden typing indicator no longer reserves ~46px. */
+  #atlas-app #atlas-page-direct .atlas-direct-typing:not(.is-active){display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-typing.is-active{
+    height:auto;
+    min-height:26px;
+    margin:0 0 5px;
+    padding:6px 9px;
+    font-size:9px;
+  }
+
+  /* Compact, iOS-safe composer. */
+  #atlas-app #atlas-page-direct .atlas-direct-composer{
+    padding:6px 8px max(10px,env(safe-area-inset-bottom));
+    overflow:visible;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-composer-controls{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:4px;
+    margin-bottom:5px;
+  }
   #atlas-app #atlas-page-direct .atlas-direct-composer-control:first-child{grid-column:1/-1}
-  #atlas-app #atlas-page-direct .atlas-direct-composer-control :is(input,select){min-width:0}
-  #atlas-app[data-direct-keyboard="true"] .atlas-topbar,#atlas-app[data-direct-keyboard="true"] #atlas-page-direct .atlas-direct-head{display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control{gap:3px;min-width:0}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control:not(:first-child)>span{display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control>span{font-size:7px}
+  #atlas-app #atlas-page-direct .atlas-direct-composer-control :is(input,select){
+    min-width:0;
+    height:32px;
+    padding:0 7px;
+    border-radius:9px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-composer-row{
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:6px;
+    align-items:end;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-composer textarea{
+    min-height:40px;
+    max-height:82px;
+    padding:9px 10px;
+    border-radius:12px;
+    line-height:1.35;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-composer-actions{gap:4px;flex:0 0 auto}
+  #atlas-app #atlas-page-direct .atlas-direct-send,
+  #atlas-app #atlas-page-direct .atlas-direct-attach{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    flex:0 0 38px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-attach{font-size:15px}
+  #atlas-app #atlas-page-direct .atlas-direct-send{font-size:15px}
+  #atlas-app #atlas-page-direct .atlas-direct-message-status:empty{display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-message-status:not(:empty){
+    min-height:0;
+    margin-top:4px;
+    font-size:8px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-reply-bar{
+    margin-bottom:5px;
+    padding:6px 8px;
+    font-size:8px;
+  }
+  #atlas-app #atlas-page-direct .atlas-direct-pending-files{margin-bottom:5px}
+
+  #atlas-app[data-direct-keyboard="true"] .atlas-topbar,
+  #atlas-app[data-direct-keyboard="true"] #atlas-page-direct .atlas-direct-head{display:none!important}
+}
+
+@media(max-width:390px){
+  #atlas-app:has(#atlas-page-direct.active .atlas-direct-layout.is-mobile-chat) .atlas-pages-holder{padding-left:2px;padding-right:2px}
+  #atlas-app #atlas-page-direct .atlas-direct-chat-head{padding-left:6px;padding-right:6px}
+  #atlas-app #atlas-page-direct .atlas-direct-chat-mark{display:none}
+  #atlas-app #atlas-page-direct .atlas-direct-composer{padding-left:6px;padding-right:6px}
+  #atlas-app #atlas-page-direct .atlas-direct-send,
+  #atlas-app #atlas-page-direct .atlas-direct-attach{width:36px;height:36px;flex-basis:36px}
 }
