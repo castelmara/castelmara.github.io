@@ -19230,13 +19230,10 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
   body.atlas-sidebar-open { overflow: hidden !important; }
 
   #atlas-mobile-theme-toggle {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 99999;
-    width: 46px;
+    width: 100%;
     height: 46px;
-    border-radius: 999px;
+    margin-top: 20px;
+    border-radius: 12px;
     border: 1px solid rgba(226,71,71,.28);
     background: rgba(255,255,255,.94);
     color: #e24747;
@@ -19244,13 +19241,11 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
     align-items: center;
     justify-content: center;
     font-family: "Montserrat", Arial, sans-serif;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 0 14px 34px rgba(0,0,0,.22);
-    backdrop-filter: blur(12px);
   }
-  #atlas-app[data-theme="dark"] ~ #atlas-mobile-theme-toggle {
+  #atlas-app[data-theme="dark"] #atlas-mobile-theme-toggle {
     background: rgba(17,21,27,.94);
     color: #ff6b6b;
     border-color: rgba(226,71,71,.38);
@@ -19279,7 +19274,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
     var a = app();
     var btn = document.getElementById('atlas-mobile-theme-toggle');
     if (!a || !btn) return;
-    btn.textContent = a.getAttribute('data-theme') === 'dark' ? '☀' : '☾';
+    btn.textContent = a.getAttribute('data-theme') === 'dark' ? '☀ светлая тема' : '☾ тёмная тема';
   }
   function init() {
     var a = app();
@@ -19307,7 +19302,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
         if (original) original.click();
         setTimeout(syncMobileThemeButton, 500);
       });
-      a.insertAdjacentElement('afterend', theme);
+      a.querySelector('.atlas-logo-btn').insertAdjacentElement('afterend', theme);
     }
     syncMobileThemeButton();
 
