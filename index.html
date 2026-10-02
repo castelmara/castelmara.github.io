@@ -896,6 +896,7 @@ body.atlas-modal-open {
 
       <button class="atlas-nav-item" type="button" data-page="foro"><span class="atlas-nav-icon">✉</span><span>foro</span></button>
       <button class="atlas-nav-item" type="button" data-page="faq"><span class="atlas-nav-icon">?</span><span>faq</span></button>
+      <button class="atlas-nav-item" type="button" data-page="games"><span class="atlas-nav-icon">▦</span><span>игры</span></button>
     </nav>
 
     <div class="atlas-sidebar-bottom">
@@ -1005,6 +1006,7 @@ body.atlas-modal-open {
     if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
     if (window.atlasRenderPersonalAtlas) window.atlasRenderPersonalAtlas(pageName);
     if (window.atlasRenderDirect) window.atlasRenderDirect(pageName);
+    if (window.atlasRenderGames) window.atlasRenderGames(pageName);
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -1103,6 +1105,7 @@ body.atlas-modal-open {
     if (window.atlasRenderCharacters) window.atlasRenderCharacters();
     if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
     if (window.atlasRenderDirect) window.atlasRenderDirect(pageName);
+    if (window.atlasRenderGames) window.atlasRenderGames(pageName);
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -24840,5 +24843,11 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-autofill.js?v=20261001-1"></script>
 <link rel="stylesheet" href="assets/atlas-direct-viewport.css?v=20261001-2">
 <script src="assets/atlas-direct-viewport.js?v=20261001-1"></script>
+<template data-atlas-page-template="games">
+  <section class="atlas-page" id="atlas-page-games"><div class="atlas-page-shell atlas-games-shell"><header class="atlas-games-heading"><h2>игры</h2><p>маленькая пауза между большими историями.</p></header><div id="atlasGamesRoot"></div></div></section>
+</template>
+<link rel="stylesheet" href="assets/atlas-games.css?v=20261002-1">
+<script src="assets/atlas-games-engine.js?v=20261002-1"></script>
+<script src="assets/atlas-games.js?v=20261002-1"></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+#atlas-page-games .atlas-games-shell{max-width:1080px;margin:0 auto;padding:24px 0 40px}
+#atlas-page-games .atlas-games-heading h2{font-size:clamp(36px,7vw,64px);margin:0}
+#atlas-page-games .atlas-games-heading p{color:var(--muted,#8b929e)}
+#atlas-page-games button,#atlas-page-games select{font:inherit;color:inherit;border:1px solid #858b9840;background:transparent;border-radius:12px;padding:12px;cursor:pointer}
+#atlas-page-games button:disabled{opacity:.5;cursor:default}
+#atlas-page-games button[aria-pressed="true"]{background:#b5303c;color:white}
+#atlas-page-games .games-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+#atlas-page-games .games-stage{border:1px solid #858b9840;border-radius:22px;padding:clamp(14px,3vw,28px);background:var(--card,#ffffff08)}
+#atlas-page-games .games-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0}
+#atlas-page-games canvas{display:block;width:auto;height:auto;max-width:100%;max-height:48svh;margin:18px auto;background:#10151b;border-radius:12px;touch-action:none}
+#atlas-page-games .games-board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:390px;margin:20px auto}
+#atlas-page-games .games-board button{aspect-ratio:1;font-size:clamp(24px,5vw,40px);font-weight:800;min-width:0;background:#858b9812}
+#atlas-page-games .games-board.puzzle{grid-template-columns:repeat(4,1fr)}
+#atlas-page-games .games-board.puzzle button{font-size:24px}
+#atlas-page-games .games-pad{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;touch-action:manipulation}
+#atlas-page-games .games-pad button{min-width:48px;min-height:48px}
+#atlas-page-games .games-hint{font-size:13px;line-height:1.6;color:var(--muted,#8b929e)}
+#atlas-page-games .games-status{min-height:28px;font-weight:700}
+#atlas-page-games .games-matches{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+#atlas-page-games select{max-width:100%;font-size:16px;background:var(--card,#20252d)}
+#atlas-page-games [role="alert"]{color:#e76671}
+#atlas-page-games button:focus-visible{outline:3px solid #e6b267;outline-offset:3px}
