@@ -47,9 +47,9 @@
  #atlas-page-games .games-tabs{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0;border-radius:20px}
  #atlas-page-games .games-tabs button{padding:9px 6px;min-height:42px}
  #atlas-page-games .games-stage{padding:14px 10px;border-radius:22px}
- #atlas-page-games canvas{max-height:36svh;margin:10px auto}
- #atlas-page-games .games-stage--tetris canvas{height:min(36svh,400px)}
- #atlas-page-games .games-stage--snake canvas{width:min(100%,360px,36svh)}
+ #atlas-page-games canvas{max-height:none;margin:10px auto}
+ #atlas-page-games .games-stage--tetris canvas{width:min(100%,280px);height:auto}
+ #atlas-page-games .games-stage--snake canvas{width:100%;height:auto}
  #atlas-page-games .games-toolbar{margin-bottom:8px}
  #atlas-page-games .games-pad{margin-top:12px}
  #atlas-page-games .games-hint{font-size:11px}
