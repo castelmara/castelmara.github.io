@@ -1,22 +1,58 @@
-#atlas-page-games .atlas-games-shell{max-width:1080px;margin:0 auto;padding:24px 0 40px}
-#atlas-page-games .atlas-games-heading h2{font-size:clamp(36px,7vw,64px);margin:0}
-#atlas-page-games .atlas-games-heading p{color:var(--muted,#8b929e)}
-#atlas-page-games button,#atlas-page-games select{font:inherit;color:inherit;border:1px solid #858b9840;background:transparent;border-radius:12px;padding:12px;cursor:pointer}
+#atlas-page-games .atlas-games-shell{max-width:900px;margin:0 auto;padding:20px 0 32px;--game-line:#858b982b;--game-soft:#858b9810}
+#atlas-page-games .atlas-games-heading h2{font-size:clamp(32px,6vw,56px);margin:0;letter-spacing:-.04em}
+#atlas-page-games .atlas-games-heading p{color:var(--muted,#8b929e);font-size:13px;line-height:1.5;margin:10px 0}
+#atlas-page-games button,#atlas-page-games select{font:inherit;color:inherit;border:1px solid var(--game-line);background:var(--game-soft);border-radius:16px;padding:12px 16px;cursor:pointer;touch-action:manipulation;min-height:44px;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s;-webkit-tap-highlight-color:transparent}
 #atlas-page-games button:disabled{opacity:.5;cursor:default}
-#atlas-page-games button[aria-pressed="true"]{background:#b5303c;color:white}
-#atlas-page-games .games-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
-#atlas-page-games .games-stage{border:1px solid #858b9840;border-radius:22px;padding:clamp(14px,3vw,28px);background:var(--card,#ffffff08)}
-#atlas-page-games .games-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0}
-#atlas-page-games canvas{display:block;width:auto;height:auto;max-width:100%;max-height:48svh;margin:18px auto;background:#10151b;border-radius:12px;touch-action:none}
-#atlas-page-games .games-board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:390px;margin:20px auto}
-#atlas-page-games .games-board button{aspect-ratio:1;font-size:clamp(24px,5vw,40px);font-weight:800;min-width:0;background:#858b9812}
-#atlas-page-games .games-board.puzzle{grid-template-columns:repeat(4,1fr)}
-#atlas-page-games .games-board.puzzle button{font-size:24px}
-#atlas-page-games .games-pad{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;touch-action:manipulation}
-#atlas-page-games .games-pad button{min-width:48px;min-height:48px}
-#atlas-page-games .games-hint{font-size:13px;line-height:1.6;color:var(--muted,#8b929e)}
-#atlas-page-games .games-status{min-height:28px;font-weight:700}
-#atlas-page-games .games-matches{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+#atlas-page-games button[aria-pressed="true"],#atlas-page-games [data-game-action="start"]{background:linear-gradient(135deg,#c84450,#a52b41);color:#fff;border-color:transparent;box-shadow:0 4px 14px #a52b411c}
+#atlas-page-games button:not(:disabled):active{transform:scale(.96)}
+#atlas-page-games .games-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px;border:1px solid var(--game-line);border-radius:22px;margin:18px 0;background:var(--game-soft)}
+#atlas-page-games .games-tabs button{border:0;padding:12px 6px;font-size:12px;background:transparent;min-width:0}
+#atlas-page-games .games-tabs button[aria-pressed="true"]{background:linear-gradient(135deg,#c84450,#a52b41)}
+#atlas-page-games .games-stage{border:1px solid var(--game-line);border-radius:28px;padding:clamp(14px,3vw,26px);background:linear-gradient(145deg,#858b980c,transparent);box-shadow:0 12px 40px #00000006}
+#atlas-page-games .games-toolbar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+#atlas-page-games .games-toolbar button{font-size:12px}
+#atlas-page-games canvas{display:block;width:auto;height:auto;max-width:100%;max-height:46svh;margin:14px auto;border:1px solid #ffffff14;background:#10151b;border-radius:18px;box-shadow:0 12px 32px #00000024;touch-action:none}
+#atlas-page-games .games-stage--tetris canvas{aspect-ratio:1/2;height:min(46svh,480px)}
+#atlas-page-games .games-stage--snake canvas{aspect-ratio:1;width:min(100%,360px,46svh)}
+#atlas-page-games .games-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:360px;margin:18px auto;padding:10px;background:var(--game-soft);border:1px solid var(--game-line);border-radius:24px}
+#atlas-page-games .games-board button{aspect-ratio:1;font-size:clamp(28px,6vw,44px);font-weight:800;min-width:0;background:var(--game-soft);border-radius:18px}
+#atlas-page-games .games-board [data-mark="X"],#atlas-page-games .games-board [data-mark="O"]{opacity:1;background:#c844500b}
+#atlas-page-games [data-mark="X"]{color:#d65b70}
+#atlas-page-games [data-mark="O"]{color:#56a99e}
+#atlas-page-games .games-mark{display:inline-block;font-family:Arial,sans-serif;font-size:clamp(40px,10vw,60px);font-weight:500;text-transform:uppercase;line-height:1}
+#atlas-page-games .games-mark.is-new{animation:games-mark-in .22s ease-out}
+#atlas-page-games .games-board.puzzle{display:block;position:relative;aspect-ratio:1;padding:0;border:0}
+#atlas-page-games .puzzle button{position:absolute;left:0;top:0;width:25%;height:25%;padding:5px;border:0;background:none;border-radius:0;transition:transform .18s cubic-bezier(.2,.8,.3,1);font-size:clamp(20px,5vw,28px)}
+#atlas-page-games .puzzle button span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border:1px solid var(--game-line);border-radius:18px;background:linear-gradient(145deg,#bf7e8d20,#858b9818);box-shadow:0 3px 0 #858b9818}
+#atlas-page-games .games-pad{display:grid;grid-template-columns:repeat(3,56px);grid-template-areas:". up ." "left down right" "drop drop drop";justify-content:center;gap:7px;touch-action:manipulation;margin:16px auto 0}
+#atlas-page-games .games-pad button{min-width:0;min-height:48px;padding:8px;font-size:23px;box-shadow:0 3px 0 #858b9818;user-select:none}
+#atlas-page-games [data-game-action="left"]{grid-area:left}
+#atlas-page-games [data-game-action="right"]{grid-area:right}
+#atlas-page-games [data-game-action="up"]{grid-area:up}
+#atlas-page-games [data-game-action="down"]{grid-area:down}
+#atlas-page-games .games-pad [data-game-action="drop"]{grid-area:drop;font-size:12px;min-height:44px}
+#atlas-page-games .games-stage--tetris .games-pad{grid-template-columns:repeat(4,52px);grid-template-areas:"left up down right" "drop drop drop drop"}
+#atlas-page-games .games-hint{max-width:520px;margin:18px auto 0;font-size:12px;line-height:1.6;color:var(--muted,#8b929e);text-align:center}
+#atlas-page-games .games-status{min-height:22px;font-size:13px;font-weight:700;text-align:center;margin:10px 0;font-variant-numeric:tabular-nums}
+#atlas-page-games .games-matches{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;max-height:180px;overflow:auto}
 #atlas-page-games select{max-width:100%;font-size:16px;background:var(--card,#20252d)}
-#atlas-page-games [role="alert"]{color:#e76671}
-#atlas-page-games button:focus-visible{outline:3px solid #e6b267;outline-offset:3px}
+#atlas-page-games [role="alert"]{color:#e76671;font-size:13px}
+#atlas-page-games [role="alert"]:empty{display:none}
+#atlas-page-games button:focus-visible,#atlas-page-games canvas:focus-visible{outline:3px solid #e6b267;outline-offset:3px}
+@keyframes games-mark-in{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@media(hover:hover){#atlas-page-games button:not(:disabled):hover{border-color:#c8445066;box-shadow:0 4px 14px #0000000d}}
+@media(max-width:600px){
+ #atlas-page-games .atlas-games-shell{padding:8px 0 20px}
+ #atlas-page-games .atlas-games-heading h2{font-size:32px}
+ #atlas-page-games .games-tabs{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0;border-radius:20px}
+ #atlas-page-games .games-tabs button{padding:9px 6px;min-height:42px}
+ #atlas-page-games .games-stage{padding:14px 10px;border-radius:22px}
+ #atlas-page-games canvas{max-height:36svh;margin:10px auto}
+ #atlas-page-games .games-stage--tetris canvas{height:min(36svh,400px)}
+ #atlas-page-games .games-stage--snake canvas{width:min(100%,360px,36svh)}
+ #atlas-page-games .games-toolbar{margin-bottom:8px}
+ #atlas-page-games .games-pad{margin-top:12px}
+ #atlas-page-games .games-hint{font-size:11px}
+ #atlas-page-games .games-board{gap:7px;padding:7px;border-radius:20px}
+}
+@media(prefers-reduced-motion:reduce){#atlas-page-games button{transition:none}#atlas-page-games .games-mark.is-new{animation:none}}

@@ -26,3 +26,33 @@ for(const game of ['snake','tetris']){
  }
 }
 console.log('PASS WASD: both games, Cyrillic layout, uppercase, arrows, space; typing and browser shortcuts preserved');
+
+// Exercise the real input and animation lifecycle without a database or a browser.
+const events={},frames=new Map(),timers=new Map();let sequence=0,now=100;
+const context2d=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(target,key)=>target[key]||(()=>{})});
+const canvas={width:0,height:0,getContext:()=>context2d,matches:()=>true,setPointerCapture(){}};
+const statusNode={textContent:''},gameRoot={querySelector:s=>s==='canvas'?canvas:statusNode,querySelectorAll:()=>[],innerHTML:''};
+const testWindow={AtlasGamesEngine:E,devicePixelRatio:2,matchMedia:()=>({matches:false}),addEventListener(){}};
+const sandbox={window:testWindow,document:{hidden:false,querySelector:()=>null,getElementById:()=>gameRoot,addEventListener:(name,fn)=>{events[name]=fn}},performance:{now:()=>now},
+ setTimeout:fn=>{timers.set(++sequence,fn);return sequence},clearTimeout:id=>timers.delete(id),setInterval:()=>0,clearInterval(){},
+ requestAnimationFrame:fn=>{frames.set(++sequence,fn);return sequence},cancelAnimationFrame:id=>frames.delete(id)};
+vm.runInNewContext(source.replace("  if(active())window.atlasRenderGames('games');",`window.gameTest={
+ setup(name){game=name;reset();paused=false;}, step,draw,stop,
+ snapshot(){return {direction:snake?.direction,body:snake?.body,previousBody,piece:JSON.parse(JSON.stringify(piece||null)),paused,gesture};}
+};`),sandbox);
+sandbox.document.querySelector=()=>({});
+const ui=testWindow.gameTest;
+ui.setup('snake');ui.step();assert.equal(frames.size,1);assert.equal(timers.size,1);
+assert.equal(ui.snapshot().body[0].x,9);assert.equal(ui.snapshot().previousBody[0].x,8);
+events.pointerdown({target:canvas,isPrimary:true,pointerId:1,clientX:80,clientY:80});
+events.pointermove({pointerId:1,clientX:80,clientY:40});assert.equal(ui.snapshot().direction.y,-1);
+events.pointermove({pointerId:1,clientX:20,clientY:40});assert.equal(ui.snapshot().direction.y,-1,'Only one turn is allowed per snake step');
+events.pointercancel();assert.equal(ui.snapshot().gesture,null);
+ui.stop();assert.equal(frames.size,0);assert.equal(timers.size,0);assert(ui.snapshot().paused);
+ui.setup('tetris');const before=JSON.stringify(ui.snapshot().piece);now+=16;ui.draw();assert.equal(JSON.stringify(ui.snapshot().piece),before,'Visual easing/landing preview never changes collision state');
+assert.equal(canvas.width,480);assert.equal(canvas.height,960,'Canvas uses a capped retina backing store');
+events.pointerdown({target:canvas,isPrimary:true,pointerId:2,clientX:80,clientY:80});
+events.pointermove({pointerId:2,clientX:110,clientY:80});assert.equal(ui.snapshot().piece.x,4);
+events.pointerup({pointerId:2});assert.equal(ui.snapshot().gesture,null);
+ui.step();ui.stop();assert.equal(frames.size,0);assert.equal(timers.size,0);
+console.log('PASS mobile: swipe controls, snake turn guard, cancellation, animation cleanup, retina canvas and read-only landing preview');
