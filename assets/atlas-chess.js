@@ -4,6 +4,9 @@
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const names={k:'король',q:'ферзь',r:'ладья',b:'слон',n:'конь',p:'пешка'},symbols={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
  let mode='ai',local=new Chess(),remote=new Chess(),host=null,worker=null,thinking=false,poll=null;
+ const difficulties={easy:'лёгкий',medium:'средний',hard:'сложный'};
+ let difficulty='medium';
+ try{const saved=window.localStorage?.getItem('atlas-chess-difficulty');if(Object.hasOwn(difficulties,saved))difficulty=saved;}catch{}
  let matches=[],players=[],selected='',from='',promotion=null,busy=false,message='',generation=0,reads=0,opponent='',loadedFor=null,remotePgn=null;
  const mounted=()=>!!host?.isConnected&&!!document.querySelector('#atlas-page-games.active #atlasChessRoot');
  const match=()=>matches.find(m=>m.id===selected);
@@ -31,7 +34,7 @@
  function render(){
   if(!mounted())return;
   let html='<div class="games-toolbar">'+button('ai','против компьютера','aria-pressed="'+(mode==='ai')+'"')+button('online','с игроком','aria-pressed="'+(mode==='online')+'"')+'</div>';
-  if(mode==='ai')html+='<div class="games-toolbar">'+button('new','новая партия')+(message&&local.turn()==='b'?button('retry','повторить ход компьютера'):'')+'</div>';
+  if(mode==='ai')html+='<div class="games-toolbar"><label for="atlasChessDifficulty">сложность</label><select id="atlasChessDifficulty" aria-label="сложность компьютера">'+Object.entries(difficulties).map(([value,label])=>'<option value="'+value+'" '+(value===difficulty?'selected':'')+'>'+label+'</option>').join('')+'</select>'+button('new','новая партия')+(message&&local.turn()==='b'?button('retry','повторить ход компьютера'):'')+'</div><p class="games-hint">'+({easy:'Для знакомства с игрой: компьютер проверяет ближайший ход.',medium:'Учитывает ответы соперника и продолжения разменов.',hard:'Глубже рассчитывает варианты и размены. Ход может занять несколько секунд.'}[difficulty])+'</p>';
   else if(!uid()){host.innerHTML=html+'<p class="games-hint">Войди в ATLAS, чтобы пригласить другого игрока.</p><div class="games-toolbar">'+button('login','войти')+'</div>';return;}
   else{
    html+='<div class="games-toolbar"><select id="atlasChessOpponent" aria-label="соперник в шахматах"><option value="">выбери игрока</option>'+players.filter(p=>p.id!==uid()).map(p=>'<option value="'+esc(p.id)+'" '+(p.id===opponent?'selected':'')+'>@'+esc(p.nickname)+'</option>').join('')+'</select>'+button('invite','пригласить',busy||!opponent?'disabled':'')+button('refresh','обновить',busy?'disabled':'')+'</div><div class="games-matches">'+matches.map(m=>{
@@ -60,10 +63,11 @@
   if(mode!=='ai'||!mounted()||document.hidden||local.turn()!=='b'||local.isGameOver()||thinking)return;
   cancelAI();thinking=true;message='';render();const expected=local.fen();
   try{
-   worker=new Worker('assets/atlas-chess-worker.js?v=20261006-1');
-   worker.onmessage=({data})=>{cancelAI();if(!mounted()||mode!=='ai'||local.fen()!==expected)return;try{if(data.error)throw new Error(data.error);if(data.move)local.move(data.move);}catch{message='Не удалось рассчитать ход. Нажми «повторить ход компьютера».';}render();};
-   worker.onerror=()=>{cancelAI();message='Не удалось загрузить компьютерного соперника. Нажми «повторить ход компьютера».';render();};
-   worker.postMessage({pgn:local.pgn()});
+   worker=new Worker('assets/atlas-chess-worker.js?v=20261008-levels');
+   const activeWorker=worker;
+   worker.onmessage=({data})=>{if(worker!==activeWorker)return;cancelAI();if(!mounted()||mode!=='ai'||local.fen()!==expected)return;try{if(data.error)throw new Error(data.error);if(data.move)local.move(data.move);}catch{message='Не удалось рассчитать ход. Нажми «повторить ход компьютера».';}render();};
+   worker.onerror=()=>{if(worker!==activeWorker)return;cancelAI();message='Не удалось загрузить компьютерного соперника. Нажми «повторить ход компьютера».';render();};
+   worker.postMessage({pgn:local.pgn(),difficulty});
   }catch{cancelAI();message='Не удалось запустить компьютерного соперника.';render();}
  }
  function installMatch(m){const changed=selected!==m?.id||remotePgn!==m?.pgn;selected=m?.id||'';if(changed){remote=new Chess();remotePgn=m?.pgn;if(m?.pgn)remote.loadPgn(m.pgn);from='';promotion=null;}}
@@ -94,7 +98,7 @@
   if(mode==='online'){send('move',move);return;}
   try{local.move(move);from='';promotion=null;render();think();}catch{message='Этот ход недоступен.';render();}
  }
- document.addEventListener('change',e=>{if(e.target.id==='atlasChessOpponent'){opponent=e.target.value;render();}});
+ document.addEventListener('change',e=>{if(e.target.id==='atlasChessOpponent'){opponent=e.target.value;render();}if(e.target.id==='atlasChessDifficulty'&&Object.hasOwn(difficulties,e.target.value)){difficulty=e.target.value;try{window.localStorage?.setItem('atlas-chess-difficulty',difficulty);}catch{}cancelAI();message='';render();think();}});
  document.addEventListener('click',e=>{
   if(!e.target.closest('#atlasChessRoot'))return;const b=e.target.closest('button');if(!b||b.disabled)return;
   if(b.dataset.square){if(!canMove()||promotion)return;const sq=b.dataset.square,g=game(),legal=from?g.moves({square:from,verbose:true}).filter(m=>m.to===sq):[];

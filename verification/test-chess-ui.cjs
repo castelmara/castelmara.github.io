@@ -3,7 +3,7 @@ const {Chess}=require('../assets/vendor/chess-1.4.0.js');
 const source=fs.readFileSync(path.join(__dirname,'../assets/atlas-chess.js'),'utf8');
 const events={},windowEvents={},host={isConnected:true,innerHTML:''};let worker,resolveRequest;
 const win={AtlasChess:Chess,ATLAS_CURRENT_SESSION:{user:{id:'A'}},addEventListener:(type,fn)=>{windowEvents[type]=fn},ATLAS_SUPABASE:{functions:{invoke:()=>new Promise(resolve=>{resolveRequest=resolve})}}};
-const sandbox={window:win,document:{hidden:false,querySelector:()=>host,addEventListener:(type,fn)=>{events[type]=fn}},setInterval:()=>1,clearInterval(){},Worker:class{constructor(){worker=this}postMessage(){}terminate(){this.terminated=true}}};
+const sandbox={window:win,document:{hidden:false,querySelector:()=>host,addEventListener:(type,fn)=>{events[type]=fn}},setInterval:()=>1,clearInterval(){},Worker:class{constructor(){worker=this}postMessage(data){this.request=data}terminate(){this.terminated=true}}};
 vm.runInNewContext(source.replace('})();',`window.testChess={
  online(row){mode='online';matches=[row];installMatch(row);render();},
  ai(fen){mode='ai';local=new Chess(fen);from='';promotion=null;render();},
@@ -15,6 +15,15 @@ const click=dataset=>{const b={dataset};events.click({target:{closest:s=>s==='#a
 assert.equal((host.innerHTML.match(/data-square=/g)||[]).length,64);
 click({square:'e2'});assert.equal(ui.snapshot().from,'e2');assert.equal((host.innerHTML.match(/ legal/g)||[]).length,2);
 click({square:'e4'});assert(worker);assert(host.innerHTML.includes('Компьютер думает'));
+assert(host.innerHTML.includes('atlasChessDifficulty'),'AI difficulty selector is visible');
+assert.equal(worker.request.difficulty,'medium');
+const oldWorker=worker,position=ui.snapshot().fen;
+events.change({target:{id:'atlasChessDifficulty',value:'hard'}});
+assert(oldWorker.terminated,'Changing difficulty stops old search');assert.equal(worker.request.difficulty,'hard');
+assert.equal(ui.snapshot().fen,position,'Changing difficulty preserves the game');
+oldWorker.onmessage({data:{move:{from:'e7',to:'e5'}}});
+assert.equal(ui.snapshot().fen,position,'Stale worker cannot move in the same position');
+assert(!worker.terminated,'Stale worker cannot cancel the replacement');
 win.AtlasChessUI.leave();assert(worker.terminated,'Leaving terminates worker');win.AtlasChessUI.mount(host);
 worker.onmessage({data:{move:{from:'e7',to:'e5'}}});assert(ui.snapshot().fen.includes(' b ')===false);
 ui.ai('7k/P7/8/8/8/8/8/7K w - - 0 1');click({square:'a7'});click({square:'a8'});
