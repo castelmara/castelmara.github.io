@@ -1352,6 +1352,17 @@ body.atlas-modal-open {
         page: pageName,
         type: 'page'
       });
+      // Template content is not part of the document until the page is opened.
+      template.content.querySelectorAll('.atlas-search-target').forEach(function(target) {
+        if (shouldSkipSearchTarget(target)) return;
+        addItem({
+          title: target.getAttribute('data-search-title') || target.textContent.trim().slice(0, 80),
+          keywords: target.getAttribute('data-search-keywords') || target.textContent.trim(),
+          page: pageName,
+          elementId: target.id || '',
+          type: 'target'
+        });
+      });
     });
 
     document.querySelectorAll('#atlas-app .atlas-page').forEach(function(page) {
@@ -1412,6 +1423,9 @@ body.atlas-modal-open {
 
     var matches = collectSearchItems().filter(function(item) {
       return (item.title + ' ' + item.keywords).toLowerCase().indexOf(normalized) !== -1;
+    }).sort(function(a, b) {
+      return Number(b.title.toLowerCase().indexOf(normalized) !== -1) -
+        Number(a.title.toLowerCase().indexOf(normalized) !== -1);
     }).slice(0, 12);
 
 if (!matches.length) {
@@ -1462,6 +1476,7 @@ if (!matches.length) {
     setTimeout(function() {
       var target = document.getElementById(item.elementId);
       if (!target) return;
+      if (target.matches('details')) target.open = true;
 
       /* Search results that describe an action should actually perform it. */
       var action =
@@ -17438,7 +17453,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
       </section>
 
       <div class="foro-rules-list">
-        <details class="foro-rules-item atlas-search-target"
+        <details class="foro-rules-item atlas-search-target" id="foro-rules-general"
                  data-search-title="общие правила"
                  data-search-keywords="общие правила правила roleplay castelmara">
           <summary>общие правила</summary>
@@ -17447,7 +17462,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           </div>
         </details>
 
-        <details class="foro-rules-item atlas-search-target"
+        <details class="foro-rules-item atlas-search-target" id="foro-rules-booking"
                  data-search-title="правила бронирования"
                  data-search-keywords="правила бронирования правила roleplay castelmara">
           <summary>правила бронирования</summary>
@@ -17456,7 +17471,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           </div>
         </details>
 
-        <details class="foro-rules-item atlas-search-target"
+        <details class="foro-rules-item atlas-search-target" id="foro-rules-applications"
                  data-search-title="правила анкетирования"
                  data-search-keywords="правила анкетирования правила roleplay castelmara">
           <summary>правила анкетирования</summary>
@@ -17465,7 +17480,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           </div>
         </details>
 
-        <details class="foro-rules-item atlas-search-target"
+        <details class="foro-rules-item atlas-search-target" id="foro-rules-activity"
                  data-search-title="правила активности"
                  data-search-keywords="правила активности правила roleplay castelmara">
           <summary>правила активности</summary>
@@ -17474,7 +17489,7 @@ Leon remains in data/leon.js, but now uses the same card/profile engine as every
           </div>
         </details>
 
-        <details class="foro-rules-item atlas-search-target"
+        <details class="foro-rules-item atlas-search-target" id="foro-rules-roleplay"
                  data-search-title="правила игрового процесса"
                  data-search-keywords="правила игрового процесса правила roleplay castelmara">
           <summary>правила игрового процесса</summary>
