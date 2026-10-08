@@ -1,0 +1,24 @@
+#atlas-page-games .games-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+#atlas-page-games .chess-board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));width:100%;max-width:520px;margin:16px auto;border:5px solid #37404b;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px #0002}
+#atlas-page-games .chess-square{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;min-width:0;min-height:0;padding:0;border:0;border-radius:0;box-shadow:none;touch-action:manipulation}
+#atlas-page-games .chess-square.light{background:#b7b6af}
+#atlas-page-games .chess-square.dark{background:#63757d}
+#atlas-page-games .chess-square:disabled{opacity:1}
+#atlas-page-games .chess-square.last{box-shadow:inset 0 0 0 3px #e6bd7266}
+#atlas-page-games .chess-square.selected{background:#b95468;box-shadow:inset 0 0 0 3px #ffd6dd}
+#atlas-page-games .chess-square.checked{background:#bc4452}
+#atlas-page-games .chess-square.legal:after{content:'';position:absolute;width:22%;height:22%;border-radius:50%;background:#17222c70;pointer-events:none}
+#atlas-page-games .chess-square.legal:has(.chess-piece):after{width:85%;height:85%;border:3px solid #ffe4a4;background:none}
+#atlas-page-games .chess-piece{font-family:'Segoe UI Symbol','Apple Symbols','DejaVu Sans',serif;font-size:clamp(25px,7vw,52px);line-height:1;z-index:1;pointer-events:none;user-select:none;text-transform:none}
+#atlas-page-games .chess-piece.w{color:#fff8e8;text-shadow:0 1px 2px #18222c,-1px 0 #18222c,1px 0 #18222c}
+#atlas-page-games .chess-piece.b{color:#17212d;text-shadow:0 1px 1px #ffffff80}
+#atlas-page-games .chess-rank,#atlas-page-games .chess-file{position:absolute;font:9px Arial,sans-serif;color:#16202b;text-transform:none;pointer-events:none}
+#atlas-page-games .chess-rank{top:2px;left:3px}
+#atlas-page-games .chess-file{right:3px;bottom:1px}
+#atlas-page-games .chess-side{text-align:center;font-size:12px;color:var(--muted);margin:8px}
+#atlas-page-games .chess-promotion{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;border:1px solid #c8445055;border-radius:16px}
+#atlas-page-games .chess-promotion p{width:100%;text-align:center;margin:0}
+#atlas-page-games .chess-history{max-width:520px;margin:20px auto 0;font-size:13px;line-height:1.8}
+#atlas-page-games .chess-history summary{cursor:pointer}
+#atlas-page-games .chess-history p{text-transform:none;word-spacing:5px}
+@media(max-width:600px){#atlas-page-games .games-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}#atlas-page-games .games-tabs [data-game="chess"]{grid-column:1/-1}#atlas-page-games .chess-board{border-width:3px;border-radius:12px}}

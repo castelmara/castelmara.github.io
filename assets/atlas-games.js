@@ -13,10 +13,12 @@
   function stop(){clearTimeout(timer);cancelAnimationFrame(frame);frame=0;timer=null;paused=true;gesture=null;}
   function status(text){const el=root()?.querySelector('.games-status');if(el)el.textContent=text;}
   function button(action,text,extra=''){return '<button type="button" data-game-action="'+action+'" '+extra+'>'+text+'</button>';}
-  function tabs(){return '<nav class="games-tabs" aria-label="игры">'+[['tetris','тетрис'],['snake','змейка'],['puzzle','пятнашки'],['ttt','крестики-нолики']].map(([id,label])=>button('switch',label,'data-game="'+id+'" aria-pressed="'+(game===id)+'"')).join('')+'</nav>';}
+  function tabs(){return '<nav class="games-tabs" aria-label="игры">'+[['tetris','тетрис'],['snake','змейка'],['puzzle','пятнашки'],['ttt','крестики-нолики'],['chess','шахматы']].map(([id,label])=>button('switch',label,'data-game="'+id+'" aria-pressed="'+(game===id)+'"')).join('')+'</nav>';}
   function render(){
     if(!root())return;
     const oldMarks=Array.from(root().querySelectorAll('[data-cell]'),cell=>cell.dataset.mark);
+    if(game==='chess'){root().innerHTML=tabs()+'<section class="games-stage"><div id="atlasChessRoot"></div></section>';window.AtlasChessUI?.mount(document.getElementById('atlasChessRoot'));return;}
+    window.AtlasChessUI?.leave();
     let html='';
     if(game==='tetris'||game==='snake')html='<div class="games-toolbar">'+button('start','новая игра')+button('pause',paused?'продолжить':'пауза')+'</div><p class="games-status" role="status"></p><canvas tabindex="0" aria-label="'+(game==='tetris'?'Поле тетриса':'Поле змейки')+'" width="'+(game==='tetris'?240:360)+'" height="'+(game==='tetris'?480:360)+'"></canvas><div class="games-pad">'+[['up',game==='tetris'?'↻':'↑'],['left','←'],['down','↓'],['right','→'],...(game==='tetris'?[['drop','опустить']]:[])].map(([a,l])=>button(a,l,'aria-label="'+({left:'влево',right:'вправо',up:game==='tetris'?'повернуть':'вверх',down:'вниз',drop:'опустить фигуру'}[a])+'"')).join('')+'</div><p class="games-hint">'+(game==='tetris'?'← → / A D — движение, ↑ / W — поворот, ↓ / S — быстрее, пробел — сброс.':'Стрелки или WASD — движение. Не врезайся в стены и хвост.')+' На телефоне — кнопки или свайпы по полю.'+(game==='tetris'?' Касание поворачивает фигуру.':'')+' При уходе со страницы игра ставится на паузу.</p>';
     if(game==='puzzle')html='<div class="games-toolbar">'+button('start','перемешать')+'</div><p class="games-status" role="status"></p><div class="games-board puzzle">'+Array.from({length:15},(_,i)=>i+1).map(v=>'<button type="button" data-tile-value="'+v+'" style="transform:translate('+((tiles.indexOf(v)%4)*100)+'%,'+(Math.floor(tiles.indexOf(v)/4)*100)+'%)"><span>'+v+'</span></button>').join('')+'</div><p class="games-hint">Собери числа от 1 до 15. Нажимай на плитку рядом с пустой клеткой.</p>';
@@ -133,6 +135,6 @@
   document.addEventListener('keydown',e=>{if(!active()||!['tetris','snake'].includes(game)||e.target.closest('input,textarea,select,dialog')||e.ctrlKey||e.metaKey||e.altKey)return;const a={KeyA:'left',KeyD:'right',KeyW:'up',KeyS:'down'}[e.code]||{arrowleft:'left',a:'left',arrowright:'right',d:'right',arrowup:'up',w:'up',arrowdown:'down',s:'down',' ':'drop'}[e.key.toLowerCase()];if(a){e.preventDefault();control(a);}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();if(active())render();}});
   window.addEventListener('atlasPlayerAuthReady',()=>{epoch++;busy=false;matches=[];players=[];selected='';loadedFor=null;if(active()){render();if(mode==='online')refresh();}});
-  window.atlasRenderGames=function(page){clearInterval(poll);stop();if(page!=='games')return;if(!well||!tiles){tiles=E.puzzle();reset();}else render();if(game==='ttt'&&mode==='online')refresh();poll=setInterval(()=>{if(!active()){clearInterval(poll);stop();return;}if(!document.hidden&&game==='ttt'&&mode==='online')refresh();},3000);};
+  window.atlasRenderGames=function(page){clearInterval(poll);stop();if(page!=='games'){window.AtlasChessUI?.leave();return;}if(!well||!tiles){tiles=E.puzzle();reset();}else render();if(game==='ttt'&&mode==='online')refresh();poll=setInterval(()=>{if(!active()){clearInterval(poll);stop();return;}if(!document.hidden&&game==='ttt'&&mode==='online')refresh();},3000);};
   if(active())window.atlasRenderGames('games');
 })();

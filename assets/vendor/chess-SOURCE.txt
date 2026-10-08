@@ -1,0 +1,3 @@
+chess.js 1.4.0 from npm, dist/cjs/chess.js wrapped for browser/worker.
+https://github.com/jhlywa/chess.js
+Package integrity: sha512-BBJgrrtKQOzFLonR0l+k64A98NLemPwNsCskwb+29bRwobUa4iTm51E1kwGPbWXAcfdDa18nad6vpPPKPWarqw==
