@@ -13,9 +13,11 @@
   function stop(){clearTimeout(timer);cancelAnimationFrame(frame);frame=0;timer=null;paused=true;gesture=null;}
   function status(text){const el=root()?.querySelector('.games-status');if(el)el.textContent=text;}
   function button(action,text,extra=''){return '<button type="button" data-game-action="'+action+'" '+extra+'>'+text+'</button>';}
-  function tabs(){return '<nav class="games-tabs" aria-label="игры">'+[['tetris','тетрис'],['snake','змейка'],['puzzle','пятнашки'],['ttt','крестики-нолики'],['chess','шахматы']].map(([id,label])=>button('switch',label,'data-game="'+id+'" aria-pressed="'+(game===id)+'"')).join('')+'</nav>';}
+  function tabs(){return '<nav class="games-tabs" aria-label="игры">'+[['tetris','тетрис'],['snake','змейка'],['puzzle','пятнашки'],['ttt','крестики-нолики'],['chess','шахматы'],['match3','три в ряд'],['word','слово дня']].map(([id,label])=>button('switch',label,'data-game="'+id+'" aria-pressed="'+(game===id)+'"')).join('')+'</nav>';}
   function render(){
     if(!root())return;
+    window.AtlasDailyGames?.leave();
+    if(game==='match3'||game==='word'){window.AtlasChessUI?.leave();root().innerHTML=tabs()+'<section class="games-stage"><div id="atlasDailyGamesRoot"></div></section>';window.AtlasDailyGames?.mount(document.getElementById('atlasDailyGamesRoot'),game);return;}
     const oldMarks=Array.from(root().querySelectorAll('[data-cell]'),cell=>cell.dataset.mark);
     if(game==='chess'){root().innerHTML=tabs()+'<section class="games-stage"><div id="atlasChessRoot"></div></section>';window.AtlasChessUI?.mount(document.getElementById('atlasChessRoot'));return;}
     window.AtlasChessUI?.leave();
@@ -135,6 +137,6 @@
   document.addEventListener('keydown',e=>{if(!active()||!['tetris','snake'].includes(game)||e.target.closest('input,textarea,select,dialog')||e.ctrlKey||e.metaKey||e.altKey)return;const a={KeyA:'left',KeyD:'right',KeyW:'up',KeyS:'down'}[e.code]||{arrowleft:'left',a:'left',arrowright:'right',d:'right',arrowup:'up',w:'up',arrowdown:'down',s:'down',' ':'drop'}[e.key.toLowerCase()];if(a){e.preventDefault();control(a);}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();if(active())render();}});
   window.addEventListener('atlasPlayerAuthReady',()=>{epoch++;busy=false;matches=[];players=[];selected='';loadedFor=null;if(active()){render();if(mode==='online')refresh();}});
-  window.atlasRenderGames=function(page){clearInterval(poll);stop();if(page!=='games'){window.AtlasChessUI?.leave();return;}if(!well||!tiles){tiles=E.puzzle();reset();}else render();if(game==='ttt'&&mode==='online')refresh();poll=setInterval(()=>{if(!active()){clearInterval(poll);stop();return;}if(!document.hidden&&game==='ttt'&&mode==='online')refresh();},3000);};
+  window.atlasRenderGames=function(page){clearInterval(poll);stop();if(page!=='games'){window.AtlasChessUI?.leave();window.AtlasDailyGames?.leave();return;}if(!well||!tiles){tiles=E.puzzle();reset();}else render();if(game==='ttt'&&mode==='online')refresh();poll=setInterval(()=>{if(!active()){clearInterval(poll);stop();return;}if(!document.hidden&&game==='ttt'&&mode==='online')refresh();},3000);};
   if(active())window.atlasRenderGames('games');
 })();

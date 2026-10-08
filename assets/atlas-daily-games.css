@@ -1,0 +1,31 @@
+#atlas-page-games .games-tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+#atlasDailyGamesRoot .match3-board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;max-width:490px;margin:20px auto;padding:8px;border:1px solid var(--game-line);border-radius:20px;background:#101c2c}
+#atlasDailyGamesRoot .gem{aspect-ratio:1;min-width:0;min-height:0;padding:0;border-radius:12px;background:linear-gradient(145deg,#ffffff15,#ffffff03);font-size:clamp(20px,5vw,36px);box-shadow:inset 0 1px #ffffff20,0 3px 0 #0003}
+#atlasDailyGamesRoot .gem span{display:block;filter:drop-shadow(0 2px 3px #0003)}
+#atlasDailyGamesRoot .gem-0{color:#e99ab7}#atlasDailyGamesRoot .gem-1{color:#85d6ca}#atlasDailyGamesRoot .gem-2{color:#efcd86}#atlasDailyGamesRoot .gem-3{color:#bdabed}#atlasDailyGamesRoot .gem-4{color:#8dbcf0}
+#atlasDailyGamesRoot .gem[aria-pressed="true"]{outline:2px solid #fff;outline-offset:1px;background:#ffffff20;box-shadow:0 0 16px #ffffff25}
+#atlasDailyGamesRoot .gem:disabled{opacity:1}
+#atlasDailyGamesRoot .gem-clear span{animation:gem-clear .24s ease-in forwards}
+@keyframes gem-clear{to{transform:scale(.3);opacity:0}}
+#atlasDailyGamesRoot .word-board{display:grid;gap:7px;max-width:320px;margin:18px auto}
+#atlasDailyGamesRoot .word-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+#atlasDailyGamesRoot .word-tile{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--game-line);border-radius:12px;background:var(--game-soft);font-size:clamp(23px,6vw,32px);font-weight:800;text-transform:uppercase}
+#atlasDailyGamesRoot .word-keyboard{max-width:580px;margin:18px auto}
+#atlasDailyGamesRoot .word-keyboard>div{display:flex;justify-content:center;gap:4px;margin:5px 0}
+#atlasDailyGamesRoot .word-keyboard button{flex:1;min-width:0;padding:10px 0;border-radius:8px;font-size:14px;text-transform:uppercase}
+#atlasDailyGamesRoot .correct{background:#337863;color:#fff;border-color:#69b39b}
+#atlasDailyGamesRoot .present{background:#896727;color:#fff;border-color:#caa75f}
+#atlasDailyGamesRoot .absent{background:#414653;color:#fff;border-color:#626a7c}
+#atlasDailyGamesRoot .word-keyboard button:disabled{opacity:1}
+@media(max-width:600px){
+ #atlas-page-games .games-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #atlas-page-games .games-tabs [data-game="chess"]{grid-column:auto}
+ #atlas-page-games .games-tabs [data-game="word"]{grid-column:1/-1}
+ #atlasDailyGamesRoot .match3-board{gap:4px;padding:5px;border-radius:16px}
+ #atlasDailyGamesRoot .gem{border-radius:8px}
+ #atlasDailyGamesRoot .word-board{max-width:260px;gap:5px}
+ #atlasDailyGamesRoot .word-row{gap:5px}
+ #atlasDailyGamesRoot .word-keyboard>div{gap:2px}
+ #atlasDailyGamesRoot .word-keyboard button{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){#atlasDailyGamesRoot .gem-clear span{animation:none}}
