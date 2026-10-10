@@ -28,6 +28,21 @@
     @keyframes atlasLoaderSpin{to{transform:rotate(360deg)}}
   </style>
 
+<style>
+#atlas-app .atlas-photo-reactions{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0}
+#atlas-app .atlas-photo-reactions button{border:1px solid #8884;border-radius:18px;background:transparent;color:inherit;min-width:36px;min-height:36px;cursor:pointer}
+#atlas-app .atlas-photo-reactions button[aria-pressed="true"]{background:#b52f4540;border-color:#c74354}
+#atlas-app .atlas-photo-reactions button:disabled{cursor:default;opacity:.8}
+#atlas-app .atlas-direct-format{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;margin:8px 0}
+#atlas-app .atlas-direct-format select{font:inherit;font-size:16px;background:var(--card,#171c24);color:inherit;border:1px solid #8885;border-radius:10px;padding:7px;max-width:100%}
+#atlas-app .atlas-direct-format small{opacity:.65}
+#atlas-app .atlas-voice{min-width:min(250px,60vw);max-width:100%}
+#atlas-app .atlas-voice button{display:flex;align-items:center;gap:12px;text-align:left;background:transparent;border:0;color:inherit;cursor:pointer;padding:8px 0;width:100%}
+#atlas-app .atlas-voice button strong,#atlas-app .atlas-voice button small{display:block}
+#atlas-app .atlas-voice-play{display:grid;place-items:center;border-radius:50%;width:42px;height:42px;flex-shrink:0;background:#b83349;color:white}
+#atlas-app .atlas-voice-wave{display:block;color:#df7082;letter-spacing:2px;font-size:21px}
+#atlas-app .atlas-voice-transcript{border-top:1px solid #8884;padding-top:10px;margin-top:5px;overflow-wrap:anywhere}
+</style>
 </head>
 <body>
 <div id="atlas-dark-loader" aria-hidden="true">
@@ -23533,7 +23548,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 <script id="atlas-direct-script">
 (function(){
   var chats=[],personas=[],memberRows=[],messages=[],inboxMessages=[],readReceipts=[];
-  var attachmentByMessage={},unreadByChat={},pendingFiles=[];
+  var photoReactions={},voiceOpened={},reactionBusy={},attachmentByMessage={},unreadByChat={},pendingFiles=[];
   var activeChatId='',panelMode='chat',renderToken=0,messageToken=0,chatSearch='',chatSection='personal';
   var messagesLoading=false,messagesError='',replyTargetId='',participantPanelOpen=false,mobileChatOpen=false;
   var composerByChat={};
@@ -23659,10 +23674,38 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     return '<div class="atlas-direct-message-reply"><strong>'+esc(pName(p))+'</strong>'+esc(body||'сообщение')+'</div>';
   }
 
+  function photoReactionHtml(a){
+    var rows=photoReactions[a.id]||[],enabled=!!(active()&&!active().is_archived&&writablePersonas(active()).length);
+    return '<div class="atlas-photo-reactions" role="group" aria-label="реакции на фотографию">'+['❤️','🔥','😍','😂','😮','👍'].map(function(emoji){
+      var count=rows.filter(function(r){return r.emoji===emoji}).length,mine=rows.some(function(r){return r.emoji===emoji&&r.user_id===uid()});
+      if(!enabled&&!count)return '';
+      return '<button type="button" data-photo-reaction="'+esc(a.id)+'" data-emoji="'+emoji+'" aria-label="'+emoji+' · '+count+'" aria-pressed="'+mine+'"'+(!enabled?' disabled':'')+'>'+emoji+(count?' <small>'+count+'</small>':'')+'</button>';
+    }).join('')+'</div>';
+  }
+
+  function voiceHtml(m,body){
+    var open=!!voiceOpened[m.id];
+    return '<div class="atlas-voice"><button type="button" data-direct-voice="'+esc(m.id)+'" aria-expanded="'+open+'"><span class="atlas-voice-play" aria-hidden="true">'+(open?'■':'▶')+'</span><span><strong>голосовое сообщение</strong><span class="atlas-voice-wave" aria-hidden="true">▂ ▅ ▃ ▇ ▄ ▂ ▆ ▃ ▅ ▇ ▃ ▂</span><small>'+(open?'свернуть расшифровку':'старт · открыть расшифровку')+'</small></span></button><div class="atlas-voice-transcript"'+(open?'':' hidden')+'>'+nl(body)+'</div></div>';
+  }
+
+  async function reactToPhoto(button){
+    var c=client(),ch=active(),id=button.getAttribute('data-photo-reaction'),emoji=button.getAttribute('data-emoji');
+    if(!c||!ch||button.disabled||reactionBusy[id])return;
+    var view=chatViewVersion,mine=(photoReactions[id]||[]).some(function(r){return r.user_id===uid()&&r.emoji===emoji});
+    reactionBusy[id]=true;button.disabled=true;
+    try{
+      var r=await c.rpc('set_direct_photo_reaction',{p_attachment:id,p_emoji:mine?null:emoji});
+      if(r.error)throw r.error;
+      broadcastDirectEvent('reaction_changed',ch.id,{});
+      if(view===chatViewVersion&&activeChatId===ch.id)await refreshActiveChat(ch.id,false);
+    }catch(err){if(view===chatViewVersion)setMessageStatus(err.message||'не удалось сохранить реакцию','error')}
+    finally{delete reactionBusy[id];button.disabled=false}
+  }
+
   function attachmentHtml(messageId){
     var rows=attachmentsFor(messageId);if(!rows.length)return '';
     return '<div class="atlas-direct-attachments">'+rows.map(function(a){
-      if(imageMime(a.mime_type))return '<a class="atlas-direct-attachment-image" href="'+esc(a.public_url)+'" target="_blank" rel="noopener" aria-label="открыть изображение"><img src="'+esc(a.public_url)+'" alt="изображение в переписке" loading="lazy"></a>';
+      if(imageMime(a.mime_type))return '<a class="atlas-direct-attachment-image" href="'+esc(a.public_url)+'" target="_blank" rel="noopener" aria-label="открыть изображение"><img src="'+esc(a.public_url)+'" alt="изображение в переписке" loading="lazy"></a>'+photoReactionHtml(a);
       return '<a class="atlas-direct-attachment-file" href="'+esc(a.public_url)+'" target="_blank" rel="noopener"><span class="atlas-direct-file-icon">📎</span><span><strong>'+esc(a.file_name||'файл')+'</strong><small>'+esc(a.file_size?Math.max(1,Math.round(Number(a.file_size)/1024))+' КБ':'файл')+'</small></span></a>';
     }).join('')+'</div>';
   }
@@ -23682,7 +23725,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var p=personaById(m.persona_id),own=!!(p&&p.owner_user_id===uid()),day=rpDatePart(m.rp_datetime),sep=day&&day!==prevDate?'<div class="atlas-direct-day" data-direct-day="'+esc(day)+'">'+esc(formatDate(day))+'</div>':'';
     var canReply=writablePersonas(active()).length;
     var actions='<div class="atlas-direct-message-actions">'+(canReply?'<button type="button" data-direct-reply-message="'+esc(m.id)+'">ответить</button>':'')+(messageCanModify(m)?'<button type="button" data-direct-edit-message="'+esc(m.id)+'">изменить</button><button type="button" data-direct-delete-message="'+esc(m.id)+'">удалить</button>':'')+'</div>';
-    var body=cleanMessageBody(m.body),bodyHtml=body?'<div class="atlas-direct-message-text">'+nl(body)+'</div>':'';
+    var body=cleanMessageBody(m.body),bodyHtml=m.message_kind==='voice'?voiceHtml(m,body):body?'<div class="atlas-direct-message-text">'+nl(body)+'</div>':'';
     return sep+'<article class="atlas-direct-message'+(own?' is-own':'')+'" data-direct-message-id="'+esc(m.id)+'">'+pAvatar(p,'atlas-direct-message-avatar')+'<div class="atlas-direct-message-main"><div class="atlas-direct-message-head"><strong>'+esc(pName(p))+'</strong><span>@'+esc(p&&p.nickname||'персонаж')+'</span></div><div class="atlas-direct-message-bubble">'+replyPreview(m.reply_to)+bodyHtml+attachmentHtml(m.id)+'<div class="atlas-direct-message-foot"><span>'+esc(formatTime(m.rp_datetime))+'</span>'+(m.edited_at?'<span>изменено</span>':'')+readReceiptHtml(m)+'</div></div>'+actions+'</div></article>';
   }
 
@@ -23708,7 +23751,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     if(!mine.length)return '<div class="atlas-direct-composer-note">ты можешь читать этот чат, но среди участников нет ни одного твоего персонажа ATLAS.</div>';
     var s=stateFor(c),reply=replyTargetId?messageById(replyTargetId):null;
     var replyBar=reply?'<div class="atlas-direct-reply-bar"><span>ответ для <strong>'+esc(pName(personaById(reply.persona_id)))+'</strong>: '+esc(cleanMessageBody(reply.body).replace(/\s+/g,' ').slice(0,100)||'📎 вложение')+'</span><button type="button" data-direct-cancel-reply aria-label="отменить ответ">×</button></div>':'';
-    return '<form class="atlas-direct-composer" id="atlasDirectMessageForm">'+typingHtml()+replyBar+'<div class="atlas-direct-composer-controls"><label class="atlas-direct-composer-control"><span>отправить как</span><select id="atlasDirectComposerPersona" name="persona">'+mine.map(function(p){return '<option value="'+esc(p.id)+'"'+(p.id===s.persona?' selected':'')+'>'+esc(pName(p))+' · @'+esc(p.nickname||'персонаж')+'</option>'}).join('')+'</select></label><label class="atlas-direct-composer-control"><span>ролевая дата</span><input id="atlasDirectComposerDate" name="rp_date" type="date" value="'+esc(s.date)+'" required></label><label class="atlas-direct-composer-control"><span>время</span><input id="atlasDirectComposerTime" name="rp_time" type="time" value="'+esc(s.time)+'" required></label></div><div id="atlasDirectPendingFiles">'+pendingFilesHtml()+'</div><div class="atlas-direct-composer-row"><textarea id="atlasDirectMessageBody" name="body" placeholder="написать сообщение…">'+esc(s.body)+'</textarea><div class="atlas-direct-composer-actions"><label class="atlas-direct-attach" title="прикрепить файл">📎<input id="atlasDirectFileInput" type="file" multiple accept="image/*,.pdf,.txt,.doc,.docx"></label><button class="atlas-direct-send" type="submit" title="отправить">➤</button></div></div><div class="atlas-direct-message-status" id="atlasDirectMessageStatus"></div></form>';
+    return '<form class="atlas-direct-composer" id="atlasDirectMessageForm">'+typingHtml()+replyBar+'<div class="atlas-direct-composer-controls"><label class="atlas-direct-composer-control"><span>отправить как</span><select id="atlasDirectComposerPersona" name="persona">'+mine.map(function(p){return '<option value="'+esc(p.id)+'"'+(p.id===s.persona?' selected':'')+'>'+esc(pName(p))+' · @'+esc(p.nickname||'персонаж')+'</option>'}).join('')+'</select></label><label class="atlas-direct-composer-control"><span>ролевая дата</span><input id="atlasDirectComposerDate" name="rp_date" type="date" value="'+esc(s.date)+'" required></label><label class="atlas-direct-composer-control"><span>время</span><input id="atlasDirectComposerTime" name="rp_time" type="time" value="'+esc(s.time)+'" required></label></div><label class="atlas-direct-format"><span>формат</span><select id="atlasDirectMessageKind" name="message_kind"><option value="text">текст</option><option value="voice"'+(s.kind==='voice'?' selected':'')+'>голосовое · расшифровка</option></select><small>игровое голосовое без аудиозаписи</small></label><div id="atlasDirectPendingFiles">'+pendingFilesHtml()+'</div><div class="atlas-direct-composer-row"><textarea id="atlasDirectMessageBody" name="body" placeholder="написать сообщение…">'+esc(s.body)+'</textarea><div class="atlas-direct-composer-actions"><label class="atlas-direct-attach" title="прикрепить файл">📎<input id="atlasDirectFileInput" type="file" multiple accept="image/*,.pdf,.txt,.doc,.docx"></label><button class="atlas-direct-send" type="submit" title="отправить">➤</button></div></div><div class="atlas-direct-message-status" id="atlasDirectMessageStatus"></div></form>';
   }
 
   function participantsPanelHtml(c){
@@ -24023,7 +24066,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     if(!c||!chatId||activeChatId!==chatId)return false;
     var token=++messageToken;
     function current(){return token===messageToken&&view===chatViewVersion&&activeChatId===chatId&&uid()===userId}
-    var r=await loadDirectRows(function(){return c.from('direct_messages').select('id,chat_id,persona_id,body,reply_to,rp_datetime,created_at,edited_at,deleted_at').eq('chat_id',chatId).order('rp_datetime',{ascending:true}).order('created_at',{ascending:true}).order('id',{ascending:true})},current);
+    var r=await loadDirectRows(function(){return c.from('direct_messages').select('id,chat_id,persona_id,body,message_kind,reply_to,rp_datetime,created_at,edited_at,deleted_at').eq('chat_id',chatId).order('rp_datetime',{ascending:true}).order('created_at',{ascending:true}).order('id',{ascending:true})},current);
     if(!current())return false;
     if(r.error){messagesLoading=false;if(messages.length)setMessageStatus('не удалось обновить сообщения.','error');else messagesError='не удалось загрузить сообщения: '+(r.error.message||'ошибка');return true}
     var nextMessages=(r.data||[]).filter(function(m){return !m.deleted_at}),nextAttachments={};
@@ -24034,6 +24077,10 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       if(ar.error)nextAttachments=attachmentByMessage;
       else (ar.data||[]).forEach(function(a){(nextAttachments[a.message_id]||(nextAttachments[a.message_id]=[])).push(a)});
     }
+    var reactions=await loadDirectRows(function(){return c.from('direct_photo_reactions').select('id,attachment_id,user_id,emoji,direct_message_attachments!inner(chat_id)').eq('direct_message_attachments.chat_id',chatId).order('id',{ascending:true})},current);
+    if(!current())return false;
+    if(!reactions.error){photoReactions={};(reactions.data||[]).forEach(function(r){(photoReactions[r.attachment_id]||(photoReactions[r.attachment_id]=[])).push(r)})}
+    else setMessageStatus('не удалось обновить реакции','error');
     await loadReadReceipts(chatId);
     if(!current())return false;
     messages=nextMessages;attachmentByMessage=nextAttachments;messagesLoading=false;messagesError='';
@@ -24172,7 +24219,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     if(!currentUid){
       ++chatViewVersion;++messageToken;++receiptToken;++renderToken;
       stopRealtime();stopInboxRealtime();
-      chats=[];personas=[];memberRows=[];messages=[];inboxMessages=[];readReceipts=[];attachmentByMessage={};unreadByChat={};pendingFiles=[];activeChatId='';panelMode='chat';directLoadedForUid='';mobileChatOpen=false;participantPanelOpen=false;
+      chats=[];personas=[];memberRows=[];messages=[];inboxMessages=[];readReceipts=[];attachmentByMessage={};photoReactions={};voiceOpened={};unreadByChat={};pendingFiles=[];activeChatId='';panelMode='chat';directLoadedForUid='';mobileChatOpen=false;participantPanelOpen=false;
       shell();return;
     }
     if(directLoadPromise){
@@ -24220,7 +24267,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       subscribeMessages(id);syncPresenceLifecycle();await markChatRead(id);return;
     }
     stopRealtime();var view=++chatViewVersion;
-    activeChatId=id;rememberActiveChat(id);forceBottomChatId=id;panelMode='chat';replyTargetId='';participantPanelOpen=false;mobileChatOpen=true;pendingFiles=[];messages=[];readReceipts=[];attachmentByMessage={};messagesError='';messagesLoading=true;
+    activeChatId=id;rememberActiveChat(id);forceBottomChatId=id;panelMode='chat';replyTargetId='';participantPanelOpen=false;mobileChatOpen=true;pendingFiles=[];messages=[];readReceipts=[];attachmentByMessage={};photoReactions={};messagesError='';messagesLoading=true;
     shell();
     if(!await loadMessages(id)||view!==chatViewVersion||activeChatId!==id)return;
     forceBottomChatId=id;shell();subscribeMessages(id);await markChatRead(id);
@@ -24338,12 +24385,14 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var view=chatViewVersion,files=pendingFiles.slice(),replyId=replyTargetId,draftBody=form.elements.body.value||'';
     s.persona=persona;s.date=date;s.time=time;s.body=form.elements.body.value||'';
     if(!persona||!date||!time||(!body&&!pendingFiles.length)){setMessageStatus('выбери персонажа, дату, время и добавь текст или вложение.','error');return}
+    var kind=form.elements.message_kind?form.elements.message_kind.value:'text';
+    if(kind==='voice'&&!body){setMessageStatus('добавь расшифровку голосового сообщения.','error');return}
     var btn=form.querySelector('[type="submit"]');if(btn.disabled)return;btn.disabled=true;trackTyping(false);
     var uploaded=[],messageSent=false;
     try{
       for(var i=0;i<files.length;i++){if(view===chatViewVersion)setMessageStatus('загружаем файл '+(i+1)+' из '+files.length+'…');uploaded.push(await uploadDirectFile(files[i],ch))}
       if(view===chatViewVersion)setMessageStatus('отправляем…');
-      var rr=await c.rpc('send_direct_message_v3',{p_chat:ch.id,p_persona:persona,p_body:body,p_reply_to:replyId||null,p_rp_datetime:date+'T'+time+':00',p_attachments:uploaded});
+      var rr=await c.rpc(kind==='voice'?'send_direct_voice_message':'send_direct_message_v3',{p_chat:ch.id,p_persona:persona,p_body:body,p_reply_to:replyId||null,p_rp_datetime:date+'T'+time+':00',p_attachments:uploaded});
       if(rr.error)throw new Error(rr.error.message||'не удалось отправить сообщение.');
       messageSent=true;
       broadcastDirectEvent('message_changed',ch.id,{message_id:rr.data||''});
@@ -24409,6 +24458,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     else if(e.target&&e.target.id==='atlasDirectComposerTime')s.time=e.target.value||'';
   },true);
   document.addEventListener('change',function(e){
+    if(e.target&&e.target.id==='atlasDirectMessageKind'){var draft=stateFor(active());draft.kind=e.target.value;var field=document.getElementById('atlasDirectMessageBody');if(field)field.placeholder=draft.kind==='voice'?'расшифровка голосового…':'написать сообщение…';return}
     if(e.target&&e.target.id==='atlasDirectFileInput'){try{addPendingFiles(e.target.files)}catch(err){setMessageStatus(err.message||'не удалось добавить файл','error')}finally{e.target.value=''}return}
     if(e.target&&e.target.id==='atlasDirectChatPhotoInput'){var photo=e.target.files&&e.target.files[0];e.target.value='';if(photo)replaceChatPhoto(photo);return}
     if(e.target&&e.target.id==='atlasDirectCreateChatPhoto'){var f=e.target.files&&e.target.files[0];if(!f)return;try{validateChatPhoto(f);var box=e.target.closest('.atlas-direct-chat-photo-box'),preview=box&&box.querySelector('.atlas-direct-chat-photo-preview');if(preview){var u=URL.createObjectURL(f);preview.innerHTML='<img src="'+esc(u)+'" alt="">'}}catch(err){e.target.value='';setStatus(err.message,'error')}return}
@@ -24421,6 +24471,8 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var msg=e.target&&e.target.closest?e.target.closest('#atlasDirectMessageForm'):null;if(msg){e.preventDefault();e.stopPropagation();sendMessage(msg);return}
   },true);
   document.addEventListener('click',function(e){
+    var reaction=e.target.closest&&e.target.closest('[data-photo-reaction]');if(reaction){reactToPhoto(reaction);return}
+    var voice=e.target.closest&&e.target.closest('[data-direct-voice]');if(voice){var voiceId=voice.getAttribute('data-direct-voice');voiceOpened[voiceId]=!voiceOpened[voiceId];var message=messageById(voiceId);if(message)voice.parentElement.outerHTML=voiceHtml(message,cleanMessageBody(message.body));return}
     var login=e.target.closest&&e.target.closest('[data-direct-login]');if(login){openLogin();return}
     var section=e.target.closest&&e.target.closest('[data-direct-section]');if(section){
       var nextSection=section.getAttribute('data-direct-section');

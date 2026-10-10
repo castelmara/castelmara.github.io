@@ -2,12 +2,13 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 function fn(name){const start=html.search(new RegExp('  (?:async )?function '+name+'\\('));assert(start>=0,name);const tail=html.slice(start+1),end=tail.search(/\n  (?:async )?function /);return html.slice(start,start+1+end);}
 const data={direct_messages:Array.from({length:1301},(_,i)=>({id:'m'+i,chat_id:'chat',deleted_at:null})),direct_message_attachments:Array.from({length:1101},(_,i)=>({id:'a'+i,message_id:'m1300',chat_id:'chat'}))};
+data.direct_photo_reactions=[];
 const pages=[];let currentUser='A',switchAt=null;
 const ctx={Set,console,Array,Number,String,Error,activeChatId:'chat',chatViewVersion:1,messageToken:0,messages:[],attachmentByMessage:{},pendingFiles:[],
  uid:()=>currentUser,loadReadReceipts:async()=>{},setMessageStatus(){},document:{getElementById:()=>null},
  imageMime:m=>m.startsWith('image/'),fileMime:f=>f.type,pendingFilesHtml:()=>'',
  esc:s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'),
- attachmentsFor:()=>[],
+ attachmentsFor:()=>[],photoReactionHtml:()=>'',photoReactions:{},
  client:()=>({from(table){return {select(){return this},eq(){return this},order(){return this},async range(a,b){pages.push([table,a,b]);if(switchAt===a)currentUser='B';return {data:data[table].slice(a,b+1)};}}}})};
 vm.createContext(ctx);vm.runInContext(['loadDirectRows','loadMessages','addPendingFiles','attachmentHtml'].map(fn).join('\n'),ctx);
 (async()=>{
