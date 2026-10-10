@@ -20129,11 +20129,18 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     box-shadow:0 3px 0 #090b0e;
   }
 }
+
+/* Override the dark-theme hover background so stickers never acquire a square. */
+html #atlas-theme-cursor:not([data-style="classic"]),
+html[data-atlas-theme="dark"] #atlas-theme-cursor:not([data-style="classic"]).is-hover{background:transparent!important;border:0;box-shadow:none;border-radius:50%;filter:drop-shadow(0 0 4px rgba(246,184,119,.32))}
+.atlas-cursor-spark{position:fixed;z-index:2147483646;pointer-events:none!important;width:7px;height:7px;background:#ffdba0;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:atlasCursorSpark .65s ease-out forwards}
+@keyframes atlasCursorSpark{from{opacity:.85;transform:translate(-50%,-50%) scale(1)}to{opacity:0;transform:translate(-50%,12px) scale(.15)}}
+@media(prefers-reduced-motion:reduce),(hover:none),(pointer:coarse){.atlas-cursor-spark{display:none}}
 </style>
 <script>
 (function(){
   var fine=!!(window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches);
-  var allowed=['classic','flower','football','puck','heart','star','butterfly','tennis','basketball'];
+  var allowed=['classic','flower','football','puck','heart','star','butterfly','tennis','basketball','sparkles','crab','cat','frog','cherries','jellyfish','planet'];
   var glyphs={
     flower:'🌸',
     football:'⚽',
@@ -20141,8 +20148,28 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     star:'★',
     butterfly:'🦋',
     tennis:'🎾',
-    basketball:'🏀'
+    basketball:'🏀',sparkles:'✨',crab:'🦀',cat:'🐈',frog:'🐸',cherries:'🍒',jellyfish:'🪼',planet:'🪐'
   };
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var trailEnabled=false,particles=[],lastSpark=0,lastX=null,lastY=null;
+  try{trailEnabled=localStorage.getItem('atlas-cursor-trail')==='1'}catch(_e){}
+  function clearTrail(){particles.forEach(function(p){p.remove()});particles=[];lastX=null;lastY=null}
+  function sparkle(e){
+    if(!trailEnabled||reduced.matches||document.hidden||e.buttons)return;
+    var now=performance.now();
+    if(now-lastSpark<45||(lastX!==null&&Math.hypot(e.clientX-lastX,e.clientY-lastY)<7))return;
+    lastSpark=now;lastX=e.clientX;lastY=e.clientY;
+    if(particles.length>=16)particles.shift().remove();
+    var p=document.createElement('span');p.className='atlas-cursor-spark';p.setAttribute('aria-hidden','true');
+    p.style.left=(e.clientX+(Math.random()-.5)*12)+'px';p.style.top=(e.clientY+(Math.random()-.5)*12)+'px';
+    document.body.appendChild(p);particles.push(p);
+    setTimeout(function(){p.remove();var i=particles.indexOf(p);if(i>=0)particles.splice(i,1)},650);
+  }
+  document.addEventListener('change',function(e){if(e.target.id!=='atlasCursorTrail')return;trailEnabled=e.target.checked;try{localStorage.setItem('atlas-cursor-trail',trailEnabled?'1':'0')}catch(_e){}if(!trailEnabled)clearTrail()});
+  window.atlasSyncCursorTrail=function(){var input=document.getElementById('atlasCursorTrail');if(input)input.checked=trailEnabled};
+  window.addEventListener('blur',clearTrail);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)clearTrail()});
+  if(reduced.addEventListener)reduced.addEventListener('change',clearTrail);
   var current='classic';
   var c=null;
 
@@ -20158,6 +20185,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     if(!c){
       c=document.createElement('div');
       c.id='atlas-theme-cursor';
+      c.setAttribute('aria-hidden','true');
       document.body.appendChild(c);
     }
     document.documentElement.classList.add('atlas-cursor-enabled');
@@ -20193,6 +20221,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     node.style.left=e.clientX+'px';
     node.style.top=e.clientY+'px';
     node.classList.add('is-visible');
+    sparkle(e);
   },{passive:true});
 
   document.addEventListener('mouseover',function(e){
@@ -20204,7 +20233,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
 
   document.addEventListener('mouseout',function(e){
     var node=ensure();
-    if(node&&!e.relatedTarget)node.classList.remove('is-visible');
+    if(node&&!e.relatedTarget){node.classList.remove('is-visible');clearTrail()}
   });
 })();
 </script>
@@ -21595,7 +21624,15 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
             <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="butterfly"><span class="atlas-player-cursor-icon">🦋</span><strong>бабочка</strong></label>
             <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="tennis"><span class="atlas-player-cursor-icon">🎾</span><strong>теннис</strong></label>
             <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="basketball"><span class="atlas-player-cursor-icon">🏀</span><strong>баскетбол</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="sparkles"><span class="atlas-player-cursor-icon">✨</span><strong>звёздочки</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="crab"><span class="atlas-player-cursor-icon">🦀</span><strong>крабик</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="cat"><span class="atlas-player-cursor-icon">🐈</span><strong>котик</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="frog"><span class="atlas-player-cursor-icon">🐸</span><strong>лягушка</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="cherries"><span class="atlas-player-cursor-icon">🍒</span><strong>вишенки</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="jellyfish"><span class="atlas-player-cursor-icon">🪼</span><strong>медуза</strong></label>
+            <label class="atlas-player-cursor-choice"><input type="radio" name="cursor_style" value="planet"><span class="atlas-player-cursor-icon">🪐</span><strong>планета</strong></label>
           </div>
+          <label class="atlas-player-edit-check"><input id="atlasCursorTrail" type="checkbox"> шлейф блёсток за курсором</label><p>Сохраняется в этом браузере. При уменьшении анимации шлейф отключён.</p>
         </section>
         <section class="atlas-player-role-panel" id="atlasPlayerRoleSection" hidden>
           <div class="atlas-player-role-head">
@@ -22138,6 +22175,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         var cursorStyle=priv.cursor_style||'classic';
         form.dataset.originalCursor=cursorStyle;
         syncCursorChoices(cursorStyle);
+        if(window.atlasSyncCursorTrail)window.atlasSyncCursorTrail();
       }else{
         form.dataset.originalCursor='';
       }
