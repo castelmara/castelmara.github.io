@@ -30,3 +30,13 @@ assert blocked,'Deleted message rejected';
 end;
 $test$;
 rollback;
+
+-- Run the browser's SELECT as its actual database role, not the migration owner.
+begin;
+set local role authenticated;
+select id,chat_id,persona_id,body,message_kind,reply_to,rp_datetime,created_at,edited_at,deleted_at
+from public.direct_messages limit 0;
+do $$ begin
+  assert not has_column_privilege('authenticated','public.direct_messages','actor_user_id','SELECT'), 'Actor identity must remain private';
+end $$;
+rollback;
