@@ -23609,7 +23609,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   function isMobile(){return window.matchMedia('(max-width:900px)').matches}
   function attachmentsFor(messageId){return attachmentByMessage[messageId]||[]}
   function unreadFor(chatId){return Math.max(0,Number(unreadByChat[chatId]||0))}
-  function safeFilename(v){return String(v||'file').replace(/[^a-zA-Z0-9а-яА-ЯёЁ._ -]+/g,'').trim().slice(0,120)||'file'}
+  function safeFilename(v){var name=String(v||'file'),ext=(name.match(/\.([a-zA-Z0-9]{1,10})$/)||[])[1];return 'file'+(ext?'.'+ext.toLowerCase():'')}
   function imageMime(v){return /^image\//i.test(String(v||''))}
   function rememberActiveChat(id){try{if(id)sessionStorage.setItem('atlasDirectActiveChat',id);else sessionStorage.removeItem('atlasDirectActiveChat')}catch(_e){}}
   function rememberedActiveChat(){try{return sessionStorage.getItem('atlasDirectActiveChat')||''}catch(_e){return ''}}

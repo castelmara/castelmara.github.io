@@ -11,6 +11,14 @@ rendered=run("voiceHtml({id:'m'},'<script>alert(1)</script>')");assert(!rendered
 let calls=[];window.ATLAS_SUPABASE={rpc:async(name,args)=>{calls.push({name,args});return {data:'m'}}};
 run("refreshActiveChat=async()=>{};broadcastDirectEvent=()=>{};loadInboxMessages=async()=>{};loadUnreadCounts=async()=>{};trackTyping=()=>{};renderChatListOnly=()=>{}");
 (async()=>{
+const storageCalls=[];
+window.ATLAS_SUPABASE.storage={from:()=>({upload:async(path,file)=>{storageCalls.push({path,file});return {data:{path}}},getPublicUrl:path=>({data:{publicUrl:'https://example.test/'+path}})})};
+for(const name of ['Знімок екрана 2026-10-10.png','фото ❤️.JPG','résumé.pdf','a/b?c#.docx']){
+ const file={name,type:'image/png',size:10},result=await run('uploadDirectFile')(file,{id:'chat'});
+ assert.match(result.storage_path,/^u\/direct\/chat\/[a-zA-Z0-9._-]+$/);
+ assert.equal(result.file_name,name,'Original filename remains metadata');
+ assert.equal(storageCalls.at(-1).file,file);
+}
 const button={disabled:false,getAttribute:n=>n==='data-photo-reaction'?'a':'❤️'};
 await run('reactToPhoto')(button);assert.equal(calls.at(-1).args.p_emoji,null);
 button.getAttribute=n=>n==='data-photo-reaction'?'a':'🔥';await run('reactToPhoto')(button);assert.equal(calls.at(-1).args.p_emoji,'🔥');
