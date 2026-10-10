@@ -37,7 +37,7 @@ for(const role of ['admin','superadmin']) {
 window.ATLAS_CURRENT_PROFILE={id:'old-user',role:'superadmin'};
 assert.equal(api.run('canManage(chats[1])'),false);
 window.ATLAS_CURRENT_PROFILE={id:'user',role:'player'};
-window.ATLAS_SUPABASE={from(table){return {select(){return this},eq(){return this},in(){return this},order(){return this},limit(){return this},then(resolve){calls.push(table);return Promise.resolve({data:table==='direct_messages'?[{id:'message',chat_id:'other',persona_id:'p2',body:'Readable foreign chat',rp_datetime:'2026-09-25T12:00',created_at:'2026-09-25T12:00'}]:[]}).then(resolve)}}},rpc(name){calls.push(name);return Promise.resolve({data:[]})}};
+window.ATLAS_SUPABASE={from(table){return {select(){return this},eq(){return this},in(){return this},order(){return this},limit(){return this},range(){return this},then(resolve){calls.push(table);return Promise.resolve({data:table==='direct_messages'?[{id:'message',chat_id:'other',persona_id:'p2',body:'Readable foreign chat',rp_datetime:'2026-09-25T12:00',created_at:'2026-09-25T12:00'}]:[]}).then(resolve)}}},rpc(name){calls.push(name);return Promise.resolve({data:[]})}};
 (async()=>{
  api.run("activeChatId='other'");
  assert.equal(await api.loadMessages('other'),true);
