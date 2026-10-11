@@ -21772,6 +21772,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 
   function canManageCharacterOwners(viewer,target){
     if(!viewer||!target)return false;
+    if(viewer.id&&viewer.id===target.id)return true;
     if(viewer.role==='superadmin')return true;
     return viewer.role==='admin'&&target.role==='player';
   }
