@@ -24242,6 +24242,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     job.promise=(async function(){
       do{
         job.again=false;
+        var previousChat=active(),previousClock=previousChat?previousChat.rp_date+'T'+formatTime(previousChat.next_rp_time):'';
         var cr=await c.from('direct_chats').select('id,title,rp_date,next_rp_time,created_by_user_id,created_by_persona_id,image_path,is_archived,created_at,updated_at').eq('id',chatId).maybeSingle();
         if(!currentView())return;
         if(!cr.error&&cr.data){var idx=chats.findIndex(function(x){return x.id===chatId});if(idx>=0)chats[idx]=cr.data}
@@ -24252,7 +24253,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         if(current&&subtitle)subtitle.textContent=(current.is_archived?'архив · ':'')+formatDate(current.rp_date)+' · следующее сообщение '+formatTime(current.next_rp_time)+' · '+chatMembers(current.id).length+' уч.';
         if(current){
           var s=stateFor(current),serverDate=current.rp_date||'',serverTime=formatTime(current.next_rp_time),localDate=s.date||'',localTime=formatTime(s.time),serverKey=serverDate&&serverTime?serverDate+'T'+serverTime:'',localKey=localDate&&localTime?localDate+'T'+localTime:'';
-          if(serverKey&&(!localKey||localKey<serverKey)){s.date=serverDate;s.time=serverTime;var dateInput=document.getElementById('atlasDirectComposerDate'),timeInput=document.getElementById('atlasDirectComposerTime');if(dateInput)dateInput.value=serverDate;if(timeInput)timeInput.value=serverTime}
+          if(serverKey&&(!localKey||(localKey<serverKey&&messages.some(function(m){return !m.deleted_at}))||(serverKey<previousClock&&localKey===previousClock))){s.date=serverDate;s.time=serverTime;var dateInput=document.getElementById('atlasDirectComposerDate'),timeInput=document.getElementById('atlasDirectComposerTime');if(dateInput)dateInput.value=serverDate;if(timeInput)timeInput.value=serverTime}
         }
         if(chatVisible())await markChatRead(chatId);
       }while(job.again&&currentView());
