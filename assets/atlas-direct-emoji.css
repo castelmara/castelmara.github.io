@@ -1,0 +1,22 @@
+#atlas-app .atlas-direct-emoji-button{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;padding:0;border:1px solid #858b9840;border-radius:12px;background:transparent;color:inherit;cursor:pointer;touch-action:manipulation}
+#atlas-app .atlas-direct-emoji-button svg{width:21px;height:21px}
+#atlas-app .atlas-direct-emoji-button:hover,#atlas-app .atlas-direct-emoji-button[aria-expanded="true"]{background:#b7334925;border-color:#b73349}
+#atlasDirectEmojiPanel{position:fixed;z-index:2147483647;box-sizing:border-box;overflow:auto;border:1px solid #858b9840;border-radius:14px;background:#fff;color:#24262c;box-shadow:0 12px 35px #0005;padding:5px;font:14px/1.4 Arial,sans-serif}
+html[data-atlas-theme="dark"] #atlasDirectEmojiPanel{background:#15191f;color:#ececec}
+#atlasDirectEmojiPanel .atlas-emoji-close{display:block;margin-left:auto;width:32px;height:28px;border:0;border-radius:8px;background:transparent;color:inherit;font-size:23px;cursor:pointer}
+#atlasDirectEmojiPanel em-emoji-picker{width:100%;--border-radius:10px;--font-size:16px}
+html.atlas-cursor-enabled #atlasDirectEmojiPanel,html.atlas-cursor-enabled #atlasDirectEmojiPanel *{cursor:auto!important}
+@media(max-width:760px){#atlas-app .atlas-direct-emoji-button{width:36px;height:36px;flex-basis:36px}}
+
+#atlas-app .atlas-direct-apple-emoji{display:inline-block;width:1.3em;height:1.3em;vertical-align:-.25em;color:transparent;text-shadow:none;background-image:url("vendor/emoji-mart/apple-64.png");background-repeat:no-repeat;overflow:hidden;white-space:nowrap;font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif}
+
+#atlasDirectEmojiPanel .atlas-emoji-tabs{display:flex;gap:6px;float:left;padding:3px}
+#atlasDirectEmojiPanel .atlas-emoji-tabs button{background:transparent;border:1px solid #8884;color:inherit;border-radius:9px;padding:6px 14px;font:14px Arial;cursor:pointer}
+#atlasDirectEmojiPanel .atlas-emoji-tabs button[aria-pressed="true"]{background:#a9364b30;border-color:#a9364b}
+#atlasDirectEmojiPanel .atlas-emoji-content,#atlasDirectEmojiPanel .atlas-gothic-grid{clear:both}
+#atlasDirectEmojiPanel .atlas-gothic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:10px;background:#17181d;border-radius:10px}
+#atlasDirectEmojiPanel [hidden]{display:none!important}
+#atlasDirectEmojiPanel .atlas-gothic-grid button{border:1px solid transparent;border-radius:10px;background:transparent;padding:2px;cursor:pointer;aspect-ratio:1}
+#atlasDirectEmojiPanel .atlas-gothic-grid button:hover,#atlasDirectEmojiPanel .atlas-gothic-grid button:focus-visible{background:#a9364b25;border-color:#a9364b}
+.atlas-gothic-sticker{display:inline-block;width:64px;height:64px;background-image:url("stickers/gothic-atlas.png");background-size:400% 400%;background-repeat:no-repeat;color:transparent;overflow:hidden;white-space:nowrap;text-shadow:none;vertical-align:middle}
+#atlasDirectEmojiPanel .atlas-gothic-sticker{display:block;width:100%;height:auto;aspect-ratio:1;pointer-events:none}

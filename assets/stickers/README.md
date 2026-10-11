@@ -1,0 +1,8 @@
+# Gothic sticker atlas
+
+Original artwork generated with the built-in image generation tool, 2026-10-11.
+File: `gothic-atlas.png`, transparent 4 × 4 sprite atlas. Row-major order matches `gothic` in `assets/atlas-direct-emoji.js`.
+
+Generation prompt:
+
+Create one production-ready game UI sprite atlas: a PERFECT REGULAR 4 by 4 grid on a square truly TRANSPARENT canvas. Sixteen original gothic miniature 3D enamel / satin / antique silver sticker icons, rich black, oxblood red, bone ivory, muted silver. No words, letters, borders, visible grid, keyboard or UI. Every icon centered precisely in its equally sized cell, occupies at most 65% of cell width and height, large even transparent margins; no overlaps, no decorations crossing cell boundaries. Same polished detailed tactile style and clear silhouette visible at 48px, subtle rim lighting for dark backgrounds. Row 1 left to right: glossy black heart, blood-red heart with fine silver thorns, black satin ribbon bow, deep red rose with two dark leaves. Row 2: elegant black cat seated, pale ivory skull, black butterfly with burgundy markings, two lit ivory candles with wax drips. Row 3: ornate antique silver crescent moon, detailed silvery full moon, ornate antique key, silver heart-shaped padlock. Row 4: pair of dark red cherries, antique silver crown with red gems, black swan with elegantly curved neck, ivory envelope sealed with red wax. Transparent background and transparent spaces between all individual icons, no cast ground shadows. This single sprite sheet will be rendered with exact 4x4 CSS background positions; grid alignment is critical.
