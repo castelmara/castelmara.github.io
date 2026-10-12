@@ -24118,14 +24118,29 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     return {data:[],cancelled:true};
   }
 
-  async function loadInboxMessages(){
+  async function loadInboxMessages(onlyChatIds){
     var c=client();if(!c||!chats.length){inboxMessages=[];return}
     var ids=chats.map(function(x){return x.id});
+    if(onlyChatIds)ids=ids.filter(function(id){return onlyChatIds.indexOf(id)>=0});
+    if(!ids.length)return;
     var viewer=uid();
     var r=await loadDirectRows(function(){return c.from('direct_messages').select('id,chat_id,persona_id,body,rp_datetime,created_at,deleted_at').in('chat_id',ids).order('created_at',{ascending:false}).order('id',{ascending:false})},function(){return uid()===viewer});
     if(r.cancelled)return;
-    if(r.error){inboxMessages=[];return}
-    inboxMessages=(r.data||[]).filter(function(m){return !m.deleted_at});
+    if(r.error)return;
+    inboxMessages=(onlyChatIds?inboxMessages.filter(function(m){return ids.indexOf(m.chat_id)<0}):[]).concat((r.data||[]).filter(function(m){return !m.deleted_at}));
+  }
+
+  var pendingInboxChats=new Set(),inboxRefreshRunning=false;
+  function queueInboxRefresh(chatId){
+    if(chatId)pendingInboxChats.add(chatId);
+    if(inboxTimer)clearTimeout(inboxTimer);
+    inboxTimer=setTimeout(flushInboxRefresh,180);
+  }
+  async function flushInboxRefresh(){
+    if(inboxRefreshRunning)return;
+    inboxRefreshRunning=true;
+    try{while(pendingInboxChats.size){var ids=Array.from(pendingInboxChats);pendingInboxChats.clear();await loadInboxMessages(ids);await loadUnreadCounts();renderChatListOnly();}}
+    finally{inboxRefreshRunning=false}
   }
 
   async function loadMessages(chatId){
@@ -24232,16 +24247,14 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
             if(realtimeTimer)clearTimeout(realtimeTimer);
             realtimeTimer=setTimeout(function(){refreshActiveChat(chatId,true)},55);
           }
-          if(inboxTimer)clearTimeout(inboxTimer);
-          inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},70);
+          if(payload.kind!=='read_changed')queueInboxRefresh(chatId);
         })
         .on('postgres_changes',{event:'*',schema:'public',table:'direct_messages'},function(payload){
           var row=payload&&((payload.new&&payload.new.id)?payload.new:payload.old)||{};
           if(!row.chat_id)return;
           if(payload&&payload.eventType==='INSERT'){var ch=chats.find(function(x){return x.id===row.chat_id});if(ch)ch.updated_at=row.created_at||ch.updated_at}
           if(row.chat_id===activeChatId&&pageActive()&&(!isMobile()||mobileChatOpen)){setTimeout(function(){markChatRead(row.chat_id)},120)}
-          if(inboxTimer)clearTimeout(inboxTimer);
-          inboxTimer=setTimeout(async function(){await loadInboxMessages();await loadUnreadCounts();renderChatListOnly()},100);
+          queueInboxRefresh(row.chat_id);
         })
         .on('postgres_changes',{event:'UPDATE',schema:'public',table:'direct_chats'},function(payload){
           var row=payload&&payload.new||{};if(!row.id)return;
@@ -24465,12 +24478,12 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       messageSent=true;
       broadcastDirectEvent('message_changed',ch.id,{message_id:rr.data||''});
       if(s.body===draftBody)s.body='';
-      if(view!==chatViewVersion||activeChatId!==ch.id){await loadInboxMessages();renderChatListOnly();return}
+      if(view!==chatViewVersion||activeChatId!==ch.id){await loadInboxMessages([ch.id]);renderChatListOnly();return}
       replyTargetId='';pendingFiles=pendingFiles.filter(function(file){return files.indexOf(file)<0});
       var bodyEl=document.getElementById('atlasDirectMessageBody');if(bodyEl)bodyEl.value=s.body;
       var pend=document.getElementById('atlasDirectPendingFiles');if(pend)pend.innerHTML=pendingFilesHtml();
       var replyBar=document.querySelector('#atlasDirectMessageForm .atlas-direct-reply-bar');if(replyBar)replyBar.remove();
-      forceBottomChatId=ch.id;await loadInboxMessages();await loadUnreadCounts();await refreshActiveChat(ch.id,false);
+      forceBottomChatId=ch.id;await loadInboxMessages([ch.id]);await loadUnreadCounts();await refreshActiveChat(ch.id,false);
       if(view!==chatViewVersion||activeChatId!==ch.id)return;
       var fresh=active();if(fresh){var ns=stateFor(fresh);ns.persona=persona;ns.date=fresh.rp_date||'';ns.time=formatTime(fresh.next_rp_time);var di=document.getElementById('atlasDirectComposerDate'),ti=document.getElementById('atlasDirectComposerTime');if(di)di.value=ns.date;if(ti)ti.value=ns.time}
       setMessageStatus('', 'ok');
@@ -24991,13 +25004,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <template data-atlas-page-template="games">
   <section class="atlas-page" id="atlas-page-games"><div class="atlas-page-shell atlas-games-shell"><header class="atlas-games-heading"><h2>juegos</h2><p>маленькая пауза между большими историями.</p></header><div id="atlasGamesRoot"></div></div></section>
 </template>
-<link rel="stylesheet" href="assets/atlas-games.css?v=20261005-2">
-<script src="assets/atlas-games-engine.js?v=20261002-1"></script>
-<link rel="stylesheet" href="assets/atlas-chess.css?v=20261006-1">
-<script src="assets/vendor/chess-1.4.0.js"></script>
-<script src="assets/atlas-chess.js?v=20261008-levels"></script>
-<link rel="stylesheet" href="assets/atlas-daily-games.css?v=20261008-1">
-<script src="assets/atlas-daily-games.js?v=20261008-1"></script>
-<script src="assets/atlas-games.js?v=20261008-daily"></script>
+<script src="assets/atlas-games-loader.js?v=20261012"></script>
 </body>
 </html>
