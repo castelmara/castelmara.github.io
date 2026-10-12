@@ -23677,17 +23677,33 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     return latestByCreated(inboxMessages.filter(function(m){return m.chat_id===chatId}));
   }
   function cleanPreview(v){var x=cleanMessageBody(v).replace(/\s+/g,' ').trim();if(!x)return '📎 вложение';return x.length>66?x.slice(0,63)+'…':x}
-  function chatMatches(c,q){
+  function directSearchText(value){return cleanMessageBody(value||'').toLowerCase().replace(/ё/g,'е').replace(/\s+/g,' ').trim()}
+  function messageSearchResults(q){
+    var found=new Map(),byId=new Map();if(!q)return found;
+    inboxMessages.forEach(function(m){byId.set(m.id,m)});
+    messages.forEach(function(m){byId.set(m.id,m)});
+    byId.forEach(function(m){
+      if(m.deleted_at||directSearchText(m.body).indexOf(q)<0)return;
+      var previous=found.get(m.chat_id);
+      if(!previous||(Date.parse(m.created_at)||0)>(Date.parse(previous.created_at)||0))found.set(m.chat_id,m);
+    });
+    return found;
+  }
+  function searchMessagePreview(body,q){
+    var text=cleanMessageBody(body||'').replace(/\s+/g,' ').trim(),at=directSearchText(text).indexOf(q);
+    var start=Math.max(0,at-22),end=Math.min(text.length,Math.max(start+90,at+q.length));
+    return (start?'…':'')+text.slice(start,end)+(end<text.length?'…':'');
+  }
+  function chatMatches(c,q,searchResults){
     if(!q)return true;
     var parts=[c.title||''];
     chatMembers(c.id).forEach(function(p){parts.push(pName(p),p.nickname||'')});
-    var lm=lastMessageFor(c.id);if(lm)parts.push(lm.body||'',pName(personaById(lm.persona_id)));
-    return parts.join(' ').toLowerCase().indexOf(q)>=0;
+    return directSearchText(parts.join(' ')).indexOf(q)>=0||!!(searchResults&&searchResults.has(c.id));
   }
   function chatListHtml(){
     if(!chats.length)return '<div class="atlas-direct-empty">чатов пока нет.</div>';
-    var q=String(chatSearch||'').trim().toLowerCase();
-    var filtered=chats.filter(function(c){return chatInSection(c)&&chatMatches(c,q)});
+    var q=directSearchText(chatSearch),searchResults=messageSearchResults(q);
+    var filtered=chats.filter(function(c){return chatInSection(c)&&chatMatches(c,q,searchResults)});
     if(!filtered.length)return '<div class="atlas-direct-list-empty">'+(q?'ничего не найдено в этом разделе.':chatSection==='personal'?'здесь появятся чаты с твоими персонажами.':'чатов пока нет.')+'</div>';
     // Message edits, read receipts and incoming posts must not move chat buttons.
     function sortRows(list){return list.slice().sort(function(a,b){return (Date.parse(b.created_at||'')||0)-(Date.parse(a.created_at||'')||0)||String(a.id).localeCompare(String(b.id))})}
@@ -23695,6 +23711,8 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     function rows(list){return list.map(function(c){
       var members=chatMembers(c.id),lead=personaById(c.created_by_persona_id)||members[0]||null,lm=lastMessageFor(c.id),author=lm?personaById(lm.persona_id):null;
       var preview=lm?'<b>'+esc(pName(author))+':</b> '+esc(cleanPreview(lm.body||'')):esc(formatDate(c.rp_date)+' · '+members.length+' уч.');
+      var match=searchResults.get(c.id);
+      if(match)preview='<b>найдено:</b> '+esc(searchMessagePreview(match.body,q));
       var clock=lm?formatTime(lm.rp_datetime):formatTime(c.next_rp_time),unread=unreadFor(c.id);
       return '<button class="atlas-direct-channel'+(c.id===activeChatId?' is-active':'')+(c.is_archived?' is-archived':'')+'" type="button" data-direct-chat="'+esc(c.id)+'">'+chatAvatar(c,lead,'atlas-direct-channel-icon')+'<span class="atlas-direct-channel-copy"><span class="atlas-direct-channel-top"><strong>'+esc(c.title||'без названия')+'</strong><span class="atlas-direct-channel-meta"><time>'+esc(clock)+'</time>'+(unread?'<b class="atlas-direct-unread">'+esc(unread>99?'99+':unread)+'</b>':'')+'</span></span><span class="atlas-direct-channel-preview">'+preview+'</span></span></button>'
     }).join('')}
@@ -23866,7 +23884,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     if(!uid()){r.innerHTML='<div class="atlas-direct-gate"><strong>сообщения ATLAS закрыты</strong><span>войдите в аккаунт, чтобы открыть свои ролевые переписки.</span><br><button type="button" data-direct-login>войти</button></div>';lastRenderedChatId='';return}
     var c=active();
     var main=panelMode==='create'?createView():panelMode==='manage'&&c&&canManage(c)?manageView(c):c?chatView(c):'<div class="atlas-direct-chat-body"><div class="atlas-direct-message-empty">'+(myPersonas().length?'создай первый чат кнопкой + слева.':'сначала создай ATLAS-профиль своему персонажу.')+'</div></div>';
-    r.innerHTML='<div class="atlas-direct-layout'+(mobileChatOpen?' is-mobile-chat':'')+'"><aside class="atlas-direct-channels"><div class="atlas-direct-channels-head"><strong>чаты</strong><button class="atlas-direct-create-toggle" type="button" data-direct-create title="создать чат">+</button></div>'+chatSectionsHtml()+'<div class="atlas-direct-chat-search-wrap"><input class="atlas-direct-chat-search" id="atlasDirectChatSearch" type="search" value="'+esc(chatSearch)+'" placeholder="найти чат или персонажа…" autocomplete="off"></div><div class="atlas-direct-channel-list" id="atlasDirectChannelList">'+chatListHtml()+'</div></aside><section class="atlas-direct-chat">'+main+'</section></div>';
+    r.innerHTML='<div class="atlas-direct-layout'+(mobileChatOpen?' is-mobile-chat':'')+'"><aside class="atlas-direct-channels"><div class="atlas-direct-channels-head"><strong>чаты</strong><button class="atlas-direct-create-toggle" type="button" data-direct-create title="создать чат">+</button></div>'+chatSectionsHtml()+'<div class="atlas-direct-chat-search-wrap"><input class="atlas-direct-chat-search" id="atlasDirectChatSearch" type="search" value="'+esc(chatSearch)+'" placeholder="чат, персонаж или слова из сообщения…" autocomplete="off"></div><div class="atlas-direct-channel-list" id="atlasDirectChannelList">'+chatListHtml()+'</div></aside><section class="atlas-direct-chat">'+main+'</section></div>';
     lastRenderedChatId=activeChatId||'';
 
     var freshBox=document.getElementById('atlasDirectMessages');
