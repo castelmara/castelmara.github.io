@@ -1,4 +1,7 @@
 /* Direct is a viewport-sized workspace. Only its content panes scroll. */
+/* User-written text retains its original casing, including quoted messages. */
+#atlas-app #atlas-page-direct :is(.atlas-direct-message-text,.atlas-voice-transcript,.atlas-direct-reply-bar,.atlas-direct-message-reply,.atlas-direct-channel-preview,#atlasDirectMessageBody),
+#atlas-app #atlas-page-direct :is(.atlas-direct-message-text,.atlas-voice-transcript,.atlas-direct-reply-bar,.atlas-direct-message-reply,.atlas-direct-channel-preview) *{text-transform:none!important}
 html:has(#atlas-page-direct.active),body:has(#atlas-page-direct.active){overflow:hidden}
 #atlas-app:has(#atlas-page-direct.active){height:var(--direct-viewport-height,100dvh);min-height:0!important;overflow:hidden}
 #atlas-app:has(#atlas-page-direct.active) .atlas-main{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}
