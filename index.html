@@ -21053,6 +21053,18 @@ html[data-atlas-theme="dark"] #atlas-theme-cursor:not([data-style="classic"]).is
 #atlas-app .atlas-player-card.is-passion{overflow:visible}
 #atlas-app .atlas-player-card.is-passion .atlas-player-card-media{border-radius:inherit;overflow:hidden}
 #atlas-app .atlas-player-card.is-passion::after{border-radius:inherit}
+#atlas-app .atlas-player-card.is-diamond{overflow:visible}
+#atlas-app .atlas-player-card.is-diamond .atlas-player-card-media{border-radius:inherit;overflow:hidden}
+#atlas-app .atlas-player-card.is-diamond::after{border-radius:inherit}
+#atlas-app .atlas-diamond-shards{position:absolute;z-index:3;width:54px;height:72px;pointer-events:none;filter:none;transition:filter .24s ease}
+#atlas-app .atlas-diamond-shards.is-top{top:-17px;right:-9px;transform:rotate(12deg)}
+#atlas-app .atlas-diamond-shards.is-bottom{bottom:-16px;left:-9px;transform:rotate(192deg)}
+@media(hover:hover) and (pointer:fine){#atlas-app .atlas-player-card.is-diamond:hover{box-shadow:0 0 0 1px #ffffffdd,0 0 32px #b3c9ff88,0 15px 46px #efb6f777}}
+@media(max-width:560px){#atlas-app .atlas-diamond-shards{width:40px;height:55px}#atlas-app .atlas-diamond-shards.is-top{right:-5px;top:-12px}#atlas-app .atlas-diamond-shards.is-bottom{left:-5px;bottom:-12px}}
+#atlas-app .atlas-player-card.is-diamond::before{content:"";position:absolute;inset:-3px;border-radius:inherit;padding:2px;background:linear-gradient(120deg,#e8fcff,#b8daff,#e9c7ff,#ffd0e6,#fff3b8,#c6ffe9,#e8fcff);background-size:300% 300%;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none;z-index:3;opacity:0;transition:opacity .24s ease}
+@keyframes atlasDiamondShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@media(hover:hover) and (pointer:fine){#atlas-app .atlas-player-card.is-diamond:hover::before{opacity:1;animation:atlasDiamondShimmer 9s ease-in-out infinite}#atlas-app .atlas-player-card.is-diamond:hover .atlas-diamond-shards{filter:drop-shadow(0 0 5px #d7e8ffbb)}}
+@media(prefers-reduced-motion:reduce){#atlas-app .atlas-player-card.is-diamond:hover::before{animation:none}}
 #atlas-app .atlas-passion-sparkles{position:absolute;z-index:3;width:44px;height:52px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
 #atlas-app .atlas-passion-sparkles.is-top{top:-16px;right:-10px}
 #atlas-app .atlas-passion-sparkles.is-bottom{bottom:-16px;left:-10px;transform:rotate(180deg)}
@@ -22312,6 +22324,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   }
 
   var passionPlayerId='c8e46ed6-7024-467e-914b-f74b57f20f9c';
+  var diamondPlayerId='fcae4d67-9252-4c7a-9f5a-cd99f5a4a24a';
   function playerCard(p){
     var media=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':'<span class="atlas-player-card-letter">'+esc(initial(p))+'</span>';
     var badges=['игрок'];
@@ -22321,7 +22334,9 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var passion=p.id===passionPlayerId;
     var sparkleShape='<path fill="#004D98" d="M27 3C25 16 22 21 13 24C22 27 25 32 27 46C29 32 32 27 41 24C32 21 29 16 27 3Z"/><path fill="#A50044" d="M9 1C8 7 6 10 1 12C6 14 8 17 9 23C10 17 12 14 17 12C12 10 10 7 9 1ZM8 32C7 37 5 39 1 41C5 43 7 45 8 50C9 45 11 43 15 41C11 39 9 37 8 32Z"/>';
     var sparkles=passion?['top','bottom'].map(function(corner){return '<svg class="atlas-passion-sparkles is-'+corner+'" viewBox="0 0 44 52" aria-hidden="true" focusable="false">'+sparkleShape+'</svg>'}).join(''):'';
-    return '<button class="atlas-player-card'+(passion?' is-passion':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+
+    var diamond=p.id===diamondPlayerId;
+    var shards=diamond?['top','bottom'].map(function(corner){return '<svg class="atlas-diamond-shards is-'+corner+'" viewBox="0 0 54 72" aria-hidden="true" focusable="false"><path fill="#c5cde7" stroke="#f6fbff" stroke-width=".7" d="M25 7 43 18 36 43 18 30Z"/><path fill="#c8edff" d="m25 7 4 17-11 6Z"/><path fill="#ffffff" d="m25 7 18 11-14 6Z"/><path fill="#e2c6ff" d="m29 24 14-6-7 25Z"/><path fill="#9daecc" d="m18 30 11-6 7 19Z"/><path fill="#f6fbff" d="m6 17 9-13 1 18Z"/><path fill="#ffcfdf" d="m6 17 10 5-6 7Z"/><path fill="#fff0b5" d="m38 53 13-12-3 22Z"/><path fill="#ffffff" d="m38 53 13-12-7 15Z"/><path fill="#c5cde7" stroke="#c8edff" stroke-width=".6" d="m9 45 13 7-6 16-9-11Z"/><path fill="#f6fbff" d="m9 45 13 7-10 3Z"/><path fill="#fff0b5" d="m12 55 10-3-6 16Z"/></svg>'}).join(''):'';
+    return '<button class="atlas-player-card'+(passion?' is-passion':'')+(diamond?' is-diamond':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+shards+
       '<span class="atlas-player-card-media">'+media+'</span>'+
       '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'игрок')+'</p></span>'+
     '</button>';
