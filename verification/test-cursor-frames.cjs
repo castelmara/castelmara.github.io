@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8');
+const start=html.indexOf('  var cursorFrame=0'),end=html.indexOf("  document.addEventListener('mouseover'",start);
+const handlers={},frames=new Map();let next=1,painted=0;
+const node={style:{},classList:{add(){painted++},remove(){}}};
+const ctx={c:node,ensure:()=>node,sparkle(){},requestAnimationFrame:fn=>{frames.set(next,fn);return next++},cancelAnimationFrame:id=>frames.delete(id),window:{addEventListener:(k,f)=>handlers[k]=f},document:{hidden:false,addEventListener:(k,f)=>handlers[k]=f}};
+vm.createContext(ctx);vm.runInContext(html.slice(start,end),ctx);
+for(let i=0;i<100;i++)handlers.mousemove({clientX:i,clientY:i+1,buttons:0});
+assert.equal(frames.size,1);assert.equal(painted,0);
+const paint=[...frames.values()][0];frames.clear();paint();
+assert.equal(node.style.translate,'99px 100px');assert.equal(node.style.left,undefined);assert.equal(painted,1);
+handlers.mousemove({clientX:200,clientY:300,buttons:0});handlers.blur();assert.equal(frames.size,0);
+console.log('PASS cursor: 100 events coalesced into one frame, latest position, no layout coordinates, blur cancels pending frame');

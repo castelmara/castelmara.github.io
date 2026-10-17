@@ -59,6 +59,7 @@
   window.addEventListener('resize',position);window.addEventListener('hashchange',()=>close());
   if(window.visualViewport){visualViewport.addEventListener('resize',position);visualViewport.addEventListener('scroll',position)}
   let emojiMap,scheduled=false,failedUntil=0;
+  const processedText=new WeakMap();
   const segmenter=typeof Intl.Segmenter==='function'?new Intl.Segmenter(undefined,{granularity:'grapheme'}):null;
   async function decorate(){
     scheduled=false;if(!segmenter||Date.now()<failedUntil)return;
@@ -72,6 +73,9 @@
         const walker=document.createTreeWalker(block,NodeFilter.SHOW_TEXT),texts=[];let node;
         while((node=walker.nextNode()))if(!node.parentElement.closest('[data-atlas-emoji]'))texts.push(node);
         texts.forEach(text=>{
+          if(processedText.get(text)===text.nodeValue)return;
+          processedText.set(text,text.nodeValue);
+          if(!/\p{Extended_Pictographic}|:gothic_[a-z_]+:/u.test(text.nodeValue))return;
           const parts=text.nodeValue.split(/(:gothic_[a-z_]+:)/g);
           const pieces=parts.flatMap(part=>gothicMap.has(part)?[{segment:part,gothic:true}]:[...segmenter.segment(part)]);
           if(!pieces.some(p=>p.gothic||emojiMap.has(p.segment)))return;

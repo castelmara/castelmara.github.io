@@ -52,7 +52,7 @@
 #atlas-app .atlas-voice-transcript{border-top:1px solid #8884;padding-top:10px;margin-top:5px;overflow-wrap:anywhere}
 </style>
 <link rel="stylesheet" href="assets/atlas-direct-emoji.css?v=20261011">
-<script defer src="assets/atlas-direct-emoji.js?v=20261011"></script>
+<script defer src="assets/atlas-direct-emoji.js?v=20261017-performance"></script>
 </head>
 <body>
 <div id="atlas-dark-loader" aria-hidden="true">
@@ -20083,6 +20083,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlas-ru-tooltip {
     left:0;
     top:0;
     width:13px;
+    will-change:translate;
     height:13px;
     border:1px solid rgba(20,22,28,.82);
     border-radius:50%;
@@ -20217,13 +20218,25 @@ html[data-atlas-theme="dark"] #atlas-theme-cursor:not([data-style="classic"]).is
   if(!fine)return;
   render('classic');
 
-  document.addEventListener('mousemove',function(e){
-    var node=ensure();
-    if(!node)return;
-    node.style.left=e.clientX+'px';
-    node.style.top=e.clientY+'px';
+  var cursorFrame=0,cursorPoint=null;
+  function paintCursor(){
+    cursorFrame=0;
+    var point=cursorPoint,node=ensure();
+    if(!node||!point)return;
+    node.style.translate=point.clientX+'px '+point.clientY+'px';
     node.classList.add('is-visible');
-    sparkle(e);
+    sparkle(point);
+  }
+  function cancelCursorFrame(){
+    if(cursorFrame)cancelAnimationFrame(cursorFrame);
+    cursorFrame=0;cursorPoint=null;
+    if(c)c.classList.remove('is-visible');
+  }
+  window.addEventListener('blur',cancelCursorFrame);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)cancelCursorFrame()});
+  document.addEventListener('mousemove',function(e){
+    cursorPoint={clientX:e.clientX,clientY:e.clientY,buttons:e.buttons};
+    if(!cursorFrame)cursorFrame=requestAnimationFrame(paintCursor);
   },{passive:true});
 
   document.addEventListener('mouseover',function(e){
@@ -20235,7 +20248,7 @@ html[data-atlas-theme="dark"] #atlas-theme-cursor:not([data-style="classic"]).is
 
   document.addEventListener('mouseout',function(e){
     var node=ensure();
-    if(node&&!e.relatedTarget){node.classList.remove('is-visible');clearTrail()}
+    if(node&&!e.relatedTarget){cancelCursorFrame();clearTrail()}
   });
 })();
 </script>
