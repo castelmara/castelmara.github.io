@@ -8,7 +8,7 @@
   const url=v=>{if(!v||typeof v!=='string')return '';try{const u=new URL(v,location.href);return /^https?:$/.test(u.protocol)?u.href:''}catch(_){return ''}};
   const types={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif','image/avif':'avif'};
   let s={active:false,user:'',version:0,roomVersion:0,revision:0,root:null,rooms:[],room:null,rows:[],files:[],previews:[],unread:{},drafts:{},signed:new Map(),busy:false,loading:false};
-  let channel=null,timer=null,poll=null,searchTimer=null;
+  let channel=null,timer=null,poll=null,searchTimer=null,voice=null,readTimer=null,reads=[],marked='',marking=false;
   const $=q=>s.root?.querySelector(q);
   const valid=(v,r)=>s.active&&s.version===v&&s.user===uid()&&(r===undefined||s.roomVersion===r);
   const roomName=r=>r.kind==='dm'?name(r.members?.find(m=>m.user_id!==s.user)?.profile):r.title;
@@ -16,7 +16,7 @@
   function avatar(src,label){return '<span class="pm-avatar">'+(url(src)?'<img src="'+esc(url(src))+'" alt="" loading="lazy">':esc(label.slice(0,1)))+'</span>'}
   function status(text,error=false){const el=$('[data-pm-status]');if(el){el.textContent=text;el.classList.toggle('is-error',error)}}
   function clearFiles(){s.previews.forEach(URL.revokeObjectURL);s.files=[];s.previews=[]}
-  function stop(){clearTimeout(timer);clearInterval(poll);clearTimeout(searchTimer);if(channel)client()?.removeChannel(channel);channel=null}
+  function stop(){voice?.clear();clearTimeout(readTimer);clearTimeout(timer);clearInterval(poll);clearTimeout(searchTimer);if(channel)client()?.removeChannel(channel);channel=null}
   function saveDraft(){if(s.room&&$('[name=message]'))s.drafts[s.room.id]=$('[name=message]').value}
   function resize(){if(!s.active)return;const box=$('.pm-shell');if(!box)return;const viewport=window.visualViewport;if(viewport&&viewport.scale!==1)return;const top=box.getBoundingClientRect().top;box.style.height=Math.max(320,(viewport?.height||innerHeight)-Math.max(0,top)-12)+'px'}
   function renderRooms(){
@@ -31,12 +31,20 @@
     renderRooms();
   }
   function frame(){
-    s.root.innerHTML='<div class="pm-shell"><aside class="pm-sidebar"><header><div><small>ATLAS · игроки</small><h2>charla</h2></div><button type="button" data-pm-new aria-label="Новый диалог или группа">＋</button></header><div class="pm-room-list" data-pm-rooms></div></aside><section class="pm-conversation"><header class="pm-room-head"><button type="button" data-pm-back aria-label="Все чаты">←</button><div data-pm-title></div><button type="button" data-pm-members title="Участники" aria-label="Участники">♙</button></header><div class="pm-history" tabindex="0" aria-label="Сообщения"><button type="button" data-pm-older hidden>предыдущие сообщения</button><div data-pm-messages></div></div><button type="button" class="pm-new-messages" data-pm-bottom hidden>новые сообщения ↓</button><form class="pm-compose" autocomplete="off"><div class="pm-file-previews"></div><div class="pm-compose-row"><label class="pm-attach" title="Прикрепить фото">＋<input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple aria-label="Прикрепить фото"></label><textarea name="message" rows="1" placeholder="Написать сообщение…" aria-label="Сообщение игрока" autocomplete="off" data-lpignore="true" data-1p-ignore></textarea><button type="submit" class="social-primary" aria-label="Отправить сообщение">➤</button></div><div class="pm-compose-note"><span data-pm-status role="status"></span></div></form></section></div>'+
+    s.root.innerHTML='<div class="pm-shell"><aside class="pm-sidebar"><header><div><small>ATLAS · игроки</small><h2>charla</h2></div><button type="button" data-pm-new aria-label="Новый диалог или группа">＋</button></header><div class="pm-room-list" data-pm-rooms></div></aside><section class="pm-conversation"><header class="pm-room-head"><button type="button" data-pm-back aria-label="Все чаты">←</button><div data-pm-title></div><button type="button" data-pm-members title="Участники" aria-label="Участники">♙</button></header><div class="pm-history" tabindex="0" aria-label="Сообщения"><button type="button" data-pm-older hidden>предыдущие сообщения</button><div data-pm-messages></div></div><button type="button" class="pm-new-messages" data-pm-bottom hidden>новые сообщения ↓</button><form class="pm-compose" autocomplete="off"><div class="pm-file-previews"></div><div class="pm-voice-preview" hidden></div><div class="pm-compose-row"><label class="pm-attach" title="Прикрепить фото">＋<input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple aria-label="Прикрепить фото"></label><textarea name="message" rows="1" placeholder="Написать сообщение…" aria-label="Сообщение игрока" autocomplete="off" data-lpignore="true" data-1p-ignore></textarea><button type="button" data-pm-emojis aria-label="Выбрать эмодзи" aria-expanded="false">☺</button><button type="button" data-pm-record aria-label="Записать голосовое"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></button><button type="submit" class="social-primary" aria-label="Отправить сообщение">➤</button></div><div class="pm-compose-note"><span data-pm-status role="status"></span></div></form></section></div>'+
       '<dialog class="pm-picker"><form><header><h3>Новая переписка</h3><button type="button" data-pm-close>×</button></header><label>Тип<select name="kind"><option value="dm">Личные сообщения</option><option value="group">Групповой чат</option></select></label><input name="title" maxlength="120" placeholder="Название группы" aria-label="Название группы" hidden><input name="search" type="search" placeholder="Найти игрока…" aria-label="Найти игрока" autocomplete="off"><div data-pm-selected></div><div data-pm-people></div><p role="status"></p><button type="submit" class="social-primary">создать переписку</button></form></dialog>'+
       '<dialog class="pm-members"><header><h3>Участники</h3><button type="button" data-pm-close>×</button></header><div></div></dialog>'+
       '<dialog class="pm-photo"><button type="button" data-pm-close aria-label="Закрыть фото">×</button><img alt="Фото в оригинальном качестве"><a target="_blank" rel="noopener">открыть оригинал ↗</a></dialog>'+
       '<dialog class="pm-edit"><form><h3>Изменить сообщение</h3><textarea name="body" rows="5" aria-label="Изменённый текст"></textarea><p role="status"></p><button type="button" data-pm-close>отмена</button><button type="submit" class="social-primary">сохранить</button></form></dialog>';
     $('.pm-compose').addEventListener('submit',send);
+    voice=window.atlasCreateVoiceRecorder?.($('.pm-voice-preview'),state=>{
+      const button=$('[data-pm-record]');if(!button)return;
+      button.classList.toggle('is-recording',!!state.recording);button.setAttribute('aria-label',state.recording?'Остановить запись':'Записать голосовое');
+      button.disabled=!!state.pending;$('.pm-compose [type=submit]').disabled=!!state.recording||!!state.pending||s.busy;
+      if(state.error)status(state.error,true);else if(state.recording)status('Запись · '+Math.floor(state.seconds/60)+':'+String(state.seconds%60).padStart(2,'0')+' · нажми микрофон, чтобы остановить');else status('');resize();
+    });
+    $('.pm-history').addEventListener('scroll',scheduleRead,{passive:true});
+    $('.pm-history').addEventListener('load',scheduleRead,true);
     const text=$('[name=message]');
     text.addEventListener('input',()=>{text.style.height='auto';text.style.height=Math.min(120,text.scrollHeight)+'px'});
     text.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&!matchMedia('(pointer:coarse)').matches){e.preventDefault();$('.pm-compose').requestSubmit()}});
@@ -46,9 +54,9 @@
     $('.pm-picker [name=kind]').addEventListener('change',()=>{const group=$('.pm-picker [name=kind]').value==='group';$('.pm-picker [name=title]').hidden=!group;selected.clear();drawSelected();searchPeople()});
     $('.pm-edit form').addEventListener('submit',editMessage);
   }
-  const fields='id,room_id,sender_id,body,images,created_at,edited_at,player:profiles!sender_id(id,nickname,display_name,avatar_url)';
+  const fields='id,room_id,sender_id,body,images,audio_path,audio_seconds,created_at,edited_at,player:profiles!sender_id(id,nickname,display_name,avatar_url)';
   async function signImages(rows){
-    const paths=[...new Set(rows.flatMap(r=>r.images||[]))].filter(p=>!s.signed.has(p)||s.signed.get(p).expires<Date.now());
+    const paths=[...new Set(rows.flatMap(r=>[...(r.images||[]),...(r.audio_path?[r.audio_path]:[])]))].filter(p=>!s.signed.has(p)||s.signed.get(p).expires<Date.now());
     if(!paths.length)return;
     const v=s.version;
     const data=await checked(client().storage.from('atlas-player-chat').createSignedUrls(paths,3600));
@@ -58,11 +66,29 @@
   }
   function message(row){
     const own=row.sender_id===s.user,moderator=s.room.kind==='group'&&s.room.creator_id===s.user||s.room.kind==='general'&&['admin','superadmin'].includes(window.ATLAS_CURRENT_PROFILE?.role);
-    return '<article class="pm-message'+(own?' is-own':'')+'" data-message-id="'+row.id+'"><button type="button" class="pm-sender" data-pm-player="'+row.sender_id+'">'+avatar(row.player?.avatar_url,name(row.player))+'</button><div class="pm-message-content"><button type="button" class="pm-name" data-pm-player="'+row.sender_id+'">'+esc(name(row.player))+'</button><div class="pm-bubble"><div class="pm-message-body">'+esc(row.body)+'</div>'+((row.images||[]).length?'<div class="pm-images">'+row.images.map(path=>{const signed=s.signed.get(path)?.url;return signed?'<button type="button" data-pm-photo="'+esc(signed)+'"><img src="'+esc(signed)+'" alt="Фото" loading="lazy"></button>':'<span>Фото временно недоступно</span>'}).join('')+'</div>':'')+'<time>'+esc(new Date(row.created_at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}))+(row.edited_at?' · изм.':'')+'</time></div><div class="pm-message-actions">'+(own?'<button type="button" data-pm-edit="'+row.id+'">изменить</button>':'')+(own||moderator?'<button type="button" data-pm-delete="'+row.id+'">удалить</button>':'')+'</div></div></article>';
+    return '<article class="pm-message'+(own?' is-own':'')+'" data-message-id="'+row.id+'"><button type="button" class="pm-sender" data-pm-player="'+row.sender_id+'">'+avatar(row.player?.avatar_url,name(row.player))+'</button><div class="pm-message-content"><button type="button" class="pm-name" data-pm-player="'+row.sender_id+'">'+esc(name(row.player))+'</button><div class="pm-bubble"><div class="pm-message-body">'+esc(row.body)+'</div>'+((row.images||[]).length?'<div class="pm-images">'+row.images.map(path=>{const signed=s.signed.get(path)?.url;return signed?'<button type="button" data-pm-photo="'+esc(signed)+'"><img src="'+esc(signed)+'" alt="Фото" loading="lazy"></button>':'<span>Фото временно недоступно</span>'}).join('')+'</div>':'')+audioHTML(row)+'<time>'+esc(new Date(row.created_at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}))+(row.edited_at?' · изм.':'')+(own?'<span class="pm-receipt" data-read-for="'+row.id+'"></span>':'')+'</time></div><div class="pm-message-actions">'+(own?'<button type="button" data-pm-edit="'+row.id+'">изменить</button>':'')+(own||moderator?'<button type="button" data-pm-delete="'+row.id+'">удалить</button>':'')+'</div></div></article>';
+  }
+  function audioHTML(row){if(!row.audio_path)return '';const src=s.signed.get(row.audio_path)?.url;return src?'<audio class="pm-audio" controls preload="none" src="'+esc(src)+'" aria-label="Голосовое сообщение"></audio>':'<small>Голосовое временно недоступно</small>'}
+  function drawReceipts(){
+    for(const node of s.root?.querySelectorAll('[data-read-for]')||[]){const row=s.rows.find(r=>r.id===node.dataset.readFor);if(!row)continue;
+      const count=reads.filter(r=>r.user_id!==s.user&&r.read_at>=row.created_at).length;
+      node.textContent=count?' ✓✓':' ✓';node.classList.toggle('is-read',!!count);node.title=count?(s.room?.kind==='dm'?'Прочитано':'Прочитали: '+count):'Отправлено';node.setAttribute('aria-label',node.title);
+    }
+  }
+  async function loadReads(){const v=s.version,rv=s.roomVersion,room=s.room?.id;if(!room)return;try{const rows=await checked(client().from('atlas_player_reads').select('user_id,read_at').eq('room_id',room));if(valid(v,rv)){reads=rows;drawReceipts()}}catch(err){if(valid(v,rv))status('Не удалось обновить прочтение. '+err.message,true)}}
+  function scheduleRead(){clearTimeout(readTimer);readTimer=setTimeout(markRead,450)}
+  async function markRead(){
+    const history=$('.pm-history'),row=s.rows[0];
+    if(marking||!s.active||document.hidden||!document.hasFocus()||!row||marked===row.id||!history?.getClientRects().length||history.scrollHeight-history.scrollTop-history.clientHeight>32)return;
+    const v=s.version,rv=s.roomVersion;marking=true;
+    try{await checked(client().rpc('atlas_mark_player_read',{p_room:s.room.id,p_message:row.id}));if(valid(v,rv))marked=row.id}catch(err){if(valid(v,rv))status('Не удалось сохранить прочтение.',true)}finally{marking=false}
   }
   function drawMessages(mode='refresh'){
     const history=$('.pm-history'),before=history.scrollHeight,top=history.scrollTop,bottom=before-top-history.clientHeight<100;
+    const playing=new Map([...s.root.querySelectorAll('.pm-message .pm-audio')].map(a=>[a.closest('[data-message-id]').dataset.messageId,a]));
     $('[data-pm-messages]').innerHTML=[...s.rows].reverse().map(message).join('')||'<p class="pm-empty">Нет сообщений.</p>';
+    for(const [id,audio] of playing){const replacement=s.root.querySelector('[data-message-id="'+id+'"] .pm-audio');if(replacement&&replacement.getAttribute('src')===audio.getAttribute('src'))replacement.replaceWith(audio);else audio.pause()}
+    drawReceipts();scheduleRead();
     if(mode==='older')history.scrollTop=history.scrollHeight-before+top;
     else if(mode==='open'||mode==='send'||bottom){history.scrollTop=history.scrollHeight;$('[data-pm-bottom]').hidden=true}
     else{history.scrollTop=top;$('[data-pm-bottom]').hidden=false}
@@ -89,18 +115,18 @@
   }
   async function openRoom(id){
     const room=s.rooms.find(r=>r.id===id);if(!room)return;
-    saveDraft();clearFiles();s.room=room;s.rows=[];s.loading=false;s.busy=false;++s.roomVersion;s.unread[id]=0;
+    saveDraft();voice?.clear();clearFiles();reads=[];marked='';s.room=room;s.rows=[];s.loading=false;s.busy=false;++s.roomVersion;s.unread[id]=0;
     $('.pm-shell').classList.add('is-open');
     $('[data-pm-title]').innerHTML='<strong>'+esc(roomName(room))+'</strong><small>'+esc(room.kind==='general'?'общение от лица игроков':room.kind==='dm'?'личная переписка':room.members.length+' участников')+'</small>';
     $('[name=message]').value=s.drafts[id]||'';previews();status('');
     $('.pm-compose').querySelectorAll('button,input,textarea').forEach(e=>e.disabled=false);
-    $('[data-pm-messages]').textContent='Загружаем сообщения…';renderRooms();resize();await loadMessages('open');
+    $('[data-pm-messages]').textContent='Загружаем сообщения…';renderRooms();resize();await loadMessages('open');await loadReads();
   }
   function previews(){s.previews.forEach(URL.revokeObjectURL);s.previews=s.files.map(URL.createObjectURL);$('.pm-file-previews').innerHTML=s.previews.map((src,i)=>'<div><img src="'+src+'" alt="Фото '+(i+1)+'"><button type="button" data-pm-remove="'+i+'" aria-label="Убрать фото">×</button></div>').join('');resize()}
   async function send(e){
-    e.preventDefault();if(s.busy||!s.room)return;
-    const form=e.currentTarget,text=$('[name=message]'),body=text.value,files=[...s.files];if(!body.trim()&&!files.length)return;
-    const v=s.version,rv=s.roomVersion,room=s.room.id,user=s.user,paths=[];let committed=false;
+    e.preventDefault();if(s.busy||!s.room||voice?.recording||voice?.pending)return;
+    const form=e.currentTarget,text=$('[name=message]'),body=text.value,files=[...s.files],audio=voice?.value;if(!body.trim()&&!files.length&&!audio)return;
+    const v=s.version,rv=s.roomVersion,room=s.room.id,user=s.user,paths=[];let committed=false,audioPath=null;
     s.busy=true;form.querySelectorAll('button,input,textarea').forEach(el=>el.disabled=true);
     try{
       for(let i=0;i<files.length;i++){
@@ -109,15 +135,21 @@
         await checked(client().storage.from('atlas-player-chat').upload(path,files[i],{contentType:files[i].type,upsert:false}));paths.push(path);
       }
       if(!valid(v,rv))throw Error('Переписка изменилась. Отправка отменена.');
-      const row=await checked(client().from('atlas_player_messages').insert({room_id:room,sender_id:user,body,images:paths}).select(fields).single());committed=true;
+      if(audio){
+        const ext={'audio/mp4':'m4a','audio/webm':'webm','audio/ogg':'ogg'}[audio.blob.type];if(!ext)throw Error('Неизвестный формат аудио');
+        audioPath=user+'/'+room+'/'+crypto.randomUUID()+'.'+ext;status('Загружаем голосовое…');
+        await checked(client().storage.from('atlas-player-chat').upload(audioPath,audio.blob,{contentType:audio.blob.type,upsert:false}));
+        if(!valid(v,rv))throw Error('Переписка изменилась. Отправка отменена.');
+      }
+      const row=await checked(client().from('atlas_player_messages').insert({room_id:room,sender_id:user,body,images:paths,audio_path:audioPath,audio_seconds:audio?audio.seconds:null}).select(fields).single());committed=true;
       if(s.user===user)s.drafts[room]='';
       if(!valid(v,rv))return;
       ++s.revision;
-      text.value='';text.style.height='auto';s.drafts[room]='';clearFiles();previews();status('');
+      voice?.clear();text.value='';text.style.height='auto';s.drafts[room]='';clearFiles();previews();status('');
       await signImages([row]);if(!valid(v,rv))return;
-      s.rows=[row,...s.rows.filter(r=>r.id!==row.id)];drawMessages('send');s.room.preview=body||'фотография';renderRooms();
+      s.rows=[row,...s.rows.filter(r=>r.id!==row.id)];drawMessages('send');s.room.preview=body||(row.audio_path?'голосовое':'фотография');renderRooms();
       if(!matchMedia('(pointer:coarse)').matches){text.disabled=false;text.focus()}
-    }catch(err){if(!committed&&paths.length&&uid()===user)await client().storage.from('atlas-player-chat').remove(paths);if(valid(v,rv))status(err.message,true)}
+    }catch(err){if(!committed&&(paths.length||audioPath)&&uid()===user)await client().storage.from('atlas-player-chat').remove([...paths,...(audioPath?[audioPath]:[])]);if(valid(v,rv))status(err.message,true)}
     finally{if(valid(v,rv)){s.busy=false;form.querySelectorAll('button,input,textarea').forEach(el=>el.disabled=false)}}
   }
   let selected=new Map(),searchVersion=0;
@@ -150,12 +182,13 @@
       .on('postgres_changes',{event:'*',schema:'public',table:'atlas_player_messages'},payload=>{
         if(!valid(v))return;const row=payload.new||{},old=payload.old||{};
         if(payload.eventType==='DELETE'){s.rows=s.rows.filter(r=>r.id!==old.id);if(s.room)drawMessages();return}
-        const room=s.rooms.find(r=>r.id===row.room_id);if(room){room.preview=row.body||'фотография';if(row.room_id!==s.room?.id&&payload.eventType==='INSERT'&&row.sender_id!==s.user)s.unread[room.id]=(s.unread[room.id]||0)+1;renderRooms()}
+        const room=s.rooms.find(r=>r.id===row.room_id);if(room){room.preview=row.body||(row.audio_path?'голосовое':'фотография');if(row.room_id!==s.room?.id&&payload.eventType==='INSERT'&&row.sender_id!==s.user)s.unread[room.id]=(s.unread[room.id]||0)+1;renderRooms()}
         if(row.room_id===s.room?.id){clearTimeout(timer);timer=setTimeout(()=>loadMessages(),180)}
         else if(!room)loadRooms().catch(()=>{});
       })
+      .on('postgres_changes',{event:'*',schema:'public',table:'atlas_player_reads'},payload=>{if(valid(v)&&payload.new?.room_id===s.room?.id)loadReads()})
       .on('postgres_changes',{event:'INSERT',schema:'public',table:'atlas_player_room_members',filter:'user_id=eq.'+s.user},()=>loadRooms().catch(()=>{})).subscribe();
-    poll=setInterval(()=>{if(!document.hidden&&s.active){loadRooms().catch(()=>{});loadMessages()}},60000);
+    poll=setInterval(()=>{if(!document.hidden&&s.active){loadRooms().catch(()=>{});loadMessages();loadReads();scheduleRead()}},60000);
   }
   async function activate(page,force=false,initialRoom=null){
     if(page!=='charla'){if(s.active){saveDraft();stop();clearFiles();++s.version;s.active=false;document.getElementById('atlas-app')?.classList.remove('pm-active')}return}
@@ -170,7 +203,8 @@
   }
   document.addEventListener('click',async e=>{
     if(!s.active||!s.root?.contains(e.target))return;const button=e.target.closest('button');if(!button)return;const d=button.dataset;
-    if(d.pmRoom)openRoom(d.pmRoom);
+    if('pmRecord' in d){try{if(voice?.recording)voice.stop();else await voice?.start()}catch(err){status(err.message,true)}}
+    else if(d.pmRoom)openRoom(d.pmRoom);
     else if('pmNew' in d){selected.clear();drawSelected();$('.pm-picker form').reset();$('.pm-picker [name=title]').hidden=true;$('.pm-picker [role=status]').textContent='';$('.pm-picker').showModal();searchPeople()}
     else if('pmClose' in d)button.closest('dialog').close();
     else if('pmBack' in d){$('.pm-shell').classList.remove('is-open');resize()}
@@ -210,6 +244,8 @@
     if(wasActive)activate('charla',true);
   });
   window.visualViewport?.addEventListener('resize',resize);window.addEventListener('resize',resize);
-  document.addEventListener('visibilitychange',()=>{if(s.active&&!document.hidden)loadMessages()});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)voice?.stop();else if(s.active){loadMessages();loadReads();scheduleRead()}});
+  window.addEventListener('focus',scheduleRead);
+  window.addEventListener('pagehide',()=>voice?.clear());
   activate(document.querySelector('.atlas-page.active')?.id.replace('atlas-page-',''));
 })();

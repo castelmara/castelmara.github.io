@@ -24,14 +24,14 @@
   }
   async function open(trigger){
     if(panel&&button===trigger){close(true);return}
-    close();button=trigger;field=document.getElementById('atlasDirectMessageBody');if(!field)return;
+    close();button=trigger;field=trigger.matches('[data-pm-emojis]')?trigger.closest('form')?.querySelector('[name=message]'):document.getElementById('atlasDirectMessageBody');if(!field)return;
     const originalField=field,originalForm=field.form;
     selection={start:field.selectionStart,end:field.selectionEnd};
     trigger.setAttribute('aria-expanded','true');
     panel=document.createElement('div');panel.id='atlasDirectEmojiPanel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Выбор эмодзи');
     panel.innerHTML='<div class="atlas-emoji-tabs"><button type="button" data-emoji-set="standard" aria-pressed="true">эмодзи</button><button type="button" data-emoji-set="gothic" aria-pressed="false">готика</button></div><button type="button" class="atlas-emoji-close" aria-label="Закрыть эмодзи">×</button><div class="atlas-emoji-content" role="status">Загружаем эмодзи…</div>';
     function insert(value){
-      if(!originalField.isConnected||originalField.form!==originalForm||document.getElementById('atlasDirectMessageBody')!==originalField){close();return}
+      if(!originalField.isConnected||originalField.form!==originalForm||originalField.disabled){close();return}
       originalField.setRangeText(value,selection.start,selection.end,'end');
       originalField.dispatchEvent(new Event('input',{bubbles:true}));close();originalField.focus({preventScroll:true});
     }
@@ -42,6 +42,7 @@
       const custom=tab.dataset.emojiSet==='gothic';grid.hidden=!custom;panel.querySelector('.atlas-emoji-content').hidden=custom;
       panel.querySelectorAll('[data-emoji-set]').forEach(b=>b.setAttribute('aria-pressed',String(b===tab)));position();
     }));
+    if(trigger.matches('[data-pm-emojis]'))panel.querySelector('[data-emoji-set=gothic]').hidden=true;
     document.body.appendChild(panel);position();const own=version;
     try{
       const {data,i18n}=await load();if(own!==version||!panel)return;
@@ -51,10 +52,10 @@
     }catch(e){if(own===version&&panel)panel.querySelector('.atlas-emoji-content').textContent='Не удалось загрузить эмодзи. Закрой и попробуй ещё раз.'}
   }
   document.addEventListener('pointerdown',e=>{
-    if(e.target.closest('[data-direct-emojis]')){const t=document.getElementById('atlasDirectMessageBody');if(t)selection={start:t.selectionStart,end:t.selectionEnd};return}
+    if(e.target.closest('[data-direct-emojis],[data-pm-emojis]')){const t=document.getElementById('atlasDirectMessageBody');if(t)selection={start:t.selectionStart,end:t.selectionEnd};return}
     if(panel&&!panel.contains(e.target))close();
   });
-  document.addEventListener('click',e=>{const t=e.target.closest('[data-direct-emojis]');if(t){open(t);return}if(e.target.closest('.atlas-emoji-close'))close(true)});
+  document.addEventListener('click',e=>{const t=e.target.closest('[data-direct-emojis],[data-pm-emojis]');if(t){open(t);return}if(e.target.closest('.atlas-emoji-close'))close(true)});
   document.addEventListener('keydown',e=>{if(panel&&e.key==='Escape'){e.preventDefault();close(true)}});
   window.addEventListener('resize',position);window.addEventListener('hashchange',()=>close());
   if(window.visualViewport){visualViewport.addEventListener('resize',position);visualViewport.addEventListener('scroll',position)}
@@ -63,7 +64,7 @@
   const segmenter=typeof Intl.Segmenter==='function'?new Intl.Segmenter(undefined,{granularity:'grapheme'}):null;
   async function decorate(){
     scheduled=false;if(!segmenter||Date.now()<failedUntil)return;
-    const blocks=[...document.querySelectorAll('.atlas-direct-message-text,.atlas-voice-transcript')];
+    const blocks=[...document.querySelectorAll('.atlas-direct-message-text,.atlas-voice-transcript,.pm-message-body')];
     if(!blocks.some(b=>/\p{Extended_Pictographic}|:gothic_[a-z_]+:/u.test(b.textContent)))return;
     try{
       const {data}=await load();
@@ -94,7 +95,7 @@
   }
   new MutationObserver(changes=>{
     if(panel&&(!button.isConnected||!field.isConnected))close();
-    const relevant=changes.some(m=>(m.target.nodeType===1&&m.target.closest('.atlas-direct-message-text,.atlas-voice-transcript'))||[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches('.atlas-direct-message-text,.atlas-voice-transcript')||n.querySelector('.atlas-direct-message-text,.atlas-voice-transcript'))));
+    const relevant=changes.some(m=>(m.target.nodeType===1&&m.target.closest('.atlas-direct-message-text,.atlas-voice-transcript,.pm-message-body'))||[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches('.atlas-direct-message-text,.atlas-voice-transcript,.pm-message-body')||n.querySelector('.atlas-direct-message-text,.atlas-voice-transcript,.pm-message-body'))));
     if(relevant&&!scheduled){scheduled=true;requestAnimationFrame(decorate)}
   }).observe(document.body,{childList:true,subtree:true});
   decorate();

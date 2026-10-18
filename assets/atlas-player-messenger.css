@@ -68,3 +68,15 @@
 #atlas-app .pm-photo a{color:var(--social-text);font-size:12px}
 #atlas-app .pm-edit textarea{height:160px;max-height:50dvh}
 @media(max-width:760px){#atlas-app .pm-shell{grid-template-columns:1fr;border-radius:16px}#atlas-app .pm-sidebar{border:0}#atlas-app .pm-shell:not(.is-open) .pm-conversation{display:none}#atlas-app .pm-shell.is-open .pm-sidebar{display:none}#atlas-app .pm-room-head [data-pm-back]{display:block}#atlas-app .pm-room-head{padding:10px}#atlas-app .pm-history{padding:12px 8px}#atlas-app .pm-compose{padding:9px 8px;padding-bottom:max(9px,env(safe-area-inset-bottom))}#atlas-app .pm-message-content{max-width:calc(100% - 42px)}#atlas-app .pm-bubble{padding:10px}#atlas-app .pm-compose-note>span:first-child{display:none}#atlas-app .pm-message-body{font-size:13px}#atlas-app .pm-message-actions button{min-height:24px}#atlas-app .pm-root dialog{padding:16px}}
+#atlas-app .pm-receipt{font-size:12px;letter-spacing:-3px;margin-left:5px;white-space:nowrap}
+#atlas-app .pm-receipt.is-read{color:#d96f80}
+#atlas-app .pm-audio,#atlas-app .pm-voice-preview audio{display:block;width:280px;max-width:100%;height:40px;margin:8px 0}
+#atlas-app .pm-voice-preview{display:flex;align-items:center;gap:8px}
+#atlas-app .pm-voice-preview audio{flex:1;min-width:0}
+#atlas-app .pm-compose-row{display:grid;grid-template-columns:42px minmax(60px,1fr) 40px 40px 42px;gap:5px}
+#atlas-app .pm-compose-row>button{min-width:0;padding:8px}
+#atlas-app .pm-compose-row textarea{width:100%;min-width:0}
+#atlas-app .pm-compose-row [data-pm-emojis]{font:25px/1 Arial}
+#atlas-app .pm-compose-row .is-recording{color:#ff657c;background:#b832452b;border-color:#cf4258}
+#atlas-app .pm-compose-note>span:first-child{display:block;line-height:1.5}
+@media(max-width:480px){#atlas-app .pm-compose-row{grid-template-columns:38px minmax(0,1fr) 38px 38px 38px;gap:3px}#atlas-app .pm-compose-row textarea{grid-column:1/-1;grid-row:1}#atlas-app .pm-compose-row .pm-attach{grid-column:1;grid-row:2}#atlas-app .pm-compose-row [data-pm-emojis]{grid-column:3;grid-row:2}#atlas-app .pm-compose-row [data-pm-record]{grid-column:4;grid-row:2}#atlas-app .pm-compose-row [type=submit]{grid-column:5;grid-row:2}}

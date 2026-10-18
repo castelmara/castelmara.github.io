@@ -37,7 +37,7 @@
   const localCharacter = id => [...(window.ATLAS_CHARACTERS || []), ...(window.ATLAS_CHARACTER_DIRECTORY || []), ...(window.ATLAS_CARD_ONLY || [])].find(c => c.id === id) || {};
   const characterName = (id, fallback) => window.atlasCharacterDisplayName?.(id, fallback) || localCharacter(id).name || fallback || id;
   const safeURL = value => { if (!value || typeof value !== 'string') return ''; try { const u = new URL(value, location.href); return ['http:','https:'].includes(u.protocol) ? u.href : ''; } catch (_) { return ''; } };
-  let state = {page:'', root:null, user:'', version:0, profile:null, characters:[], rows:[], files:[], previews:[], topic:null, channel:null, busy:false, loading:false, more:false};
+  let state = {page:'', root:null, user:'', version:0, profile:null, characters:[], rows:[], files:[], previews:[], topic:null, filter:'all', channel:null, busy:false, loading:false, more:false};
   let refreshTimer, pollTimer;
   let editImages = [], editFiles = [], editURLs = [], editSaving = false;
   function clearEditFiles(){ editURLs.forEach(URL.revokeObjectURL); editURLs=[]; editFiles=[]; editImages=[]; }
@@ -72,18 +72,19 @@
     const player = state.profile?.display_name || state.profile?.nickname || 'игрок';
     let author = kind === 'chat' ? '<span class="social-author-label">' + esc(player) + ' <small>· профиль игрока</small></span>' :
       '<label class="social-select"><span>от имени</span><select name="character" aria-label="Автор публикации">' + state.characters.map(c => '<option value="' + esc(c.id) + '">' + esc(characterName(c.id, c.name)) + '</option>').join('') + (['topic','reply'].includes(kind) && staff() ? '<option value="atlas">АТЛАС · администрация</option>' : '') + '</select></label>';
-    return '<form class="social-composer" autocomplete="off"><div class="social-composer-head">' + author + '</div>' +
+    return '<form class="social-composer" autocomplete="off"><div class="social-composer-head">' + author + '</div>' + (kind === 'feed' ? '<label class="social-story-date">Дата публикации<input type="datetime-local" name="story_at" aria-label="Дата публикации" value="'+localDate(new Date())+'"></label>' : '') +
       (kind === 'topic' ? '<input name="title" maxlength="160" required placeholder="Название обсуждения" aria-label="Название обсуждения" autocomplete="off">' : '') +
       '<div class="social-toolbar" aria-label="Форматирование"><button type="button" data-format="bold" aria-label="Жирный текст"><b>B</b></button><button type="button" data-format="italic" aria-label="Курсив"><i>i</i></button><button type="button" data-format="quote" aria-label="Цитата">❞</button><button type="button" data-format="indent" aria-label="Отступ">⇥</button><button type="button" data-social-preview>предпросмотр</button></div>' +
       '<textarea name="body" rows="' + (kind === 'chat' ? '3' : '5') + '" placeholder="' + (kind === 'chat' ? 'Написать в общий чат…' : 'Текст поста…') + '" aria-label="Текст публикации" autocomplete="off" data-lpignore="true" data-1p-ignore></textarea><div class="social-body social-draft-preview" hidden></div>' +
       '<div class="social-previews"></div><div class="social-composer-footer"><label class="social-file">＋ фото<input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple aria-label="Прикрепить до 6 фото"></label><small>до 6 фото</small><button class="social-primary" type="submit">' + (kind === 'chat' ? 'отправить' : 'опубликовать') + '</button></div><p data-social-status role="status"></p></form>';
   }
+  function localDate(value){const d=new Date(value);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
   function frame() {
     const chat = currentKind() === 'chat';
     const topicList = currentKind() === 'topic';
-    state.root.innerHTML = header() + (state.topic ? '<button type="button" class="social-back" data-social-back>← все обсуждения</button><div data-social-topic></div>' : '') +
+    state.root.innerHTML = header() + (state.page==='muro'&&!state.topic?'<nav class="social-feed-tabs" aria-label="Публикации"><button type="button" data-social-filter="all" aria-pressed="'+(state.filter==='all')+'">Все посты</button><button type="button" data-social-filter="mine" aria-pressed="'+(state.filter==='mine')+'">Мои</button></nav>':'') + (state.topic ? '<button type="button" class="social-back" data-social-back>← '+(state.page==='muro'?'все посты':'все обсуждения')+'</button><div data-social-topic></div>' : '') +
       (topicList ? '<details class="social-new-topic"><summary>＋ создать тему</summary>' + composer() + '</details>' : (!chat && !state.topic ? composer() : '')) + '<div class="social-stream" data-social-stream aria-live="polite"></div><button type="button" class="social-more" data-social-more hidden>показать ещё</button>' + (chat || state.topic ? composer() : '') +
-      '<dialog class="social-lightbox"><button type="button" data-social-close aria-label="Закрыть фотографию">×</button><img alt="Фотография в оригинальном качестве"><a target="_blank" rel="noopener">открыть оригинал ↗</a></dialog><dialog class="social-edit"><form><h3>Редактировать</h3><input name="title" maxlength="160" aria-label="Название темы"><textarea name="body" rows="8" aria-label="Текст публикации"></textarea><section data-edit-photos hidden><label class="social-file">＋ добавить фото<input type="file" data-edit-file accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple aria-label="Добавить фотографии к заглавному посту"></label><small> до 6 фото</small><div class="social-previews" data-edit-previews></div></section><p role="status"></p><div><button type="button" data-social-cancel>отмена</button><button type="submit" class="social-primary">сохранить</button></div></form></dialog>';
+      '<dialog class="social-lightbox"><button type="button" data-social-close aria-label="Закрыть фотографию">×</button><img alt="Фотография в оригинальном качестве"><a target="_blank" rel="noopener">открыть оригинал ↗</a></dialog><dialog class="social-edit"><form><h3>Редактировать</h3><input name="title" maxlength="160" aria-label="Название темы"><label class="social-story-date" data-edit-date>Дата публикации<input type="datetime-local" name="story_at" aria-label="Дата публикации"></label><textarea name="body" rows="8" aria-label="Текст публикации"></textarea><section data-edit-photos hidden><label class="social-file">＋ добавить фото<input type="file" data-edit-file accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple aria-label="Добавить фотографии к заглавному посту"></label><small> до 6 фото</small><div class="social-previews" data-edit-previews></div></section><p role="status"></p><div><button type="button" data-social-cancel>отмена</button><button type="submit" class="social-primary">сохранить</button></div></form></dialog>';
     if (state.topic) $('[data-social-topic]').innerHTML = article(state.topic);
     state.root.querySelector('.social-composer')?.addEventListener('submit', publish);
     state.root.querySelector('.social-edit form')?.addEventListener('submit', saveEdit);
@@ -113,13 +114,15 @@
   function article(row) {
     const a = author(row), avatar = safeURL(a.avatar || ''), own = row.actor_id === state.user;
     const images = row.images || [];
-    return '<article class="social-post' + (row.author_kind === 'atlas' ? ' is-atlas' : '') + '" data-social-id="' + esc(row.id) + '"><header><button type="button" class="social-author" ' + a.attr + '><span class="social-avatar">' + (avatar ? '<img src="' + esc(avatar) + '" loading="lazy" alt="">' : esc(a.name.slice(0,1))) + '</span><span><strong>' + esc(a.name) + '</strong><small>' + esc(a.sub) + '</small></span></button><time datetime="' + esc(row.created_at) + '">' + esc(new Date(row.created_at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})) + (row.edited_at ? ' · изм.' : '') + '</time></header>' +
+    const published = row.story_at || row.created_at;
+    return '<article class="social-post' + (row.author_kind === 'atlas' ? ' is-atlas' : '') + '" data-social-id="' + esc(row.id) + '"><header><button type="button" class="social-author" ' + a.attr + '><span class="social-avatar">' + (avatar ? '<img src="' + esc(avatar) + '" loading="lazy" alt="">' : esc(a.name.slice(0,1))) + '</span><span><strong>' + esc(a.name) + '</strong><small>' + esc(a.sub) + '</small></span></button><time datetime="' + esc(published) + '">' + esc(new Date(published).toLocaleString('ru-RU',{year:'numeric',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})) + (row.edited_at ? ' · изм.' : '') + '</time></header>' +
       (row.title ? '<h3>' + esc(row.title) + '</h3>' : '') + '<div class="social-body">' + formatBody(row.body) + '</div>' +
       (images.length ? '<div class="social-gallery social-gallery-' + images.length + '">' + images.map((path,i) => {
         const url = client().storage.from('atlas-media').getPublicUrl(path).data.publicUrl;
         return '<button type="button" data-social-photo="' + esc(url) + '" aria-label="Открыть фото ' + (i+1) + '"><img src="' + esc(url) + '" alt="Фото ' + (i+1) + '" loading="lazy" decoding="async"></button>';
       }).join('') + '</div>' : '') + '<footer>' +
       (row.kind === 'topic' && !state.topic ? '<button type="button" class="social-primary" data-social-topic-open="' + row.id + '">открыть обсуждение →</button>' : '') +
+      (row.kind==='feed'&&!state.topic?'<button type="button" data-social-topic-open="'+row.id+'">Комментарии →</button>':'') +
       (own ? '<button type="button" data-social-edit="' + row.id + '">изменить</button>' : '') +
       (own || staff() ? '<button type="button" data-social-delete="' + row.id + '">удалить</button>' : '') + '</footer></article>';
   }
@@ -131,6 +134,7 @@
   function queryEntries() {
     let q = client().from('atlas_social_entries').select(fields).eq('kind', currentKind());
     if (state.topic) q = q.eq('parent_id', state.topic.id);
+    else if(state.page==='muro'&&state.filter==='mine')q=q.eq('actor_id',state.user);
     return q;
   }
   async function loadMore(reset = false) {
@@ -221,7 +225,7 @@
         uploaded.push(path);
       }
       if (!valid(version)) throw new Error('Аккаунт или раздел изменился. Публикация отменена.');
-      await checked(client().from('atlas_social_entries').insert({kind,parent_id:parent,...author,title,body,images:uploaded}));
+      await checked(client().from('atlas_social_entries').insert({kind,parent_id:parent,...author,title,body,images:uploaded,...(kind==='feed'?{story_at:form.elements.story_at.value||null}:{})}));
       committed = true;
       if (valid(version)) {
         form.elements.body.value = ''; if (form.elements.title) form.elements.title.value = '';
@@ -244,6 +248,7 @@
     const row = rowById(dialog.dataset.id); if (!row) return;
     if(editSaving)return;
     const patch = {body:form.elements.body.value};
+    if(row.kind==='feed')patch.story_at=form.elements.story_at.value||null;
     const files=[...editFiles], retained=[...editImages], actor=state.user, uploaded=[];
     let attempted=false;
     editSaving=true;Array.from(form.elements).forEach(x=>x.disabled=true);
@@ -282,6 +287,7 @@
     else if ('socialLogin' in data) document.getElementById('atlasAccountButton')?.click();
     else if ('socialMore' in data) loadMore();
     else if ('socialBack' in data) activate(state.page,true);
+    else if(data.socialFilter){if(state.busy)return;const draft=$('.social-composer'),values=draft?Object.fromEntries([...draft.elements].filter(e=>e.name&&e.type!=='file').map(e=>[e.name,e.value])):{};state.filter=data.socialFilter;stop();++state.version;state.rows=[];state.loading=false;const version=state.version;frame();for(const [name,value] of Object.entries(values)){const field=$('.social-composer')?.elements[name];if(field)field.value=value}if(state.files.length)drawPreviews();await loadMore(true);if(valid(version))subscribe();}
     else if (data.socialTopicOpen) openTopic(data.socialTopicOpen);
     else if (data.socialPlayer) window.atlasOpenPlayerProfile?.(data.socialPlayer);
     else if (data.socialCharacter) window.atlasOpenCharacter?.(data.socialCharacter);
@@ -294,7 +300,7 @@
       const row = rowById(data.socialEdit), dialog = $('.social-edit'), form = dialog.querySelector('form');
       clearEditFiles();editImages=[...(row.images||[])];$('[data-edit-photos]').hidden=row.kind!=='topic';drawEditPhotos();
       dialog.dataset.id = row.id; form.elements.body.value = row.body; form.elements.title.value = row.title;
-      form.elements.title.hidden = row.kind !== 'topic'; form.querySelector('[role=status]').textContent = ''; dialog.showModal();
+      form.elements.title.hidden = row.kind !== 'topic'; $('[data-edit-date]').hidden=row.kind!=='feed';form.elements.story_at.value=row.story_at?row.story_at.slice(0,16):localDate(row.created_at); form.querySelector('[role=status]').textContent = ''; dialog.showModal();
     } else if (data.socialDelete) {
       const row = rowById(data.socialDelete), version = state.version;
       if (!row || !confirm(row.kind === 'topic' ? 'Удалить тему вместе со всеми ответами?' : 'Удалить публикацию?')) return;

@@ -75,6 +75,13 @@
 #atlas-app .social-edit form>div{display:flex;justify-content:flex-end;gap:8px}
 @media(max-width:600px){#atlas-app .social-root{padding-top:12px}#atlas-app .social-composer,#atlas-app .social-post{padding:16px;border-radius:17px}#atlas-app .social-heading{margin-bottom:22px}#atlas-app .social-composer-footer small{flex-basis:100%;order:3;font-size:10px}#atlas-app .social-body{font-size:14px}#atlas-app .social-post time{font-size:9px}#atlas-app .social-post h3{font-size:19px}#atlas-app .social-gallery{margin-left:-8px;margin-right:-8px;gap:3px;border-radius:11px}#atlas-app .social-toolbar button{min-height:42px}#atlas-app .social-lightbox img{max-width:calc(100vw - 66px)}}
 @media(prefers-reduced-motion:reduce){#atlas-app .social-gallery img{transition:none}}
+#atlas-app #atlas-page-muro .social-root{max-width:720px}
+#atlas-app #atlas-page-muro .social-composer,#atlas-app #atlas-page-muro .social-post{padding:18px;border-radius:18px}
+#atlas-app #atlas-page-muro .social-composer textarea{min-height:80px;height:100px}
+#atlas-app .social-feed-tabs{display:flex;gap:8px;margin-bottom:18px}
+#atlas-app .social-feed-tabs [aria-pressed=true]{background:#b83245;color:white;border-color:#b83245}
+#atlas-app .social-story-date{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--social-muted);margin:12px 0}
+#atlas-app .social-story-date input{width:auto;max-width:100%;padding:8px;font-size:16px}
 #atlas-app .social-new-topic{margin-bottom:22px}
 #atlas-app .social-new-topic>summary{display:inline-flex;padding:12px 18px;background:#b83245;color:white;border-radius:12px;cursor:pointer;font-size:13px;font-weight:700;list-style:none}
 #atlas-app .social-new-topic[open]>summary{margin-bottom:14px}

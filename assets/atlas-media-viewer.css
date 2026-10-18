@@ -1,0 +1,20 @@
+/* Content photos share a bounded 4:3 preview; originals are never resized on upload. */
+#atlas-app :is(.social-gallery,.pm-images,.atlas-player-post-images){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-width:600px}
+#atlas-app :is(.social-gallery-1,.atlas-player-post-images.is-one){grid-template-columns:minmax(0,320px)}
+#atlas-app .social-gallery button,#atlas-app .pm-images button{aspect-ratio:4/3;grid-column:auto;grid-row:auto;max-height:none}
+#atlas-app .pm-images{width:min(320px,100%)}
+#atlas-app .pm-images button:only-child{grid-column:1/-1}
+#atlas-app :is(.social-gallery,.pm-images) img,#atlas-app .atlas-player-post-images img,#atlas-app .atlas-player-post-images.is-one img{width:100%;height:100%;aspect-ratio:4/3;max-height:none;object-fit:cover;background:transparent}
+#atlas-app .atlas-direct-attachment-image{width:min(320px,100%);max-width:320px;aspect-ratio:4/3}
+#atlas-app .atlas-direct-attachment-image img{width:100%;height:100%;object-fit:cover}
+#atlas-app .atlas-player-photo-tile{aspect-ratio:4/3}
+#atlas-app .atlas-profile-card img,#atlas-app .atlas-profile-overview-side .atlas-profile-card img{width:min(100%,320px);height:auto;aspect-ratio:4/3;max-height:none;object-fit:cover}
+.atlas-photo-open{cursor:zoom-in}
+.atlas-photo-zoom{position:absolute!important;right:8px!important;bottom:8px!important;width:30px!important;height:30px!important;min-width:0!important;padding:0!important;border:1px solid #ffffff55!important;border-radius:50%!important;background:#101419bb!important;color:white!important;z-index:2;display:grid;place-items:center;cursor:zoom-in;opacity:.6;font:18px/1 Arial!important}
+.atlas-photo-zoom:hover,.atlas-photo-zoom:focus-visible{opacity:1}
+#atlas-app :is(.pm-avatar,.social-avatar,.atlas-player-post-avatar,.atlas-player-comment-avatar) .atlas-photo-zoom{width:16px!important;height:16px!important;right:0!important;bottom:0!important;font-size:11px!important}
+.atlas-media-viewer{width:min(1100px,96vw);max-width:96vw;max-height:94dvh;padding:16px;border:1px solid #42464e;border-radius:18px;background:#101419;color:#eee;box-sizing:border-box;overflow:auto}
+.atlas-media-viewer::backdrop{background:#030508e8}
+.atlas-media-viewer header{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.atlas-media-viewer button,.atlas-media-viewer a{font:14px Arial;color:inherit;background:transparent;border:0;padding:10px;cursor:pointer}
+.atlas-media-viewer img{display:block;width:auto;height:auto;max-width:100%;max-height:78dvh;object-fit:contain;margin:12px auto}
