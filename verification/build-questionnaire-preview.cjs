@@ -1,5 +1,7 @@
 const fs=require('fs');
+const cursorStyle=[...fs.readFileSync('index.html','utf8').matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].find(m=>m[1].includes('html.atlas-cursor-enabled'))?.[1]||'';
 function mock(){
+ document.documentElement.classList.add('atlas-cursor-enabled');const cursor=document.createElement('div');cursor.id='atlas-theme-cursor';cursor.className='is-visible';document.body.appendChild(cursor);document.addEventListener('mousemove',e=>{cursor.style.translate=e.clientX+'px '+e.clientY+'px'});
  const profile={id:'fixture-user',role:'superadmin'},character={id:'fixture-character',name:'Мартина Чавес Ромеро',active:true};
  window.ATLAS_CURRENT_SESSION={user:{id:profile.id}};window.ATLAS_CHARACTERS=[{...character,profile:{}}];
  const submissions=[],publications=[],files=new Map();
@@ -16,4 +18,4 @@ function mock(){
   storage:{from(){return {upload:async(path,blob)=>{files.set(path,blob);return {data:{}}},download:async(path)=>({data:files.get(path)})}}}
  };
 }
-fs.writeFileSync('verification/questionnaire-preview.html','<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../assets/atlas-questionnaires.css"><style>body{background:#090c10;color:white;font-family:Arial;margin:30px}</style></head><body><main id="atlas-app"><section id="atlas-page-mi-atlas"><div class="atlas-page-shell"><h1>mi atlas</h1></div></section></main><script>('+mock.toString()+')()</script><script src="../assets/atlas-questionnaires.js"></script></body></html>');
+fs.writeFileSync('verification/questionnaire-preview.html','<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../assets/atlas-questionnaires.css"><style>'+cursorStyle+'</style><style>body{background:#090c10;color:white;font-family:Arial;margin:30px}</style></head><body><main id="atlas-app"><section id="atlas-page-mi-atlas"><div class="atlas-page-shell"><h1>mi atlas</h1></div></section></main><script>('+mock.toString()+')()</script><script src="../assets/atlas-questionnaires.js"></script></body></html>');
