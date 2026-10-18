@@ -1,0 +1,22 @@
+const assert = require('node:assert/strict');
+const {formatBody, validFiles, identity} = require('../assets/atlas-social.js');
+assert.equal(formatBody('  Hello\n\nCAPS'), '  Hello\n\nCAPS');
+assert.equal(formatBody('**bold** _italic_'), '<strong>bold</strong> <em>italic</em>');
+assert.equal(formatBody('> quote'), '<span class="social-quote">quote</span>');
+assert.equal(formatBody('<img src=x onerror=alert(1)>'), '&lt;img src=x onerror=alert(1)&gt;');
+assert.ok(!formatBody('**<script>alert(1)</script>**').includes('<script>'));
+assert.equal(validFiles(Array(6).fill({type:'image/jpeg'})).length,6);
+assert.throws(() => validFiles(Array(7).fill({type:'image/png'})), /6/);
+assert.throws(() => validFiles([{type:'image/svg+xml'}]), /JPG/);
+assert.throws(() => validFiles([{type:'image/png'}],6), /6/);
+assert.deepEqual(identity('chat','foreign-character','me'),{author_kind:'player',character_id:null,actor_id:'me'});
+assert.equal(identity('feed','owned','me').character_id,'owned');
+assert.throws(() => identity('topic','atlas','me'));
+assert.throws(() => identity('reply','atlas','me'));
+assert.equal(identity('topic','owned','me').character_id,'owned');
+assert.throws(() => identity('feed','','me'));
+console.log('Social formatting, identity and attachment checks passed');
+
+assert.equal(identity('topic','atlas','me',true).author_kind,'atlas');
+assert.equal(identity('reply','atlas','me',true).author_kind,'atlas');
+assert.throws(() => identity('feed','atlas','me',true));

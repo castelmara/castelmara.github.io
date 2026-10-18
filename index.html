@@ -909,6 +909,9 @@ body.atlas-modal-open {
       <button class="atlas-nav-item" type="button" data-page="mi-atlas"><span class="atlas-nav-icon">☆</span><span>mi atlas</span></button>
       <button class="atlas-nav-item" type="button" data-page="games"><span class="atlas-nav-icon">▦</span><span>juegos</span></button>
       <button class="atlas-nav-item" type="button" data-page="direct"><span class="atlas-nav-icon">◈</span><span>mensajes</span></button>
+      <button class="atlas-nav-item" type="button" data-page="charla"><span class="atlas-nav-icon">☏</span><span>charla</span></button>
+      <button class="atlas-nav-item" type="button" data-page="muro"><span class="atlas-nav-icon">▧</span><span>muro</span></button>
+      <button class="atlas-nav-item" type="button" data-page="debates"><span class="atlas-nav-icon">≋</span><span>debates</span></button>
 
       <button class="atlas-nav-item" type="button" data-page="expediente">
         <span class="atlas-nav-icon atlas-expediente-nav-icon">
@@ -1032,6 +1035,8 @@ body.atlas-modal-open {
     if (window.atlasRenderPersonalAtlas) window.atlasRenderPersonalAtlas(pageName);
     if (window.atlasRenderDirect) window.atlasRenderDirect(pageName);
     if (window.atlasRenderGames) window.atlasRenderGames(pageName);
+    if (window.atlasRenderSocial) window.atlasRenderSocial(pageName);
+    if (window.atlasMountQuestionnaires) window.atlasMountQuestionnaires();
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -1131,6 +1136,8 @@ body.atlas-modal-open {
     if (window.atlasRenderPlayers) window.atlasRenderPlayers(pageName);
     if (window.atlasRenderDirect) window.atlasRenderDirect(pageName);
     if (window.atlasRenderGames) window.atlasRenderGames(pageName);
+    if (window.atlasRenderSocial) window.atlasRenderSocial(pageName);
+    if (window.atlasMountQuestionnaires) window.atlasMountQuestionnaires();
     if (window.atlasRenderEquipos) window.atlasRenderEquipos();
     if (window.atlasRenderExpedienteCards) window.atlasRenderExpedienteCards();
 
@@ -15433,6 +15440,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       tabPanel("relations", renderRelations(character), false);
     atlasHydrateCharacterIndicators(character);
     if (window.atlasHydrateCommunityCharacter) window.atlasHydrateCommunityCharacter(character.id);
+    if (window.atlasHydrateQuestionnaire) window.atlasHydrateQuestionnaire(character.id);
   }
 
   window.ATLAS_DISABLED_CHARACTER_PROFILES = window.ATLAS_DISABLED_CHARACTER_PROFILES || new Set();
@@ -22572,6 +22580,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       var viewer=viewerList.find(function(x){return x.id===currentUserId()})||null;
       var mayEdit=canRoleEditTarget(viewer,p);
       var editButton=mayEdit?'<button class="atlas-player-edit-profile" type="button" data-player-edit-id="'+esc(p.id)+'">'+(isOwnProfile(p.id)?'редактировать профиль':'редактировать профиль игрока')+'</button>':'';
+      var messageButton=!isOwnProfile(p.id)?'<button class="atlas-personal-action atlas-player-message" type="button" data-player-message="'+esc(p.id)+'">написать в личные сообщения</button><span data-player-message-status role="status"></span>':'';
       var overview='<div class="atlas-profile-overview-grid"><div class="atlas-profile-card"><h3>профиль игрока</h3>'+infoRows([
         ['имя',p.display_name||p.nickname,'<span>'+esc(p.display_name||p.nickname)+'</span>'],
         ['никнейм',p.nickname,'<span>@'+esc(p.nickname)+'</span>'],
@@ -22599,12 +22608,13 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         return '<article class="'+cls+'" data-achievement-code="'+esc(code)+'">'+secretBadge+icon+'<strong>'+esc(x.title||x.code||'достижение')+'</strong><p>'+esc(x.description||'')+'</p>'+requirement+'<small>'+esc(a._atlasSuperGrant?'доступ суперадмина':fmtDate(a.earned_at))+'</small></article>';
       }).join('')+'</div>':'<div class="atlas-player-achievement-empty">ачивки появятся здесь автоматически: за серию входа, день рождения, персонажей и другие события ATLAS.</div>';
       var statusRows='<div class="atlas-profile-status-row"><span>серия входа</span><strong>🔥 '+esc(p.current_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>рекорд</span><strong>'+esc(p.best_streak||0)+' дней</strong></div><div class="atlas-profile-status-row"><span>персонажи</span><strong>'+esc(chars.length)+'</strong></div><div class="atlas-profile-status-row"><span>ачивки</span><strong>'+esc(ach.length)+'</strong></div>';
-      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'игрок')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'игрок')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'"><button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
+      root.innerHTML='<section class="atlas-profile-hero'+(banner?'':' is-placeholder')+'" style="--character-banner:'+(banner?'url(\''+esc(banner)+'\')':'none')+'">'+editButton+'<div class="atlas-profile-hero-content"><div class="atlas-profile-title"><div class="atlas-player-avatar">'+avatar+'</div><h2>'+esc(displayName(p))+'</h2><div class="atlas-player-profile-nick">@'+esc(p.nickname||'игрок')+'</div><div class="atlas-profile-subtitle">'+esc(p.status_text||'профиль игрока кастельмары')+'</div><div class="atlas-profile-tags"><span>игрок</span>'+(p.role==='superadmin'?'<span>суперадмин</span>':p.role==='admin'?'<span>админ</span>':'')+(p.current_streak?'<span>🔥 '+esc(p.current_streak)+' дней</span>':'')+'</div>'+heart+'<div class="atlas-personal-actions" data-personal-tools="true" data-target-type="player" data-target-id="'+esc(p.id)+'" data-target-title="'+esc(displayName(p))+'" data-target-subtitle="@'+esc(p.nickname||'игрок')+'" data-target-image="'+esc(p.avatar_url||p.banner_url||'')+'">'+messageButton+'<button class="atlas-personal-action" type="button" data-personal-action="bookmark">☆ в закладки</button><button class="atlas-personal-action" type="button" data-personal-action="favorite">♡ в избранное</button><button class="atlas-personal-action" type="button" data-personal-action="note">✎ заметка</button></div></div><aside class="atlas-profile-status-card">'+statusRows+'</aside></div></section>'+
         '<nav class="atlas-profile-tabs">'+tabButton('overview','обзор',true)+tabButton('characters','персонажи',false)+tabButton('posts','посты',false)+tabButton('photos','фото',false)+tabButton('achievements','достижения',false)+'</nav>'+tabPanel('overview',overview,true)+tabPanel('characters',charPanel,false)+tabPanel('posts','<div id="atlasPlayerPostsRoot" class="atlas-player-social-loading">загружаем публикации…</div>',false)+tabPanel('photos','<div id="atlasPlayerPhotosRoot" class="atlas-player-social-loading">загружаем фотографии…</div>',false)+tabPanel('achievements',achPanel,false);
       if(typeof window.atlasPersonalHydrate==='function') setTimeout(window.atlasPersonalHydrate,0);
       if(typeof window.atlasRenderPlayerSocial==='function') setTimeout(function(){window.atlasRenderPlayerSocial(p.id)},0);
       if(window.atlasHydrateCommunityPlayer) window.atlasHydrateCommunityPlayer(p.id);
       if(window.atlasCommunityCards) window.atlasCommunityCards();
+      if(window.atlasMountQuestionnaires) window.atlasMountQuestionnaires();
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
 
@@ -25033,5 +25043,14 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
   <section class="atlas-page" id="atlas-page-games"><div class="atlas-page-shell atlas-games-shell"><header class="atlas-games-heading"><h2>juegos</h2><p>маленькая пауза между большими историями.</p></header><div id="atlasGamesRoot"></div></div></section>
 </template>
 <script src="assets/atlas-games-loader.js?v=20261012"></script>
+<link rel="stylesheet" href="assets/atlas-social.css?v=20261018">
+<template data-atlas-page-template="charla"><section class="atlas-page" id="atlas-page-charla"><div class="atlas-page-shell"><div class="social-root"></div></div></section></template>
+<template data-atlas-page-template="muro"><section class="atlas-page" id="atlas-page-muro"><div class="atlas-page-shell"><div class="social-root"></div></div></section></template>
+<template data-atlas-page-template="debates"><section class="atlas-page" id="atlas-page-debates"><div class="atlas-page-shell"><div class="social-root"></div></div></section></template>
+<script src="assets/atlas-social.js?v=20261018-clean-copy"></script>
+<link rel="stylesheet" href="assets/atlas-player-messenger.css?v=20261018">
+<script src="assets/atlas-player-messenger.js?v=20261018"></script>
+<link rel="stylesheet" href="assets/atlas-questionnaires.css?v=20261018-short-editor">
+<script src="assets/atlas-questionnaires.js?v=20261018-short-editor"></script>
 </body>
 </html>
