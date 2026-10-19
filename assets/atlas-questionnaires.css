@@ -23,3 +23,6 @@
 .atlas-q-dialog,.atlas-q-launch,[data-q-launch]{text-transform:lowercase}
 .atlas-q-dialog button,.atlas-q-dialog h2,.atlas-q-dialog h3,.atlas-q-dialog h4,.atlas-q-published h3{ text-transform:lowercase }
 .atlas-q-dialog input,.atlas-q-dialog textarea,.atlas-q-dialog select,.atlas-q-dialog .atlas-q-text,.atlas-q-dialog .atlas-q-document-text,.atlas-q-published p{ text-transform:none }
+
+/* Published dossier and its preview use the site’s lowercase typography. */
+.atlas-q-published p{ text-transform:lowercase }
