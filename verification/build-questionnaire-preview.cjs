@@ -4,7 +4,8 @@ function mock(){
  document.documentElement.classList.add('atlas-cursor-enabled');const cursor=document.createElement('div');cursor.id='atlas-theme-cursor';cursor.className='is-visible';document.body.appendChild(cursor);document.addEventListener('mousemove',e=>{cursor.style.translate=e.clientX+'px '+e.clientY+'px'});
  const profile={id:'fixture-user',role:'superadmin'},character={id:'fixture-character',name:'Мартина Чавес Ромеро',active:true};
  window.ATLAS_CURRENT_SESSION={user:{id:profile.id}};window.ATLAS_CHARACTERS=[{...character,profile:{}}];
- const submissions=[],publications=[],files=new Map();
+ const sample='Раздел I. Личное дело кандидата\n\nИмя: Мартина Чавес Ромеро\n\n\n\nБиография\n\nМартина выросла у моря. Это первый абзац её истории.\n\nВторой абзац сохраняет авторский текст и обычный интервал.\n\nХарактер\n\nРешительная и внимательная.';
+ const submissions=[{id:'fixture-request',character_id:character.id,actor_id:profile.id,content:{fullName:character.name,faculty:'Факультет индивидуальных видов спорта',faceclaim:'laetitiafrt'},status:'pending',created_at:new Date().toISOString(),edited_text:sample,file_path:'fixture.txt',file_name:'Анкета.txt'}],publications=[],files=new Map([['fixture.txt',new Blob([sample],{type:'text/plain'})]]);
  window.ATLAS_SUPABASE={
   from(table){
    let filters=[],payload=null,single=false,start=0,end=999;

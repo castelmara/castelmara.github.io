@@ -6,6 +6,18 @@
  const corrections='Анкета требует доработки. Пожалуйста, исправьте следующие пункты:\n\n1. \n2. \n3. ';
  const longKeys=['biography','personality','motivation','extra'];
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function dossierMarkup(text){
+   const sections=[];let current={title:'Личное дело',lines:[]};
+   for(const line of String(text||'').replace(/\r/g,'').split('\n')){
+     const heading=line.trim().replace(/^[—–•\s]+/,'');
+     if(/^(?:раздел\s+(?:[ivx]+|\d+)[.\s:—–-]+.{1,100}|биография|характер|мотивация(?: и амбиции)?|доп(?:олнительные)?[ .]*факты|дополнительная информация)[:.\s]*$/i.test(heading)){
+       if(current.lines.some(x=>x.trim()))sections.push(current);
+       current={title:heading.replace(/^раздел\s+(?:[ivx]+|\d+)[.\s:—–-]+/i,''),lines:[]};
+     }else current.lines.push(line);
+   }
+   if(current.lines.some(x=>x.trim()))sections.push(current);
+   return '<div class="atlas-profile-section-stack">'+sections.map(section=>'<article class="atlas-profile-card atlas-q-published"><h3>'+esc(section.title)+'</h3>'+section.lines.join('\n').trim().split(/\n\s*\n/).filter(x=>x.trim()).map(p=>'<p>'+esc(p.trim()).replace(/\n/g,'<br>')+'</p>').join('')+'</article>').join('')+'</div>';
+ }
  function mergeProfile(base,content){
    const c=JSON.parse(JSON.stringify(base));c.profile=c.profile||{};
    c.profile.overview=c.profile.overview||{};c.profile.overview.mainInfo=c.profile.overview.mainInfo||{};
@@ -16,7 +28,7 @@
    }
    return c;
  }
- if(typeof module!=='undefined'&&module.exports){module.exports={mergeProfile,esc,acceptance,headerLabels};return}
+ if(typeof module!=='undefined'&&module.exports){module.exports={mergeProfile,esc,acceptance,headerLabels,dossierMarkup};return}
  const documentModule=new URL('./atlas-questionnaire-documents.mjs',document.currentScript.src).href;
  let reader=null,readerEpoch=0,editorState=null;
  function clearReader(){++readerEpoch;reader?.destroy();reader=null;editorState=null}
@@ -64,11 +76,11 @@
  }
  function hydrate(id){mount();const root=document.getElementById('atlasCharacterProfileRoot');if(root?.dataset.communityId!==id)return;
    root.querySelector('[data-q-public-file]')?.remove();const row=publications.get(id);if(!row?.file_path)return;
-   const b=document.createElement('button');b.type='button';b.className='atlas-q-launch';b.dataset.qPublicFile=id;b.textContent='Открыть анкету';const panel=root.querySelector('[data-character-tab-panel="dossier"]');if(row.document_text!=null&&panel)panel.innerHTML='<article class="atlas-profile-card"><h3>АНКЕТА</h3><div class="atlas-q-text">'+esc(row.document_text)+'</div></article>';panel?.prepend(b);
+   const b=document.createElement('button');b.type='button';b.className='atlas-q-launch';b.dataset.qPublicFile=id;b.textContent='Открыть анкету';const panel=root.querySelector('[data-character-tab-panel="dossier"]');if(row.document_text!=null&&panel)panel.innerHTML=dossierMarkup(row.document_text);panel?.prepend(b);
  }
  const statuses={pending:'На проверке',approved:'Одобрено',rejected:'На доработке'};
  async function showList(){
-   clearReader();
+   clearReader();dialog.classList.remove('is-review');
    const d=dialog,user=uid();message('Загружаем…');
    let q=client().from('atlas_questionnaire_submissions').select('*').order('created_at',{ascending:false});if(mode==='mine')q=q.eq('actor_id',user);
    const result=[];for(let offset=0;;offset+=100){const part=await checked(q.range(offset,offset+99));result.push(...part);if(part.length<100)break}
@@ -89,9 +101,9 @@
  function view(id){const r=rows.find(r=>r.id===id);if(!r)return;
    clearReader();const editable=viewer.role==='superadmin'&&r.status==='pending';dialog.classList.add('is-review');
    editorState=editable?{id:r.id,revision:r.edit_revision||0,saved:r.edited_text??'',ready:r.edited_text!=null}:null;
-   dialog.querySelector('[data-q-body]').innerHTML='<button type="button" data-q-back>← К заявкам</button><div class="atlas-q-review-grid"><section class="atlas-q-request"><h3>'+esc(r.content.fullName||title(r.character_id))+'</h3><p>'+statuses[r.status]+'</p>'+Object.entries(headerLabels).filter(([k])=>r.content[k]).map(([k,l])=>'<div class="atlas-q-header-line"><small>'+l+'</small><div>'+esc(r.content[k])+'</div></div>').join('')+
-   (r.file_path?'<details class="atlas-q-original" open><summary>Файл анкеты · '+esc(r.file_name||'оригинал')+'</summary><div data-q-document><p>Открываем документ…</p></div><button type="button" data-q-file="'+esc(id)+'">Открыть заново</button></details>':'<p>Файл не прикреплён.</p>')+
-   (editable?'<label>Редактор текста<textarea data-q-editor rows="16" '+(editorState.ready?'':'disabled')+'>'+esc(r.edited_text||'')+'</textarea></label><small>Правки сохраняются отдельно. Оригинальный файл остаётся в заявке.</small><button type="button" data-q-save-text="'+esc(id)+'">Сохранить правки</button>':r.edited_text!=null?'<h4>Текст после проверки</h4><div class="atlas-q-text">'+esc(r.edited_text)+'</div>':'')+'</section><aside class="atlas-q-response">'+
+   dialog.querySelector('[data-q-body]').innerHTML='<button type="button" data-q-back>← К заявкам</button><nav class="atlas-q-review-tabs" aria-label="Проверка анкеты"><button type="button" data-q-tab="text" aria-pressed="true">Текст анкеты</button><button type="button" data-q-tab="original" aria-pressed="false">Исходный файл</button><button type="button" data-q-tab="response" aria-pressed="false">Ответ администрации</button></nav><div class="atlas-q-review-grid"><section class="atlas-q-request"><h3>'+esc(r.content.fullName||title(r.character_id))+'</h3><p>'+statuses[r.status]+'</p>'+Object.entries(headerLabels).filter(([k])=>r.content[k]).map(([k,l])=>'<div class="atlas-q-header-line"><small>'+l+'</small><div>'+esc(r.content[k])+'</div></div>').join('')+
+   (r.file_path?'<section class="atlas-q-original" data-q-pane="original" hidden><h4>Файл анкеты · '+esc(r.file_name||'оригинал')+'</h4><div data-q-document><p>Открываем документ…</p></div><button type="button" data-q-file="'+esc(id)+'">Открыть заново</button></section>':'<p>Файл не прикреплён.</p>')+
+   (editable?'<section data-q-pane="text"><div class="atlas-q-editor-toolbar"><strong>Текст для публикации</strong><button type="button" data-q-preview>Предпросмотр</button></div><div data-q-preview-body hidden></div><label class="atlas-q-editor-label"><span class="atlas-q-editor-caption">Редактирование анкеты</span><textarea data-q-editor rows="16" '+(editorState.ready?'':'disabled')+'>'+esc(r.edited_text||'')+'</textarea></label><small>Правки сохраняются отдельно. Оригинальный файл остаётся в заявке.</small><button type="button" data-q-save-text="'+esc(id)+'">Сохранить правки</button></section>':r.edited_text!=null?'<section data-q-pane="text">'+dossierMarkup(r.edited_text)+'</section>':'<section data-q-pane="text"><p>Текст доступен во вкладке «Исходный файл».</p></section>')+'</section><aside class="atlas-q-response" data-q-pane="response" hidden>'+
    (editable?'<h3>Ответ администрации</h3><div class="atlas-q-actions"><button type="button" data-q-template="approved" data-q-id="'+esc(id)+'">Шаблон принятия</button><button type="button" data-q-template="rejected">Список исправлений</button></div><label>Комментарий<textarea data-q-note rows="12" placeholder="Ответ игроку…"></textarea></label><div class="atlas-q-actions"><button type="button" data-q-decision="approved" data-q-id="'+esc(id)+'">Принять анкету</button><button type="button" data-q-decision="rejected" data-q-id="'+esc(id)+'">Вернуть на доработку</button></div>':r.review_note?'<div class="atlas-q-notice '+(r.status==='approved'?'is-approved':'')+'"><span>'+(r.status==='approved'?'АТЛАС · системное уведомление':'АТЛАС · администрация')+'</span><h3>'+(r.status==='approved'?'Персонаж зарегистрирован':'Нужны исправления')+'</h3><p class="atlas-q-text">'+esc(r.review_note)+'</p></div>':'<p>Ожидает проверки администрацией.</p>')+
    (r.actor_id===uid()&&r.status!=='pending'?'<button type="button" data-q-copy="'+esc(id)+'">Подать исправленную анкету</button>':'')+'</aside></div>';message('');
    if(r.file_path)openAttached(r).catch(err=>message(err.message));else if(editable){editorState.ready=true;dialog.querySelector('[data-q-editor]').disabled=false}
@@ -126,6 +138,8 @@
      else if('qClose' in d)close();else if('qBack' in d){if(mayLeave())await showList()}
      else if(d.qMode){mode=d.qMode==='review'&&viewer.role==='superadmin'?'review':'mine';await showList()}
      else if('qNew' in d)form();else if(d.qView)view(d.qView);
+     else if(d.qTab){dialog.querySelectorAll('[data-q-pane]').forEach(p=>p.hidden=p.dataset.qPane!==d.qTab);dialog.querySelectorAll('[data-q-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b===e.target.closest('button'))))}
+     else if('qPreview' in d){const preview=dialog.querySelector('[data-q-preview-body]'),label=dialog.querySelector('.atlas-q-editor-label');preview.hidden=!preview.hidden;label.hidden=!preview.hidden;if(!preview.hidden)preview.innerHTML=dossierMarkup(dialog.querySelector('[data-q-editor]').value);b.textContent=preview.hidden?'Предпросмотр':'Редактировать'}
      else if(d.qCopy){const r=rows.find(r=>r.id===d.qCopy);if(r)form(r.character_id,r.content)}
      else if(d.qFile){const r=rows.find(r=>r.id===d.qFile);if(r?.file_path)await openAttached(r)}
      else if(d.qPublicFile){const r=publications.get(d.qPublicFile);if(r?.file_path){shell();dialog.classList.add('is-review');dialog.querySelector('[data-q-body]').innerHTML='<h3>'+esc(r.content.fullName||title(r.character_id))+'</h3>'+(r.document_text!=null?'<div class="atlas-q-text">'+esc(r.document_text)+'</div><h4>Оригинальный файл</h4>':'')+'<div data-q-document></div>';await openAttached(r)}}
