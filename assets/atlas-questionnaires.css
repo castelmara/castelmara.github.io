@@ -15,6 +15,11 @@
 .atlas-q-dialog [data-q-editor]{min-height:65dvh;padding:clamp(20px,4vw,48px);font:17px/1.85 Montserrat,Arial,sans-serif;background:#141a22;color:#e2e0e6;border-color:#333944;tab-size:4}
 .atlas-q-dialog .atlas-q-document-text{max-height:none;overflow:visible;background:#141a22;color:#d4d1da;border:1px solid #333944;padding:clamp(20px,4vw,48px);font:16px/1.85 Montserrat,Arial,sans-serif;white-space:pre-line}
 .atlas-q-published p{color:var(--muted,#a5a3b2);font:14px/1.8 Montserrat,Arial,sans-serif;overflow-wrap:anywhere;margin:0 0 18px;text-transform:none}
-.atlas-q-dialog .atlas-profile-card{padding:24px;border:1px solid #30343d;border-radius:20px;background:#10151c;margin-bottom:20px}.atlas-q-published h3{font-size:16px;text-transform:uppercase;margin:0 0 20px}
+.atlas-q-dialog .atlas-profile-card{padding:24px;border:1px solid #30343d;border-radius:20px;background:#10151c;margin-bottom:20px}.atlas-q-published h3{font-size:16px;text-transform:lowercase;margin:0 0 20px}
 .atlas-q-dialog nav button:focus-visible,.atlas-q-dialog button:focus-visible{outline:2px solid #ee9ba8;outline-offset:3px}
 @media(max-width:760px){.atlas-q-dialog.is-review{padding:16px}.atlas-q-review-tabs{top:-16px;flex-wrap:nowrap!important;overflow-x:auto}.atlas-q-review-tabs button{flex-shrink:0;padding:10px}.atlas-q-header-line{width:100%;margin:6px 0}.atlas-q-request>h3{font-size:21px}.atlas-q-dialog [data-q-editor]{font-size:16px;min-height:65dvh;padding:18px}.atlas-q-editor-toolbar{margin-top:24px}}
+
+/* Match the site interface casing without changing submitted text. */
+.atlas-q-dialog,.atlas-q-launch,[data-q-launch]{text-transform:lowercase}
+.atlas-q-dialog button,.atlas-q-dialog h2,.atlas-q-dialog h3,.atlas-q-dialog h4,.atlas-q-published h3{ text-transform:lowercase }
+.atlas-q-dialog input,.atlas-q-dialog textarea,.atlas-q-dialog select,.atlas-q-dialog .atlas-q-text,.atlas-q-dialog .atlas-q-document-text,.atlas-q-published p{ text-transform:none }
