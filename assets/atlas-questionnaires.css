@@ -26,3 +26,8 @@
 
 /* Published dossier and its preview use the site’s lowercase typography. */
 .atlas-q-published p{ text-transform:lowercase }
+
+.atlas-q-approved-dossier .atlas-profile-card p,.atlas-q-approved-overview .atlas-profile-info-row span,.atlas-q-dialog .atlas-q-published .atlas-profile-info-row span{text-transform:lowercase}
+.atlas-q-dialog .atlas-profile-info-row{display:grid;grid-template-columns:minmax(140px,1fr) 2fr;gap:20px;padding:16px 0;border-bottom:1px solid #30343d;font:14px/1.8 Montserrat,Arial,sans-serif}
+.atlas-q-dialog .atlas-profile-info-row span{color:#a5a3b2;overflow-wrap:anywhere}.atlas-q-dialog .atlas-profile-info-row:last-child{border:0}
+@media(max-width:560px){.atlas-q-dialog .atlas-profile-info-row{grid-template-columns:1fr;gap:4px}}

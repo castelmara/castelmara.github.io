@@ -6,29 +6,54 @@
  const corrections='Анкета требует доработки. Пожалуйста, исправьте следующие пункты:\n\n1. \n2. \n3. ';
  const longKeys=['biography','personality','motivation','extra'];
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- function dossierMarkup(text){
-   const sections=[];let current={title:'Личное дело',lines:[]};
-   for(const line of String(text||'').replace(/\r/g,'').split('\n')){
-     const heading=line.trim().replace(/^[—–•\s]+/,'');
-     if(/^(?:раздел\s+(?:[ivx]+|\d+)[.\s:—–-]+.{1,100}|биография|характер|мотивация(?: и амбиции)?|доп(?:олнительные)?[ .]*факты|дополнительная информация)[:.\s]*$/i.test(heading)){
-       if(current.lines.some(x=>x.trim()))sections.push(current);
-       current={title:heading.replace(/^раздел\s+(?:[ivx]+|\d+)[.\s:—–-]+/i,''),lines:[]};
-     }else current.lines.push(line);
+ const infoLabels={fullName:'полное имя',originalName:'оригинальное имя',nicknames:'прозвища',age:'возраст',birthDate:'дата рождения',placeOfBirth:'место рождения',course:'курс',faculty:'направление',department:'кафедра / отделение',specialization:'специализация',team:'команда',position:'позиция / должность',level:'уровень вовлечённости',atlasNickname:'atlas',socialNickname:'соцсети',faceclaim:'внешность'};
+ const dossierLabels={biography:'биография',personality:'характер',motivation:'мотивация и амбиции',extra:'доп факты'};
+ function parseQuestionnaire(text){
+   const content={},chunks={biography:[],personality:[],motivation:[],extra:[]};let active=null,pending=null;
+   const clean=v=>v.trim().replace(/[;]+$/,'').trim();
+   function assign(key,value){
+     value=clean(value);if(!value)return;
+     if(key==='names'){const names=value.split(/\s*\/{1,2}\s*/);content.fullName=names[0];if(names[1])content.originalName=names.slice(1).join(' / ')}
+     else if(key==='birth'){const date=value.match(/\d{1,2}[./]\d{1,2}[./]\d{4}|\d{1,2}\s+[а-яё]+\s+\d{4}/i);if(date)content.birthDate=date[0];const rest=date?value.replace(date[0],''):value;const age=rest.match(/\d+\s*(?:лет|год(?:а)?)|(?:[,;]|\/\/)\s*(\d+)\s*$/i);if(age)content.age=age[1]||age[0]}
+     else if(key==='occupation'){content.faculty=value;const course=value.match(/\d+\s*(?:[-–]?(?:го|й|ого))?\s*курс[ае]?/i);if(course)content.course=course[0];const faculty=value.match(/факультет[а]?\s+.+/i);if(faculty)content.faculty=faculty[0].replace(/^факультета/i,'факультет')}
+     else if(key==='social'){const atlas=value.match(/(?:атлас|atlas)\s*[:—–-]\s*([^,;]+)/i),social=value.match(/(?:соц[.\s]*сети|инст(?:аграм)?(?:\s*\/\s*тикток)?|соцсет[ьи])\s*[:—–-]\s*(.+)/i);if(atlas)content.atlasNickname=clean(atlas[1]);if(social)content.socialNickname=clean(social[1]);if(!atlas&&!social)content.socialNickname=value}
+     else content[key]=value;
    }
-   if(current.lines.some(x=>x.trim()))sections.push(current);
-   return '<div class="atlas-profile-section-stack">'+sections.map(section=>'<article class="atlas-profile-card atlas-q-published"><h3>'+esc(section.title)+'</h3>'+section.lines.join('\n').trim().split(/\n\s*\n/).filter(x=>x.trim()).map(p=>'<p>'+esc(p.trim()).replace(/\n/g,'<br>')+'</p>').join('')+'</article>').join('')+'</div>';
+   const fields=[[/^(?:имя и фамилия персонажа|имя персонажа|полное имя)(?:\s*\[[^\]]*\])?$/i,'names'],[/^оригинальное имя$/i,'originalName'],[/^(?:производные от имени.*|прозвища)$/i,'nicknames'],[/^возраст и дата рождения$/i,'birth'],[/^возраст$/i,'age'],[/^дата рождения$/i,'birthDate'],[/^место рождения$/i,'placeOfBirth'],[/^(?:род деятельности.*|факультет\s*\/\s*статус в академии)$/i,'occupation'],[/^(?:направление|факультет)$/i,'faculty'],[/^курс$/i,'course'],[/^кафедра(?:\s*\/\s*отделение)?$/i,'department'],[/^специализация$/i,'specialization'],[/^команда(?:,.*)?$/i,'team'],[/^уровень вовлеч[её]нности.*$/i,'level'],[/^никнейм в локальном приложении.*$/i,'social'],[/^(?:атлас|atlas)$/i,'atlasNickname'],[/^соцсети$/i,'socialNickname'],[/^(?:прототип внешности|внешность)(?:\s*\[[^\]]*\])?$/i,'faceclaim']];
+   for(const raw of String(text||'').replace(/\r/g,'').replace(/\u3164/g,' ').split('\n')){
+     const line=raw.trim(),label=line.replace(/^[—–•]\s*/,'');
+     if(/^раздел\s+(?:[ivx]+|\d+)[.\s:—–-]/i.test(label)){active=null;pending=null;continue}
+     const section=label.match(/^(биография|характер|мотивация(?: и амбиции)?|дополнительные факты|доп[ .]*факты)(?:\s*:\s*(.*)|\s{2,}(.+)|\s*$)/i);
+     if(section){active=/^биография$/i.test(section[1])?'biography':/^характер$/i.test(section[1])?'personality':/^мотивация/i.test(section[1])?'motivation':'extra';pending=null;if(section[2]||section[3])chunks[active].push(section[2]||section[3]);continue}
+     if(active){chunks[active].push(raw);continue}
+     if(!line)continue;
+     const combined=label.match(/^(.+);\s*возраст и дата рождения:\s*(.+)$/i);if(combined){assign('nicknames',combined[1]);assign('birth',combined[2]);continue}
+     if(pending){assign(pending,line);pending=null;continue}
+     const colon=label.indexOf(':');if(colon<0)continue;
+     const found=fields.find(([pattern])=>pattern.test(label.slice(0,colon).trim()));
+     if(found){const value=label.slice(colon+1).trim();if(value)assign(found[1],value);else pending=found[1]}
+   }
+   for(const key of longKeys){const value=chunks[key].join('\n').trim().replace(/\n(?:[ \t]*\n){2,}/g,'\n\n');if(value)content[key]=value}
+   return content;
  }
- function mergeProfile(base,content){
+ function dossierMarkup(text){
+   const content=parseQuestionnaire(text);
+   const paragraphs=value=>value.split(/\n\s*\n/).filter(x=>x.trim()).map(p=>'<p>'+esc(p.trim()).replace(/\n/g,'<br>')+'</p>').join('');
+   const info=Object.keys(infoLabels).filter(k=>content[k]&&k!=='level').map(k=>'<div class="atlas-profile-info-row"><strong>'+infoLabels[k]+'</strong><span>'+esc(content[k])+'</span></div>').join('');
+   return (info?'<article class="atlas-profile-card atlas-q-published"><h3>основная информация</h3><div class="atlas-profile-info-list">'+info+'</div></article>':'')+'<div class="atlas-profile-section-stack">'+longKeys.filter(k=>content[k]).map(k=>'<article class="atlas-profile-card atlas-q-published"><h3>'+dossierLabels[k]+'</h3>'+paragraphs(content[k])+'</article>').join('')+'</div>'+(!content.biography?'<p class="atlas-q-mapping-note">Биография не найдена. Обозначь её строкой «биография:» в тексте анкеты.</p>':'');
+ }
+ function mergeProfile(base,content,documentText){
+   content={...content,...parseQuestionnaire(documentText)};
    const c=JSON.parse(JSON.stringify(base));c.profile=c.profile||{};
    c.profile.overview=c.profile.overview||{};c.profile.overview.mainInfo=c.profile.overview.mainInfo||{};
    c.profile.dossier=c.profile.dossier||{};
-   for(const key of Object.keys(labels))if(typeof content[key]==='string'&&content[key].trim()){
+   for(const key of [...Object.keys(infoLabels),...longKeys])if(typeof content[key]==='string'&&content[key].trim()){
      if(longKeys.includes(key))c.profile.dossier[key]={text:content[key]};
      else c.profile.overview.mainInfo[key]=content[key];
    }
    return c;
  }
- if(typeof module!=='undefined'&&module.exports){module.exports={mergeProfile,esc,acceptance,headerLabels,dossierMarkup};return}
+ if(typeof module!=='undefined'&&module.exports){module.exports={mergeProfile,esc,acceptance,headerLabels,dossierMarkup,parseQuestionnaire};return}
  const documentModule=new URL('./atlas-questionnaire-documents.mjs',document.currentScript.src).href;
  let reader=null,readerEpoch=0,editorState=null;
  function clearReader(){++readerEpoch;reader?.destroy();reader=null;editorState=null}
@@ -69,14 +94,14 @@
        const original=local(row.character_id)||{id:row.character_id,name:row.character_id,category:'estudiantes',type:'student_sport'};
        base.set(row.character_id,JSON.parse(JSON.stringify({...original,cardImage:original.cardImage||original.image,avatar:original.avatar||original.image})));
      }
-     const c=mergeProfile(base.get(row.character_id),row.content);publications.set(row.character_id,row);
+     const c=mergeProfile(base.get(row.character_id),row.content,row.document_text);publications.set(row.character_id,row);
      const i=chars.findIndex(x=>x.id===c.id);if(i<0)chars.push(c);else chars[i]=c;
    }
    window.atlasRenderCharacters?.();window.atlasRenderCardOnlyCharacters?.();
  }
  function hydrate(id){mount();const root=document.getElementById('atlasCharacterProfileRoot');if(root?.dataset.communityId!==id)return;
    root.querySelector('[data-q-public-file]')?.remove();const row=publications.get(id);if(!row?.file_path)return;
-   const b=document.createElement('button');b.type='button';b.className='atlas-q-launch';b.dataset.qPublicFile=id;b.textContent='Открыть анкету';const panel=root.querySelector('[data-character-tab-panel="dossier"]');if(row.document_text!=null&&panel)panel.innerHTML=dossierMarkup(row.document_text);panel?.prepend(b);
+   const b=document.createElement('button');b.type='button';b.className='atlas-q-launch';b.dataset.qPublicFile=id;b.textContent='Открыть анкету';const panel=root.querySelector('[data-character-tab-panel="dossier"]');panel?.classList.add('atlas-q-approved-dossier');root.querySelector('[data-character-tab-panel="overview"]')?.classList.add('atlas-q-approved-overview');panel?.prepend(b);
  }
  const statuses={pending:'На проверке',approved:'Одобрено',rejected:'На доработке'};
  async function showList(){
