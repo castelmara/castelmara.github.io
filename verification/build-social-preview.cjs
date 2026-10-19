@@ -20,6 +20,7 @@ const mock = function () {
     // Exercise the real MediaRecorder with a generated tone, never the user's microphone.
     navigator.mediaDevices.getUserMedia=async()=>{const ctx=new AudioContext();await ctx.resume();const tone=ctx.createOscillator(),dest=ctx.createMediaStreamDestination();tone.connect(dest);tone.start();const track=dest.stream.getAudioTracks()[0],stop=track.stop.bind(track);track.stop=()=>{stop();tone.stop();ctx.close()};return dest.stream};
   }
+  if(new URLSearchParams(location.search).has('botTest'))messages=[{id:'bot-request',room_id:'general',sender_id:profile.id,body:'инфа что завтра будет солнце',images:[],created_at:'2026-10-18T18:00:00Z',player:profile,bot_reply:{kind:'percent',text:'Инфа: 73% · завтра будет солнце',value:73}}];
   const uploadedPhotos=new Map();
   window.ATLAS_SUPABASE={
     from(table){let filters=[],limit=30,mode='read',payload,single=false,order=false;

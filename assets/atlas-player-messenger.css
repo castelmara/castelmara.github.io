@@ -79,4 +79,12 @@
 #atlas-app .pm-compose-row [data-pm-emojis]{font:25px/1 Arial}
 #atlas-app .pm-compose-row .is-recording{color:#ff657c;background:#b832452b;border-color:#cf4258}
 #atlas-app .pm-compose-note>span:first-child{display:block;line-height:1.5}
+#atlas-app .pm-bot-message .pm-avatar{color:#e4b881;background:#a86a3020}
+#atlas-app .pm-bot-message .pm-bubble{border-color:#a984494a}
+#atlas-app .pm-bot-note,#atlas-app .pm-bot-message .pm-name small{display:block;color:var(--social-muted);font-size:10px;margin-top:6px;font-weight:400}
+#atlas-app .pm-bot-commands{display:grid;gap:8px}
+#atlas-app .pm-bot-commands button{text-align:left}
+#atlas-app .pm-bot-commands small{display:block;font-size:11px;color:var(--social-muted);margin-top:4px}
+#atlas-app .pm-bot-help p{font-size:12px;color:var(--social-muted);line-height:1.6}
+#atlas-app [data-pm-bot-help]{white-space:nowrap;font-size:11px;padding:8px}
 @media(max-width:480px){#atlas-app .pm-compose-row{grid-template-columns:38px minmax(0,1fr) 38px 38px 38px;gap:3px}#atlas-app .pm-compose-row textarea{grid-column:1/-1;grid-row:1}#atlas-app .pm-compose-row .pm-attach{grid-column:1;grid-row:2}#atlas-app .pm-compose-row [data-pm-emojis]{grid-column:3;grid-row:2}#atlas-app .pm-compose-row [data-pm-record]{grid-column:4;grid-row:2}#atlas-app .pm-compose-row [type=submit]{grid-column:5;grid-row:2}}
