@@ -28,12 +28,12 @@
       if(action&&!action.matches('.atlas-direct-attachment-image')){
         const holder=img.parentElement;if(getComputedStyle(holder).position==='static')holder.style.position='relative';
         const zoom=document.createElement('span');zoom.className='atlas-photo-zoom';zoom.tabIndex=0;zoom.setAttribute('role','button');zoom.setAttribute('aria-label','Открыть фото полностью');zoom.textContent='⤢';
-        const show=e=>{e.preventDefault();e.stopPropagation();open(img.currentSrc||img.src)};
+        const show=e=>{e.preventDefault();e.stopPropagation();open(img.dataset.originalSrc||img.currentSrc||img.src)};
         zoom.addEventListener('click',show);zoom.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){show(e)}});holder.appendChild(zoom);
       }else{
         img.classList.add('atlas-photo-open');if(!action){img.tabIndex=0;img.setAttribute('role','button');img.setAttribute('aria-label','Открыть фото полностью')}
-        img.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open(img.currentSrc||img.src)});
-        img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(img.currentSrc||img.src)}});
+        img.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open(img.dataset.originalSrc||img.currentSrc||img.src)});
+        img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(img.dataset.originalSrc||img.currentSrc||img.src)}});
       }
     }
   }

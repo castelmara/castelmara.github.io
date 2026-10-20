@@ -14432,6 +14432,8 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
   </section>
 </template>
 
+<script src="assets/atlas-character-thumbnails.js?v=20261021"></script>
+<script src="assets/atlas-character-images.js?v=20261021"></script>
 <script>
 (function() {
   window.ATLAS_CHARACTERS = window.ATLAS_CHARACTERS || [];
@@ -14620,7 +14622,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
 
     var image = getImage(character, "card");
     var imageHtml = image
-      ? '<img src="' + esc(image) + '" alt="' + esc(character.name || "") + '">'
+      ? '<img loading="lazy" decoding="async" data-original-src="' + esc(image) + '" src="' + esc((window.ATLAS_CHARACTER_THUMBNAILS||{})[image]||image) + '" alt="' + esc(character.name || "") + '">'
       : '<span class="atlas-character-card-placeholder" aria-hidden="true"></span>';
 
     btn.innerHTML =
@@ -15523,6 +15525,7 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal [class*="sport-modal"] li {
       return;
     }
 
+    if (event.target.closest(".atlas-photo-zoom")) return;
     var profileTrigger = event.target.closest("[data-atlas-profile-id]");
     if (profileTrigger) {
       event.preventDefault();
@@ -15697,8 +15700,8 @@ ATLAS — CARD ONLY CHARACTERS
 
     var imageHtml = character.image
 
-      ? '<img src="' +
-          esc(character.image) +
+      ? '<img loading="lazy" decoding="async" data-original-src="' + esc(character.image) + '" src="' +
+          esc((window.ATLAS_CHARACTER_THUMBNAILS||{})[character.image]||character.image) +
           '" alt="' +
           esc(character.name) +
         '">'
@@ -21900,7 +21903,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       var img=characterOwnerImage(ch);
       return '<label class="atlas-character-owner-item'+(checked?' is-selected':'')+(taken?' is-taken':'')+'" data-character-owner-row="'+esc(ch.id)+'">'+
         '<input type="checkbox" data-character-owner-choice="'+esc(ch.id)+'"'+(checked?' checked':'')+(taken||state.saving?' disabled':'')+'>'+
-        '<span class="atlas-character-owner-thumb">'+(img?'<img src="'+esc(img)+'" alt="">':esc(characterOwnerName(ch).charAt(0).toUpperCase()))+'</span>'+
+        '<span class="atlas-character-owner-thumb">'+(img?'<img loading="lazy" decoding="async" data-original-src="'+esc(img)+'" src="'+esc((window.ATLAS_CHARACTER_THUMBNAILS||{})[img]||img)+'" alt="">':esc(characterOwnerName(ch).charAt(0).toUpperCase()))+'</span>'+
         '<span class="atlas-character-owner-copy"><strong>'+esc(characterOwnerName(ch))+'</strong><span>'+esc(ch.subtitle||ch.category||ch.id)+'</span></span>'+
         '<span class="atlas-character-owner-badge">'+badge+'</span>'+
       '</label>';
@@ -22418,10 +22421,10 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var img=characterOwnerImage(ch);
     var copy='<span class="atlas-character-card-details"><span class="atlas-character-card-text"><h3>'+esc(characterOwnerName(ch))+'</h3></span></span>';
     if(ch._atlasCardOnly){
-      return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn atlas-card-only" type="button" data-atlas-persona-open="'+esc(ch.id)+'">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
+      return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn atlas-card-only" type="button" data-atlas-persona-open="'+esc(ch.id)+'">'+(img?'<img loading="lazy" decoding="async" data-original-src="'+esc(img)+'" src="'+esc((window.ATLAS_CHARACTER_THUMBNAILS||{})[img]||img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
     }
     return '<article class="atlas-character-card" data-community-character="'+esc(ch.id)+'"><button class="atlas-character-card-btn" type="button" data-atlas-profile-id="'+esc(ch.id)+'">'+
-      (img?'<img src="'+esc(img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
+      (img?'<img loading="lazy" decoding="async" data-original-src="'+esc(img)+'" src="'+esc((window.ATLAS_CHARACTER_THUMBNAILS||{})[img]||img)+'" alt="">':'<span class="atlas-character-card-placeholder"></span>')+copy+'</button></article>';
   }
 
   async function fetchPlayerBundle(id){
@@ -25061,7 +25064,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-voice-recorder.js?v=20261018"></script>
 <script src="assets/atlas-player-messenger.js?v=20261018-game-bot"></script>
 <link rel="stylesheet" href="assets/atlas-media-viewer.css?v=20261018">
-<script src="assets/atlas-media-viewer.js?v=20261018"></script>
+<script src="assets/atlas-media-viewer.js?v=20261021-20261018"></script>
 <link rel="stylesheet" href="assets/atlas-questionnaires.css?v=20261019-standard-profile">
 <script src="assets/atlas-questionnaires.js?v=20261019-standard-profile"></script>
 </body>
