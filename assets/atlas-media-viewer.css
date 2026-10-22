@@ -10,9 +10,6 @@
 #atlas-app .atlas-player-photo-tile{aspect-ratio:4/3}
 #atlas-app .atlas-profile-card img,#atlas-app .atlas-profile-overview-side .atlas-profile-card img{width:min(100%,320px);height:auto;aspect-ratio:4/3;max-height:none;object-fit:cover}
 .atlas-photo-open{cursor:zoom-in}
-.atlas-photo-zoom{position:absolute!important;right:8px!important;bottom:8px!important;width:30px!important;height:30px!important;min-width:0!important;padding:0!important;border:1px solid #ffffff55!important;border-radius:50%!important;background:#101419bb!important;color:white!important;z-index:2;display:grid;place-items:center;cursor:zoom-in;opacity:.6;font:18px/1 Arial!important}
-.atlas-photo-zoom:hover,.atlas-photo-zoom:focus-visible{opacity:1}
-#atlas-app :is(.pm-avatar,.social-avatar,.atlas-player-post-avatar,.atlas-player-comment-avatar) .atlas-photo-zoom{width:16px!important;height:16px!important;right:0!important;bottom:0!important;font-size:11px!important}
 .atlas-media-viewer{width:min(1100px,96vw);max-width:96vw;max-height:94dvh;padding:16px;border:1px solid #42464e;border-radius:18px;background:#101419;color:#eee;box-sizing:border-box;overflow:auto}
 .atlas-media-viewer::backdrop{background:#030508e8}
 .atlas-media-viewer header{display:flex;justify-content:space-between;align-items:center;gap:20px}
