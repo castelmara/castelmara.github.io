@@ -18,9 +18,9 @@
         "subtitle": "преподаватель клинической психологии / факультет спортивной психологии",
         "category": "castelmara",
         "role": "взрослый персонаж",
-        "cardImage": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
-        "avatar": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
-        "banner": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
+        "cardImage": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
+        "avatar": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
+        "banner": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
         "tags": [
             "castelmara",
             "personal",
@@ -28,14 +28,14 @@
             "profesorado"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
+            "image": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
             "tag": "взрослый персонаж",
             "statusLabel": "не активен",
             "short": "преподаватель клинической психологии"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
-            "avatar": "https://static.tildacdn.com/tild6363-3566-4366-b338-613533383939/Michelle_Randolph.jpg",
+            "heroImage": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
+            "avatar": "assets/media-originals/94b1f8cc63fb9a78ef15f64b.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "амелия кастро",
@@ -139,9 +139,9 @@
         "subtitle": "преподаватель испанского языка / языковая адаптация",
         "category": "castelmara",
         "role": "взрослый персонаж",
-        "cardImage": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
-        "avatar": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
-        "banner": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
+        "cardImage": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
+        "avatar": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
+        "banner": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
         "tags": [
             "castelmara",
             "personal",
@@ -149,14 +149,14 @@
             "profesorado"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
+            "image": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
             "tag": "взрослый персонаж",
             "statusLabel": "не активен",
             "short": "преподаватель испанского языка"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
-            "avatar": "https://static.tildacdn.com/tild6164-6662-4837-b334-323163653264/valentina_goglino.jpg",
+            "heroImage": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
+            "avatar": "assets/media-originals/34aab025106fb73a7be6ca74.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "софия альварес",
@@ -261,9 +261,9 @@
     "subtitle": "преподаватель анатомии человека / спортивная медицина",
     "category": "castelmara",
     "role": "взрослый персонаж",
-    "cardImage": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
-    "avatar": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
-    "banner": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
+    "cardImage": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
+    "avatar": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
+    "banner": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
     "tags": [
         "castelmara",
         "personal",
@@ -271,14 +271,14 @@
         "profesorado"
     ],
     "card": {
-        "image": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
+        "image": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
         "tag": "взрослый персонаж",
         "statusLabel": "не активен",
         "short": "преподаватель анатомии человека"
     },
     "profile": {
-        "heroImage": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
-        "avatar": "https://static.tildacdn.com/tild3233-6239-4031-b562-393063613662/jacob_elordi.jpg",
+        "heroImage": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
+        "avatar": "assets/media-originals/9c15133961f85fe75e70d9b9.jpg",
         "overview": {
             "mainInfo": {
                 "fullName": "рафаэль сантос",
@@ -404,7 +404,7 @@
           category: "castelmara",
           name: "Marcus Perez",
           player: "kseniya darkwood",
-          image: "https://static.tildacdn.com/tild3964-3638-4166-b930-363562343734/marcus_perez.png"
+          image: "assets/media-originals/8e766534b6d22833e795d4bd.png"
         },
 
     

@@ -8,7 +8,7 @@
     "face": "lucas bergvall",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
+    "image": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
     "nameRu": "оливер браун"
   },
   {
@@ -19,7 +19,7 @@
     "face": "camila mendes",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6261-6339-4234-a231-303564363433/alessandra_manrique.jpg",
+    "image": "assets/media-originals/ccb05b9bef7d7b394b0b5208.jpg",
     "nameRu": "алессандра манрике",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра тенниса"
@@ -31,7 +31,7 @@
     "face": "sara waisglass",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+    "image": "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
     "nameRu": "долли айгнер"
   },
   {
@@ -41,7 +41,7 @@
     "face": "lorenzo zurzolo",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+    "image": "assets/media-originals/e11f75c58e76fa457789c518.jpg",
     "nameRu": "мануэль моретти"
   },
   {
@@ -51,7 +51,7 @@
     "face": "connor bedard",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3530-6230-4063-b663-346338366263/avatrka.png",
+    "image": "assets/media-originals/7d4db5c4c4e5489765bf4326.png",
     "nameRu": "хадсон хаммонд"
   },
   {
@@ -62,7 +62,7 @@
     "face": "lizzy greene",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3937-3431-4665-a436-323033346561/morena_salazar.jpg",
+    "image": "assets/media-originals/f5a22f232013a2fd543e5509.jpg",
     "nameRu": "морена салазар",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра спортивной журналистики"
@@ -74,7 +74,7 @@
     "face": "barbie ferreira",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
+    "image": "assets/media-originals/5b956e131c977940c82f73c4.jpg",
     "nameRu": "мелоди стокер"
   },
   {
@@ -85,7 +85,7 @@
     "face": "inde navarrette",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6463-6232-4933-a231-306661626332/michaela_portado.jpg",
+    "image": "assets/media-originals/0d885a603c7e08080e525adf.jpg",
     "nameRu": "микаэла портадо",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра гимнастики и акробатики"
@@ -98,7 +98,7 @@
     "face": "belmont cameli",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6632-3665-4839-a333-643562343864/noroot.png",
+    "image": "assets/media-originals/5218b1893255dc6e0b9e8e23.png",
     "nameRu": "себастьян уорд",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра хоккея"
@@ -110,7 +110,7 @@
     "face": "nicole wallace",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
+    "image": "assets/media-originals/dd81272b337bf44450580112.png",
     "nameRu": "рамона суарес"
   },
   {
@@ -121,7 +121,7 @@
     "face": "joshua weyerhaeuser",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6332-6231-4261-a234-363337653266/noroot.png",
+    "image": "assets/media-originals/3d4fc78c015240869e13cf08.png",
     "nameRu": "энтони руквуд",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра волейбола"
@@ -134,7 +134,7 @@
     "face": "laetitiafrt",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3437-3236-4033-b832-643665323766/martina_chvez__romer.jpg",
+    "image": "assets/media-originals/1bb61df8ea350e137e850ce7.jpg",
     "nameRu": "мартина чавес ромеро",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра гимнастики и акробатики"
@@ -147,7 +147,7 @@
     "face": "milo manheim",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3931-3462-4339-a663-653062393530/nico_guerriero.jpg",
+    "image": "assets/media-originals/32df89ddef59dfc78c6e57ac.jpg",
     "nameRu": "нико геррьеро",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра хоккея"
@@ -160,7 +160,7 @@
     "face": "ferran torres",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6530-3230-4236-b466-613662353462/rodrigo_ferro_morale.jpg",
+    "image": "assets/media-originals/9f45c81225f91e650c91d28b.jpg",
     "nameRu": "родриго моралес",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -173,7 +173,7 @@
     "face": "corrado martini",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6365-3065-4464-b730-623465316138/miles_turner.jpg",
+    "image": "assets/media-originals/9f4f5ed6c91b82ed6afca514.jpg",
     "nameRu": "майлз тёрнер",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -186,7 +186,7 @@
     "face": "paulo dybala",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6363-6561-4835-b333-313964623035/federico_pablo_herre.jpg",
+    "image": "assets/media-originals/e35762974795ee084b59dbbd.jpg",
     "nameRu": "федерико эррера",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -199,7 +199,7 @@
     "face": "dove cameron",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3731-6535-4461-b565-653463656432/elarian_casterly.jpg",
+    "image": "assets/media-originals/e7011deda09341f70dbf8e33.jpg",
     "nameRu": "элариан кастерли",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра цифровых медиа и SMM"
@@ -212,7 +212,7 @@
     "face": "kaden hammond",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6666-6334-4139-b131-396266633134/elias_azarolla.jpg",
+    "image": "assets/media-originals/a2a2d92f1e397d82c328e699.jpg",
     "nameRu": "элиас азаролла",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -225,7 +225,7 @@
     "face": "tyler lawrence gray",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3762-3564-4133-a665-613536636333/charles_berg.jpg",
+    "image": "assets/media-originals/52c5d1e1936dfd22e1c7af34.jpg",
     "nameRu": "чарльз берг",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра спортивной документалистики"
@@ -238,7 +238,7 @@
     "face": "pau cubarsi",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6136-3462-4734-b066-306261653433/pedro_ismael_martine.jpg",
+    "image": "assets/media-originals/0e76c95fc41f19852e944f46.jpg",
     "nameRu": "педро мартинес",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -251,7 +251,7 @@
     "face": "lily rose depp",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3733-6332-4362-b662-633235366536/noroot.png",
+    "image": "assets/media-originals/230b7a93d7045fa9c479f49d.png",
     "nameRu": "зоэ бодлер",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра цифровых медиа и SMM"
@@ -264,7 +264,7 @@
     "face": "santiago giménez",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3966-3661-4361-a232-613432313130/noroot.png",
+    "image": "assets/media-originals/a914f976846d198b6779ddde.png",
     "nameRu": "роберто кастильо",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -277,7 +277,7 @@
     "face": "daniel vegas",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6361-6536-4531-b038-613531323638/jos_manuel_ortiz_bla.jpg",
+    "image": "assets/media-originals/f9cc455c7872a8943dea6b73.jpg",
     "nameRu": "хосе бланко",
     "faculty": "факультет спортивной аналитики и менеджмента",
     "department": "кафедра спортивного права и агентской деятельности"
@@ -290,7 +290,7 @@
     "face": "intak hwang [p1harmony]",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6363-3861-4533-a437-313538613066/eli_stone.jpg",
+    "image": "assets/media-originals/9f25dacccfd9d3bb942b1574.jpg",
     "nameRu": "эли стоун",
     "faculty": "факультет игровых видов спорта",
     "department": "кафедра хоккея"
@@ -303,7 +303,7 @@
     "face": "seonghyeon eom [cortis]",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3833-3963-4464-b435-303133643165/flores_del_campo.jpg",
+    "image": "assets/media-originals/342178f7fbc29f1440f0a139.jpg",
     "nameRu": "флорес дель кампо",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра лёгкой атлетики"
@@ -316,7 +316,7 @@
     "face": "minjeong kim [aespa]",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3861-3739-4337-a534-353464626539/ava_leone.jpg",
+    "image": "assets/media-originals/35559bd35eb61815ee2a4fb1.jpg",
     "nameRu": "ава леоне",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра гимнастики и акробатики"
@@ -329,7 +329,7 @@
     "face": "odessa a'zion",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6463-6564-4535-b266-663936626539/noroot.png",
+    "image": "assets/media-originals/666cd74795c4fd3556628ba3.png",
     "nameRu": "джунипер вискарра",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра водных видов спорта"
@@ -342,7 +342,7 @@
     "face": "héctor fort",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3732-3564-4130-b463-386130663262/esteban_iglesias_fur.jpg",
+    "image": "assets/media-originals/805fc1b6e6c43c19f2635e89.jpg",
     "nameRu": "эстебан фуртадо",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -354,7 +354,7 @@
     "face": "olivia sundberg",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
+    "image": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
     "nameRu": "алекса сориано"
   },
   {
@@ -379,7 +379,7 @@
     "face": "nailea devora",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3939-3532-4134-b336-343965653964/milagros_paz_bonache.jpg",
+    "image": "assets/media-originals/59e2d26d210e922e7d04eff1.jpg",
     "nameRu": "милагрос боначера",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра гимнастики и акробатики"
@@ -391,7 +391,7 @@
     "face": "benjamin voisin",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
+    "image": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
     "nameRu": "сердрик джой"
   },
   {
@@ -402,7 +402,7 @@
     "face": "khobe clarke",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3638-3637-4232-b732-663139666630/joaquin_morales.jpg",
+    "image": "assets/media-originals/6eea7872b6485fed3ef3faab.jpg",
     "nameRu": "хоакин моралес",
     "faculty": "факультет спортивной аналитики, управления, права и агентской деятельности",
     "department": "кафедра спортивной аналитики и статистики"
@@ -415,7 +415,7 @@
     "face": "daiane meneghel",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3036-3162-4733-b363-383664626565/catalina_nez_duarte.jpg",
+    "image": "assets/media-originals/d0d35e55f78a89dbfb440af3.jpg",
     "nameRu": "каталина дуарте",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра тенниса"
@@ -428,7 +428,7 @@
     "face": "herman tømmeraas",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6235-3061-4830-b362-303937336231/ren_gott.jpg",
+    "image": "assets/media-originals/e65f7eec6f4114a1ded7d9a5.jpg",
     "nameRu": "рене готт",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра хоккея"
@@ -441,7 +441,7 @@
     "face": "tate mcrae",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6565-3031-4964-b030-623537613235/tatiana_tati_amber_h.jpg",
+    "image": "assets/media-originals/18f2d103e80e056bebcb4e4b.jpg",
     "nameRu": "татьяна эмбер эррера",
     "faculty": "факультет спортивной аналитики и менеджмента",
     "department": "кафедра спортивного права и агентской деятельности"
@@ -454,7 +454,7 @@
     "face": "archie gray",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6661-3335-4135-b536-636261653539/noroot.png",
+    "image": "assets/media-originals/1a48699850b958595c2e10f2.png",
     "nameRu": "питер вермеер",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -467,7 +467,7 @@
     "face": "daniela cláudio",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6232-3834-4432-b230-643439633837/image.png",
+    "image": "assets/media-originals/863b746d2244e04784e0dc45.png",
     "nameRu": "бруна моралес",
     "faculty": "факультет спортивной аналитики и менеджмента",
     "department": "кафедра спортивного менеджмента"
@@ -480,7 +480,7 @@
     "face": "maxence danet-fauvel",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3163-3361-4331-a238-343738613436/camilo_avanzini.jpg",
+    "image": "assets/media-originals/73fabeff5d67bedce5b9eed4.jpg",
     "nameRu": "камило аванцини",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра волейбола"
@@ -493,7 +493,7 @@
     "face": "tatiana kaer",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6464-6164-4135-b335-343162306366/amalia_reinhart.jpg",
+    "image": "assets/media-originals/b0c88d9410ef6ff2b24a3308.jpg",
     "nameRu": "амалия рейнхарт",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра зимних видов спорта"
@@ -506,7 +506,7 @@
     "face": "fermín lópez",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3135-3236-4164-a630-353432333438/javier_gonzalez.jpg",
+    "image": "assets/media-originals/d351457498bfd6623d1d56e2.jpg",
     "nameRu": "хавьер гонсалес",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -519,7 +519,7 @@
     "face": "martin jonathan edwards [cortis]",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3839-3661-4433-b363-623866633864/axel_renato_beltrn.jpg",
+    "image": "assets/media-originals/3d6e8adc169ad0608edeb323.jpg",
     "nameRu": "аксель бельтран",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра баскетбола"
@@ -532,7 +532,7 @@
     "face": "sunghoon park [enhypen]",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild6163-3062-4435-b139-656239613966/satoru_saitou.jpg",
+    "image": "assets/media-originals/e607aca7170d64bdf68d9300.jpg",
     "nameRu": "сатору сайто",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра зимних индивидуальных видов спорта"
@@ -545,7 +545,7 @@
     "face": "juan perales",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6261-6331-4463-b736-323364633834/gabriel_marquez.jpg",
+    "image": "assets/media-originals/1b7d34b1a12a32ce453933ef.jpg",
     "nameRu": "габриэль маркес",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра водных видов спорта"
@@ -558,7 +558,7 @@
     "face": "pablo martín páez gavira (gavi)",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3631-3831-4435-b139-613530363366/marcel_paulo_santiag.jpg",
+    "image": "assets/media-originals/99e4db650d649c6d48c0ec3e.jpg",
     "nameRu": "марсель гавира",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -571,7 +571,7 @@
     "face": "ceren ayruk",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild3265-3430-4630-b535-653131313134/dahlia_vale.jpg",
+    "image": "assets/media-originals/907667c34fc3ca88b40de5fd.jpg",
     "nameRu": "далия вейл",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра спортивной журналистики"
@@ -584,7 +584,7 @@
     "face": "cagan efe ak",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6530-3562-4135-b130-343339613432/aiden_nolan.jpg",
+    "image": "assets/media-originals/6e4a06e83a606eac77e28503.jpg",
     "nameRu": "эйден нолан",
     "faculty": "факультет игровых видов спорта",
     "department": "кафедра баскетбола"
@@ -597,7 +597,7 @@
     "face": "soobin choi [txt]",
     "category": "estudiantes",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3335-3766-4431-b130-663933643462/ilias_markou.jpg",
+    "image": "assets/media-originals/844cf0afbf42e3fb511d611d.jpg",
     "nameRu": "илиас марку",
     "faculty": "факультет спортивной журналистики и медиа",
     "department": "кафедра цифровых медиа и SMM"
@@ -610,7 +610,7 @@
     "face": "pedro gonzález lópez (pedri)",
     "category": "estudiantes",
     "existing": "cards",
-    "image": "https://static.tildacdn.com/tild6634-3961-4338-b333-386233663662/image.png",
+    "image": "assets/media-originals/d95fe55d6463a3af88e1f38b.png",
     "nameRu": "дани рохас",
     "faculty": "факультет тактики и игровых видов спорта",
     "department": "кафедра футбола"
@@ -1210,7 +1210,7 @@
     "face": "baptiste masseline",
     "category": "entrenadores",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3961-3138-4231-a663-626535643761/08a4a4b66a6f949d7da1.jpg",
+    "image": "assets/media-originals/ac67ef6d3e6c301c4ae15469.jpg",
     "nameRu": "хольгер леон абель"
   },
   {
@@ -1220,7 +1220,7 @@
     "face": "jensen ackles",
     "category": "entrenadores",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3964-3638-4166-b930-363562343734/marcus_perez.png",
+    "image": "assets/media-originals/8e766534b6d22833e795d4bd.png",
     "nameRu": "маркус перес",
     "faculty": "факультет индивидуальных видов спорта",
     "department": "кафедра лёгкой атлетики"
@@ -1256,7 +1256,7 @@
     "face": "nicholas galitzine",
     "category": "fuera-castelmara",
     "existing": "full",
-    "image": "https://static.tildacdn.com/tild3234-3430-4562-b537-626136373064/klox4O9_eWD07yQbfa_X.jpg",
+    "image": "assets/media-originals/a36c893eb4a1a2f40502523a.jpg",
     "nameRu": "леон скотт рэдфилд"
   },
   {

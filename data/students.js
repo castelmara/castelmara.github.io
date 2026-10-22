@@ -38,14 +38,14 @@
       category: "estudiantes",
       role: "студент-спортсмен",
 
-      cardImage: "https://static.tildacdn.com/tild3530-6230-4063-b663-346338366263/avatrka.png",
-      avatar: "https://static.tildacdn.com/tild3130-6139-4231-a335-613631613465/noroot.png",
-      banner: "https://static.tildacdn.com/tild6238-3937-4432-b136-383061653537/khadson_banner.png",
+      cardImage: "assets/media-originals/7d4db5c4c4e5489765bf4326.png",
+      avatar: "assets/media-originals/6f5bb211ba51fbb28100e5e8.png",
+      banner: "assets/media-originals/a640bfa268a3053112dc9839.png",
 
       tags: ["estudiantes", "hockey", "castelmara hawks"],
 
       card: {
-        image: "https://static.tildacdn.com/tild3530-6230-4063-b663-346338366263/avatrka.png",
+        image: "assets/media-originals/7d4db5c4c4e5489765bf4326.png",
         tag: "студент-спортсмен",
         statusLabel: "активный",
         short: "/ passion ambitions"
@@ -53,8 +53,8 @@
 
       profile: {
         sourceQuestionnaire: "хадсон хаммонд.docx",
-        heroImage: "https://static.tildacdn.com/tild3533-3163-4036-a564-333136393465/banner_na_fon.png",
-        avatar: "https://static.tildacdn.com/tild3130-6139-4231-a335-613631613465/noroot.png",
+        heroImage: "assets/media-originals/7dc2591c2ef4b526567cb061.png",
+        avatar: "assets/media-originals/6f5bb211ba51fbb28100e5e8.png",
 
         overview: {
           mainInfo: {
@@ -226,14 +226,14 @@
       category: "estudiantes",
       role: "студентка",
 
-      cardImage: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
-      avatar: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
-      banner: "https://static.tildacdn.com/tild3663-6231-4430-a538-383834633832/0c12dbd94e003c17a148.jpg",
+      cardImage: "assets/media-originals/5b956e131c977940c82f73c4.jpg",
+      avatar: "assets/media-originals/5b956e131c977940c82f73c4.jpg",
+      banner: "assets/media-originals/8e2127f4172c6a5178f01603.jpg",
 
       tags: ["estudiantes", "sports medicine", "rehabilitation"],
 
       card: {
-        image: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
+        image: "assets/media-originals/5b956e131c977940c82f73c4.jpg",
         tag: "студентка",
         statusLabel: "активный",
         short: "/ appealing antagonist"
@@ -241,8 +241,8 @@
 
       profile: {
         sourceQuestionnaire: "мелоди стокер.docx",
-        heroImage: "https://static.tildacdn.com/tild3663-6231-4430-a538-383834633832/0c12dbd94e003c17a148.jpg",
-        avatar: "https://static.tildacdn.com/tild3639-6436-4833-b637-616230656364/cfd89544246e934f0e59.jpg",
+        heroImage: "assets/media-originals/8e2127f4172c6a5178f01603.jpg",
+        avatar: "assets/media-originals/5b956e131c977940c82f73c4.jpg",
 
         overview: {
           mainInfo: {
@@ -411,14 +411,14 @@
       category: "estudiantes",
       role: "студент-спортсмен",
 
-      cardImage: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
-      avatar: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
-      banner: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+      cardImage: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
+      avatar: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
+      banner: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
 
       tags: ["estudiantes", "football", "castelmara foxes"],
 
       card: {
-        image: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+        image: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
         tag: "студент-спортсмен",
         statusLabel: "активный",
         short: "/ софья штангей"
@@ -426,8 +426,8 @@
 
       profile: {
         sourceQuestionnaire: "мануэль моретти.docx",
-        heroImage: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
-        avatar: "https://static.tildacdn.com/tild3036-6266-4164-b332-313662666363/9ab5137508babadee5c9.jpg",
+        heroImage: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
+        avatar: "assets/media-originals/e11f75c58e76fa457789c518.jpg",
 
         overview: {
           mainInfo: {
@@ -553,22 +553,22 @@
       category: "estudiantes",
       role: "студентка-спортсменка",
 
-      cardImage: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
-      avatar: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
-      banner: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+      cardImage: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
+      avatar: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
+      banner: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
 
       tags: ["estudiantes", "swimming"],
 
       card: {
-        image: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+        image: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
         tag: "студентка-спортсменка",
         statusLabel: "активный",
         short: "/ PASTE_PLAYER_NAME"
       },
 
       profile: {
-        heroImage: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
-        avatar: "https://static.tildacdn.com/tild3566-6431-4633-b662-623533376137/7bc771a34298b3104a7f.jpg",
+        heroImage: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
+        avatar: "assets/media-originals/24a126c93505bc077cfd4dd7.jpg",
 
         overview: {
           mainInfo: {
@@ -808,9 +808,9 @@ level: "профессионал",
         "label": "письмо оливера"
     },
     "role": "студент-спортсмен",
-    "cardImage": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
-    "avatar": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
-    "banner": "https://static.tildacdn.com/tild3361-3563-4235-b035-363339626362/oliver_banner.png",
+    "cardImage": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
+    "avatar": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
+    "banner": "assets/media-originals/22b1f5acb8d6157f51854d99.png",
     "tags": [
         "estudiantes",
         "canon",
@@ -818,15 +818,15 @@ level: "профессионал",
         "«castelmara foxes»"
     ],
     "card": {
-        "image": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
+        "image": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
         "tag": "студент-спортсмен",
         "statusLabel": "активен",
         "short": "«»"
     },
     "profile": {
             "sourceQuestionnaire": "оливер браун.docx",
-        "heroImage": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
-        "avatar": "https://static.tildacdn.com/tild3132-3834-4662-a230-633634333633/HcmE85S9-6wmynUAG0Vu.jpg",
+        "heroImage": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
+        "avatar": "assets/media-originals/f3d62e5512d67aeb5e02268a.jpg",
         "overview": {
             "mainInfo": {
               "fullName": "Оливер Браун",
@@ -948,9 +948,9 @@ level: "профессионал",
             "label": "письмо рамоны"
         },
         "role": "студент",
-        "cardImage": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
-        "avatar": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
-        "banner": "https://static.tildacdn.com/tild3331-6330-4232-b834-376561343433/purple-yellow-hand-d.jpeg",
+        "cardImage": "assets/media-originals/dd81272b337bf44450580112.png",
+        "avatar": "assets/media-originals/dd81272b337bf44450580112.png",
+        "banner": "assets/media-originals/7dd5d69d1744ada40b02e3f8.jpeg",
         "tags": [
             "estudiantes",
             "canon",
@@ -958,15 +958,15 @@ level: "профессионал",
             "капитан группы поддержки «castelmara foxes»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
+            "image": "assets/media-originals/dd81272b337bf44450580112.png",
             "tag": "студент",
             "statusLabel": "активен",
             "short": "капитан группы поддержки «castelmara foxes»"
         },
         "profile": {
             "sourceQuestionnaire": "рамона мартина суарес.docx",
-            "heroImage": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
-            "avatar": "https://static.tildacdn.com/tild3461-3332-4632-a264-363636633334/noroot.png",
+            "heroImage": "assets/media-originals/dd81272b337bf44450580112.png",
+            "avatar": "assets/media-originals/dd81272b337bf44450580112.png",
             "overview": {
                 "mainInfo": {
                   "fullName": "Рамона Мартина Суарес",
@@ -1077,9 +1077,9 @@ level: "профессионал",
             "label": "письмо эвелина"
         },
         "role": "студент-спортсмен",
-        "cardImage": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
-        "avatar": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
-        "banner": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
+        "cardImage": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+        "avatar": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+        "banner": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
         "tags": [
             "estudiantes",
             "canon",
@@ -1087,14 +1087,14 @@ level: "профессионал",
             "группа поддержки «castelmara foxes»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
+            "image": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
             "tag": "студент-спортсмен",
             "statusLabel": "не активен",
             "short": "группа поддержки «castelmara foxes»"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
-            "avatar": "https://static.tildacdn.com/tild3730-3662-4064-b831-313565353566/a030feacc84cf00ed50b.jpg",
+            "heroImage": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+            "avatar": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "Эвелина де ла Росса",
@@ -1221,9 +1221,9 @@ level: "профессионал",
             "label": "письмо алексы"
         },
         "role": "студент-спортсмен",
-        "cardImage": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
-        "avatar": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
-        "banner": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
+        "cardImage": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
+        "avatar": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
+        "banner": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
         "tags": [
             "estudiantes",
             "canon",
@@ -1231,14 +1231,14 @@ level: "профессионал",
             "группа поддержки «castelmara foxes»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
+            "image": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
             "tag": "студент-спортсмен",
             "statusLabel": "не активен",
             "short": "группа поддержки «castelmara foxes»"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
-            "avatar": "https://static.tildacdn.com/tild3139-3365-4232-b361-376235653732/42b7f3473982200340aa.jpg",
+            "heroImage": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
+            "avatar": "assets/media-originals/d4104fc07d0df7fad16d4252.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "Алекса Сориано",
@@ -1358,9 +1358,9 @@ level: "профессионал",
             "label": "письмо блейза"
         },
         "role": "студент-спортсмен",
-        "cardImage": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
-        "avatar": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
-        "banner": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
+        "cardImage": "assets/media-originals/6f438ca1e5c1e63352088711.png",
+        "avatar": "assets/media-originals/6f438ca1e5c1e63352088711.png",
+        "banner": "assets/media-originals/6f438ca1e5c1e63352088711.png",
         "tags": [
             "estudiantes",
             "canon",
@@ -1368,14 +1368,14 @@ level: "профессионал",
             "«castelmara guards»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
+            "image": "assets/media-originals/6f438ca1e5c1e63352088711.png",
             "tag": "студент-спортсмен",
             "statusLabel": "не активен",
             "short": "«castelmara guards»"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
-            "avatar": "https://static.tildacdn.com/tild6231-3763-4237-a539-353939393634/__2026-06-04_035703.png",
+            "heroImage": "assets/media-originals/6f438ca1e5c1e63352088711.png",
+            "avatar": "assets/media-originals/6f438ca1e5c1e63352088711.png",
             "overview": {
                 "mainInfo": {
                     "fullName": "Блейз Лансер",
@@ -1494,9 +1494,9 @@ level: "профессионал",
             "label": "письмо пабло"
         },
         "role": "студент-спортсмен",
-        "cardImage": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
-        "avatar": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
-        "banner": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
+        "cardImage": "assets/media-originals/61a131396606661bbc31d17d.jpg",
+        "avatar": "assets/media-originals/61a131396606661bbc31d17d.jpg",
+        "banner": "assets/media-originals/61a131396606661bbc31d17d.jpg",
         "tags": [
             "estudiantes",
             "canon",
@@ -1504,14 +1504,14 @@ level: "профессионал",
             "«castelmara guards»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
+            "image": "assets/media-originals/61a131396606661bbc31d17d.jpg",
             "tag": "студент-спортсмен",
             "statusLabel": "не активен",
             "short": "«castelmara guards»"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
-            "avatar": "https://static.tildacdn.com/tild3266-6436-4434-a130-303263633734/038b38d702cef949ba23.jpg",
+            "heroImage": "assets/media-originals/61a131396606661bbc31d17d.jpg",
+            "avatar": "assets/media-originals/61a131396606661bbc31d17d.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "Пабло де Лонга",
@@ -1624,9 +1624,9 @@ level: "профессионал",
             "label": "письмо давида"
         },
         "role": "студент-спортсмен",
-        "cardImage": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
-        "avatar": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
-        "banner": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
+        "cardImage": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
+        "avatar": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
+        "banner": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
         "tags": [
             "estudiantes",
             "canon",
@@ -1634,14 +1634,14 @@ level: "профессионал",
             "«castelmara foxes»"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
+            "image": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
             "tag": "студент-спортсмен",
             "statusLabel": "не активен",
             "short": "«castelmara foxes»"
         },
         "profile": {
-            "heroImage": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
-            "avatar": "https://static.tildacdn.com/tild6333-3961-4235-b232-316432353563/e366f89096ad3edcd2b3.jpg",
+            "heroImage": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
+            "avatar": "assets/media-originals/912bd032ba2373b47dad5c3d.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "Давид Капурро",
@@ -1956,9 +1956,9 @@ level: "профессионал",
         "subtitle": "студент 4 курса / спортивная аналитика",
         "category": "estudiantes",
         "role": "студент",
-        "cardImage": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
-        "avatar": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
-        "banner": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
+        "cardImage": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
+        "avatar": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
+        "banner": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
         "tags": [
             "estudiantes",
             "analytics",
@@ -1967,15 +1967,15 @@ level: "профессионал",
             "volleyball"
         ],
         "card": {
-            "image": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
+            "image": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
             "tag": "студент",
             "statusLabel": "не активен",
             "short": "канон"
         },
         "profile": {
             "sourceQuestionnaire": "седрик джой.docx",
-            "heroImage": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
-            "avatar": "https://static.tildacdn.com/tild3966-3539-4161-a631-303132353635/Benjamin_Voisin.jpg",
+            "heroImage": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
+            "avatar": "assets/media-originals/b1b4c303fc36ca622052fa45.jpg",
             "overview": {
                 "mainInfo": {
                   "fullName": "седрик джой",
@@ -2099,7 +2099,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Bruna Valentina Morales",
           player: "appealing antagonist",
-          image: "https://static.tildacdn.com/tild6232-3834-4432-b230-643439633837/image.png"
+          image: "assets/media-originals/863b746d2244e04784e0dc45.png"
         },
 
     {
@@ -2107,7 +2107,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Alessandra Manrique",
           player: "sofia shtangey",
-          image: "https://static.tildacdn.com/tild6261-6339-4234-a231-303564363433/alessandra_manrique.jpg"
+          image: "assets/media-originals/ccb05b9bef7d7b394b0b5208.jpg"
         },
 
     {
@@ -2115,7 +2115,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Morena Salazar",
           player: "daddy issues",
-          image: "https://static.tildacdn.com/tild3937-3431-4665-a436-323033346561/morena_salazar.jpg"
+          image: "assets/media-originals/f5a22f232013a2fd543e5509.jpg"
         },
 
     {
@@ -2123,7 +2123,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Michaela Portado",
           player: "daddy issues",
-          image: "https://static.tildacdn.com/tild6463-6232-4933-a231-306661626332/michaela_portado.jpg"
+          image: "assets/media-originals/0d885a603c7e08080e525adf.jpg"
         },
 
     
@@ -2133,7 +2133,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Sebastian Ward",
           player: "nata niel",
-          image: "https://static.tildacdn.com/tild6632-3665-4839-a333-643562343864/noroot.png"
+          image: "assets/media-originals/5218b1893255dc6e0b9e8e23.png"
         },
 
     {
@@ -2141,7 +2141,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Anthony Rookwood",
           player: "passion ambitions",
-          image: "https://static.tildacdn.com/tild6332-6231-4261-a234-363337653266/noroot.png"
+          image: "assets/media-originals/3d4fc78c015240869e13cf08.png"
         },
 
     
@@ -2151,7 +2151,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Martina Chávez Romero",
           player: "skye caffrey",
-          image: "https://static.tildacdn.com/tild3437-3236-4033-b832-643665323766/martina_chvez__romer.jpg"
+          image: "assets/media-originals/1bb61df8ea350e137e850ce7.jpg"
         },
 
     {
@@ -2159,7 +2159,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Nico Guerriero",
           player: "れん 村山",
-          image: "https://static.tildacdn.com/tild3931-3462-4339-a663-653062393530/nico_guerriero.jpg"
+          image: "assets/media-originals/32df89ddef59dfc78c6e57ac.jpg"
         },
 
     {
@@ -2167,7 +2167,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Rodrigo Morales",
           player: "passion ambitions",
-          image: "https://static.tildacdn.com/tild6530-3230-4236-b466-613662353462/rodrigo_ferro_morale.jpg"
+          image: "assets/media-originals/9f45c81225f91e650c91d28b.jpg"
         },
 
     {
@@ -2175,7 +2175,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Miles Turner",
           player: "appealing antagonist",
-          image: "https://static.tildacdn.com/tild6365-3065-4464-b730-623465316138/miles_turner.jpg"
+          image: "assets/media-originals/9f4f5ed6c91b82ed6afca514.jpg"
         },
 
     {
@@ -2183,7 +2183,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Federico Herrera",
           player: "passion ambitions",
-          image: "https://static.tildacdn.com/tild6363-6561-4835-b333-313964623035/federico_pablo_herre.jpg"
+          image: "assets/media-originals/e35762974795ee084b59dbbd.jpg"
         },
 
     {
@@ -2191,7 +2191,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Elarian Casterly",
           player: "kseniya darkwood",
-          image: "https://static.tildacdn.com/tild3731-6535-4461-b565-653463656432/elarian_casterly.jpg"
+          image: "assets/media-originals/e7011deda09341f70dbf8e33.jpg"
         },
 
     {
@@ -2207,7 +2207,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Elias Azarolla",
           player: "noah arden",
-          image: "https://static.tildacdn.com/tild6666-6334-4139-b131-396266633134/elias_azarolla.jpg"
+          image: "assets/media-originals/a2a2d92f1e397d82c328e699.jpg"
         },
 
     {
@@ -2215,7 +2215,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Charles Berg",
           player: "appealing antagonist",
-          image: "https://static.tildacdn.com/tild3762-3564-4133-a665-613536636333/charles_berg.jpg"
+          image: "assets/media-originals/52c5d1e1936dfd22e1c7af34.jpg"
         },
 
     {
@@ -2223,7 +2223,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Pedro Martinez",
           player: "passion ambitions",
-          image: "https://static.tildacdn.com/tild6136-3462-4734-b066-306261653433/pedro_ismael_martine.jpg"
+          image: "assets/media-originals/0e76c95fc41f19852e944f46.jpg"
         },
 
     {
@@ -2231,7 +2231,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Zoé Baudelaire",
           player: "れん 村山",
-          image: "https://static.tildacdn.com/tild3733-6332-4362-b662-633235366536/noroot.png"
+          image: "assets/media-originals/230b7a93d7045fa9c479f49d.png"
         },
 
     
@@ -2241,7 +2241,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Roberto Castillo",
           player: "passion ambitions",
-          image: "https://static.tildacdn.com/tild3966-3661-4361-a232-613432313130/noroot.png"
+          image: "assets/media-originals/a914f976846d198b6779ddde.png"
         },
 
     {
@@ -2249,7 +2249,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "José Blanco",
           player: "unbridled passion",
-          image: "https://static.tildacdn.com/tild6361-6536-4531-b038-613531323638/jos_manuel_ortiz_bla.jpg"
+          image: "assets/media-originals/f9cc455c7872a8943dea6b73.jpg"
         },
 
     
@@ -2261,7 +2261,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Eli Stone",
           player: "'giselle 'salgàri",
-          image: "https://static.tildacdn.com/tild6363-3861-4533-a437-313538613066/eli_stone.jpg"
+          image: "assets/media-originals/9f25dacccfd9d3bb942b1574.jpg"
         },
 
     {
@@ -2269,7 +2269,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Flores Del Campo",
           player: "noah's ark",
-          image: "https://static.tildacdn.com/tild3833-3963-4464-b435-303133643165/flores_del_campo.jpg"
+          image: "assets/media-originals/342178f7fbc29f1440f0a139.jpg"
         },
 
     {
@@ -2277,7 +2277,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Ava Leone",
           player: "sonya marmeladova",
-          image: "https://static.tildacdn.com/tild3861-3739-4337-a534-353464626539/ava_leone.jpg"
+          image: "assets/media-originals/35559bd35eb61815ee2a4fb1.jpg"
         },
 
     {
@@ -2285,7 +2285,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Juniper Viscarra",
           player: "daddy issues",
-          image: "https://static.tildacdn.com/tild6463-6564-4535-b266-663936626539/noroot.png"
+          image: "assets/media-originals/666cd74795c4fd3556628ba3.png"
         },
 
     {
@@ -2293,7 +2293,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Esteban Furtado",
           player: "'mille 'tendresse",
-          image: "https://static.tildacdn.com/tild3732-3564-4130-b463-386130663262/esteban_iglesias_fur.jpg"
+          image: "assets/media-originals/805fc1b6e6c43c19f2635e89.jpg"
         },
 
     {
@@ -2301,7 +2301,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Milagros Paz Bonachera",
           player: "sofia shtangey",
-          image: "https://static.tildacdn.com/tild3939-3532-4134-b336-343965653964/milagros_paz_bonache.jpg"
+          image: "assets/media-originals/59e2d26d210e922e7d04eff1.jpg"
         },
 
     {
@@ -2309,7 +2309,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Joaquin Morales",
           player: "sofia shtangey",
-          image: "https://static.tildacdn.com/tild3638-3637-4232-b732-663139666630/joaquin_morales.jpg"
+          image: "assets/media-originals/6eea7872b6485fed3ef3faab.jpg"
         },
 
     
@@ -2319,7 +2319,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Pieter Vermeer",
           player: "sofia shtangey",
-          image: "https://static.tildacdn.com/tild6661-3335-4135-b536-636261653539/noroot.png"
+          image: "assets/media-originals/1a48699850b958595c2e10f2.png"
         },
 
     {
@@ -2327,7 +2327,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Catalina Núñez Duarte",
           player: "skye caffrey",
-          image: "https://static.tildacdn.com/tild3036-3162-4733-b363-383664626565/catalina_nez_duarte.jpg"
+          image: "assets/media-originals/d0d35e55f78a89dbfb440af3.jpg"
         },
 
     {
@@ -2335,7 +2335,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "René Gott",
           player: "れん 村山",
-          image: "https://static.tildacdn.com/tild6235-3061-4830-b362-303937336231/ren_gott.jpg"
+          image: "assets/media-originals/e65f7eec6f4114a1ded7d9a5.jpg"
         },
 
     {
@@ -2343,7 +2343,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Tatiana Herrera",
           player: "'mille 'tendresse",
-          image: "https://static.tildacdn.com/tild6565-3031-4964-b030-623537613235/tatiana_tati_amber_h.jpg"
+          image: "assets/media-originals/18f2d103e80e056bebcb4e4b.jpg"
         },
 
     
@@ -2353,7 +2353,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Camilo Avanzini",
           player: "kseniya darkwood",
-          image: "https://static.tildacdn.com/tild3163-3361-4331-a238-343738613436/camilo_avanzini.jpg"
+          image: "assets/media-originals/73fabeff5d67bedce5b9eed4.jpg"
         },
 
     {
@@ -2361,7 +2361,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Amalia Reinhart",
           player: "anastasia lushina",
-          image: "https://static.tildacdn.com/tild6464-6164-4135-b335-343162306366/amalia_reinhart.jpg"
+          image: "assets/media-originals/b0c88d9410ef6ff2b24a3308.jpg"
         },
 
     {
@@ -2369,7 +2369,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Javier Gonzalez",
           player: "anastasia lushina",
-          image: "https://static.tildacdn.com/tild3135-3236-4164-a630-353432333438/javier_gonzalez.jpg"
+          image: "assets/media-originals/d351457498bfd6623d1d56e2.jpg"
         },
 
     
@@ -2379,7 +2379,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Axel Beltrán",
           player: "つき あかい",
-          image: "https://static.tildacdn.com/tild3839-3661-4433-b363-623866633864/axel_renato_beltrn.jpg"
+          image: "assets/media-originals/3d6e8adc169ad0608edeb323.jpg"
         },
 
     {
@@ -2387,7 +2387,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Satoru Saitou",
           player: "れん 村山",
-          image: "https://static.tildacdn.com/tild6163-3062-4435-b139-656239613966/satoru_saitou.jpg"
+          image: "assets/media-originals/e607aca7170d64bdf68d9300.jpg"
         },
 
     {
@@ -2395,7 +2395,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Gabriel Marquez",
           player: "anastasia lushina",
-          image: "https://static.tildacdn.com/tild6261-6331-4463-b736-323364633834/gabriel_marquez.jpg"
+          image: "assets/media-originals/1b7d34b1a12a32ce453933ef.jpg"
         },
 
     {
@@ -2403,7 +2403,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Marcel Gavira",
           player: "'mille 'tendresse",
-          image: "https://static.tildacdn.com/tild3631-3831-4435-b139-613530363366/marcel_paulo_santiag.jpg"
+          image: "assets/media-originals/99e4db650d649c6d48c0ec3e.jpg"
         },
 
     {
@@ -2411,7 +2411,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Veronica Andrade",
           player: "marcella harringrove",
-          image: "https://static.tildacdn.com/tild6634-3038-4461-a637-333663336363/veronica_andrade.jpg"
+          image: "assets/media-originals/dc9b44d002c84513154676a9.jpg"
         },
 
     {
@@ -2419,7 +2419,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Dahlia Vale",
           player: "'giselle 'salgàri",
-          image: "https://static.tildacdn.com/tild3265-3430-4630-b535-653131313134/dahlia_vale.jpg"
+          image: "assets/media-originals/907667c34fc3ca88b40de5fd.jpg"
         },
 
     {
@@ -2427,7 +2427,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Aiden Nolan",
           player: "sonya marmeladova",
-          image: "https://static.tildacdn.com/tild6530-3562-4135-b130-343339613432/aiden_nolan.jpg"
+          image: "assets/media-originals/6e4a06e83a606eac77e28503.jpg"
         },
 
     {
@@ -2435,7 +2435,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Ilias Markou",
           player: "ワン チャン",
-          image: "https://static.tildacdn.com/tild3335-3766-4431-b130-663933643462/ilias_markou.jpg"
+          image: "assets/media-originals/844cf0afbf42e3fb511d611d.jpg"
         },
 
     {
@@ -2443,7 +2443,7 @@ level: "профессионал",
           category: "estudiantes",
           name: "Dani Rojas",
           player: "nata niel",
-          image: "https://static.tildacdn.com/tild6634-3961-4338-b333-386233663662/image.png"
+          image: "assets/media-originals/d95fe55d6463a3af88e1f38b.png"
         }
   ];
   var existing = new Set(window.ATLAS_CARD_ONLY.map(function(x){ return x && x.id; }));

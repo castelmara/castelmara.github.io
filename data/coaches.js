@@ -22,7 +22,7 @@
     "subtitle": "главный тренер футбольной команды «castelmara griffins»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3730-3166-4434-a461-313862333533/Jon-Bernthal-2018-Es.jpg",
+    "cardImage": "assets/media-originals/5107fd0230000180b308b9e1.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -32,7 +32,7 @@
       "castelmara griffins"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3730-3166-4434-a461-313862333533/Jon-Bernthal-2018-Es.jpg",
+      "image": "assets/media-originals/5107fd0230000180b308b9e1.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -149,7 +149,7 @@
     "subtitle": "ассистент тренера футбольной команды «castelmara griffins»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6335-6565-4530-b637-373931336337/MV5BNDUxYWE0NmYtMjhl.jpg",
+    "cardImage": "assets/media-originals/cd8994d57f9875f381c6a02e.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -159,7 +159,7 @@
       "castelmara griffins"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6335-6565-4530-b637-373931336337/MV5BNDUxYWE0NmYtMjhl.jpg",
+      "image": "assets/media-originals/cd8994d57f9875f381c6a02e.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -276,7 +276,7 @@
     "subtitle": "главный тренер футбольной команды «castelmara hellhounds»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6136-3233-4433-b036-623362386237/66c28562a10a658ba5ed.jpg",
+    "cardImage": "assets/media-originals/40171c0720825502f4f5b152.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -286,7 +286,7 @@
       "castelmara hellhounds"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6136-3233-4433-b036-623362386237/66c28562a10a658ba5ed.jpg",
+      "image": "assets/media-originals/40171c0720825502f4f5b152.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -530,7 +530,7 @@
     "subtitle": "главный тренер футбольной команды «castelmara foxes»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3836-3131-4530-a336-663838623534/noroot.png",
+    "cardImage": "assets/media-originals/eb516b0d6892bc23b843ab0b.png",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -540,7 +540,7 @@
       "castelmara foxes"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3836-3131-4530-a336-663838623534/noroot.png",
+      "image": "assets/media-originals/eb516b0d6892bc23b843ab0b.png",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -657,7 +657,7 @@
     "subtitle": "ассистент тренера футбольной команды «castelmara foxes»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6433-3861-4233-b332-323039316261/b82c245b3603f1f3d7f1.jpg",
+    "cardImage": "assets/media-originals/ba8960579d732aa30fa9b16a.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -667,7 +667,7 @@
       "castelmara foxes"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6433-3861-4233-b332-323039316261/b82c245b3603f1f3d7f1.jpg",
+      "image": "assets/media-originals/ba8960579d732aa30fa9b16a.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -813,7 +813,7 @@
     "subtitle": "главный тренер хоккейной команды «castelmara guards»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6534-6435-4234-a430-396336343065/ca876fc55c3e54f1774d.jpg",
+    "cardImage": "assets/media-originals/152d61e2557ef67810c4711b.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -823,7 +823,7 @@
       "castelmara guards"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6534-6435-4234-a430-396336343065/ca876fc55c3e54f1774d.jpg",
+      "image": "assets/media-originals/152d61e2557ef67810c4711b.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -940,7 +940,7 @@
     "subtitle": "ассистент тренера хоккейной команды «castelmara guards»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6233-3363-4239-b137-653838376562/b68ddb64badb904ad811.jpg",
+    "cardImage": "assets/media-originals/b79a3b2c7a9cef3513abdb11.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -950,7 +950,7 @@
       "castelmara guards"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6233-3363-4239-b137-653838376562/b68ddb64badb904ad811.jpg",
+      "image": "assets/media-originals/b79a3b2c7a9cef3513abdb11.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1072,9 +1072,9 @@
   "subtitle": "главный тренер хоккейной команды «castelmara hawks»",
   "category": "entrenadores",
   "role": "тренер",
-  "cardImage": "https://static.tildacdn.com/tild3961-3138-4231-a663-626535643761/08a4a4b66a6f949d7da1.jpg",
+  "cardImage": "assets/media-originals/ac67ef6d3e6c301c4ae15469.jpg",
   "avatar": "",
-  "banner": "https://static.tildacdn.com/tild6363-3337-4262-b031-333437393537/kholger_banner.png",
+  "banner": "assets/media-originals/68c8943f64d3e5c21212d5bd.png",
   "tags": [
     "adult",
     "coach",
@@ -1082,7 +1082,7 @@
     "castelmara hawks"
   ],
   "card": {
-    "image": "https://static.tildacdn.com/tild3961-3138-4231-a663-626535643761/08a4a4b66a6f949d7da1.jpg",
+    "image": "assets/media-originals/ac67ef6d3e6c301c4ae15469.jpg",
     "tag": "тренер",
     "statusLabel": "активный",
     "short": "/ passion ambitions"
@@ -1200,7 +1200,7 @@
     "subtitle": "ассистент тренера хоккейной команды «castelmara hawks»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3837-6135-4264-b234-326430326138/067d7233c839d0e755c1.jpg",
+    "cardImage": "assets/media-originals/a87bb0a583b01a969d828850.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1210,7 +1210,7 @@
       "castelmara hawks"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3837-6135-4264-b234-326430326138/067d7233c839d0e755c1.jpg",
+      "image": "assets/media-originals/a87bb0a583b01a969d828850.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1327,7 +1327,7 @@
     "subtitle": "главный тренер хоккейной команды «castelmara wolves»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3933-3763-4432-b330-636139313931/1c5d344b6e0fda5df22a.jpg",
+    "cardImage": "assets/media-originals/c74765abaafa94830e93100c.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1337,7 +1337,7 @@
       "castelmara wolves"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3933-3763-4432-b330-636139313931/1c5d344b6e0fda5df22a.jpg",
+      "image": "assets/media-originals/c74765abaafa94830e93100c.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1460,7 +1460,7 @@
     "subtitle": "ассистент тренера хоккейной команды «castelmara wolves»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3064-6366-4633-b933-653666313535/091670347872398692f2.jpg",
+    "cardImage": "assets/media-originals/95241c1e2c9a00cdbb169275.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1470,7 +1470,7 @@
       "castelmara wolves"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3064-6366-4633-b933-653666313535/091670347872398692f2.jpg",
+      "image": "assets/media-originals/95241c1e2c9a00cdbb169275.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1593,7 +1593,7 @@
     "subtitle": "тренер вратарей хоккейной кафедры",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3366-6430-4239-b465-316230646262/c9c03b6691894ddb2cba.jpg",
+    "cardImage": "assets/media-originals/17ce8de7bb6371cc37d6284c.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1602,7 +1602,7 @@
       "hockey"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3366-6430-4239-b465-316230646262/c9c03b6691894ddb2cba.jpg",
+      "image": "assets/media-originals/17ce8de7bb6371cc37d6284c.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1753,7 +1753,7 @@
     "subtitle": "главный тренер волейбольной команды «castelmara sunbirds»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6665-3562-4332-b136-323138373737/0a1d45681c7fdeba0559.jpg",
+    "cardImage": "assets/media-originals/7cfb9ab9a9af3f87e7dd38a3.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1763,7 +1763,7 @@
       "castelmara sunbirds"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6665-3562-4332-b136-323138373737/0a1d45681c7fdeba0559.jpg",
+      "image": "assets/media-originals/7cfb9ab9a9af3f87e7dd38a3.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -1880,7 +1880,7 @@
     "subtitle": "ассистент тренера волейбольной команды «castelmara sunbirds»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3935-3137-4339-b362-653564396632/12961b6fcc8e5fe1a701.jpg",
+    "cardImage": "assets/media-originals/3203d4b0fc115ff8de9004a0.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -1890,7 +1890,7 @@
       "castelmara sunbirds"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3935-3137-4339-b362-653564396632/12961b6fcc8e5fe1a701.jpg",
+      "image": "assets/media-originals/3203d4b0fc115ff8de9004a0.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2007,7 +2007,7 @@
     "subtitle": "главный тренер волейбольной команды «castelmara bulls»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3739-3236-4665-b462-613937656564/hbz020125wellcollect.avif",
+    "cardImage": "assets/media-originals/c66f15d178b9fe7546cf13ed.avif",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2017,7 +2017,7 @@
       "castelmara bulls"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3739-3236-4665-b462-613937656564/hbz020125wellcollect.avif",
+      "image": "assets/media-originals/c66f15d178b9fe7546cf13ed.avif",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2134,7 +2134,7 @@
     "subtitle": "ассистент тренера волейбольной команды «castelmara bulls»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3531-6162-4938-b161-663234346261/G0MSK40aIAA_p6P.jpg",
+    "cardImage": "assets/media-originals/8cda0fe84fcbfdb07e530d9f.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2144,7 +2144,7 @@
       "castelmara bulls"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3531-6162-4938-b161-663234346261/G0MSK40aIAA_p6P.jpg",
+      "image": "assets/media-originals/8cda0fe84fcbfdb07e530d9f.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2261,7 +2261,7 @@
     "subtitle": "главный тренер волейбольной команды «castelmara wildcats»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3732-3531-4466-b738-616539656631/6ab221c903b305eadebf.jpg",
+    "cardImage": "assets/media-originals/12624edf72d9d94a1063c75f.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2271,7 +2271,7 @@
       "castelmara wildcats"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3732-3531-4466-b738-616539656631/6ab221c903b305eadebf.jpg",
+      "image": "assets/media-originals/12624edf72d9d94a1063c75f.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2388,7 +2388,7 @@
     "subtitle": "ассистент тренера волейбольной команды «castelmara wildcats»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3463-3762-4336-b230-373361326365/__2026-06-03_224145.png",
+    "cardImage": "assets/media-originals/558cd9ddf4e2234d59770d7a.png",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2398,7 +2398,7 @@
       "castelmara wildcats"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3463-3762-4336-b230-373361326365/__2026-06-03_224145.png",
+      "image": "assets/media-originals/558cd9ddf4e2234d59770d7a.png",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2545,7 +2545,7 @@
     "subtitle": "главный тренер баскетбольной команды «castelmara flames»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3563-6332-4239-a266-346264323038/23d5d8b3ad08bccb423a.jpg",
+    "cardImage": "assets/media-originals/821275cb11c46c4c5d8dde5c.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2555,7 +2555,7 @@
       "castelmara flames"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3563-6332-4239-a266-346264323038/23d5d8b3ad08bccb423a.jpg",
+      "image": "assets/media-originals/821275cb11c46c4c5d8dde5c.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2678,7 +2678,7 @@
     "subtitle": "ассистент тренера баскетбольной команды «castelmara flames»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3737-6465-4264-b937-363066633730/c4a3ac6002c8d0536208.jpg",
+    "cardImage": "assets/media-originals/f51f0e6accdf94298725cbf8.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2688,7 +2688,7 @@
       "castelmara flames"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3737-6465-4264-b937-363066633730/c4a3ac6002c8d0536208.jpg",
+      "image": "assets/media-originals/f51f0e6accdf94298725cbf8.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2811,7 +2811,7 @@
     "subtitle": "главный тренер баскетбольной команды «castelmara wall»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6432-3864-4531-b564-616162393733/joe10.jpg",
+    "cardImage": "assets/media-originals/d92e43ff506ccd17285995d9.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2821,7 +2821,7 @@
       "castelmara wall"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6432-3864-4531-b564-616162393733/joe10.jpg",
+      "image": "assets/media-originals/d92e43ff506ccd17285995d9.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -2944,7 +2944,7 @@
     "subtitle": "ассистент тренера баскетбольной команды «castelmara wall»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3636-6665-4434-b634-333263643936/fcd2fd86e8a09dadfe82.jpg",
+    "cardImage": "assets/media-originals/abc9d290d160ec41cebc1b7f.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -2954,7 +2954,7 @@
       "castelmara wall"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3636-6665-4434-b634-333263643936/fcd2fd86e8a09dadfe82.jpg",
+      "image": "assets/media-originals/abc9d290d160ec41cebc1b7f.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -3077,7 +3077,7 @@
     "subtitle": "главный тренер баскетбольной команды «castelmara cross»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3735-6438-4266-a433-626632313233/3ee99170e2963810e269.jpg",
+    "cardImage": "assets/media-originals/74ca3f406c6264e6d35c5c17.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3087,7 +3087,7 @@
       "castelmara cross"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3735-6438-4266-a433-626632313233/3ee99170e2963810e269.jpg",
+      "image": "assets/media-originals/74ca3f406c6264e6d35c5c17.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -3210,7 +3210,7 @@
     "subtitle": "ассистент тренера баскетбольной команды «castelmara cross»",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3633-3335-4030-a334-353566623035/2078763-500w.jpg",
+    "cardImage": "assets/media-originals/94a45cd276c770d08e68ab97.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3220,7 +3220,7 @@
       "castelmara cross"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3633-3335-4030-a334-353566623035/2078763-500w.jpg",
+      "image": "assets/media-originals/94a45cd276c770d08e68ab97.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -3343,7 +3343,7 @@
     "subtitle": "тренер передней линии баскетбольной кафедры",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3365-3930-4166-a132-663765366632/f77b117beb5bb7dbb429.jpg",
+    "cardImage": "assets/media-originals/11ee726f065f685e5cffe258.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3352,7 +3352,7 @@
       "basketball"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3365-3930-4166-a132-663765366632/f77b117beb5bb7dbb429.jpg",
+      "image": "assets/media-originals/11ee726f065f685e5cffe258.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -3481,7 +3481,7 @@
     "subtitle": "тренер задней линии баскетбольной кафедры",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3932-3963-4039-b934-343832323464/hb-copy-66995d028887.avif",
+    "cardImage": "assets/media-originals/b8a5141194e32d68ee29cab0.avif",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3490,7 +3490,7 @@
       "basketball"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3932-3963-4039-b934-343832323464/hb-copy-66995d028887.avif",
+      "image": "assets/media-originals/b8a5141194e32d68ee29cab0.avif",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": ""
@@ -3653,7 +3653,7 @@
     "subtitle": "тренер по синхронному плаванию, кафедра водных видов спорта",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3436-3332-4233-a532-323063616162/46657534df03ba599e7d.jpg",
+    "cardImage": "assets/media-originals/1c458c6a1c92bc5c848bf2f0.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3663,7 +3663,7 @@
       "кафедра водных видов спорта"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3436-3332-4233-a532-323063616162/46657534df03ba599e7d.jpg",
+      "image": "assets/media-originals/1c458c6a1c92bc5c848bf2f0.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -3757,7 +3757,7 @@
     "subtitle": "тренер по легкой атлетике, кафедра водных видов спорта",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6538-3561-4038-b338-346331663536/2b4b1a6a6cf4df3ccfff.jpg",
+    "cardImage": "assets/media-originals/524231da77adcb0747973b4a.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3767,7 +3767,7 @@
       "кафедра водных видов спорта"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6538-3561-4038-b338-346331663536/2b4b1a6a6cf4df3ccfff.jpg",
+      "image": "assets/media-originals/524231da77adcb0747973b4a.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -3861,7 +3861,7 @@
     "subtitle": "тренер по общей физической подготовке, кафедра легкой атлетики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6634-6530-4334-b263-323836326332/eb6c0077861d6a9509ee.jpg",
+    "cardImage": "assets/media-originals/3441c3a794c7615da32e4247.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3871,7 +3871,7 @@
       "кафедра легкой атлетики"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6634-6530-4334-b263-323836326332/eb6c0077861d6a9509ee.jpg",
+      "image": "assets/media-originals/3441c3a794c7615da32e4247.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -3971,7 +3971,7 @@
     "subtitle": "тренер по прыжкам, кафедра легкой атлетики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6633-3430-4039-b435-393234306437/la_actriz_mina_el_ha.png",
+    "cardImage": "assets/media-originals/18c312177ed8c5ee814f7c21.png",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -3981,7 +3981,7 @@
       "кафедра легкой атлетики"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6633-3430-4039-b435-393234306437/la_actriz_mina_el_ha.png",
+      "image": "assets/media-originals/18c312177ed8c5ee814f7c21.png",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4081,7 +4081,7 @@
     "subtitle": "тренер по метательным дисциплинам, кафедра легкой атлетики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6534-3162-4135-b736-373861326266/801bab165533abca9fab.jpg",
+    "cardImage": "assets/media-originals/ec8cc642daac4f9ed7807f09.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4091,7 +4091,7 @@
       "кафедра легкой атлетики"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6534-3162-4135-b736-373861326266/801bab165533abca9fab.jpg",
+      "image": "assets/media-originals/ec8cc642daac4f9ed7807f09.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4191,7 +4191,7 @@
     "subtitle": "тренер по фигурному катанию (одиночное), кафедра зимних видов спорта",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3635-3366-4363-a463-313132383965/83eaaa2ebcb024086002.jpg",
+    "cardImage": "assets/media-originals/aa3a2adfc23897ac5664a35d.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4201,7 +4201,7 @@
       "кафедра зимних видов спорта"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3635-3366-4363-a463-313132383965/83eaaa2ebcb024086002.jpg",
+      "image": "assets/media-originals/aa3a2adfc23897ac5664a35d.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4301,7 +4301,7 @@
     "subtitle": "тренер по фигурному катанию (парное), кафедра зимних видов спорта",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3263-3661-4235-b639-343333386630/caac1daac0e40edcf02e.jpg",
+    "cardImage": "assets/media-originals/5c0b25227c529e6d35823984.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4311,7 +4311,7 @@
       "кафедра зимних видов спорта"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3263-3661-4235-b639-343333386630/caac1daac0e40edcf02e.jpg",
+      "image": "assets/media-originals/5c0b25227c529e6d35823984.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4411,7 +4411,7 @@
     "subtitle": "преподаватель хореографии, кафедра зимних видов спорта",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3664-6631-4062-b264-323834316663/7c099fb4757074a711be.jpg",
+    "cardImage": "assets/media-originals/128cfd80f4b73ff907e4e1e1.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4421,7 +4421,7 @@
       "кафедра зимних видов спорта"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3664-6631-4062-b264-323834316663/7c099fb4757074a711be.jpg",
+      "image": "assets/media-originals/128cfd80f4b73ff907e4e1e1.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4527,7 +4527,7 @@
     "subtitle": "тренер по большому теннису, кафедра тенниса",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild3839-3235-4664-b632-666132393166/noroot.png",
+    "cardImage": "assets/media-originals/0173289d0b77992d0eb5755f.png",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4537,7 +4537,7 @@
       "кафедра тенниса"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild3839-3235-4664-b632-666132393166/noroot.png",
+      "image": "assets/media-originals/0173289d0b77992d0eb5755f.png",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4631,7 +4631,7 @@
     "subtitle": "тренер по настольному теннису, кафедра тенниса",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6639-3939-4035-b733-383063373963/ae06b63c3892d322acf3.jpg",
+    "cardImage": "assets/media-originals/39410e5ecbb319a206c4fff8.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4641,7 +4641,7 @@
       "кафедра тенниса"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6639-3939-4035-b733-383063373963/ae06b63c3892d322acf3.jpg",
+      "image": "assets/media-originals/39410e5ecbb319a206c4fff8.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"
@@ -4735,7 +4735,7 @@
     "subtitle": "тренер по художественной гимнастике, кафедра гимнастики и акробатики",
     "category": "entrenadores",
     "role": "тренер",
-    "cardImage": "https://static.tildacdn.com/tild6461-3838-4532-b030-353939393031/601303a9872f4224a357.jpg",
+    "cardImage": "assets/media-originals/f10208c9a76e36ab01cf1446.jpg",
     "avatar": "",
     "banner": "",
     "tags": [
@@ -4745,7 +4745,7 @@
       "кафедра гимнастики и акробатики"
     ],
     "card": {
-      "image": "https://static.tildacdn.com/tild6461-3838-4532-b030-353939393031/601303a9872f4224a357.jpg",
+      "image": "assets/media-originals/f10208c9a76e36ab01cf1446.jpg",
       "tag": "тренер",
       "statusLabel": "не активен",
       "short": "/ future player name"

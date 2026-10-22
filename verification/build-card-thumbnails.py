@@ -5,7 +5,7 @@ urls=json.loads(Path('verification/card-image-sources.json').read_text())
 out=Path('assets/character-thumbnails');out.mkdir(exist_ok=True)
 def convert(url):
  try:
-  data=urllib.request.urlopen(url,timeout=25).read()
+  data=Path(url).read_bytes() if url.startswith('assets/media-originals/') else urllib.request.urlopen(url,timeout=25).read()
   with Image.open(io.BytesIO(data)) as image:
    image=ImageOps.exif_transpose(image).convert('RGB');image.thumbnail((560,840))
    path=out/(hashlib.sha256(url.encode()).hexdigest()[:20]+'.webp');image.save(path,'WEBP',quality=83,method=6)

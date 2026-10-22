@@ -21,21 +21,21 @@ window.ATLAS_LEON_REDFIELD = {
       category: "fuera-castelmara",
       role: "взрослый персонаж",
 
-      cardImage: "https://static.tildacdn.com/tild3234-3430-4562-b537-626136373064/klox4O9_eWD07yQbfa_X.jpg",
+      cardImage: "assets/media-originals/a36c893eb4a1a2f40502523a.jpg",
       avatar: "",
-      banner: "https://static.tildacdn.com/tild3565-3062-4863-b633-623430373432/noroot.png",
+      banner: "assets/media-originals/daefcaf228e54728e4139dc1.png",
 
       tags: ["fuera de castelmara", "policía", "investigación"],
 
       card: {
-        image: "https://static.tildacdn.com/tild3234-3430-4562-b537-626136373064/klox4O9_eWD07yQbfa_X.jpg",
+        image: "assets/media-originals/a36c893eb4a1a2f40502523a.jpg",
         tag: "вне академии",
         statusLabel: "не активен",
         short: "/ passion ambitions"
       },
 
       profile: {
-        heroImage: "https://static.tildacdn.com/tild3565-3062-4863-b633-623430373432/noroot.png",
+        heroImage: "assets/media-originals/daefcaf228e54728e4139dc1.png",
         avatar: "",
 
         externalLinks: [
