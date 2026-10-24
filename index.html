@@ -22370,7 +22370,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var sparkles=passion?['top','bottom'].map(function(corner){return '<svg class="atlas-passion-sparkles is-'+corner+'" viewBox="0 0 44 52" aria-hidden="true" focusable="false">'+sparkleShape+'</svg>'}).join(''):'';
     var diamond=p.id===diamondPlayerId;
     var cat=p.id===catPlayerId;
-    var catHug=cat?'<span class="atlas-player-cat-hug" aria-hidden="true"><img src="assets/player-frames/nata-cat-hug.png" alt="" width="1536" height="1024" decoding="async" draggable="false"></span>':'';
+    var catHug=cat?'<span class="atlas-player-cat-tail" aria-hidden="true"><svg viewBox="0 0 42 46" focusable="false"><path fill="#302a28" d="M6 0h16v22h6v-6h12v18h-6v6H12v-6H6Z"/><path fill="#eee0cb" d="M10 0h8v26h14V20h4v10h-6v6H16v-6h-6Z"/><path fill="#c1aa93" d="M10 8h8v6h-8Zm0 14h8v8h-8Z"/></svg></span><span class="atlas-player-cat-hug" aria-hidden="true"><img src="assets/player-frames/nata-cat-hug.png" alt="" width="1536" height="1024" decoding="async" draggable="false"></span>':'';
     var shards=diamond?['top','bottom'].map(function(corner){return '<svg class="atlas-diamond-shards is-'+corner+'" viewBox="0 0 54 72" aria-hidden="true" focusable="false"><path fill="#c5cde7" stroke="#f6fbff" stroke-width=".7" d="M25 7 43 18 36 43 18 30Z"/><path fill="#c8edff" d="m25 7 4 17-11 6Z"/><path fill="#ffffff" d="m25 7 18 11-14 6Z"/><path fill="#e2c6ff" d="m29 24 14-6-7 25Z"/><path fill="#9daecc" d="m18 30 11-6 7 19Z"/><path fill="#f6fbff" d="m6 17 9-13 1 18Z"/><path fill="#ffcfdf" d="m6 17 10 5-6 7Z"/><path fill="#fff0b5" d="m38 53 13-12-3 22Z"/><path fill="#ffffff" d="m38 53 13-12-7 15Z"/><path fill="#c5cde7" stroke="#c8edff" stroke-width=".6" d="m9 45 13 7-6 16-9-11Z"/><path fill="#f6fbff" d="m9 45 13 7-10 3Z"/><path fill="#fff0b5" d="m12 55 10-3-6 16Z"/></svg>'}).join(''):'';
     return '<button class="atlas-player-card'+(passion?' is-passion':'')+(diamond?' is-diamond':'')+(cat?' is-cat-hug':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+shards+catHug+
       '<span class="atlas-player-card-media">'+media+'</span>'+
@@ -25072,6 +25072,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-questionnaires.js?v=20261019-standard-profile"></script>
 <link rel="stylesheet" href="assets/atlas-birthday.css?v=20261024">
 <script src="assets/atlas-birthday.js?v=20261024"></script>
-<link rel="stylesheet" href="assets/atlas-player-cat-frame.css?v=20261024">
+<link rel="stylesheet" href="assets/atlas-player-cat-frame.css?v=20261024-hover">
 </body>
 </html>

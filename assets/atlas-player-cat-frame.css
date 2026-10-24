@@ -1,10 +1,20 @@
-/* The head stays within this card's grid cell, paws overlap its top edge. */
-#atlas-app .atlas-player-card.is-cat-hug{overflow:visible;margin-top:60px;height:255px;box-shadow:0 0 0 1px #dfc5af66,0 18px 42px #17171f1f}
-#atlas-app .atlas-player-card.is-cat-hug .atlas-player-card-media{border-radius:inherit;overflow:hidden}
-#atlas-app .atlas-player-card.is-cat-hug::after{border-radius:inherit}
-#atlas-app .atlas-player-cat-hug{position:absolute;top:-72px;left:50%;width:144px;height:96px;transform:translateX(-50%);z-index:4;pointer-events:none;user-select:none}
+/* Keep the button's hit area fixed while its visual card contracts. */
+#atlas-app .atlas-player-card.is-cat-hug{--cat-inset:0px;--cat-reveal:60px;overflow:visible;margin-top:0;height:315px;background:transparent;box-shadow:none;transform:none}
+#atlas-app .atlas-player-card.is-cat-hug::before{content:"";position:absolute;inset:var(--cat-inset) 0 0;border-radius:inherit;box-shadow:0 0 0 1px #dfc5af66,0 18px 42px #17171f1f;pointer-events:none;transition:top .32s ease,box-shadow .32s ease}
+#atlas-app .atlas-player-card.is-cat-hug .atlas-player-card-media{top:var(--cat-inset);border-radius:inherit;overflow:hidden;transition:top .32s ease}
+#atlas-app .atlas-player-card.is-cat-hug::after{top:var(--cat-inset);border-radius:inherit;transition:top .32s ease}
+#atlas-app .atlas-player-cat-hug{position:absolute;top:-12px;left:50%;width:144px;height:96px;transform:translate(-50%,38px) scale(.85);transform-origin:center bottom;opacity:0;z-index:4;pointer-events:none;user-select:none;transition:opacity .22s ease,transform .32s ease}
 #atlas-app .atlas-player-cat-hug img{display:block;width:100%;height:100%;max-width:none;object-fit:contain;image-rendering:pixelated}
-@media(hover:hover) and (pointer:fine){#atlas-app .atlas-player-card.is-cat-hug:hover{box-shadow:0 0 0 1px #f5dcc5,0 0 26px #e6bf9b55,0 18px 42px #17171f33}}
-#atlas-app .atlas-player-card.is-cat-hug:focus-visible{outline:2px solid #f5dcc5;outline-offset:5px}
-@media(hover:none),(pointer:coarse){#atlas-app .atlas-player-card.is-cat-hug:hover{transform:none}}
-@media(max-width:560px){#atlas-app .atlas-player-card.is-cat-hug{margin-top:50px;height:205px}#atlas-app .atlas-player-cat-hug{top:-60px;width:120px;height:80px}}
+#atlas-app .atlas-player-cat-tail{position:absolute;bottom:-20px;right:24px;width:36px;height:40px;z-index:3;pointer-events:none;opacity:1;transform-origin:center top;transition:opacity .2s ease,transform .28s ease}
+#atlas-app .atlas-player-cat-tail svg{width:100%;height:100%;display:block;shape-rendering:crispEdges}
+@media(hover:hover) and (pointer:fine){
+#atlas-app .atlas-player-card.is-cat-hug:hover{--cat-inset:var(--cat-reveal);transform:none;box-shadow:none}
+#atlas-app .atlas-player-card.is-cat-hug:hover::before{box-shadow:0 0 0 1px #f5dcc5,0 0 26px #e6bf9b55,0 18px 42px #17171f33}
+#atlas-app .atlas-player-card.is-cat-hug:hover .atlas-player-cat-hug{opacity:1;transform:translate(-50%,0) scale(1)}
+#atlas-app .atlas-player-card.is-cat-hug:hover .atlas-player-cat-tail{opacity:0;transform:translateY(-12px)}
+}
+#atlas-app .atlas-player-card.is-cat-hug:focus-visible{--cat-inset:var(--cat-reveal);outline:2px solid #f5dcc5;outline-offset:5px}
+#atlas-app .atlas-player-card.is-cat-hug:focus-visible .atlas-player-cat-hug{opacity:1;transform:translate(-50%,0) scale(1)}
+#atlas-app .atlas-player-card.is-cat-hug:focus-visible .atlas-player-cat-tail{opacity:0;transform:translateY(-12px)}
+@media(max-width:560px){#atlas-app .atlas-player-card.is-cat-hug{height:255px;--cat-reveal:50px}#atlas-app .atlas-player-cat-hug{top:-10px;width:120px;height:80px}#atlas-app .atlas-player-cat-tail{bottom:-11px;width:28px;height:32px}}
+@media(prefers-reduced-motion:reduce){#atlas-app .atlas-player-card.is-cat-hug::before,#atlas-app .atlas-player-card.is-cat-hug::after,#atlas-app .atlas-player-card.is-cat-hug .atlas-player-card-media,#atlas-app .atlas-player-cat-hug,#atlas-app .atlas-player-cat-tail{transition:none}}
