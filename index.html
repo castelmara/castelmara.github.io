@@ -22358,6 +22358,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 
   var passionPlayerId='c8e46ed6-7024-467e-914b-f74b57f20f9c';
   var diamondPlayerId='fcae4d67-9252-4c7a-9f5a-cd99f5a4a24a';
+  var catPlayerId='bed1691b-b268-4dea-ad5f-3cd6453fb165';
   function playerCard(p){
     var media=p.avatar_url?'<img src="'+esc(p.avatar_url)+'" alt="">':'<span class="atlas-player-card-letter">'+esc(initial(p))+'</span>';
     var badges=['игрок'];
@@ -22368,8 +22369,10 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     var sparkleShape='<path fill="#004D98" d="M27 3C25 16 22 21 13 24C22 27 25 32 27 46C29 32 32 27 41 24C32 21 29 16 27 3Z"/><path fill="#A50044" d="M9 1C8 7 6 10 1 12C6 14 8 17 9 23C10 17 12 14 17 12C12 10 10 7 9 1ZM8 32C7 37 5 39 1 41C5 43 7 45 8 50C9 45 11 43 15 41C11 39 9 37 8 32Z"/>';
     var sparkles=passion?['top','bottom'].map(function(corner){return '<svg class="atlas-passion-sparkles is-'+corner+'" viewBox="0 0 44 52" aria-hidden="true" focusable="false">'+sparkleShape+'</svg>'}).join(''):'';
     var diamond=p.id===diamondPlayerId;
+    var cat=p.id===catPlayerId;
+    var catHug=cat?'<span class="atlas-player-cat-hug" aria-hidden="true"><img src="assets/player-frames/nata-cat-hug.png" alt="" width="1536" height="1024" decoding="async" draggable="false"></span>':'';
     var shards=diamond?['top','bottom'].map(function(corner){return '<svg class="atlas-diamond-shards is-'+corner+'" viewBox="0 0 54 72" aria-hidden="true" focusable="false"><path fill="#c5cde7" stroke="#f6fbff" stroke-width=".7" d="M25 7 43 18 36 43 18 30Z"/><path fill="#c8edff" d="m25 7 4 17-11 6Z"/><path fill="#ffffff" d="m25 7 18 11-14 6Z"/><path fill="#e2c6ff" d="m29 24 14-6-7 25Z"/><path fill="#9daecc" d="m18 30 11-6 7 19Z"/><path fill="#f6fbff" d="m6 17 9-13 1 18Z"/><path fill="#ffcfdf" d="m6 17 10 5-6 7Z"/><path fill="#fff0b5" d="m38 53 13-12-3 22Z"/><path fill="#ffffff" d="m38 53 13-12-7 15Z"/><path fill="#c5cde7" stroke="#c8edff" stroke-width=".6" d="m9 45 13 7-6 16-9-11Z"/><path fill="#f6fbff" d="m9 45 13 7-10 3Z"/><path fill="#fff0b5" d="m12 55 10-3-6 16Z"/></svg>'}).join(''):'';
-    return '<button class="atlas-player-card'+(passion?' is-passion':'')+(diamond?' is-diamond':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+shards+
+    return '<button class="atlas-player-card'+(passion?' is-passion':'')+(diamond?' is-diamond':'')+(cat?' is-cat-hug':'')+'" type="button" data-player-id="'+esc(p.id)+'">'+sparkles+shards+catHug+
       '<span class="atlas-player-card-media">'+media+'</span>'+
       '<span class="atlas-player-card-copy"><span class="atlas-player-card-badges">'+badges.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</span><h3>'+esc(displayName(p))+'</h3><p>@'+esc(p.nickname||'игрок')+'</p></span>'+
     '</button>';
@@ -25069,5 +25072,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <script src="assets/atlas-questionnaires.js?v=20261019-standard-profile"></script>
 <link rel="stylesheet" href="assets/atlas-birthday.css?v=20261024">
 <script src="assets/atlas-birthday.js?v=20261024"></script>
+<link rel="stylesheet" href="assets/atlas-player-cat-frame.css?v=20261024">
 </body>
 </html>

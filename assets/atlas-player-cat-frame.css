@@ -1,0 +1,10 @@
+/* The head stays within this card's grid cell, paws overlap its top edge. */
+#atlas-app .atlas-player-card.is-cat-hug{overflow:visible;margin-top:60px;height:255px;box-shadow:0 0 0 1px #dfc5af66,0 18px 42px #17171f1f}
+#atlas-app .atlas-player-card.is-cat-hug .atlas-player-card-media{border-radius:inherit;overflow:hidden}
+#atlas-app .atlas-player-card.is-cat-hug::after{border-radius:inherit}
+#atlas-app .atlas-player-cat-hug{position:absolute;top:-72px;left:50%;width:144px;height:96px;transform:translateX(-50%);z-index:4;pointer-events:none;user-select:none}
+#atlas-app .atlas-player-cat-hug img{display:block;width:100%;height:100%;max-width:none;object-fit:contain;image-rendering:pixelated}
+@media(hover:hover) and (pointer:fine){#atlas-app .atlas-player-card.is-cat-hug:hover{box-shadow:0 0 0 1px #f5dcc5,0 0 26px #e6bf9b55,0 18px 42px #17171f33}}
+#atlas-app .atlas-player-card.is-cat-hug:focus-visible{outline:2px solid #f5dcc5;outline-offset:5px}
+@media(hover:none),(pointer:coarse){#atlas-app .atlas-player-card.is-cat-hug:hover{transform:none}}
+@media(max-width:560px){#atlas-app .atlas-player-card.is-cat-hug{margin-top:50px;height:205px}#atlas-app .atlas-player-cat-hug{top:-60px;width:120px;height:80px}}
