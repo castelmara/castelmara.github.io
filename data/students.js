@@ -1059,10 +1059,10 @@ level: "профессионал",
     {
         "id": "evelina-de-la-rosa",
         "type": "student_sport",
-        "status": "inactive",
+        "status": "active",
         "player": {
-            "id": "",
-            "name": "",
+            "id": "estrelly",
+            "name": "ната",
             "url": ""
         },
         "name": "Эвелина де ла Росса",
@@ -1077,9 +1077,9 @@ level: "профессионал",
             "label": "письмо эвелина"
         },
         "role": "студент-спортсмен",
-        "cardImage": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
-        "avatar": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
-        "banner": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+        "cardImage": "assets/characters/Evelina de la Rosa.jpg",
+        "avatar": "assets/characters/Evelina de la Rosa.jpg",
+        "banner": "assets/characters/Evelina de la Rosa.jpg",
         "tags": [
             "estudiantes",
             "canon",
@@ -1087,14 +1087,14 @@ level: "профессионал",
             "группа поддержки «castelmara foxes»"
         ],
         "card": {
-            "image": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+            "image": "assets/characters/Evelina de la Rosa.jpg",
             "tag": "студент-спортсмен",
-            "statusLabel": "не активен",
+            "statusLabel": "активный",
             "short": "группа поддержки «castelmara foxes»"
         },
         "profile": {
-            "heroImage": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
-            "avatar": "assets/media-originals/5aa7117da7ce7980d67c59c2.jpg",
+            "heroImage": "assets/characters/Evelina de la Rosa.jpg",
+            "avatar": "assets/characters/Evelina de la Rosa.jpg",
             "overview": {
                 "mainInfo": {
                     "fullName": "Эвелина де ла Росса",
@@ -1109,10 +1109,10 @@ level: "профессионал",
                     "specialization": "спринт",
                     "team": "группа поддержки «castelmara foxes»",
                     "level": "профессионал",
-                    "status": "не активен",
+                    "status": "активный",
                     "atlasNickname": "",
                     "socialNickname": "",
-                    "faceclaim": "dasha taran."
+                    "faceclaim": "florence hunt"
                 },
                 "indicators": {
                     "title": "показатели",
@@ -1476,11 +1476,11 @@ level: "профессионал",
     {
         "id": "pablo-de-longa",
         "type": "student_sport",
-        "status": "inactive",
+        "status": "active",
         "player": {
-            "id": "",
-            "name": "",
-            "url": ""
+            "id": "sofya-shtangey",
+            "name": "софа",
+            "url": "https://vk.com/aplaceforustosonbka"
         },
         "name": "Пабло де Лонга",
         "cardName": "Pablo de Longa",
@@ -1506,7 +1506,7 @@ level: "профессионал",
         "card": {
             "image": "assets/media-originals/61a131396606661bbc31d17d.jpg",
             "tag": "студент-спортсмен",
-            "statusLabel": "не активен",
+            "statusLabel": "активный",
             "short": "«castelmara guards»"
         },
         "profile": {
@@ -1524,7 +1524,7 @@ level: "профессионал",
                     department: "кафедра хоккея",
 "team": "«castelmara guards»",
                     "level": "профессионал",
-                    "status": "не активен",
+                    "status": "активный",
                     "atlasNickname": "—",
                     "socialNickname": "",
                     "faceclaim": "danny griffin."
@@ -2407,14 +2407,6 @@ level: "профессионал",
         },
 
     {
-          id: "veronica-andrade",
-          category: "estudiantes",
-          name: "Veronica Andrade",
-          player: "marcella harringrove",
-          image: "assets/media-originals/dc9b44d002c84513154676a9.jpg"
-        },
-
-    {
           id: "dahlia-vale",
           category: "estudiantes",
           name: "Dahlia Vale",
@@ -2674,7 +2666,7 @@ level: "профессионал",
           status: "активный",
           atlasNickname: "siena.sinclair",
           socialNickname: "sienair",
-          faceclaim: "Tara Tornquist"
+          faceclaim: "Barbara Palvin"
         }},
         dossier: {}, relations: {},
         externalLinks: [

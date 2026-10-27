@@ -803,7 +803,12 @@
   {
     "id": "jonas-eriksson",
     "type": "adult",
-    "status": "inactive",
+    "status": "active",
+    "player": {
+      "id": "velvetka",
+      "name": "вельветка",
+      "url": ""
+    },
     "name": "Йонас Эрикссон",
     "cardName": "Jonas Eriksson",
     "cardSubtitle": "",
@@ -825,8 +830,8 @@
     "card": {
       "image": "assets/media-originals/152d61e2557ef67810c4711b.jpg",
       "tag": "тренер",
-      "statusLabel": "не активен",
-      "short": ""
+      "statusLabel": "активный",
+      "short": "вельветка"
     },
     "profile": {
       "heroImage": "",
@@ -843,7 +848,7 @@
           "position": "главный тренер хоккейной команды «castelmara guards»",
           "department": "кафедра хоккея",
           "level": "профессионал",
-          "status": "не активен",
+          "status": "активный",
           "atlasNickname": "",
           "socialNickname": "",
           "faceclaim": "robert pattinson"
@@ -865,7 +870,7 @@
             },
             {
               "label": "статус",
-              "value": "не активен"
+              "value": "активный"
             },
             {
               "label": "прототип внешности",
@@ -4725,10 +4730,15 @@
   {
     "id": "alina-zakharova",
     "type": "adult",
-    "status": "inactive",
+    "status": "active",
+    "player": {
+      "id": "velvetka",
+      "name": "вельветка",
+      "url": ""
+    },
     "name": "Алина Захарова",
     "cardName": "Alina Zakharova",
-    "cardSubtitle": "/ future player name",
+    "cardSubtitle": "вельветка",
     "profileTitle": "Alina Zakharova",
     "fullName": "Алина Захарова",
     "originalName": "Alina Zakharova",
@@ -4747,8 +4757,8 @@
     "card": {
       "image": "assets/media-originals/f10208c9a76e36ab01cf1446.jpg",
       "tag": "тренер",
-      "statusLabel": "не активен",
-      "short": "/ future player name"
+      "statusLabel": "активный",
+      "short": "вельветка"
     },
     "profile": {
       "heroImage": "",
@@ -4765,7 +4775,7 @@
           "position": "тренер по художественной гимнастике, кафедра гимнастики и акробатики",
           "department": "кафедра гимнастики и акробатики",
           "level": "профессионал",
-          "status": "не активен",
+          "status": "активный",
           "atlasNickname": "",
           "socialNickname": "",
           "faceclaim": "sasha luss"
@@ -4787,7 +4797,7 @@
             },
             {
               "label": "статус",
-              "value": "не активен"
+              "value": "активный"
             },
             {
               "label": "прототип внешности",
