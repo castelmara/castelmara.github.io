@@ -163,7 +163,7 @@
     if (student && course) badges.push({label:badge, cls:'course'});
     if (sport) badges.push({label:sport.label, cls:'sport-'+sport.cls});
     if (coach) badges.push({label:badge,cls:'staff'});
-    if (!student && c.category === 'castelmara') badges.push({label:'академи',cls:'academy'});
+    if (!student && c.category === 'castelmara') badges.push({label:'академия',cls:'academy'});
     const subtitle = String(c.cardSubtitle || c.subtitle || c.role || '').trim();
     const lines = student ? [faculty, department].filter(Boolean) :
       [subtitle.startsWith('/') ? (c.subtitle || c.role || '') : subtitle].filter(Boolean);
