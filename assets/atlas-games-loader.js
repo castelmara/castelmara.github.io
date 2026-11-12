@@ -1,8 +1,8 @@
 (function(){
   'use strict';
   var loading=null,loaded=new Set();
-  var scripts=['assets/atlas-games-engine.js?v=20261002-1','assets/vendor/chess-1.4.0.js','assets/atlas-chess.js?v=20261008-levels','assets/atlas-daily-games.js?v=20261008-1','assets/atlas-games.js?v=20261008-daily'];
-  var styles=['assets/atlas-games.css?v=20261005-2','assets/atlas-chess.css?v=20261006-1','assets/atlas-daily-games.css?v=20261008-1'];
+  var scripts=['assets/atlas-games-engine.js?v=20261002-1','assets/vendor/chess-1.4.0.js','assets/atlas-chess.js?v=20261008-levels','assets/atlas-daily-games.js?v=20261008-1','assets/atlas-word-game.js?v=20261112','assets/atlas-games.js?v=20261112-words'];
+  var styles=['assets/atlas-games.css?v=20261005-2','assets/atlas-chess.css?v=20261006-1','assets/atlas-daily-games.css?v=20261008-1','assets/atlas-word-game.css?v=20261112'];
   function active(){return !!document.querySelector('#atlas-page-games.active')}
   function resource(url,css){
     if(loaded.has(url))return Promise.resolve();

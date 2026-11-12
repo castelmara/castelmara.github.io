@@ -22605,7 +22605,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
         ['VK',p.vk_url,vk],
         ['день рождения',bday,'<span>'+esc(bday)+'</span>'],
         ['в ATLAS с',p.created_at,'<span>'+esc(fmtDate(p.created_at))+'</span>']
-      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div></div>'+(personalityError?'<div class="atlas-player-personality-card"><p>не удалось загрузить архетип. попробуй открыть профиль ещё раз.</p></div>':atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id),personalityResult))+'</div></div></div>';
+      ])+'</div><div class="atlas-profile-overview-side"><div class="atlas-profile-card"><h3>активность</h3><div class="atlas-player-metric-grid"><div class="atlas-player-metric"><strong>'+esc(p.current_streak||0)+'</strong><span>дней подряд</span></div><div class="atlas-player-metric"><strong>'+esc(p.best_streak||0)+'</strong><span>лучшая серия входа</span></div><div class="atlas-player-metric"><strong>'+esc(chars.length)+'</strong><span>персонажей</span></div><div class="atlas-player-metric"><strong>'+esc(ach.length)+'</strong><span>ачивок</span></div><div class="atlas-player-metric"><strong data-word-profile="'+esc(p.id)+'">…</strong><span>слов угадано</span></div></div>'+(personalityError?'<div class="atlas-player-personality-card"><p>не удалось загрузить архетип. попробуй открыть профиль ещё раз.</p></div>':atlasPlayerPersonalityCard(p.id,!!(viewer&&viewer.id===p.id),personalityResult))+'</div></div></div>';
       var mayManageChars=canManageCharacterOwners(viewer,p);
       var charManage=mayManageChars?'<div class="atlas-player-character-manage"><button type="button" data-character-owner-open="'+esc(p.id)+'">управлять персонажами</button></div>':'';
       var charPanel=charManage+(chars.length?'<div class="atlas-character-card-grid">'+chars.map(renderOwnedCharacterCard).join('')+'</div>':'<div class="atlas-player-character-empty">к этому аккаунту пока не привязаны персонажи.</div>');
@@ -22630,6 +22630,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
       if(window.atlasHydrateCommunityPlayer) window.atlasHydrateCommunityPlayer(p.id);
       if(window.atlasCommunityCards) window.atlasCommunityCards();
       if(window.atlasMountQuestionnaires) window.atlasMountQuestionnaires();
+      if(window.atlasLoadWordStats) window.atlasLoadWordStats(p.id);
     }catch(err){root.innerHTML='<div class="atlas-player-empty"><strong>не удалось загрузить профиль</strong><span>'+esc(err&&err.message?err.message:'ошибка ATLAS')+'</span></div>'}
   }
 
@@ -25057,7 +25058,7 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <template data-atlas-page-template="games">
   <section class="atlas-page" id="atlas-page-games"><div class="atlas-page-shell atlas-games-shell"><header class="atlas-games-heading"><h2>juegos</h2><p>маленькая пауза между большими историями.</p></header><div id="atlasGamesRoot"></div></div></section>
 </template>
-<script src="assets/atlas-games-loader.js?v=20261012"></script>
+<script src="assets/atlas-games-loader.js?v=20261112-words"></script>
 <link rel="stylesheet" href="assets/atlas-social.css?v=20261018-media">
 <template data-atlas-page-template="charla"><section class="atlas-page" id="atlas-page-charla"><div class="atlas-page-shell"><div class="social-root"></div></div></section></template>
 <template data-atlas-page-template="muro"><section class="atlas-page" id="atlas-page-muro"><div class="atlas-page-shell"><div class="social-root"></div></div></section></template>
@@ -25073,5 +25074,6 @@ html[data-atlas-theme="dark"] #atlasPersonaModal .atlas-persona-nick-wrap>span,h
 <link rel="stylesheet" href="assets/atlas-birthday.css?v=20261024">
 <script src="assets/atlas-birthday.js?v=20261024"></script>
 <link rel="stylesheet" href="assets/atlas-player-cat-frame.css?v=20261024-tail">
+<script src="assets/atlas-word-profile.js?v=20261112"></script>
 </body>
 </html>

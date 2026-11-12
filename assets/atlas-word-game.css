@@ -1,0 +1,32 @@
+#atlasWordGamesRoot .word-board{display:grid;gap:7px;max-width:320px;margin:18px auto}
+#atlasWordGamesRoot .word-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+#atlasWordGamesRoot .word-tile{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--game-line);border-radius:12px;background:var(--game-soft);font-size:clamp(23px,6vw,32px);font-weight:800;text-transform:uppercase}
+#atlasWordGamesRoot .word-keyboard{max-width:580px;margin:18px auto}
+#atlasWordGamesRoot .word-keyboard>div{display:flex;justify-content:center;gap:4px;margin:5px 0}
+#atlasWordGamesRoot .word-keyboard button{flex:1;min-width:0;padding:10px 0;border-radius:8px;font-size:14px;text-transform:uppercase}
+#atlasWordGamesRoot .correct{background:#337863;color:#fff;border-color:#69b39b}
+#atlasWordGamesRoot .present{background:#896727;color:#fff;border-color:#caa75f}
+#atlasWordGamesRoot .absent{background:#414653;color:#fff;border-color:#626a7c}
+#atlasWordGamesRoot .word-keyboard button:disabled{opacity:1}
+@media(max-width:600px){
+ #atlas-page-games .games-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #atlas-page-games .games-tabs [data-game="chess"]{grid-column:auto}
+ #atlas-page-games .games-tabs [data-game="word"]{grid-column:1/-1}
+ #atlasWordGamesRoot .word-board{max-width:260px;gap:5px}
+ #atlasWordGamesRoot .word-row{gap:5px}
+ #atlasWordGamesRoot .word-keyboard>div{gap:2px}
+ #atlasWordGamesRoot .word-keyboard button{font-size:12px}
+}
+#atlasWordGamesRoot .word-row{grid-template-columns:repeat(var(--word-length,5),minmax(0,1fr))}
+#atlasWordGamesRoot .word-board{width:100%;max-width:400px;gap:6px}
+#atlasWordGamesRoot .word-tile{font-size:clamp(17px,4vw,28px);border-radius:9px}
+#atlasWordGamesRoot .word-modes{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+#atlasWordGamesRoot .word-settings{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px auto}
+#atlasWordGamesRoot .word-settings label{display:grid;gap:6px;font-size:12px;color:var(--muted,#8b929e)}
+#atlasWordGamesRoot select{font:inherit;color:inherit;background:var(--game-soft);border:1px solid var(--game-line);border-radius:12px;padding:12px;max-width:100%}
+#atlasWordGamesRoot select option{color:#151820;background:#fff}
+#atlasWordGamesRoot .word-score{text-align:center;font-size:13px;color:var(--muted,#8b929e)}
+#atlasWordGamesRoot .word-help{max-width:600px;margin:22px auto 0;font-size:13px;line-height:1.65;color:var(--muted,#8b929e)}
+#atlasWordGamesRoot .word-help summary{cursor:pointer;text-align:center}
+#atlasWordGamesRoot .word-help a{color:inherit;text-decoration:underline}
+@media(max-width:560px){#atlasWordGamesRoot .word-board{max-width:360px}#atlasWordGamesRoot .word-row{gap:4px}#atlasWordGamesRoot .word-keyboard button{min-width:0;padding:0 2px}#atlasWordGamesRoot .word-settings{gap:8px}}

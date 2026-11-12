@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Word game local fixture</title>
+<link rel="stylesheet" href="../assets/atlas-games.css"><link rel="stylesheet" href="../assets/atlas-word-game.css">
+<style>body{background:#0b0e12;color:#eee;font:15px Arial;margin:0}main{width:375px;max-width:100%;margin:auto}*{box-sizing:border-box}</style>
+<main id="atlas-page-games" class="active"><div class="atlas-games-shell"><section class="games-stage"><div id="atlasWordGamesRoot"></div></section><p>профиль: <strong data-word-profile="fixture">0</strong> слов угадано</p></div></main>
+<script>
+window.ATLAS_CURRENT_SESSION={user:{id:'fixture'}};
+let fixtureGame,score=0;
+window.ATLAS_SUPABASE={from(){return {select(){return {eq(){return {maybeSingle:async()=>({data:{solved:score}})}}}}}},rpc:async(name,a)=>{
+ if(name==='atlas_word_start')fixtureGame={id:crypto.randomUUID(),mode:a.p_mode,day:new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Madrid'}).format(new Date()),length:a.p_mode==='daily'?5:a.p_length,level:a.p_level,max_attempts:a.p_mode==='daily'?6:({easy:8,normal:6,hard:5}[a.p_level]),guesses:[],marks:[],status:'playing',answer:null,solved:score};
+ else {fixtureGame.guesses.push(a.p_guess);fixtureGame.marks.push(Array(fixtureGame.length).fill('correct'));fixtureGame.status='won';fixtureGame.answer=a.p_guess;fixtureGame.solved=++score}
+ return {data:structuredClone(fixtureGame)};
+}};
+</script><script src="../assets/atlas-word-profile.js"></script><script src="../assets/atlas-word-game.js"></script><script>AtlasWordGame.mount(document.getElementById('atlasWordGamesRoot'));</script>
