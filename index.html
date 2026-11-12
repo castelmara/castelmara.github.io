@@ -23929,8 +23929,10 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 
   function shell(){
     var r=root();if(!r)return;
+    if(messageScrollObserver)messageScrollObserver.disconnect();
     var oldBox=document.getElementById('atlasDirectMessages');
-    var savedScroll=oldBox&&lastRenderedChatId===activeChatId?captureMessageScroll(oldBox):null;
+    if(oldBox&&lastRenderedChatId)rememberMessageScroll(oldBox,lastRenderedChatId);
+    var savedScroll=messageScrollByChat[uid()+':'+activeChatId]||null;
     var oldList=r.querySelector('.atlas-direct-channel-list'),listTop=oldList?oldList.scrollTop:0;
     var focused=document.activeElement,focusId=focused&&r.contains(focused)?focused.id:'';
     var selection=focusId&&typeof focused.selectionStart==='number'?[focused.selectionStart,focused.selectionEnd]:null;
@@ -23951,6 +23953,13 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     updateGlobalUnreadBadge();
   }
 
+  var messageScrollByChat=Object.create(null),messageScrollObserver=null;
+  function rememberMessageScroll(box,chatId){
+    if(!box||box.clientHeight<=0)return null;
+    var saved=captureMessageScroll(box);
+    messageScrollByChat[uid()+':'+chatId]=saved;
+    return saved;
+  }
   function captureMessageScroll(box){
     var top=box.getBoundingClientRect().top,rows=box.querySelectorAll('[data-direct-message-id]');
     var saved={top:box.scrollTop,bottom:box.scrollHeight-box.scrollTop-box.clientHeight<=6,id:'',offset:0};
@@ -23961,11 +23970,33 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
     return saved;
   }
   function restoreMessageScroll(box,saved,bottom){
-    if(bottom||(saved&&saved.bottom)){setMessagesBottom(box);return}
-    if(!saved)return;
-    var anchor=Array.from(box.querySelectorAll('[data-direct-message-id]')).find(function(row){return row.getAttribute('data-direct-message-id')===saved.id});
-    if(anchor)box.scrollTop+=anchor.getBoundingClientRect().top-box.getBoundingClientRect().top-saved.offset;
-    else box.scrollTop=saved.top;
+    if(messageScrollObserver)messageScrollObserver.disconnect();
+    var chatId=activeChatId,owner=uid(),key=owner+':'+chatId;
+    var position=saved||messageScrollByChat[key]||null;
+    if(bottom)position={bottom:true,top:0,id:'',offset:0};
+    function apply(){
+      if(!box.isConnected||uid()!==owner||activeChatId!==chatId||box.clientHeight<=0)return;
+      if(position&&position.bottom)setMessagesBottom(box);
+      else if(position){
+        var anchor=Array.from(box.querySelectorAll('[data-direct-message-id]')).find(function(row){return row.getAttribute('data-direct-message-id')===position.id});
+        if(anchor)box.scrollTop+=anchor.getBoundingClientRect().top-box.getBoundingClientRect().top-position.offset;
+        else box.scrollTop=position.top;
+      }
+      position=rememberMessageScroll(box,chatId)||position;
+    }
+    apply();
+    // Remember intentional scrolling, not the browser's clamp after a resize.
+    var height=box.clientHeight,contentHeight=box.scrollHeight;
+    box.onscroll=function(){
+      if(uid()!==owner||activeChatId!==chatId||box.clientHeight<=0)return;
+      if(height!==box.clientHeight||contentHeight!==box.scrollHeight)return;
+      position=rememberMessageScroll(box,chatId)||position;
+    };
+    if(typeof ResizeObserver!=='undefined'){
+      messageScrollObserver=new ResizeObserver(function(){apply();height=box.clientHeight;contentHeight=box.scrollHeight});
+      messageScrollObserver.observe(box);
+      Array.from(box.children).forEach(function(row){messageScrollObserver.observe(row)});
+    }
   }
   // Keep existing message/image nodes; receipts and unchanged data do not rebuild the thread.
   function syncNode(node,next){
@@ -23993,7 +24024,7 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
   function renderMessagesOnly(){
     var box=document.getElementById('atlasDirectMessages');
     if(!box){updateTypingIndicator();return}
-    var saved=captureMessageScroll(box);
+    var saved=rememberMessageScroll(box,activeChatId)||messageScrollByChat[uid()+':'+activeChatId]||null;
     reconcileRows(box,messagesHtml());
     restoreMessageScroll(box,saved,forceBottomChatId===activeChatId);forceBottomChatId='';
     updateTypingIndicator();
