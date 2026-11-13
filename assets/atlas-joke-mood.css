@@ -1,0 +1,9 @@
+#atlas-app .atlas-joke-mood{position:relative;z-index:1;margin-top:22px;padding-top:16px;border-top:1px solid #ffffff24}
+#atlas-app #atlasJokeMoodToggle{display:flex;align-items:center;gap:9px;width:100%;padding:4px 0;border:0;background:transparent;color:#ff8585;text-align:left;font:800 11px/1.5 "Montserrat",Arial,sans-serif;cursor:pointer;text-transform:lowercase}
+#atlas-app #atlasJokeMoodToggle>span:last-child{margin-left:auto;font-size:17px}
+#atlas-app #atlasJokeMoodToggle:focus-visible{outline:2px solid #ff8585;outline-offset:5px;border-radius:4px}
+#atlas-app #atlasJokeMoodPanel{padding-top:16px;min-width:0}
+#atlas-app #atlasJokeMoodPanel[hidden]{display:none!important}
+#atlas-app .atlas-joke-mood-label{display:block;color:#ffffff94;font:700 9px/1.5 "Montserrat",Arial,sans-serif;margin-bottom:8px}
+#atlas-app #atlasJokeMoodResult{display:block;min-width:0;overflow-wrap:anywhere;white-space:normal;color:#fff;font:900 clamp(21px,2vw,27px)/1.2 "Montserrat",Arial,sans-serif;letter-spacing:-.03em;text-transform:lowercase}
+#atlas-app #atlasJokeMoodPanel p{margin:12px 0 0;color:#ffffff94;font:500 10px/1.6 "Montserrat",Arial,sans-serif}

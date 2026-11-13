@@ -2870,6 +2870,10 @@ body:has(#atlas-app[data-theme="dark"]) #atlasModal .atlas-official-note {
             </div>
             <button class="atlas-mood-explain-toggle" id="atlasMoodExplainToggle" type="button" aria-expanded="false">что это значит?</button>
             <p class="atlas-mood-explain" id="atlasMoodExplain" hidden>ATLAS выбирает одно настроение на день. его нельзя сменить — завтра выпадет новое.</p>
+            <div class="atlas-joke-mood">
+              <button id="atlasJokeMoodToggle" type="button" aria-expanded="false" aria-controls="atlasJokeMoodPanel"><span aria-hidden="true">✦</span> настроение кастельмары <span aria-hidden="true">＋</span></button>
+              <div id="atlasJokeMoodPanel" hidden><span class="atlas-joke-mood-label">сегодня по версии кастельмары</span><strong id="atlasJokeMoodResult" lang="ru">войди в аккаунт, чтобы узнать</strong><p>несерьёзный прогноз на серьёзных щах. завтра — новый.</p></div>
+            </div>
           </section>
 
           <section class="atlas-card atlas-search-target" id="inicio-honour-board" data-search-title="honour board active players" data-search-keywords="доска почёта активные игроки серии входа jugadores">
@@ -24803,6 +24807,8 @@ html[data-atlas-theme="dark"] #atlasPersonalNoteModal .atlas-note-modal-status{c
 </style>
 
 <script src="assets/atlas-mood.js?v=20261008-variety"></script>
+<link rel="stylesheet" href="assets/atlas-joke-mood.css?v=20261113">
+<script src="assets/atlas-joke-mood.js?v=20261113"></script>
 
 
 <!-- ATLAS PERSONAS — character social identity -->
