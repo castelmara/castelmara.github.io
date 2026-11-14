@@ -12,7 +12,7 @@
  function render(){
   if(!active())return;
   if(!uid()){host.innerHTML='<p class="games-status">войди в аккаунт, чтобы играть без повторов и сохранять результаты на всех устройствах.</p><div class="games-toolbar">'+button('login','войти')+'</div>';return}
-  const finished=game&&!playing(),locked=busy||(mode==='practice'&&playing());
+  const finished=game&&!playing(),locked=busy;
   const settings='<div class="word-settings"><label>букв<select data-word-setting="length" '+(locked?'disabled':'')+'>'+[4,5,6,7,8].map(n=>'<option value="'+n+'" '+(length===n?'selected':'')+'>'+n+'</option>').join('')+'</select></label><label>сложность<select data-word-setting="level" '+(locked?'disabled':'')+'>'+[['easy','лёгкая · 8 попыток'],['normal','обычная · 6 попыток'],['hard','сложная · 5 попыток']].map(([v,t])=>'<option value="'+v+'" '+(level===v?'selected':'')+'>'+t+'</option>').join('')+'</select></label></div>';
   let board='',keyboard='';
   if(game){
@@ -39,10 +39,26 @@
    if(game.mode==='practice'){length=game.length;level=game.level}
    if(game.id!==oldId)restore();else if(game.guesses.length!==oldCount||!playing()){draft='';remember()}
    if(game.status==='won')window.dispatchEvent(new CustomEvent('atlasWordScoreChanged'));
+   return true;
   }catch(e){if(token===epoch)notice=e.message||'не удалось связаться с сервером. попробуй ещё раз.'}
   finally{if(token===epoch){busy=false;render()}}
  }
- function start(next=false){return request('atlas_word_start',{p_mode:mode,p_length:length,p_level:level,p_next:next})}
+ async function changeSettings(wantedLength,wantedLevel){
+  if(playing()){
+   if(!confirm('сменить настройки? текущая партия завершится без победы, и её слово больше не выпадет.')){render();return false}
+   if(!await request('atlas_word_play',{p_id:game.id,p_guess:'',p_expected:game.guesses.length,p_skip:true}))return false;
+   if(playing()){notice='партия обновилась на другом устройстве. повтори смену настроек.';render();return false}
+  }
+  length=wantedLength;level=wantedLevel;game=null;draft='';notice='';render();return true;
+ }
+ async function start(next=false){
+  const wantedMode=mode,wantedLength=length,wantedLevel=level;
+  if(!await request('atlas_word_start',{p_mode:mode,p_length:length,p_level:level,p_next:next}))return;
+  // The server resumes the one unfinished practice game, even from another device.
+  if(wantedMode==='practice'&&mode==='practice'&&(game.length!==wantedLength||game.level!==wantedLevel)){
+   if(await changeSettings(wantedLength,wantedLevel))await request('atlas_word_start',{p_mode:mode,p_length:length,p_level:level,p_next:true});
+  }
+ }
  function type(key){
   if(!active()||busy||!playing())return;
   notice='';
@@ -64,11 +80,10 @@
   if(action==='next'||action==='retry'){start(action==='next');return}
   if(action==='skip'&&game&&confirm('сдаться? слово будет раскрыто и больше не выпадет.'))request('atlas_word_play',{p_id:game.id,p_guess:'',p_expected:game.guesses.length,p_skip:true});
  });
- document.addEventListener('change',e=>{
+ document.addEventListener('change',async e=>{
   if(!active()||!e.target.closest('#atlasWordGamesRoot')||busy)return;
-  if(e.target.dataset.wordSetting==='length')length=Number(e.target.value);
-  else if(e.target.dataset.wordSetting==='level')level=e.target.value;else return;
-  game=null;draft='';notice='';render();
+  if(e.target.dataset.wordSetting==='length')await changeSettings(Number(e.target.value),level);
+  else if(e.target.dataset.wordSetting==='level')await changeSettings(length,e.target.value);
  });
  document.addEventListener('keydown',e=>{
   if(!active()||e.ctrlKey||e.metaKey||e.altKey||e.isComposing||e.target.closest('button,input,textarea,select,dialog,[contenteditable="true"]'))return;
